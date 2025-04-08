@@ -66,12 +66,12 @@ nav {
   text-align: center;
   padding: 1rem;
   margin-bottom: -50px;
-  position: sticky;
 }
 
 nav a {
   color: rgb(255, 255, 255);
   margin-right: 50px;
+  min-height: 60px;
   text-decoration: none; /* Remove default underline */
 }
 
@@ -147,7 +147,6 @@ footer p {
   overflow: hidden;
   border-radius: 100px;
   margin-top: 50px;
-  margin-bottom: 50px;
 }
 .profile-photo {
   display: flex;
