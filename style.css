@@ -162,17 +162,46 @@ footer p {
   margin-left: 50px;
 }
 
-.profile-photo {
+.profile-photo1 {
   position: relative;
   display: flex;
   align-content: center;
   width: 300px;
   height: auto;
   margin-bottom: -20px;
-  animation: slideInFromLeft 2s ease-out forwards;
-  animation-delay: 0.75s; /* Delay the animation by 2 seconds */
-  opacity: 0; /* Start hidden */
-  z-index: 9;
+  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
+  animation-delay: 0.75s, 10.5s; /* Delay the animation by 2 seconds */
+  
+}
+
+.profile-photo2 {
+  position: absolute;
+  display: flex;
+  align-content: center;
+  width: 300px;
+  height: auto;
+
+  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
+  animation-delay: 10s, 19.5s; 
+  
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeOutPhoto {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .shutter-overlay {
@@ -206,16 +235,7 @@ footer p {
   pointer-events: none; 
   z-index: -1;
 }
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
+
 @keyframes shutterOpenClose {
   0% {
     transform: scaleY(1); /* fully closed */
@@ -224,7 +244,6 @@ footer p {
     transform: scaleY(0); /* fully open */
   }
 }
-
 
 .montserrat-pepple {
   font-family: 'Montserrat', sans-serif;
@@ -253,7 +272,7 @@ footer p {
   letter-spacing: 3px; 
   display: flex;
   justify-content: center;
-  font-size: 50px; /* Adjust as needed */
+  font-size: 45px; /* Adjust as needed */
   font-weight: bold;
   background: linear-gradient(45deg, #e7e0f9, #041f81); /* Change colors as needed */
   -webkit-background-clip: text; /* For Safari */
@@ -261,6 +280,15 @@ footer p {
   color: transparent; /* Ensure the text color is transparent so the gradient is visible */
 }
 
+.spinning-text {
+  font-size: 50px;
+  font-weight: bold;
+  color: #3498db;
+  letter-spacing: 6px;
+  /* Apply the animation */
+  animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
+  transform-style: preserve-3d;
+}
 @keyframes spin {
   0% {
     transform: rotateY(0deg); /* Start at 0 degrees */
@@ -273,6 +301,14 @@ footer p {
   }
 }
 
+.spinning-text-title {
+  font-size: 50px;
+  font-weight: bold;
+  color: #003152;
+  letter-spacing: 6px;
+  animation: spintitle 1.5s linear;
+  transform-style: preserve-3d;
+}
 @keyframes spintitle {
   0% {
     transform: rotateY(0deg); /* Start at 0 degrees */
@@ -285,29 +321,11 @@ footer p {
   }
 }
 
-.spinning-text-NguyenHongHanh {
-  font-size: 50px;
-  font-weight: bold;
-  color: #3498db;
-  letter-spacing: 6px;
-  /* Apply the animation */
-  animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
-  transform-style: preserve-3d;
-}
-.spinning-text-title {
-  font-size: 50px;
-  font-weight: bold;
-  color: #003152;
-  letter-spacing: 6px;
-  animation: spintitle 1.5s linear;
-  transform-style: preserve-3d;
+.slidingfromRight {
+  animation: slideInFromRight 1s ease-in-out forwards; 
 }
 
-.slidingfromRight-NguyenHongHanh {
-  animation: slideInFromRightNHH 1s ease-in-out forwards; 
-}
-
-@keyframes slideInFromRightNHH {
+@keyframes slideInFromRight {
   0% {
     transform: translateX(-100%);
   }
@@ -316,70 +334,20 @@ footer p {
   }
 }
 
-.fadeOutPhoto {
-  animation: fadeOutPhotoNguyenHanh 1s ease-out forwards;
-  animation-delay: 10.5s;
-}
 
-@keyframes fadeOutPhotoNguyenHanh {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.slidingtoRight-NguyenHongHanh {
-  animation: slideOutToRightNHH 1s ease-out forwards;
+.slideUp {
+  animation: slideOutUpwards 1s ease-out forwards;
   animation-delay: 10s;
 }
 
-@keyframes slideOutToRightNHH {
+@keyframes slideOutUpwards {
   0% {
-    transform: translateX(-0%);
+    opacity: 1;
+    transform: translateY(0%);
   }
   100% {
-    transform: translateX(150%);
+    opacity: 0;
+    transform: translateY(-100%);
   }
 }
 
-.slidingfromRight-LD {
-  animation: slideInFromRightLD 1s ease-in-out forwards; 
-  animation-delay: 10.5s;
-}
-
-@keyframes slideInFromRightLD {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-.spinning-text-LD {
-  font-size: 50px;
-  font-weight: bold;
-  color: #3498db;
-  letter-spacing: 6px;
-  /* Apply the animation */
-  animation: spin 1.5s linear; 
-  animation-delay: 10.5s;
-  transform-style: preserve-3d;
-}
-
-.slidingtoRight-LD {
-  animation: slideOutToRightLD 1s ease-out forwards;
-  animation-delay: 20.5s;
-}
-
-
-@keyframes slideOutToRightLD {
-  0% {
-    transform: translateX(-0%);
-  }
-  100% {
-    transform: translateX(150%);
-  }
-}
