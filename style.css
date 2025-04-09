@@ -10,7 +10,6 @@ main {
 
 h1 {
   font-style:normal;
-  
 }
 
 h2 {
@@ -28,13 +27,13 @@ h2:hover {
 }
 
 .sub-text {
-  color: white;
+  color: whitesmoke;
   font-size: 4rem;
   font-weight: 700;
 }
 
-.pinyon-script-regular {
-  font-family: "Pinyon Script", cursive;
+.cursive-default {
+  font-family: cursive;
   font-weight: 600;
   font-style: normal;
   font-size: 72px;
@@ -47,7 +46,15 @@ h2:hover {
 }
 
 p {
-  display: flex;
+  font-family: cursive;
+  font-size: 24px;
+  font-weight: 400;
+  color: rgb(255, 255, 255);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  letter-spacing: 5px;
+  margin-top: 5rem;
+  margin-left: 5rem;
+  margin-right: 15rem;
 }
 
 .montserrat-aboutUs {
@@ -117,7 +124,6 @@ nav a {
   position: absolute;
   top: 0;
   left: 0;
-  
   z-index: -1;
 }
 
@@ -155,6 +161,7 @@ footer p {
   margin-bottom: 25px;
   margin-left: 50px;
 }
+
 .profile-photo {
   position: relative;
   display: flex;
