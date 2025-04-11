@@ -168,7 +168,7 @@ footer p {
   align-content: center;
   width: 300px;
   height: auto;
-  margin-bottom: -20px;
+  margin-bottom: -35px;
   animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
   animation-delay: 0.75s, 10.5s; /* Delay the animation by 2 seconds */
   opacity: 0;
@@ -260,10 +260,22 @@ footer p {
   word-spacing: 2px;
 }
 
-.gradient-text {
-  background: linear-gradient(to right, #ff7e5f, #feb47b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.fade-In {
+  opacity: 0;
+  visibility: hidden;
+  animation: fadeIn 2s ease-in forwards;
+  animation-delay: 10.75s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .intro-people {
@@ -290,6 +302,17 @@ footer p {
   animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
   transform-style: preserve-3d;
 }
+.spinning-text2 {
+  font-size: 50px;
+  font-weight: bold;
+  color: #3498db;
+  letter-spacing: 6px;
+  /* Apply the animation */
+  animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
+  animation-delay: 11.5s;
+  transform-style: preserve-3d;
+}
+
 @keyframes spin {
   0% {
     transform: rotateY(0deg); /* Start at 0 degrees */
@@ -326,6 +349,10 @@ footer p {
   animation: slideInFromRight 1s ease-in-out forwards; 
 }
 
+.slidingfromRight2 {
+  animation: slideInFromRight 1s ease-in-out forwards; 
+  animation-delay: 10.75s;
+}
 @keyframes slideInFromRight {
   0% {
     transform: translateX(-100%);
@@ -341,6 +368,7 @@ footer p {
   animation-delay: 10s;
 }
 
+
 @keyframes slideOutUpwards {
   0% {
     opacity: 1;
@@ -352,3 +380,17 @@ footer p {
   }
 }
 
+.slide-Right {
+  animation: slideRightFadeOut 1s ease-out forwards;
+  animation-delay: 20s;
+}
+@keyframes slideRightFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
