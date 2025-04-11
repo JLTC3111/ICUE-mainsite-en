@@ -186,6 +186,45 @@ footer p {
   animation-delay: 10.75s, 19.5s; 
   
 }
+
+.profile-photo3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
+  animation-delay: 20.75s, 29.5s; 
+  
+}
+
+.profile-photo4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
+  animation-delay: 30.75s, 39.5s; 
+  
+}
+
+.profile-photo5 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
+  animation-delay: 40.75s, 49.5s; 
+  
+}
 @keyframes slideInFromLeft {
   0% {
     transform: translateX(-100%);
@@ -252,7 +291,7 @@ footer p {
   color: black;
   font-optical-sizing: auto;
   font-weight: 100; /* Make sure this weight is imported */
-  margin-top: -550px;
+  margin-top: -500px;
   margin-left: 450px;
   margin-right: 250px;
   text-shadow: none;
@@ -264,7 +303,7 @@ footer p {
   opacity: 0;
   visibility: hidden;
   animation: fadeIn 2s ease-in forwards;
-  animation-delay: 10.75s;
+
 }
 
 @keyframes fadeIn {
@@ -280,17 +319,22 @@ footer p {
 
 .intro-people {
   margin-right: 100px;
-  margin-top: -50%;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   letter-spacing: 3px; 
   display: flex;
   justify-content: center;
   font-size: 45px; /* Adjust as needed */
   font-weight: bold;
-  background: linear-gradient(45deg, #e7e0f9, #041f81); /* Change colors as needed */
+  background: linear-gradient(45deg, #946df9, #1f007d); /* Change colors as needed */
   -webkit-background-clip: text; /* For Safari */
   background-clip: text; /* For other browsers */
   color: transparent; /* Ensure the text color is transparent so the gradient is visible */
+}
+
+.text-container {
+  display: flex;
+  position: absolute;
+  margin-top: -175px;
 }
 
 .spinning-text {
@@ -300,16 +344,6 @@ footer p {
   letter-spacing: 6px;
   /* Apply the animation */
   animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
-  transform-style: preserve-3d;
-}
-.spinning-text2 {
-  font-size: 50px;
-  font-weight: bold;
-  color: #3498db;
-  letter-spacing: 6px;
-  /* Apply the animation */
-  animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
-  animation-delay: 11.5s;
   transform-style: preserve-3d;
 }
 
@@ -382,7 +416,6 @@ footer p {
 
 .slide-Right {
   animation: slideRightFadeOut 1s ease-out forwards;
-  animation-delay: 20s;
 }
 @keyframes slideRightFadeOut {
   0% {
