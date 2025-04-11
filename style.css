@@ -334,7 +334,7 @@ footer p {
 .text-container {
   display: flex;
   position: absolute;
-  margin-top: -175px;
+  margin-top: -185px;
 }
 
 .spinning-text {
@@ -380,12 +380,10 @@ footer p {
 }
 
 .slidingfromRight {
+  display: flex;
+  margin-top: -30px;
   animation: slideInFromRight 1s ease-in-out forwards; 
-}
-
-.slidingfromRight2 {
-  animation: slideInFromRight 1s ease-in-out forwards; 
-  animation-delay: 10.75s;
+  
 }
 @keyframes slideInFromRight {
   0% {
