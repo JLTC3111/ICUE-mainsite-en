@@ -170,7 +170,7 @@ footer p {
   height: auto;
   margin-bottom: -35px;
   animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
-  animation-delay: 0.75s, 10.5s; /* Delay the animation by 2 seconds */
+  animation-delay: 0.75s, 9.5s; /* Delay the animation by 2 seconds */
   opacity: 0;
 }
 
@@ -221,7 +221,7 @@ footer p {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
+  animation: slideInFromLeft 2s ease-out forwards;
   animation-delay: 40.75s, 49.5s; 
   
 }
@@ -252,10 +252,10 @@ footer p {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); 
   transform-origin: top;
-  animation: shutterOpenClose 4s ease-in-out;
-  animation-delay: 1.5s; /* Delay the animation by 2 seconds */
+  animation: shutterOpenClose 3.5s ease-in-out;
+  animation-delay: 0.5s; /* Delay the animation by 2 seconds */
   transform-style: preserve-3d; /* Enable 3D transforms */
-  animation-iteration-count: 1;
+  animation-iteration-count: 15;
   pointer-events: none; 
   z-index: -1;
 }
@@ -268,10 +268,10 @@ footer p {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); 
   transform-origin: bottom;
-  animation: shutterOpenClose 4s ease-in-out;
-  animation-delay: 1.5s; /* Delay the animation by 2 seconds */
+  animation: shutterOpenClose 3.5s ease-in-out;
+  animation-delay: 0.5s; /* Delay the animation by 2 seconds */
   transform-style: preserve-3d; /* Enable 3D transforms */
-  animation-iteration-count: 1;
+  animation-iteration-count: 15;
   pointer-events: none; 
   z-index: -1;
 }
