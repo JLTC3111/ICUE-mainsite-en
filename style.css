@@ -83,7 +83,7 @@ nav {
 }
 
 nav a {
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   margin-right: 50px;
   text-decoration: none; /* Remove default underline */
 }
@@ -384,6 +384,62 @@ footer p {
   overflow: hidden;
 }
 
+.menu-toggle {
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  margin-left: 1rem;
+  z-index: 1000;
+}
+
+.drawer-menu {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100vh;
+  width: 250px;
+  background-color: #0b3f10;
+  display: flex;
+  flex-direction: column;
+  padding-top: 4rem;
+  padding-left: 1rem;
+  transition: left 0.4s ease-in-out;
+  z-index: 999;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+}
+
+.drawer-menu a {
+  color: white;
+  padding: 1rem;
+  font-size: 1rem;
+  text-decoration: none;
+  border-left: 4px solid transparent;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.drawer-menu a:hover {
+  background-color: #165321;
+  border-left: 4px solid aqua;
+}
+
+.drawer-menu a.active {
+  font-weight: bold;
+  background-color: #1e5e26;
+  border-left: 4px solid gold;
+}
+
+.drawer-open {
+  left: 0;
+}
+
+.contact-link {
+  color: white;
+  margin-left: auto;
+  margin-right: 2rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 @media (max-width: 768px) {
   /* Adjust main layout padding */
   main {
@@ -440,7 +496,7 @@ footer p {
     overflow: hidden;
     border-radius: 50px;
     margin-top: -50rem;
-    margin-left: 90px;
+    margin-left: 100px;
     margin-bottom: 5px;
   }
 
@@ -517,6 +573,23 @@ footer p {
   footer {
     margin-top: 2rem;
     padding: 1rem;
+  }
+  .menu-bar {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+  }
+
+  .contact-link {
+    margin-top: 1rem;
+    margin-right: 1rem;
   }
 }
 
