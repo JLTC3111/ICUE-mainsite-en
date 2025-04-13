@@ -395,7 +395,6 @@ footer p {
 .drawer-menu {
   position: fixed;
   top: 0;
-  left: -250px;
   height: 30vh;
   width: 250px;
   top: 90px;
@@ -574,19 +573,22 @@ footer p {
     margin-top: 2rem;
     padding: 1rem;
   }
-  .menu-bar {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-  }
+  
 
-  .dropdown-menu {
-    width: 100%;
-    left: 0;
-    border-radius: 0;
+  .drawer-menu {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 180px;
+    top: 50px;
+    background-color: #0b3f10;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    padding-left: 1rem;
+    transition: left 0.4s ease-in-out;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
   }
-
   .contact-link {
     margin-top: 1rem;
     margin-right: 4.5rem;
