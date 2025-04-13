@@ -29,16 +29,6 @@ h2:hover {
   color: aqua;
 }
 
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: 150px;
-  margin-top: 75px;
-}
-
-
 .sub-text {
   color: whitesmoke;
   font-size: 4rem;
@@ -169,9 +159,10 @@ footer p {
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
-  margin-top: 200px;
-  margin-bottom: 25px;
-  margin-left: 50px;
+  margin-left: 100px;
+  margin-top: 240px;
+  margin-bottom: 5px;
+  
 }
 
 .profile-photo {
@@ -180,7 +171,6 @@ footer p {
   align-content: center;
   width: 300px;
   height: auto;
-  margin-bottom: -35px;
 }
 
 .fade-Out {
@@ -311,4 +301,42 @@ footer p {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.arrow-button {
+  width: clamp(50px, 8vw, 70px);
+  height: clamp(50px, 8vw, 70px);
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  color:darkgoldenrod;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.left-arrow {
+  left: 0.5rem;
+}
+
+.right-arrow {
+  right: 5rem;
+}
+
+.arrow-button:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  color: yellow; /* Change to any accent color you like */
+  background-color: rgb(236, 236, 236);
+}
+
+.arrow-button:active {
+  transform: translateY(-50%) scale(0.95);
 }

@@ -5,7 +5,7 @@ function attachProfileEvents() {
       img: "public/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Hoàng Thu Hà</span> Experienced accounting professional with over 10 years in financial management, reporting, and compliance. Holds a Bachelor’s degree in Accounting and has successfully led accounting departments, managed financial settlements, conducted audits, and prepared accurate financial statements. Skilled in monitoring financial transactions, ensuring legal and regulatory compliance, and supporting project-based financial operations. Proficient in accounting software and known for a strong work ethic, adaptability, and attention to detail. Brings strong leadership and organizational skills, with a focus on delivering accurate financial insights. Seeking opportunities in a dynamic environment to contribute expertise while continuing professional growth and development.`,
+      name: `<span class="intro-people">Hoàng Thu Hà</span> Experienced accounting professional with over 10 years in financial management, reporting, and compliance. Holds a Bachelor’s degree in Accounting and has successfully led accounting departments, managed financial settlements, conducted audits, and prepared accurate financial statements. Skilled in monitoring financial transactions, ensuring legal and regulatory compliance, and supporting project-based financial operations. Proficient in accounting software and known for a strong work ethic, adaptability, and attention to detail. Brings strong leadership and organizational skills, with a focus on delivering accurate financial insights.`,
       img: "public/hoangthuha.jpg"
     },
     {
@@ -17,7 +17,7 @@ function attachProfileEvents() {
       img: "public/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people">Đỗ Bảo Long</span> is a dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Outside of work, thrives on exploration and adventure—regularly engaging in travel and high-adrenaline activities such as bungee jumping and skydiving.`,
+      name: `<span class="intro-people">Đỗ Bảo Long</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Outside of work, thrives on exploration and adventure—regularly engaging in travel and high-adrenaline activities such as bungee jumping and skydiving.`,
       img: "public/longdo.jpg"
     }
   ];
