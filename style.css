@@ -90,8 +90,8 @@ nav a {
 }
 
 .menu-bar {
-  font-size: 1.25rem; /* bigger text */
-  font-weight: bold;
+  font-size: 1.25rem; 
+  
   text-transform: uppercase;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   z-index: 99;
@@ -99,7 +99,7 @@ nav a {
 
 .menu-bar a:hover {
   animation: wiggle 0.5s ease-in-out;
-  transform: scale(1.4);
+  transform: scale(1.25);
   color: aqua;
 }
 
