@@ -14,12 +14,13 @@
     <div class="logo-banner">
       <img class="logo-content" src="public/logo.png" alt="Logo" />
     </div>
-    <a href="#" onclick="loadPage('home')">Home</a>
-    <a href="#" onclick="loadPage('ourwork')">Our Work</a>
-    <a href="#" onclick="loadPage('pastprojects')">Past Projects</a>
-    <a href="#" onclick="loadPage('ourpeople')">Our People</a>
-    <a href="#" onclick="loadPage('aboutus')">About Us</a>
-    <a href="#" onclick="loadPage('contact')" style="margin-right:180px;">Contact</a>
+    <a href="#" onclick="loadPage('Home')">Home</a>
+    <a href="#" onclick="loadPage('ourWork')">Our Work</a>
+    <a href="#" onclick="loadPage('pastProjects')">Past Projects</a>
+    <a href="#" onclick="loadPage('aboutUs')">About Us</a>
+    <a href="#" onclick="loadPage('meetOurExperts')">Meet Our Experts</a>
+    <a href="#" onclick="loadPage('Contact')" style="margin-right:180px;">Contact</a>
+    
   </nav>
 
   <main id="content">
@@ -27,25 +28,8 @@
       <p>Let's Start</p>
   </main>
 
-  <script src="script.js">
-    function loadPage(page) {
-      const content = document.getElementById('content'); // The element where content is loaded
-
-      fetch(`${page}.html`)  // Dynamically fetch the HTML file
-        .then(response => response.text())
-        .then(data => {
-          content.innerHTML = data;  // Insert the content into the page
-        })
-        .catch(error => {
-          console.error('Error loading page:', error);
-        });
-    }
-
-    // Load the home page by default when the page is first loaded
-    window.onload = () => {
-      loadPage('home');  // This loads home.html by default when the page is loaded
-    };
-  </script>
+  <script src="script.js"></script>
+  
 </body>
-<footer>Made by LD ⭐️⭐️⭐️⭐️</footer>
+<footer></footer>
 </html>

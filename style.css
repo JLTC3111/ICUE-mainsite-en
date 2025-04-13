@@ -9,7 +9,10 @@ main {
 }
 
 h1 {
-  font-style:normal;
+  font-style:cursive;
+  align-items: center;
+  justify-content: center;
+  text-align:center;
 }
 
 h2 {
@@ -25,6 +28,16 @@ h2:hover {
   transform: scale(1.4) rotate(180deg);
   color: aqua;
 }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 150px;
+  margin-top: 75px;
+}
+
 
 .sub-text {
   color: whitesmoke;
@@ -63,7 +76,6 @@ p {
   color: black;
   font-optical-sizing: auto;
   font-weight: 100; /* Make sure this weight is imported */
-  
   text-shadow: none;
   line-height: 1.5;
   word-spacing: 2px;
@@ -154,88 +166,28 @@ footer p {
 .image-container {
   position: relative;
   width: 300px;
-  height: auto;
+  height: 400px;
   overflow: hidden;
-  border-radius: 100px;
+  border-radius: 50px;
   margin-top: 200px;
   margin-bottom: 25px;
   margin-left: 50px;
 }
 
-.profile-photo1 {
+.profile-photo {
   position: relative;
   display: flex;
   align-content: center;
   width: 300px;
   height: auto;
   margin-bottom: -35px;
-  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
-  animation-delay: 0.75s, 9.5s; /* Delay the animation by 2 seconds */
-  opacity: 0;
 }
 
-.profile-photo2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
-  animation-delay: 10.75s, 19.5s; 
-  
+.fade-Out {
+  animation: FadeOut 2s ease-in-out forwards;
+  animation-delay: 3s;
 }
-
-.profile-photo3 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
-  animation-delay: 20.75s, 29.5s; 
-  
-}
-
-.profile-photo4 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: slideInFromLeft 2s ease-out forwards, fadeOutPhoto 1s ease-out forwards;
-  animation-delay: 30.75s, 39.5s; 
-  
-}
-
-.profile-photo5 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: slideInFromLeft 2s ease-out forwards;
-  animation-delay: 40.75s, 49.5s; 
-  
-}
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes fadeOutPhoto {
+@keyframes FadeOut {
   0% {
     opacity: 1;
   }
@@ -244,20 +196,27 @@ footer p {
   }
 }
 
-.shutter-overlay {
+.shutter-top {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); 
+  background-color: rgba(106, 106, 106, 0.7); 
   transform-origin: top;
-  animation: shutterOpenClose 3.5s ease-in-out;
-  animation-delay: 0.5s; /* Delay the animation by 2 seconds */
-  transform-style: preserve-3d; /* Enable 3D transforms */
-  animation-iteration-count: 15;
-  pointer-events: none; 
-  z-index: -1;
+  animation: shutterOpen 3.5s ease-in-out;
+  animation-delay: 0.25s;
+}
+
+@keyframes shutterOpen {
+  0% {
+    opacity: 1;
+    transform: scaleY(0); /* fully closed */
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(1); /* fully open */
+  }
 }
 
 .shutter-bottom {
@@ -266,22 +225,20 @@ footer p {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); 
+  background-color: rgba(106, 106, 106, 0.7); 
   transform-origin: bottom;
-  animation: shutterOpenClose 3.5s ease-in-out;
-  animation-delay: 0.5s; /* Delay the animation by 2 seconds */
-  transform-style: preserve-3d; /* Enable 3D transforms */
-  animation-iteration-count: 15;
-  pointer-events: none; 
-  z-index: -1;
+  animation: shutterClose 3.5s ease-in-out;
+  animation-delay: 0.25s;
 }
 
-@keyframes shutterOpenClose {
+@keyframes shutterClose {
   0% {
-    transform: scaleY(1); /* fully closed */
+    opacity: 1;
+    transform: scaleY(0); /* fully closed */
   }
   100% {
-    transform: scaleY(0); /* fully open */
+    opacity: 0;
+    transform: scaleY(1); /* fully open */
   }
 }
 
@@ -302,8 +259,7 @@ footer p {
 .fade-In {
   opacity: 0;
   visibility: hidden;
-  animation: fadeIn 2s ease-in forwards;
-
+  animation: fadeIn 1.5s ease-in forwards;
 }
 
 @keyframes fadeIn {
@@ -334,94 +290,25 @@ footer p {
 .text-container {
   display: flex;
   position: absolute;
-  margin-top: -185px;
+  margin-top: -15px;
 }
 
-.spinning-text {
+.slideInFromLeft {
   font-size: 50px;
   font-weight: bold;
   color: #3498db;
   letter-spacing: 6px;
   /* Apply the animation */
-  animation: spin 1.5s linear; /* Rotate in 3 seconds, infinitely */
+  animation: slideInFromLeft 2s ease-out forwards;
   transform-style: preserve-3d;
 }
-
-@keyframes spin {
-  0% {
-    transform: rotateY(0deg); /* Start at 0 degrees */
-  }
-  50% {
-    transform: rotateY(120deg); /* End at 180 degrees */
-  }
-  100% {
-    transform: rotateY(0deg); /* End at 0 degrees */
-  }
-}
-
-.spinning-text-title {
-  font-size: 50px;
-  font-weight: bold;
-  color: #003152;
-  letter-spacing: 6px;
-  animation: spintitle 1.5s linear;
-  transform-style: preserve-3d;
-}
-@keyframes spintitle {
-  0% {
-    transform: rotateY(0deg); /* Start at 0 degrees */
-  }
-  50% {
-    transform: rotateY(65deg); /* End at 180 degrees */
-  }
-  100% {
-    transform: rotateY(0deg); /* End at 0 degrees */
-  }
-}
-
-.slidingfromRight {
-  display: flex;
-  margin-top: -30px;
-  animation: slideInFromRight 1s ease-in-out forwards; 
-  
-}
-@keyframes slideInFromRight {
+@keyframes slideInFromLeft {
   0% {
     transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-
-.slideUp {
-  animation: slideOutUpwards 1s ease-out forwards;
-  animation-delay: 10s;
-}
-
-
-@keyframes slideOutUpwards {
-  0% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-  100% {
     opacity: 0;
-    transform: translateY(-100%);
-  }
-}
-
-.slide-Right {
-  animation: slideRightFadeOut 1s ease-out forwards;
-}
-@keyframes slideRightFadeOut {
-  0% {
-    opacity: 1;
-    transform: translateX(0%);
   }
   100% {
-    opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(0);
+    opacity: 1;
   }
 }
