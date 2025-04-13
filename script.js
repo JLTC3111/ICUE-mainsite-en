@@ -17,7 +17,7 @@ function attachProfileEvents() {
       img: "public/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Outside of work, thrives on exploration and adventure—regularly engaging in travel and high-adrenaline activities such as bungee jumping and skydiving.`,
+      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Outside of work, thrives on exploration and adventure—regularly engaging in travel and high-adrenaline activities such as bungee jumping and skydiving.🔧💬`,
       img: "public/longdo.jpg"
     }
   ];

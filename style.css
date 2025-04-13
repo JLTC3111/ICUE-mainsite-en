@@ -335,8 +335,8 @@ footer p {
 .arrow-button:hover {
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  color: yellow; /* Change to any accent color you like */
-  background-color: rgb(236, 236, 236);
+  color: rgb(0, 68, 5); /* Change to any accent color you like */
+  background-color: rgb(255, 255, 255);
 }
 
 .arrow-button:active {
@@ -364,4 +364,108 @@ footer p {
 
 .flag-link:hover {
   transform: scale(1.5);
+}
+
+@media (max-width: 768px) {
+  /* Adjust main layout padding */
+  main {
+    padding: 1rem;
+  }
+
+  /* Shrink big headers */
+  h1 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    margin-left: 1rem;
+    margin-top: 2rem;
+  }
+
+  .sub-text,
+  .cursive-default {
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin: 1rem;
+  }
+
+  p {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin: 2rem 1rem;
+    letter-spacing: normal;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    margin: 0.3rem 0.8rem;
+  }
+
+  .image-container {
+    width: 80vw;
+    height: auto;
+    margin: 3rem auto 2rem auto;
+  }
+
+  .profile-photo {
+    width: 100%;
+  }
+
+  .text-container {
+    position: relative;
+    flex-direction: column;
+    margin-top: 1rem;
+    padding: 0 1rem;
+  }
+
+  .montserrat-pepple {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin: 1rem 0;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .intro-people {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto 1rem auto;
+  }
+
+  .arrow-button {
+    width: 50px;
+    height: 50px;
+    top: 70%;
+  }
+
+  .left-arrow {
+    left: 0.5rem;
+  }
+
+  .right-arrow {
+    right: 0.5rem;
+  }
+
+  .language-switcher {
+    top: 20px;
+    right: 20px;
+    margin-top: 0;
+    margin-right: 0;
+    gap: 6px;
+  }
+
+  .flag-link {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  footer {
+    margin-top: 2rem;
+    padding: 1rem;
+  }
 }
