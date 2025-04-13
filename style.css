@@ -71,7 +71,6 @@ p {
   word-spacing: 2px;
 }
 
-
 nav {
   display: flex;
   position: relative;
@@ -145,16 +144,17 @@ footer p {
 .logo-banner {
   display: flex;
   margin: 0 auto;
-  width: 50px;
-  height: 50px;
+  width: 150px;
+  height: auto;
   margin-left: 25px;
   margin-top: 5px;
 }
 
 .logo-content {
+  width: 150px;
+  height: auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  object-fit: contain;
 }
 .image-container {
   position: relative;
@@ -165,7 +165,6 @@ footer p {
   margin-top: -38rem;
   margin-left: 100px;
   margin-bottom: 5px;
-  
 }
 
 .profile-photo {
@@ -351,12 +350,12 @@ footer p {
   display: flex;
   gap: 9px; /* Adjust spacing between flags */
   align-items: right;
-  margin-top: -5.5rem;
+  margin-top: -6.0rem;
   margin-right: 1.2rem;
 }
 
 .flag-link {
-  font-size: 28px; /* Adjust flag size */
+  font-size: 24px; /* Adjust flag size */
   cursor: pointer;
   transition: transform 0.3s;
   z-index: 100; 
@@ -372,7 +371,14 @@ footer p {
   main {
     padding: 1rem;
   }
-
+  .logo-banner {
+    display: flex;
+    margin: 0 auto;
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+    margin-top: 5px;
+  }
   /* Shrink big headers */
   h1 {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
@@ -411,12 +417,12 @@ footer p {
 
   .image-container {
     position: relative;
-    width: 300px;
-    height: 400px;
+    width: 200px;
+    height: 266px;
     overflow: hidden;
     border-radius: 50px;
-    margin-top: -45rem;
-    margin-left: 100px;
+    margin-top: -50rem;
+    margin-left: 70px;
     margin-bottom: 5px;
   }
 
@@ -455,19 +461,19 @@ footer p {
   }
   
   .left-arrow {
-    left: 0.5rem;
+    left: 1.5rem;
   }
   
   .right-arrow {
-    right: 0.5rem;
+    right: 1.5rem;
   }
 
   .language-switcher {
-    top: 20px;
+    top: 50px;
     right: 20px;
     margin-top: 0;
     margin-right: 0;
-    gap: 6px;
+    gap: 3px;
   }
 
   .flag-link {
@@ -481,11 +487,4 @@ footer p {
     padding: 1rem;
   }
 }
-.logo-banner {
-  display: flex;
-  margin: 0 auto;
-  width: 25px;
-  height: 25px;
-  margin-left: 5px;
-  margin-top: 5px;
-}
+
