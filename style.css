@@ -345,25 +345,43 @@ footer p {
 
 .language-switcher {
   position: absolute; /* Ensure it moves relative to <body> */
-  top: 120px; /* Adjust vertical positioning */
+  top: 110px; /* Adjust vertical positioning */
   right: 45px; /* Adjust horizontal positioning */
   display: flex;
   gap: 9px; /* Adjust spacing between flags */
-  align-items: right;
   margin-top: -6.0rem;
-  margin-right: 1.2rem;
+  margin-right: 5rem;
+  
 }
 
 .flag-link {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  background-color: #002811; /* Light neutral background */
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  transition: transform 0.3s, background-color 0.3s;
   font-size: 24px; /* Adjust flag size */
   cursor: pointer;
-  transition: transform 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   z-index: 100; 
   
 }
 
 .flag-link:hover {
   transform: scale(1.5);
+  background-color: #acd606;
+}
+
+.flag-icon {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  border-radius: 50%; /* ✅ Makes it circular */
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
@@ -422,7 +440,7 @@ footer p {
     overflow: hidden;
     border-radius: 50px;
     margin-top: -50rem;
-    margin-left: 70px;
+    margin-left: 90px;
     margin-bottom: 5px;
   }
 
@@ -472,7 +490,7 @@ footer p {
     top: 50px;
     right: 20px;
     margin-top: 0;
-    margin-right: 0;
+    margin-right: 10px;
     gap: 3px;
   }
 
@@ -480,6 +498,20 @@ footer p {
     width: 40px;
     height: 40px;
     font-size: 20px;
+  }
+
+  flag-link:hover {
+    transform: scale(1.5);
+    background-color: #acd606;
+  }
+
+  .flag-icon {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+    border-radius: 50%; /* ✅ Makes it circular */
+    overflow: hidden;
   }
 
   footer {
