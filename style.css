@@ -342,3 +342,26 @@ footer p {
 .arrow-button:active {
   transform: translateY(-50%) scale(0.95);
 }
+
+.language-switcher {
+  position: absolute; /* Ensure it moves relative to <body> */
+  top: 120px; /* Adjust vertical positioning */
+  right: 45px; /* Adjust horizontal positioning */
+  display: flex;
+  gap: 9px; /* Adjust spacing between flags */
+  align-items: right;
+  margin-top: -5.5rem;
+  margin-right: 1.2rem;
+}
+
+.flag-link {
+  font-size: 28px; /* Adjust flag size */
+  cursor: pointer;
+  transition: transform 0.3s;
+  z-index: 100; 
+  
+}
+
+.flag-link:hover {
+  transform: scale(1.5);
+}

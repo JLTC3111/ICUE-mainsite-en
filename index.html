@@ -5,22 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ICUE-Test-Site</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet>
   <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Pinyon+Script&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="language-switcher">
+    <a href="https://icuevn-mainsite.netlify.app/#" class="flag-link">
+        <span class="flag-icon flag-icon-gb"></span>
+    </a>
+    <a href="https://icuevn-mainsite.netlify.app/#" class="flag-link">
+        <span class="flag-icon flag-icon-vn"></span>
+    </a>
+  </div>
   <nav class="menu-bar">
+
     <div class="logo-banner">
       <img class="logo-content" src="public/logo.png" alt="Logo" />
     </div>
+
     <a href="#" onclick="loadPage('Home')">Home</a>
     <a href="#" onclick="loadPage('ourWork')">Our Work</a>
     <a href="#" onclick="loadPage('pastProjects')">Past Projects</a>
     <a href="#" onclick="loadPage('aboutUs')">About Us</a>
     <a href="#" onclick="loadPage('meetOurExperts')">Meet Our Experts</a>
     <a href="#" onclick="loadPage('Contact')" style="margin-right:180px;">Contact</a>
-    
   </nav>
 
   <main id="content">
