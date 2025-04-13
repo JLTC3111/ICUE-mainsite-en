@@ -145,8 +145,8 @@ footer p {
 .logo-banner {
   display: flex;
   margin: 0 auto;
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 50px;
   margin-left: 25px;
   margin-top: 5px;
 }
@@ -162,8 +162,8 @@ footer p {
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
+  margin-top: -38rem;
   margin-left: 100px;
-  margin-top: 240px;
   margin-bottom: 5px;
   
 }
@@ -307,8 +307,8 @@ footer p {
 }
 
 .arrow-button {
-  width: clamp(50px, 8vw, 70px);
-  height: clamp(50px, 8vw, 70px);
+  width: 50px;
+  height: 50px;
   background-color: white;
   border-radius: 50%;
   display: flex;
@@ -317,16 +317,16 @@ footer p {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   color:darkgoldenrod;
   position: absolute;
-  margin-top: 10%;
+  top: 60%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 100;
 }
 
 .left-arrow {
-  left: 0.5rem;
+  left: 1.5rem;
 }
 
 .right-arrow {
@@ -397,6 +397,7 @@ footer p {
   }
 
   nav {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -404,12 +405,19 @@ footer p {
   nav a {
     font-size: 0.85rem;
     margin: 0.3rem 0.8rem;
+    justify-content: center;
+    text-align: center;
   }
 
   .image-container {
-    width: 80vw;
-    height: auto;
-    margin: 3rem auto 2rem auto;
+    position: relative;
+    width: 300px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 50px;
+    margin-top: -45rem;
+    margin-left: 100px;
+    margin-bottom: 5px;
   }
 
   .profile-photo {
@@ -419,8 +427,8 @@ footer p {
   .text-container {
     position: relative;
     flex-direction: column;
-    margin-top: 1rem;
-    padding: 0 1rem;
+    margin-top: 0.5rem;
+    padding: 1rem;
   }
 
   .montserrat-pepple {
@@ -440,13 +448,16 @@ footer p {
   .arrow-button {
     width: 50px;
     height: 50px;
-    top: 70%;
+    top: 45%; /* ✅ Vertically center */
+    transform: translateY(-50%); /* ✅ Smooth centering */
+    position: fixed; /* ✅ Keeps them in view */
+    z-index: 100; /* ✅ Ensures they sit above other content */
   }
-
+  
   .left-arrow {
     left: 0.5rem;
   }
-
+  
   .right-arrow {
     right: 0.5rem;
   }
@@ -469,4 +480,12 @@ footer p {
     margin-top: 2rem;
     padding: 1rem;
   }
+}
+.logo-banner {
+  display: flex;
+  margin: 0 auto;
+  width: 25px;
+  height: 25px;
+  margin-left: 5px;
+  margin-top: 5px;
 }
