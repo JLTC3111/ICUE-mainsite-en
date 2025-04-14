@@ -101,8 +101,8 @@ nav a {
 
 .menu-bar a:hover {
   animation: wiggle 0.5s ease-in-out;
-  transform: scale(1.25);
-  color: aqua;
+  transform: scale(1.1);
+  color: rgb(0, 0, 0);
 }
 
 @keyframes wiggle {
@@ -150,6 +150,7 @@ footer p {
   height: auto;
   margin-left: 25px;
   margin-top: 5px;
+  z-index: 1001;
 }
 
 .logo-content {
@@ -342,7 +343,7 @@ footer p {
 }
 
 .arrow-button:active {
-  transform: translateY(-50%) scale(0.95);
+  transform: translateY(-50%) scale(1.25);
 }
 
 .language-switcher {
@@ -389,7 +390,6 @@ footer p {
 .menu-toggle {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
   cursor: pointer;
   z-index: 1001;
 }
@@ -399,11 +399,11 @@ footer p {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 250px;
-  background: linear-gradient(to bottom right, #03026a, #049d5b);
+  width: 280px;
+  background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
   display: flex;
   flex-direction: column;
-  padding: 5rem 2rem;
+  padding: 10rem 2.5rem;
   transform: translateX(-100%); /* Hide off-screen initially */
   transition: transform 0.4s ease-in-out;
   z-index: 1000;
@@ -411,23 +411,22 @@ footer p {
 
 
 .drawer-menu a {
-  color: #111;
+  color: #000000;
   padding: 1.2rem 0;
   font-size: 1.4rem;
   text-decoration: none;
   border-left: 5px solid transparent;
-  transition: background 0.3s, border-color 0.3s;
 }
 
 .drawer-menu a:hover {
-  background-color: #f8c6d5;
-  border-left: 5px solid #ff69b4;
+  background-color: #faff00;
+  border-left: 2.5px solid #000000;
 }
 
 .drawer-menu a.active {
   font-weight: bold;
-  background-color: #fcd7e0;
-  border-left: 5px solid gold;
+  background-color: #faff00;
+  border-left: 2.5px solid rgb(0, 0, 0);
 }
 
 .drawer-menu.open {
@@ -448,6 +447,7 @@ footer p {
   main {
     padding: 1rem;
   }
+
   .logo-banner {
     display: flex;
     margin: 0 auto;
@@ -455,6 +455,7 @@ footer p {
     height: 25px;
     margin-left: 5px;
     margin-top: 5px;
+    z-index: 1001;
   }
   /* Shrink big headers */
   h1 {
@@ -552,14 +553,14 @@ footer p {
     display: flex;
     gap: 8px; /* Adjust spacing between flags */
     margin-top: 0.5rem;
-    margin-right: 0.3rem;
+    margin-right: 5%;
     z-index: 1100;
   }
   
   .flag-link {
     display: flex;
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     background-color: #ffffff; 
     justify-content: center;
     align-items: center;
@@ -585,14 +586,52 @@ footer p {
     z-index: 1100;
   }
 
-.contact-link {
-  margin-top: 1rem;
-  margin-right: 4.5rem;
-}
+  .contact-link {
+    margin-top: 1rem;
+    margin-right: 15%;
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    z-index: 1001;
+  }
 
-footer {
-  margin-top: 2rem;
-  padding: 1rem;
-}
+  .drawer-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
+    display: flex;
+    flex-direction: column;
+    padding: 10rem 0.5rem;
+    transform: translateX(-100%); /* Hide off-screen initially */
+    transition: transform 0.4s ease-in-out;
+    z-index: 1000;
+  }
+
+  .drawer-menu a {
+    color: #000000;
+    padding: 1.2rem 0;
+    font-size: 1.8rem;
+    text-decoration: none;
+    border-left: 5px solid transparent;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .drawer-menu a:hover {
+    background-color: #faff00;
+    border-left: 2.5px solid #000000;
+  }
+
+  .drawer-menu a.active {
+    font-weight: bold;
+    background-color: #faff00;
+    border-left: 2.5px solid rgb(0, 0, 0);
+  }
+
+  footer {
+    margin-top: 2rem;
+    padding: 1rem;
+  }
 
 }
