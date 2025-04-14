@@ -119,9 +119,6 @@ nav a {
   position: relative;
   overflow: hidden;
   margin-bottom: -45px;
-  background-image: url('public/people-alt-bg.jpg'); /* Replace with your actual image path */
-  background-size: cover;
-  background-position: center;
 }
 
 .video-bg {
@@ -132,6 +129,9 @@ nav a {
   top: 0;
   left: 0;
   z-index: -1;
+  background-image: url('public/people-alt-bg.jpg'); /* Replace with your actual image path */
+  background-size: cover;
+  background-position: center;
 }
 
 footer {
