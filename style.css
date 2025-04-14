@@ -594,7 +594,7 @@ footer p {
 
   .contact-link {
     margin-top: 0rem;
-    margin-right: 15%;
+    margin-right: 12.5%;
     font-size: 18px;
     font-weight: bold;
     padding: 0.75rem 1.5rem;
@@ -613,7 +613,7 @@ footer p {
 
   .menu-toggle {
     position: absolute;
-    left: 40%;
+    left: 45%;
     cursor: pointer;
     z-index: 1001;
   }
@@ -636,7 +636,7 @@ footer p {
   .drawer-menu a {
     color: #000000;
     padding: 1rem 0;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     text-decoration: none;
     border-left: 5px solid transparent;
     transition: background 0.3s, border-color 0.3s;
