@@ -83,45 +83,54 @@ window.onload = () => {
 let currentPage = 'home'; // default
 
 function toggleDrawerMenu() {
-  const drawer = document.getElementById('drawerMenu');
-  const icon = document.getElementById('menuIcon');
+  const drawerMenu = document.getElementById('drawerMenu');
+  const menuIcon = document.getElementById('menuIcon');
 
-  const isOpen = drawer.classList.toggle('drawer-open');
+  const isOpen = drawerMenu.classList.contains('open');
 
   if (isOpen) {
-    icon.src = "/public/close-icon.png";
+    drawerMenu.classList.remove('open');
+    menuIcon.src = '/public/menu-icon.png'; // back to menu
+    removeOverlayListener();
   } else {
-    icon.src = "/public/menu-icon.png";
+    drawerMenu.classList.add('open');
+    menuIcon.src = '/public/close-icon.png'; // switch to close icon
+    addOverlayListener();
   }
 }
-
-// 🔑 Close drawer when ESC key is pressed
-document.addEventListener('keydown', function (event) {
-  const drawer = document.getElementById('drawerMenu');
-  const icon = document.getElementById('menuIcon');
-
-  if (event.key === 'Escape' && drawer.classList.contains('drawer-open')) {
-    drawer.classList.remove('drawer-open');
-    icon.classList.remove('fa-xmark');
-    icon.classList.add('fa-bars');
-  }
-});
-
 
 function closeDrawerMenu() {
-  const drawer = document.getElementById('drawerMenu');
-  drawer.classList.remove('drawer-open');
+  const drawerMenu = document.getElementById('drawerMenu');
+  const menuIcon = document.getElementById('menuIcon');
+  drawerMenu.classList.remove('open');
+  menuIcon.src = '/public/menu-icon.png';
+  removeOverlayListener();
 }
 
-// Click outside drawer to close
-window.addEventListener('click', function (e) {
+function handleOutsideClick(e) {
   const drawer = document.getElementById('drawerMenu');
   const toggle = document.querySelector('.menu-toggle');
 
   if (!drawer.contains(e.target) && !toggle.contains(e.target)) {
     closeDrawerMenu();
   }
-});
+}
+
+function handleEscKey(e) {
+  if (e.key === 'Escape') {
+    closeDrawerMenu();
+  }
+}
+
+function addOverlayListener() {
+  document.addEventListener('click', handleOutsideClick);
+  document.addEventListener('keydown', handleEscKey);
+}
+
+function removeOverlayListener() {
+  document.removeEventListener('click', handleOutsideClick);
+  document.removeEventListener('keydown', handleEscKey);
+}
 
 // Navigation handler + page loader
 function navigateToPage(page) {

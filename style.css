@@ -73,13 +73,13 @@ p {
 
 nav {
   display: flex;
-  position: relative;
+  justify-content: space-between; /* space between logo and hamburger */
   align-items: center;
-  justify-content: center;
-  text-align: center;
   padding: 1rem;
-  margin-bottom: -50px;
+  background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 nav a {
@@ -89,12 +89,14 @@ nav a {
 }
 
 .menu-bar {
-  font-size: 1.25rem; 
-  text-transform: uppercase;
+  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  z-index: 99;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .menu-bar a:hover {
@@ -351,23 +353,22 @@ footer p {
   gap: 9px; /* Adjust spacing between flags */
   margin-top: -6.0rem;
   margin-right: 5rem;
-  
+  z-index: 1100;
 }
 
 .flag-link {
   display: flex;
   width: 48px;
   height: 48px;
-  background-color: #002811; /* Light neutral background */
+  background-color: #ffffff; 
   justify-content: center;
   align-items: center;
   border-radius: 25px;
   transition: transform 0.3s, background-color 0.3s;
-  font-size: 24px; /* Adjust flag size */
+  font-size: 24px; 
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 100; 
-  
+  z-index: 1100; 
 }
 
 .flag-link:hover {
@@ -377,64 +378,62 @@ footer p {
 
 .flag-icon {
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   border-radius: 50%; /* ✅ Makes it circular */
-  overflow: hidden;
+  z-index: 1100;
 }
 
 .menu-toggle {
-  font-size: 1.5rem;
-  color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   cursor: pointer;
-  margin-left: 1rem;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 .drawer-menu {
   position: fixed;
   top: 0;
-  left: -250px;
+  left: 0;
   height: 100vh;
   width: 250px;
-  background-color: #0b3f10;
-  display: flex;
+  background: linear-gradient(to bottom right, #03026a, #049d5b);
+  display: none;
   flex-direction: column;
-  padding-top: 4rem;
-  padding-left: 1rem;
-  transition: left 0.4s ease-in-out;
-  z-index: 999;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+  padding: 5rem 2rem;
+  z-index: 1000;
+  transition: transform 0.4s ease;
 }
 
 .drawer-menu a {
-  color: white;
-  padding: 1rem;
-  font-size: 1rem;
+  color: #111;
+  padding: 1.2rem 0;
+  font-size: 1.4rem;
   text-decoration: none;
-  border-left: 4px solid transparent;
+  border-left: 5px solid transparent;
   transition: background 0.3s, border-color 0.3s;
 }
 
 .drawer-menu a:hover {
-  background-color: #165321;
-  border-left: 4px solid aqua;
+  background-color: #f8c6d5;
+  border-left: 5px solid #ff69b4;
 }
 
 .drawer-menu a.active {
   font-weight: bold;
-  background-color: #1e5e26;
-  border-left: 4px solid gold;
+  background-color: #fcd7e0;
+  border-left: 5px solid gold;
 }
 
-.drawer-open {
-  left: 0;
+.drawer-menu.open {
+  display: flex;
 }
-
 
 .contact-link {
   color: white;
+  font-size: 28px;
   margin-left: auto;
   margin-right: 15rem;
   text-decoration: none;
@@ -544,42 +543,54 @@ footer p {
   }
 
   .language-switcher {
-    top: 15px;
-    right: 20px;
-    margin-top: 0;
-    margin-right: 10px;
-    gap: 3px;
+    position: absolute; /* Ensure it moves relative to <body> */
+    top: 15px; /* Adjust vertical positioning */
+    right: 5px; /* Adjust horizontal positioning */
+    display: flex;
+    gap: 8px; /* Adjust spacing between flags */
+    margin-top: 0.5rem;
+    margin-right: 0.3rem;
+    z-index: 1100;
   }
-
+  
   .flag-link {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
+    display: flex;
+    width: 48px;
+    height: 48px;
+    background-color: #ffffff; 
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    transition: transform 0.3s, background-color 0.3s;
+    font-size: 12px; 
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgb(221, 255, 52);
+    z-index: 1100; 
   }
-
-  flag-link:hover {
+  
+  .flag-link:hover {
     transform: scale(1.5);
     background-color: #acd606;
   }
-
+  
   .flag-icon {
     display: inline-block;
-    width: 25px;
-    height: 25px;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
-    overflow: hidden;
+    z-index: 1100;
   }
 
-  footer {
-    margin-top: 2rem;
-    padding: 1rem;
-  }
-  
-  .contact-link {
-    margin-top: 1rem;
-    margin-right: 4.5rem;
-  }
-  
+.contact-link {
+  margin-top: 1rem;
+  margin-right: 4.5rem;
+}
+
+footer {
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
 }
 

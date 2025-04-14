@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ICUE-Test-Site</title>
-  <link rel="stylesheet" href="style.css" />
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Pinyon+Script&display=swap" rel="stylesheet">
 </head>
@@ -14,7 +15,7 @@
   
   <div class="language-switcher">
     <a href="https://icuevn-mainsite.netlify.app/#" class="flag-link">
-        <span class="flag-icon flag-icon-vn"></span>
+        <span class="flag-icon flag-icon-vn"></span>    
     </a>
   </div>
 
@@ -22,20 +23,22 @@
     <div class="logo-banner">
       <img class="logo-content" src="public/logo.png" alt="Logo" />
     </div>
-
+  
+    <!-- Centered Hamburger Menu -->
     <div class="menu-toggle" onclick="toggleDrawerMenu()">
       <img id="menuIcon" src="/public/menu-icon.png" alt="menu" width="24" />
     </div>
-    
-    
-    <div class="drawer-menu" id="drawerMenu">
-    <a href="#" onclick="loadPage('Home')" data-page="Home">🏚️ Home</a>
-    <a href="#" onclick="loadPage('ourWork')" data-page="ourWork">Our Work</a>
-    
-    <a href="#" onclick="loadPage('aboutUs')" data-page="aboutUs">About Us</a>
-    <a href="#" onclick="loadPage('meetOurExperts')" data-page="meetOurExperts">Meet Our Experts</a>
-    </div>
+  
+    <!-- Contact stays to the right -->
     <a href="#" onclick="loadPage('Contact')" data-page="Contact" class="contact-link">Contact</a>
+  
+    <!-- Fullscreen Drawer Menu -->
+    <div class="drawer-menu" id="drawerMenu">
+      <a href="#" onclick="loadPage('Home')" data-page="Home">🏚️ Home</a>
+      <a href="#" onclick="loadPage('ourWork')" data-page="ourWork">Our Work</a>
+      <a href="#" onclick="loadPage('aboutUs')" data-page="aboutUs">About Us</a>
+      <a href="#" onclick="loadPage('meetOurExperts')" data-page="meetOurExperts">Meet Our Experts</a>
+    </div>
   </nav>
 
   <main id="content">
