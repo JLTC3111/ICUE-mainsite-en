@@ -613,7 +613,7 @@ footer p {
 
   .menu-toggle {
     position: absolute;
-    left: 50%;
+    left: 45%;
     cursor: pointer;
     z-index: 1001;
   }
