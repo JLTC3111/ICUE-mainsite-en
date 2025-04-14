@@ -464,7 +464,7 @@ footer p {
     width: 25px;
     height: 25px;
     margin-left: 1px;
-    margin-top: 5px;
+    margin-top: 2.5px;
     z-index: 1001;
   }
   /* Shrink big headers */
@@ -613,7 +613,7 @@ footer p {
 
   .menu-toggle {
     position: absolute;
-    left: 45%;
+    left: 50%;
     cursor: pointer;
     z-index: 1001;
   }
