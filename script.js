@@ -83,17 +83,15 @@ window.onload = () => {
 let currentPage = 'home'; // default
 
 function toggleDrawerMenu() {
-  const drawer = document.getElementById('drawerMenu'); // Make sure this matches your HTML ID
+  const drawer = document.getElementById('drawerMenu');
   const icon = document.getElementById('menuIcon');
 
   const isOpen = drawer.classList.toggle('drawer-open');
 
   if (isOpen) {
-    icon.classList.remove('fa-bars');
-    icon.classList.add('fa-xmark');
+    icon.src = "/public/close-icon.png";
   } else {
-    icon.classList.remove('fa-xmark');
-    icon.classList.add('fa-bars');
+    icon.src = "/public/menu-icon.png";
   }
 }
 
