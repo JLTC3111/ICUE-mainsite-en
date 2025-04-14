@@ -461,8 +461,8 @@ footer p {
   .logo-banner {
     display: flex;
     margin: 0 auto;
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
     margin-left: 1px;
     margin-top: 5px;
     z-index: 1001;
@@ -570,8 +570,8 @@ footer p {
   
   .flag-link {
     display: flex;
-    width: 42px;
-    height: 42px;
+    width: 32px;
+    height: 32px;
     background-color: #ffffff; 
     justify-content: center;
     align-items: center;
@@ -581,11 +581,6 @@ footer p {
     cursor: pointer;
     box-shadow: 0 2px 6px rgb(221, 255, 52);
     z-index: 1100; 
-  }
-  
-  .flag-link:hover {
-    transform: scale(1.5);
-    background-color: #acd606;
   }
   
   .flag-icon {
@@ -600,12 +595,12 @@ footer p {
   .contact-link {
     margin-top: 0rem;
     margin-right: 15%;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
     padding: 0.75rem 1.5rem;
-    border-radius: 25px;
+    border-radius: 18px;
     color: rgb(0, 0, 0);
-    background-color: #73ff00;
+    background-color: #fffb00;
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
     z-index: 1001;
@@ -618,7 +613,7 @@ footer p {
 
   .menu-toggle {
     position: absolute;
-    left: 35%;
+    left: 40%;
     cursor: pointer;
     z-index: 1001;
   }
