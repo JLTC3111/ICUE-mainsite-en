@@ -58,7 +58,12 @@ function loadPage(page) {
     .then(response => response.text())
     .then(data => {
       content.innerHTML = data;
-
+      // 🔁 Highlight the current page link
+      const drawerLinks = document.querySelectorAll('.drawer-menu a');
+        drawerLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === page) {
+        link.classList.add('active');}});
       // Special behavior only for this page
       if (page === 'meetOurExperts') {
         attachProfileEvents();

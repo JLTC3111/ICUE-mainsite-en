@@ -162,9 +162,9 @@ footer p {
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
-  margin-top: -38rem;
+  margin-top: -40rem;
   margin-left: 100px;
-  margin-bottom: 5px;
+  margin-bottom: 25px;
 }
 
 .profile-photo {
@@ -431,6 +431,7 @@ footer p {
 .drawer-open {
   left: 0;
 }
+
 
 .contact-link {
   color: white;
