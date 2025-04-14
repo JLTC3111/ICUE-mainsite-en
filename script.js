@@ -17,7 +17,7 @@ function attachProfileEvents() {
       img: "public/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Outside of work, thrives on exploration and adventure—regularly engaging in travel and high-adrenaline activities such as bungee jumping and skydiving.🔧💬`,
+      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬`,
       img: "public/longdo.jpg"
     }
   ];
@@ -83,9 +83,32 @@ window.onload = () => {
 let currentPage = 'home'; // default
 
 function toggleDrawerMenu() {
-  const drawer = document.getElementById('drawerMenu');
-  drawer.classList.toggle('drawer-open');
+  const drawer = document.getElementById('drawerMenu'); // Make sure this matches your HTML ID
+  const icon = document.getElementById('menuIcon');
+
+  const isOpen = drawer.classList.toggle('drawer-open');
+
+  if (isOpen) {
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-xmark');
+  } else {
+    icon.classList.remove('fa-xmark');
+    icon.classList.add('fa-bars');
+  }
 }
+
+// 🔑 Close drawer when ESC key is pressed
+document.addEventListener('keydown', function (event) {
+  const drawer = document.getElementById('drawerMenu');
+  const icon = document.getElementById('menuIcon');
+
+  if (event.key === 'Escape' && drawer.classList.contains('drawer-open')) {
+    drawer.classList.remove('drawer-open');
+    icon.classList.remove('fa-xmark');
+    icon.classList.add('fa-bars');
+  }
+});
+
 
 function closeDrawerMenu() {
   const drawer = document.getElementById('drawerMenu');
