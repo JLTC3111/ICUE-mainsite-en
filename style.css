@@ -52,9 +52,9 @@ p {
   font-family: cursive;
   font-size: 24px;
   font-weight: 400;
-  color: rgb(255, 255, 255);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  letter-spacing: 5px;
+  color: rgb(0, 0, 0);
+  letter-spacing: 7.5px;
+  line-height: 2;
   margin-top: 5rem;
   margin-left: 5rem;
   margin-right: 15rem;
@@ -488,6 +488,9 @@ footer p {
   p {
     font-size: clamp(1rem, 4vw, 1.4rem);
     margin: 2rem 1rem;
+    margin-right: 2rem;
+    justify-content: center;
+    line-height: 2;
     letter-spacing: normal;
   }
 
