@@ -399,6 +399,20 @@ footer p {
   z-index: 1001;
 }
 
+#menuIcon {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#menuIcon.fade-out {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+#menuIcon.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .drawer-menu {
   position: fixed;
   top: 0;
@@ -484,7 +498,7 @@ footer p {
 
 /* Optional: animate out vertically when closing */
 .submenu.closing {
-  transform: translateX(0) translateY(-5px);
+  transform: translateX(0) translateY(50px);
   opacity: 0;
   pointer-events: none;
 }
@@ -494,21 +508,20 @@ footer p {
 }
 
 .drawer-menu .submenu a {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #000000;
-  padding: 0.4rem 0;
-  padding-left: 2.5rem;
+  padding-top: 1.5rem;
+  padding-left: 0.75rem;
   position: relative;
   transition: all 1.5s ease;
 }
 
 .drawer-menu .submenu a::before {
   content: "↳";
-  color: #000000; 
-  font-size: 1.5rem;
-  position: absolute;
-  left: 0.75rem;
-  top: 0.1rem;
+  color: #170000; 
+  font-size: 1.3rem;
+  position: inline-block;
+  vertical-align: middle;
 }
 
 .drawer-menu .submenu a:hover {
@@ -720,9 +733,21 @@ footer p {
     border-left: 2.5px solid rgb(0, 0, 0);
   }
 
+  .drawer-menu .submenu a {
+    font-size: 1.1rem;
+    color: #000000;
+    padding-top: 0.5rem;
+    left: 0rem;
+    text-decoration: underline;
+    position: relative;
+    transition: all 1.5s ease;
+  }
+  
+  .drawer-menu .submenu a::before {
+    content: none;
+  }
+
   footer {
     margin-top: 2rem;
     padding: 1rem;
-  }
-
-}
+  }}

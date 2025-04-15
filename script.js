@@ -18,7 +18,8 @@ function attachProfileEvents() {
       img: "public/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬`,
+      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, (smart) contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬
+      https://dobaolongicueltd.netlify.app/`,
       img: "public/longdo.jpg"
     }
   ];
@@ -86,16 +87,25 @@ let currentPage = 'home'; // default
 function toggleDrawerMenu() {
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon');
-
   const isOpen = drawerMenu.classList.contains('open');
 
+  // Start fade out
+  menuIcon.classList.remove('fade-in');
+  menuIcon.classList.add('fade-out');
+
+  // Wait for fade-out to finish, then swap the icon and fade in
+  setTimeout(() => {
+    menuIcon.src = isOpen ? '/public/menu-icon.png' : '/public/close-icon.png';
+    menuIcon.classList.remove('fade-out');
+    menuIcon.classList.add('fade-in');
+  }, 200); // Timing should match CSS transition duration
+
+  // Toggle menu state
   if (isOpen) {
     drawerMenu.classList.remove('open');
-    menuIcon.src = '/public/menu-icon.png'; // back to menu
     removeOverlayListener();
   } else {
     drawerMenu.classList.add('open');
-    menuIcon.src = '/public/close-icon.png'; // switch to close icon
     addOverlayListener();
   }
 }
@@ -103,9 +113,19 @@ function toggleDrawerMenu() {
 function closeDrawerMenu() {
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon');
+
   drawerMenu.classList.remove('open');
-  menuIcon.src = '/public/menu-icon.png';
   removeOverlayListener();
+
+  // Animate icon switch
+  menuIcon.classList.remove('fade-in');
+  menuIcon.classList.add('fade-out');
+
+  setTimeout(() => {
+    menuIcon.src = '/public/menu-icon.png';
+    menuIcon.classList.remove('fade-out');
+    menuIcon.classList.add('fade-in');
+  }, 200);
 }
 
 function handleOutsideClick(e) {
