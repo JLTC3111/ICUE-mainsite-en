@@ -152,7 +152,7 @@ footer p {
   height: auto;
   margin-left: 25px;
   margin-top: 5px;
-  z-index: 1001;
+  z-index: 9999;
 }
 
 .logo-content {
@@ -613,7 +613,7 @@ footer p {
 
   .menu-toggle {
     position: absolute;
-    left: 50%;
+    left: 45%;
     cursor: pointer;
     z-index: 1001;
   }
