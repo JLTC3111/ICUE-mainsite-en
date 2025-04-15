@@ -37,7 +37,11 @@
       <a href="#" onclick="loadPage('Home'); closeDrawerMenu();" data-page="Home">🏚️ Home</a>
       <a href="#" onclick="loadPage('ourWork'); closeDrawerMenu();" data-page="ourWork">⇲ Our Work</a>
       <a href="#" onclick="loadPage('aboutUs'); closeDrawerMenu();" data-page="aboutUs">〶 About Us</a>
-      <a href="#" onclick="loadPage('meetOurExperts'); closeDrawerMenu();" data-page="meetOurExperts">📉 Meet Our Experts</a>
+      <a href="#" class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourTeam">📉 Our Team</a>
+      <div class="submenu">
+        <a href="#" onclick="loadPage('meetOurExperts'); closeDrawerMenu();";  data-page="meetOurExperts">Meet Our Experts</a>
+        <a href="#" onclick="loadPage('coreTeam'); closeDrawerMenu();" data-page="coreTeam">Core Team</a>
+      </div>
     </div>
   </nav>
 

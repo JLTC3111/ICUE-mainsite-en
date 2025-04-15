@@ -152,6 +152,34 @@ function highlightActiveLink(page) {
   });
 }
 
+function toggleSubmenu(e) {
+  e.preventDefault(); // prevent page from jumping
+  const submenu = document.getElementById('ourTeamSubmenu');
+  submenu.classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const submenuTrigger = document.querySelector('.has-submenu');
+  const submenu = document.querySelector('.submenu');
+
+  submenuTrigger.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    if (submenu.classList.contains('open')) {
+      // Trigger slide-up animation
+      submenu.classList.remove('open');
+      submenu.classList.add('closing');
+
+      // Wait for animation to finish, then clean up
+      setTimeout(() => {
+        submenu.classList.remove('closing');
+      }, 400); // match the CSS transition duration
+    } else {
+      submenu.classList.add('open');
+    }
+  });
+});
+
 // Auto-highlight on initial load
 window.onload = () => {
   loadPage('home');

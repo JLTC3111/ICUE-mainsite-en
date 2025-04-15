@@ -452,7 +452,70 @@ footer p {
   color:white;
 }
 
- 
+.has-submenu {
+  cursor: pointer;
+  padding: 1rem 0;
+  color: #fff;
+  display: block;
+}
+
+.has-submenu::after {
+  
+  margin-left: 0.5rem;
+  transition: transform 1.5s ease;
+}
+
+.submenu {
+  transform: translateX(-100%) translateY(0);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.5rem;
+  pointer-events: none; /* prevent clicking when hidden */
+}
+
+.submenu.open {
+  transform: translateX(0) translateY(0); /* Slide in */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Optional: animate out vertically when closing */
+.submenu.closing {
+  transform: translateX(0) translateY(-5px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.submenu.open ~ .has-submenu::after {
+  transform: rotate(180deg);
+}
+
+.drawer-menu .submenu a {
+  font-size: 1.1rem;
+  color: #000000;
+  padding: 0.4rem 0;
+  padding-left: 2.5rem;
+  position: relative;
+  transition: all 1.5s ease;
+}
+
+.drawer-menu .submenu a::before {
+  content: "↳";
+  color: #000000; 
+  font-size: 1.5rem;
+  position: absolute;
+  left: 0.75rem;
+  top: 0.1rem;
+}
+
+.drawer-menu .submenu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #000000;
+}
+
 @media (max-width: 768px) {
   /* Adjust main layout padding */
   main {
@@ -563,12 +626,12 @@ footer p {
   }
 
   .language-switcher {
-    position: absolute; /* Ensure it moves relative to <body> */
+    position: fixed; /* Ensure it moves relative to <body> */
     top: 12.5px; /* Adjust vertical positioning */
     right: 5px; /* Adjust horizontal positioning */
     display: flex;
     margin-top: 0.5rem;
-    margin-right: 5%;
+    margin-right: 10%;
     z-index: 1100;
   }
   
