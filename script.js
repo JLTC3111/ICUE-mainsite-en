@@ -60,27 +60,41 @@ function loadPage(page) {
     .then(data => {
       content.innerHTML = data;
 
-      // Highlight current page
-      const drawerLinks = document.querySelectorAll('.drawer-menu a');
-      drawerLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.dataset.page === page) {
-          link.classList.add('active');
-        }
+      // Highlight nav
+      document.querySelectorAll('.drawer-menu a').forEach(link => {
+        link.classList.toggle('active', link.dataset.page === page);
       });
 
-      // Initialize page-specific logic
-      if (page === 'meetOurExperts') {
-        attachProfileEvents();
-      } else if (page === 'home') {
-        initHomeTextSlider();
-      }
-    })
-    .catch(error => {
-      console.error('Error loading page:', error);
-      content.innerHTML = '<h1>Page not found</h1>';
+      // Wait until DOM has parsed injected content
+      requestAnimationFrame(() => {
+        if (page === 'meetOurExperts') {
+          attachProfileEvents();
+        } else if (page === 'home') {
+          initHomeTextSlider(); // Initialize the text slider
+
+          // Log the dots to ensure they are accessible
+          const dots = document.querySelectorAll("#sliderDots .dot");
+          console.log(dots);  // Log the dots to the console
+
+          if (dots.length > 0) {
+            // Attach dot event listeners
+            dots.forEach(dot => {
+              dot.addEventListener("click", () => {
+                const dotIndex = parseInt(dot.dataset.index);
+                updateText(dotIndex); // Update the text based on clicked dot
+                restartInterval(); // Restart interval to reset the text slider timing
+              });
+            });
+          } else {
+            console.log("No dots found");
+          }
+        }
+      });
     });
 }
+
+
+
 
 function initHomeTextSlider() {
   const messages = [
@@ -97,48 +111,66 @@ function initHomeTextSlider() {
     "Creating timeless experiences."
   ];
 
-  const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
+  const textElement = document.querySelector("#homeSliderText .highlight-text");
   const dots = document.querySelectorAll("#sliderDots .dot");
+
+  // ✅ Prevent running if DOM isn't ready yet
+  if (!textElement || dots.length === 0) {
+    console.warn("Slider elements not found. Skipping slider init.");
+    return;
+  }
+
   let index = 0;
   let intervalId;
 
   function updateText(newIndex) {
     index = newIndex;
+    const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
+    
+    // Log to see if the element is selected properly
+    console.log("Text Element:", textElement);
+    
+    if (!textElement) {
+      console.error("highlight-text element not found!");
+      return;  // Exit the function if the element is not found
+    }
+  
     textElement.classList.remove("fade-In");
-    void textElement.offsetWidth; // reflow
+    void textElement.offsetWidth; // Reflow
     textElement.textContent = messages[index];
     textElement.classList.add("fade-In");
-
-    // Highlight the current dot
+  
+    // Update the dots
     dots.forEach(dot => dot.classList.remove("active"));
-    dots[index].classList.add("active");
+    dots[index]?.classList.add("active");
   }
+  
 
   function nextText() {
     index = (index + 1) % messages.length;
     updateText(index);
   }
 
-  // Setup dot click events
+  function restartInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(nextText, 6000);
+  }
+
+  updateText(index);
+  intervalId = setInterval(nextText, 4000);
+
   dots.forEach(dot => {
-    dot.addEventListener("click", () => {
-      const dotIndex = parseInt(dot.dataset.index);
+    const newDot = dot.cloneNode(true); // clone the dot element
+    dot.parentNode.replaceChild(newDot, dot); // replace it to remove old listeners
+  
+    newDot.addEventListener("click", () => {
+      const dotIndex = parseInt(newDot.dataset.index);
       updateText(dotIndex);
       restartInterval();
     });
   });
 
-  function restartInterval() {
-    clearInterval(intervalId);
-    intervalId = setInterval(nextText, 4000);
-  }
-
-  // Start everything
-  updateText(index);
-  intervalId = setInterval(nextText, 4000);
-  document.addEventListener("DOMContentLoaded", () => {
-    initHomeTextSlider();
-  });
+  console.log("✅ Slider initialized");
 }
 
 // 👇 Auto-load home by default

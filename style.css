@@ -552,7 +552,9 @@ footer p {
 }
 
 .highlight-text {
-  transition: opacity 1s ease;
+  visibility: visible; /* Ensure it’s visible */
+  opacity: 1;          /* Ensure it's not transparent */
+  transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
 }
 
 .slider-dots {
