@@ -53,37 +53,10 @@ function attachProfileEvents() {
   updateProfile(0);
 }
 
-function loadPage(page) {
-  const content = document.getElementById('content');
-  fetch(`${page}.html`)
-    .then(response => response.text())
-    .then(data => {
-      content.innerHTML = data;
-
-      // Highlight current page
-      const drawerLinks = document.querySelectorAll('.drawer-menu a');
-      drawerLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.dataset.page === page) {
-          link.classList.add('active');
-        }
-      });
-
-      // Initialize page-specific logic
-      if (page === 'meetOurExperts') {
-        attachProfileEvents();
-      } else if (page === 'home') {
-        initHomeTextSlider();
-      }
-    })
-    .catch(error => {
-      console.error('Error loading page:', error);
-      content.innerHTML = '<h1>Page not found</h1>';
-    });
-}
-
 function initHomeTextSlider() {
   const messages = [
+    "🌆 20 Years of Urban Excellence  With two decades of experience, our team of 10 dedicated professionals is passionate about urban planning, construction, and climate change. We design cities that thrive in a fast-evolving world — balancing function, resilience, and community needs.",
+             
     "🤝 Built on Unity, Driven by Value We believe in giving back, practicing unity, working hard, and constantly striving for self-improvement. These core values shape our approach and inspire our partnerships with local experts, government agencies, and legal specialists.",
 
     "💡 Smart Cities, Smarter Solutions.From smart city integration to climate adaptation strategies, we use technology and data-driven insights to enhance urban efficiency, connectivity, and sustainability — building cities that are ready for tomorrow.",
@@ -91,8 +64,6 @@ function initHomeTextSlider() {
     "🏆 Our Greatest Achievement. We led the Đà Nẵng city-wide planning initiative for both Type 1 and Type 2 cities — a transformative project that continues to impact daily life for thousands. It reflects our dedication to big-picture strategy and real-world results.",
 
     "🌱 Shaping Cities, Improving Lives. Every solution we deliver is rooted in one mission: creating better urban futures. From the ground up, we help shape spaces that are inclusive, sustainable, and human-centered.",
-
-    "Creating timeless experiences."
   ];
 
   const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
@@ -126,9 +97,10 @@ function initHomeTextSlider() {
     });
   });
 
+
   function restartInterval() {
     clearInterval(intervalId);
-    intervalId = setInterval(nextText, 4000);
+    intervalId = setInterval(nextText, 8000);
   }
 
   // Start everything
@@ -137,7 +109,40 @@ function initHomeTextSlider() {
   document.addEventListener("DOMContentLoaded", () => {
     initHomeTextSlider();
   });
+  
 }
+
+// ✅ Only one definition of loadPage
+function loadPage(page) {
+  const content = document.getElementById('content');
+  fetch(`${page}.html`)
+    .then(response => response.text())
+    .then(data => {
+      content.innerHTML = data;
+      // 🔁 Highlight the current page link
+      const drawerLinks = document.querySelectorAll('.drawer-menu a');
+        drawerLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === page) {
+        link.classList.add('active');}});
+      // Special behavior only for this page
+      if (page === 'meetOurExperts') {
+        attachProfileEvents();
+      }
+      else if (page === 'Home' ) {
+        initHomeTextSlider ();
+      }
+    })
+    .catch(error => {
+      console.error('Error loading page:', error);
+      content.innerHTML = '<h1>Page not found</h1>';
+    });
+}
+
+// 👇 Auto-load home by default
+window.onload = () => {
+  loadPage('home');
+};
 
 let currentPage = 'home'; // default
 
@@ -257,7 +262,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// 👇 Auto-load home by default
+// Auto-highlight on initial load
 window.onload = () => {
   loadPage('home');
+  highlightActiveLink('home');
 };

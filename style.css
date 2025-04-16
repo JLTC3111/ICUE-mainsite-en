@@ -24,7 +24,8 @@ h2 {
 }
 
 h2:hover {
-  animation:wiggle 0.5s ease-in;
+  animation:wiggle 0.5s ease-in-out;
+  transform: scale(1.4);
   color: aqua;
 }
 
@@ -38,7 +39,7 @@ h2:hover {
   font-family: cursive;
   font-weight: 600;
   font-style: normal;
-  font-size: 62px;
+  font-size: 72px;
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
@@ -66,11 +67,8 @@ p {
   font-optical-sizing: auto;
   font-weight: 100; /* Make sure this weight is imported */
   text-shadow: none;
-  justify-content: center;
-  align-items: center;
   line-height: 1.5;
   word-spacing: 2px;
-  z-index: 1;
 }
 
 nav {
@@ -112,7 +110,7 @@ nav a {
   25%  { transform: rotate(5deg); }
   50%  { transform: rotate(-5deg); }
   75%  { transform: rotate(3deg); }
-  100% { transform: rotate(-0deg); }
+  100% { transform: rotate(5deg); }
 }
 
 .video-background {
@@ -121,7 +119,6 @@ nav a {
   position: relative;
   overflow: hidden;
   margin-bottom: -45px;
-  z-index: -1;
 }
 
 .video-bg {
@@ -551,7 +548,7 @@ footer p {
   font-weight: 300;
   color: #000000;
   max-width: 80%;
-  z-index: 1100;
+  z-index: 10;
 }
 
 .highlight-text {
@@ -578,10 +575,15 @@ footer p {
   z-index: 1100;
 }
 
+.dot:hover {
+  background-color: green;
+}
+
 .dot.active {
   background-color: #ffcc00; /* Highlight active dot */
   z-index: 1100;
 }
+
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
