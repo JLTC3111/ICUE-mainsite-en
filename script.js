@@ -157,7 +157,12 @@ function initHomeTextSlider() {
   }
 
   updateText(index);
-  intervalId = setInterval(nextText, 4000);
+  if (window.homeSliderIntervalId) {
+    clearInterval(window.homeSliderIntervalId);
+  }
+  
+  // Start a fresh interval and store it globally
+  window.homeSliderIntervalId = setInterval(nextText, 4000);
 
   dots.forEach(dot => {
     const newDot = dot.cloneNode(true); // clone the dot element
