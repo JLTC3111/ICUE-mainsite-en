@@ -53,22 +53,27 @@ function attachProfileEvents() {
   updateProfile(0);
 }
 
-// ✅ Only one definition of loadPage
 function loadPage(page) {
   const content = document.getElementById('content');
   fetch(`${page}.html`)
     .then(response => response.text())
     .then(data => {
       content.innerHTML = data;
-      // 🔁 Highlight the current page link
+
+      // Highlight current page
       const drawerLinks = document.querySelectorAll('.drawer-menu a');
-        drawerLinks.forEach(link => {
+      drawerLinks.forEach(link => {
         link.classList.remove('active');
         if (link.dataset.page === page) {
-        link.classList.add('active');}});
-      // Special behavior only for this page
+          link.classList.add('active');
+        }
+      });
+
+      // Initialize page-specific logic
       if (page === 'meetOurExperts') {
         attachProfileEvents();
+      } else if (page === 'home') {
+        initHomeTextSlider();
       }
     })
     .catch(error => {
@@ -77,10 +82,38 @@ function loadPage(page) {
     });
 }
 
-// 👇 Auto-load home by default
-window.onload = () => {
-  loadPage('home');
-};
+function initHomeTextSlider() {
+  const messages = [
+    "🤝 Built on Unity, Driven by Value We believe in giving back, practicing unity, working hard, and constantly striving for self-improvement. These core values shape our approach and inspire our partnerships with local experts, government agencies, and legal specialists.",
+
+    "💡 Smart Cities, Smarter Solutions.From smart city integration to climate adaptation strategies, we use technology and data-driven insights to enhance urban efficiency, connectivity, and sustainability — building cities that are ready for tomorrow.",
+
+    " 🏙️ Our Greatest Achievement. We led the Đà Nẵng city-wide planning initiative for both Type 1 and Type 2 cities — a transformative project that continues to impact daily life for thousands. It reflects our dedication to big-picture strategy and real-world results.",
+
+    "🌱 Shaping Cities, Improving Lives. Every solution we deliver is rooted in one mission: creating better urban futures. From the ground up, we help shape spaces that are inclusive, sustainable, and human-centered.",
+
+    "Creating timeless experiences."
+  ];
+
+  const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
+  let index = 0;
+
+  function updateText() {
+    textElement.classList.remove("fade-In");
+    void textElement.offsetWidth; // force reflow
+    textElement.textContent = messages[index];
+    textElement.classList.add("fade-In");
+
+    index = (index + 1) % messages.length;
+  }
+
+  updateText(); // initial
+  setInterval(updateText, 4000); // rotate every 4s
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initHomeTextSlider();
+});
 
 let currentPage = 'home'; // default
 
@@ -200,8 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Auto-highlight on initial load
+// 👇 Auto-load home by default
 window.onload = () => {
   loadPage('home');
-  highlightActiveLink('home');
 };

@@ -24,8 +24,7 @@ h2 {
 }
 
 h2:hover {
-  animation:wiggle 0.5s ease-in-out;
-  transform: scale(1.4) rotate(180deg);
+  animation:wiggle 0.5s ease-in;
   color: aqua;
 }
 
@@ -39,7 +38,7 @@ h2:hover {
   font-family: cursive;
   font-weight: 600;
   font-style: normal;
-  font-size: 72px;
+  font-size: 62px;
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
@@ -110,7 +109,7 @@ nav a {
   25%  { transform: rotate(5deg); }
   50%  { transform: rotate(-5deg); }
   75%  { transform: rotate(3deg); }
-  100% { transform: rotate(0deg); }
+  100% { transform: rotate(-0deg); }
 }
 
 .video-background {
@@ -119,6 +118,7 @@ nav a {
   position: relative;
   overflow: hidden;
   margin-bottom: -45px;
+  z-index: -1;
 }
 
 .video-bg {
@@ -528,6 +528,32 @@ footer p {
   background-color: rgba(255, 255, 255, 0.1);
   color: #000000;
 }
+
+.home-text-slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  z-index: 10;
+}
+
+.slider-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #000000;
+  max-width: 80%;
+  z-index: 10;
+}
+
+.highlight-text {
+  transition: opacity 1s ease;
+}
+
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
