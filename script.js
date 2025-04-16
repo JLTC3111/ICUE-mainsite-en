@@ -88,7 +88,7 @@ function initHomeTextSlider() {
 
     "💡 Smart Cities, Smarter Solutions.From smart city integration to climate adaptation strategies, we use technology and data-driven insights to enhance urban efficiency, connectivity, and sustainability — building cities that are ready for tomorrow.",
 
-    " 🏙️ Our Greatest Achievement. We led the Đà Nẵng city-wide planning initiative for both Type 1 and Type 2 cities — a transformative project that continues to impact daily life for thousands. It reflects our dedication to big-picture strategy and real-world results.",
+    "🏆 Our Greatest Achievement. We led the Đà Nẵng city-wide planning initiative for both Type 1 and Type 2 cities — a transformative project that continues to impact daily life for thousands. It reflects our dedication to big-picture strategy and real-world results.",
 
     "🌱 Shaping Cities, Improving Lives. Every solution we deliver is rooted in one mission: creating better urban futures. From the ground up, we help shape spaces that are inclusive, sustainable, and human-centered.",
 
@@ -96,24 +96,48 @@ function initHomeTextSlider() {
   ];
 
   const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
+  const dots = document.querySelectorAll("#sliderDots .dot");
   let index = 0;
+  let intervalId;
 
-  function updateText() {
+  function updateText(newIndex) {
+    index = newIndex;
     textElement.classList.remove("fade-In");
-    void textElement.offsetWidth; // force reflow
+    void textElement.offsetWidth; // reflow
     textElement.textContent = messages[index];
     textElement.classList.add("fade-In");
 
-    index = (index + 1) % messages.length;
+    // Highlight the current dot
+    dots.forEach(dot => dot.classList.remove("active"));
+    dots[index].classList.add("active");
   }
 
-  updateText(); // initial
-  setInterval(updateText, 4000); // rotate every 4s
-}
+  function nextText() {
+    index = (index + 1) % messages.length;
+    updateText(index);
+  }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initHomeTextSlider();
-});
+  // Setup dot click events
+  dots.forEach(dot => {
+    dot.addEventListener("click", () => {
+      const dotIndex = parseInt(dot.dataset.index);
+      updateText(dotIndex);
+      restartInterval();
+    });
+  });
+
+  function restartInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(nextText, 4000);
+  }
+
+  // Start everything
+  updateText(index);
+  intervalId = setInterval(nextText, 4000);
+  document.addEventListener("DOMContentLoaded", () => {
+    initHomeTextSlider();
+  });
+}
 
 let currentPage = 'home'; // default
 
