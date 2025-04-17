@@ -847,5 +847,5 @@ footer p {
   }
 
   footer {
-    content: none;
+    display: none;
   }}
