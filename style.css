@@ -9,10 +9,17 @@ main {
 }
 
 h1 {
-  font-style:cursive;
   align-items: center;
-  justify-content: center;
-  text-align:center;
+  animation: slideInFromLeft 1s ease-in-out forwards; 
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 h2 {
@@ -30,16 +37,18 @@ h2:hover {
 }
 
 .sub-text {
+  font-family: 'Rubik';
+  font-style: normal;
   color: whitesmoke;
-  font-size: 4rem;
-  font-weight: 700;
+  font-size: 80px;
+  font-weight: 300;
 }
 
 .cursive-default {
   font-family: cursive;
-  font-weight: 600;
-  font-style: normal;
-  font-size: 72px;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 80px;
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
@@ -543,15 +552,17 @@ footer p {
 }
 
 .slider-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 300;
   color: #000000;
   max-width: 80%;
   z-index: 10;
+  margin-top: -100px;
 }
 
 .highlight-text {
+  font-family: 'Rubik', cursive ;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
   visibility: visible; /* Ensure it’s visible */
   opacity: 1;          /* Ensure it's not transparent */
   transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
@@ -561,9 +572,9 @@ footer p {
   display: flex;
   position: relative;
   justify-content: center;
-  margin-bottom: -2rem;
-  margin-left: -5rem;
-  gap: 12px;
+  margin-top: -7.5rem;
+  margin-left: -1.5rem;
+  gap: 14px;
   z-index: 1100;
 }
 

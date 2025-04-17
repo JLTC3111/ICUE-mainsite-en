@@ -98,7 +98,7 @@ function loadPage(page) {
 
 function initHomeTextSlider() {
   const messages = [
-    "🌆 20 Years of Urban Excellence  With two decades of experience, our team of 10 dedicated professionals is passionate about urban planning, construction, and climate change. We design cities that thrive in a fast-evolving world — balancing function, resilience, and community needs.",
+    "⏳ 20 Years of Urban Excellence  With two decades of experience, our team of 10 dedicated professionals is passionate about urban planning, construction, and climate change. We design cities that thrive in a fast-evolving world — balancing function, resilience, and community needs.",
     
     "🤝 Built on Unity, Driven by Value We believe in giving back, practicing unity, working hard, and constantly striving for self-improvement. These core values shape our approach and inspire our partnerships with local experts, government agencies, and legal specialists.",
 
@@ -108,7 +108,7 @@ function initHomeTextSlider() {
 
     "🌱 Shaping Cities, Improving Lives. Every solution we deliver is rooted in one mission: creating better urban futures. From the ground up, we help shape spaces that are inclusive, sustainable, and human-centered.",
 
-    "Creating timeless experiences."
+    "💥 Creating timeless experiences."
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
