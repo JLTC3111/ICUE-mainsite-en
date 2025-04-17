@@ -726,17 +726,14 @@ footer p {
     margin: 0 auto 1rem auto;
   }
 
-  .arrow-button {
-    width: 50px;
-    height: 50px;
-    color: darkgoldenrod;
-    background-color: white;
-    top: 45%; /* ✅ Vertically center */
-    transform: translateY(-50%); /* ✅ Smooth centering */
-    position: fixed; /* ✅ Keeps them in view */
-    z-index: 100; /* ✅ Ensures they sit above other content */
-  }
   
+  .arrow-icon {
+    width: 28px;
+    height: 28px;
+    color: #ffcc00;
+    top: 50%;
+  }
+
   .left-arrow {
     left: 1.5rem;
   }
