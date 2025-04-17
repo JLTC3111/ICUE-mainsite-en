@@ -34,5 +34,19 @@
   </svg>
 </div>
 
+<script>
+  const video = document.getElementById('bgVideo');
+  const source = video.querySelector('source');
+  
+  // Mobile threshold: 767px or below
+  const isMobile = window.innerWidth <= 767;
+  
+  // Set the appropriate video source
+  source.src = isMobile ? 'public/bg2-mobile.mp4' : 'public/bg2.mp4';
+
+  // Load and play
+  video.load();
+</script>
+
 
 
