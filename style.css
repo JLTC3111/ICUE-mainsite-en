@@ -122,11 +122,12 @@ nav a {
 }
 
 .video-background {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   position: relative;
   overflow: hidden;
-  margin-bottom: -45px;
+  margin-top: -50px;
+  margin-left: -15px;
 }
 
 .video-bg {
