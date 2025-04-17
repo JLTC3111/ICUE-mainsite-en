@@ -25,14 +25,13 @@ h1 {
 h2 {
   color: rgb(252, 252, 252);
   margin-left: 1.5rem;
-  margin-top: 5rem;
+  margin-top: 3rem;
   font-size: 28px;
   text-decoration: underline;
 }
 
 h2:hover {
-  animation:wiggle 0.5s ease-in-out;
-  transform: scale(1.4);
+  animation:wiggle 0.5s ease-in;
   color: aqua;
 }
 
@@ -54,7 +53,7 @@ h2:hover {
   letter-spacing:5px;
   margin-left: 0.5rem;
   margin-right: 25rem;
-  margin-top: 5rem;
+  margin-top: -1rem;
 }
 
 p {
@@ -555,7 +554,7 @@ footer p {
   color: #000000;
   max-width: 80%;
   z-index: 10;
-  margin-top: -100px;
+  margin-top: -50px;
 }
 
 .highlight-text {
@@ -572,7 +571,7 @@ footer p {
   display: flex;
   position: relative;
   justify-content: center;
-  margin-top: -7.5rem;
+  margin-top: -3rem;
   margin-left: -1.5rem;
   gap: 14px;
   z-index: 1100;
@@ -610,7 +609,7 @@ footer p {
     width: 25px;
     height: 25px;
     margin-left: 1px;
-    margin-top: 2.5px;
+    margin-top: -1rem;
     z-index: 1001;
   }
   /* Shrink big headers */
@@ -619,13 +618,18 @@ footer p {
   }
 
   h2 {
+    color: black;
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     margin-left: 1rem;
     margin-top: 2rem;
   }
 
-  .sub-text,
-  .cursive-default {
+  h2:hover {
+    animation:wiggle 1.5s ease-in-out;
+    color: aqua;
+  }
+
+  .sub-text, .cursive-default {
     font-size: clamp(2rem, 6vw, 3rem);
     margin: 1rem;
   }
@@ -637,6 +641,43 @@ footer p {
     justify-content: center;
     line-height: 2;
     letter-spacing: normal;
+  }
+
+  .home-text-slider {
+    text-align: center;
+    margin-top: 10rem;
+    margin-bottom: ;
+    z-index: 10;
+  }
+
+  .highlight-text {
+    font-family: 'Rubik', cursive ;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    visibility: visible; /* Ensure it’s visible */
+    opacity: 1;          /* Ensure it's not transparent */
+    transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+  }
+
+  .slider-dots {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-top: -1.5rem;
+    margin-left: -1.5rem;
+    gap: 14px;
+    z-index: 1100;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1100;
   }
 
   nav {
@@ -817,6 +858,6 @@ footer p {
   }
 
   footer {
-    margin-top: 2rem;
+    margin-top: 13.5rem;
     padding: 1rem;
   }}
