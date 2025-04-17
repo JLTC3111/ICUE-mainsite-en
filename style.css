@@ -618,15 +618,10 @@ footer p {
   }
 
   h2 {
-    color: black;
+    color: rgb(105, 29, 29);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     margin-left: 1rem;
-    margin-top: 2rem;
-  }
-
-  h2:hover {
-    animation:wiggle 1.5s ease-in-out;
-    color: aqua;
+    margin-top: 5rem;
   }
 
   .sub-text, .cursive-default {
@@ -645,8 +640,8 @@ footer p {
 
   .home-text-slider {
     text-align: center;
-    margin-top: 10rem;
-    margin-bottom: ;
+    margin-top: 4rem;
+    margin-bottom:0;
     z-index: 10;
   }
 
@@ -664,7 +659,7 @@ footer p {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: -1.5rem;
+    margin-top: 0rem;
     margin-left: -1.5rem;
     gap: 14px;
     z-index: 1100;
@@ -858,6 +853,6 @@ footer p {
   }
 
   footer {
-    margin-top: 13.5rem;
+    margin-top: 9.5rem;
     padding: 1rem;
   }}
