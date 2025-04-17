@@ -1,9 +1,11 @@
 
-
 <video class="video-bg" autoplay muted loop playsinline>
-  <source src="public/bg2.mp4" type="video/mp4" media="(min-width: 768px)">
-  <source src="public/bg2-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+  <source src="public/bg2.mp4"type="video/mp4" media="(min-width: 768px)">
+  <source src="public/bg2-mobile.mp4"type="video/mp4" media="(max-width: 768px)">
 </video>
+<div class="video-background" id="video-bg-container">
+  <!-- JS will insert the video here -->
+</div>
 
 <div class="image-container">
   <div class="shutter-top"></div>
@@ -31,8 +33,6 @@
     <path d="M9 6l6 6-6 6"/>
   </svg>
 </div>
-
-
 
 <script>
   const video = document.getElementById('bgVideo');

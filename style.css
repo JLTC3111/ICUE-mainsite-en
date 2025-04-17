@@ -656,6 +656,7 @@ footer p {
     margin-top: 1.5rem;
     margin-left: -1.5rem;
     gap: 14px;
+    z-index: 99;
   }
 
   .dot {
@@ -665,6 +666,7 @@ footer p {
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    z-index: 99;
   }
 
   nav {
