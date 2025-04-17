@@ -320,7 +320,7 @@ footer p {
 .arrow-button {
   width: 75px;
   height: 75px;
-  background-color: white;
+  background-color: whitesmoke;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -334,6 +334,11 @@ footer p {
   top: 45%;
   transform: translateY(-50%);
   z-index: 100;
+}
+
+.arrow-icon {
+  width: 90px;
+  height: 90px;
 }
 
 .left-arrow {
@@ -726,20 +731,22 @@ footer p {
     margin: 0 auto 1rem auto;
   }
 
-  
+  .arrow-button {
+    top: 30%;
+  }  
+
   .arrow-icon {
-    width: 28px;
-    height: 28px;
+    width: 48px;
+    height: 48px;
     color: #ffcc00;
-    top: 50%;
   }
 
   .left-arrow {
-    left: 1.5rem;
+    left: 5px;
   }
   
   .right-arrow {
-    right: 1.5rem;
+    right: 12.5px;
   }
 
   .language-switcher {
