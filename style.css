@@ -623,7 +623,7 @@ footer p {
 
   .sub-text, .cursive-default {
     font-size: clamp(2rem, 6vw, 3rem);
-    margin: 1rem;
+    margin: 2.5rem;
   }
 
   p {
@@ -656,7 +656,7 @@ footer p {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: 0rem;
+    margin-top: 1.5rem;
     margin-left: -1.5rem;
     gap: 14px;
   }
