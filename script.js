@@ -55,54 +55,66 @@ function attachProfileEvents() {
 
 function loadPage(page) {
   const content = document.getElementById('content');
+
   fetch(`${page}.html`)
     .then(response => response.text())
     .then(data => {
       content.innerHTML = data;
 
-      // Highlight nav
+      // 🔸 Highlight active nav link
       document.querySelectorAll('.drawer-menu a').forEach(link => {
         link.classList.toggle('active', link.dataset.page === page);
       });
 
-      // Wait until DOM has parsed injected content
+      // 🔸 Wait for content to be in DOM
       requestAnimationFrame(() => {
         if (page === 'meetOurExperts') {
           attachProfileEvents();
-        } else if (page === 'home') {
-          initHomeTextSlider(); // Initialize the text slider
+        }
 
-          // Log the dots to ensure they are accessible
-          const dots = document.querySelectorAll("#sliderDots .dot");
-          console.log(dots);  // Log the dots to the console
-
-          if (dots.length > 0) {
-            // Attach dot event listeners
-            dots.forEach(dot => {
-              dot.addEventListener("click", () => {
-                const dotIndex = parseInt(dot.dataset.index);
-                updateText(dotIndex); // Update the text based on clicked dot
-                restartInterval(); // Restart interval to reset the text slider timing
-              });
-            });
-          } else {
-            console.log("No dots found");
-          }
+        if (page === 'home') {
+          initHomeTextSlider();         // Start slider
+          attachHomeButtonEvents();     // Reactivate buttons
+          attachDotEvents();            // Rebind dot click handlers
         }
       });
     });
 }
 
+function attachHomeButtonEvents() {
+  document.querySelectorAll('.home-button').forEach(button => {
+    button.addEventListener('click', () => {
+      console.log('Button clicked:', button.textContent);
+      // Add your button logic here
+    });
+  });
+}
 
+function attachDotEvents() {
+  const dots = document.querySelectorAll('#sliderDots .dot');
+
+  if (dots.length === 0) {
+    console.log('No dots found');
+    return;
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const dotIndex = parseInt(dot.dataset.index);
+      updateText(dotIndex);  // Update slider
+      restartInterval();     // Reset slider interval
+    });
+  });
+}
 
 
 function initHomeTextSlider() {
   const messages = [
-    "⏳ 20 Years of Urban Excellence  With two decades of experience, our team of 10 dedicated professionals is passionate about urban planning, construction, and climate change. We design cities that thrive in a fast-evolving world — balancing function, resilience, and community needs.",
+    "⏳ 20 Years of Urban Excellence. With two decades of experience, our team of 10 dedicated professionals is passionate about urban planning, construction, and climate change. We design cities that thrive in a fast-evolving world — balancing function, resilience, and community needs.",
     
     "🤝 Built on Unity, Driven by Value We believe in giving back, practicing unity, working hard, and constantly striving for self-improvement. These core values shape our approach and inspire our partnerships with local experts, government agencies, and legal specialists.",
 
-    "💡 Smart Cities, Smarter Solutions.From smart city integration to climate adaptation strategies, we use technology and data-driven insights to enhance urban efficiency, connectivity, and sustainability — building cities that are ready for tomorrow.",
+    "💡 Smart Cities, Smarter Solutions. From smart city integration to climate adaptation strategies, we use technology and data-driven insights to enhance urban efficiency, connectivity, and sustainability — building cities that are ready for tomorrow.",
 
     "🏆 Our Greatest Achievement. We led the Đà Nẵng city-wide planning initiative for both Type 1 and Type 2 cities — a transformative project that continues to impact daily life for thousands. It reflects our dedication to big-picture strategy and real-world results.",
 
@@ -139,10 +151,6 @@ function initHomeTextSlider() {
     void textElement.offsetWidth; // Reflow
     textElement.textContent = messages[index];
     textElement.classList.add("fade-In");
-  
-    // Update the dots
-    dots.forEach(dot => dot.classList.remove("active"));
-    dots[index]?.classList.add("active");
   }
   
 
