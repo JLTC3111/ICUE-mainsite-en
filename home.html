@@ -20,12 +20,26 @@
         </div>
       </div>
 
-        <video class="video-bg" autoplay muted loop playsinline>
+        <video class="video-bg" autoplay muted loop>
           <source src="public/bg6.mp4"type="video/mp4" media="(min-width: 768px)">
           <source src="public/bg6-mobile.mp4"type="video/mp4" media="(max-width: 768px)">
         </video>
     
-  <script src="script.js" defer></script>
+  <script src="script.js" defer>
+  
+  const video = document.getElementById('bgVideo');
+  const source = video.querySelector('source');
+  
+  // Mobile threshold: 767px or below
+  const isMobile = window.innerWidth <= 767;
+  
+  // Set the appropriate video source
+  source.src = isMobile ? 'public/bg6-mobile.mp4' : 'public/bg6.mp4';
+
+  // Load and play
+  video.load();
+
+  </script>
 
 
 
