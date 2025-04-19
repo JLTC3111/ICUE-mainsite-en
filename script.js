@@ -72,7 +72,7 @@ function loadPage(page) {
           attachProfileEvents();
         }
 
-        if (page === 'home') {
+        if (page === 'Home') {
           initHomeTextSlider();         // Start slider
           attachHomeButtonEvents();     // Reactivate buttons
         }
@@ -90,35 +90,42 @@ function attachHomeButtonEvents() {
 }
 
 function initHomeTextSlider() {
+  // Clean up existing event listeners and intervals
+  const sliderContainer = document.querySelector("#homeTextSlider");
+  const dotsContainer = document.querySelector("#sliderDots");
+  
+  // Remove existing event listeners
+  if (window.homeSliderIntervalId) {
+    clearInterval(window.homeSliderIntervalId);
+  }
+  
+  // Remove existing event listeners from dots
+  if (dotsContainer) {
+    const newDotsContainer = dotsContainer.cloneNode(true);
+    dotsContainer.parentNode.replaceChild(newDotsContainer, dotsContainer);
+  }
+
   const messages = [
     "⏳ 20 Years of Urban Excellence. With two decades of experience, our team of 10 dedicated professionals is passionate about urban planning, construction, and climate change. We design cities that thrive in a fast-evolving world — balancing function, resilience, and community needs.",
-    
     "🤝 Built on Unity, Driven by Value We believe in giving back, practicing unity, working hard, and constantly striving for self-improvement. These core values shape our approach and inspire our partnerships with local experts, government agencies, and legal specialists.",
-
     "💡 Smart Cities, Smarter Solutions. From smart city integration to climate adaptation strategies, we use technology and data-driven insights to enhance urban efficiency, connectivity, and sustainability — building cities that are ready for tomorrow.",
-
     "🏆 Our Greatest Achievement. We led the Đà Nẵng city-wide planning initiative for both Type 1 and Type 2 cities — a transformative project that continues to impact daily life for thousands. It reflects our dedication to big-picture strategy and real-world results.",
-
     "🌱 Shaping Cities, Improving Lives. Every solution we deliver is rooted in one mission: creating better urban futures. From the ground up, we help shape spaces that are inclusive, sustainable, and human-centered.",
-
     "💥 Creating timeless experiences."
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
-  const dotsContainer = document.querySelector("#sliderDots");
   const dots = document.querySelectorAll("#sliderDots .dot");
-  const sliderContainer = document.querySelector("#homeTextSlider");
 
-  // ✅ Prevent running if DOM isn't ready yet
-  if (!textElement || dots.length === 0 || !sliderContainer || !dotsContainer) {
+  if (!textElement || dots.length === 0 || !sliderContainer) {
     console.warn("Slider elements not found. Skipping slider init.");
     return;
   }
 
   let index = 0;
-  let intervalId;
   let touchStartX = 0;
   let touchEndX = 0;
+  let isPaused = true;
 
   function updateText(newIndex) {
     index = newIndex;
@@ -129,11 +136,9 @@ function initHomeTextSlider() {
       return;
     }
   
-    // Add transition class
     textElement.classList.add("transitioning");
     textElement.classList.remove("fade-In");
     
-    // Wait for transition to complete
     setTimeout(() => {
       textElement.textContent = messages[index];
       textElement.classList.remove("transitioning");
@@ -141,53 +146,64 @@ function initHomeTextSlider() {
       
       // Update dot states
       dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === index);
+        if (i === index) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
       });
-    }, 300); // Match this with CSS transition duration
+    }, 300);
   }
 
   function nextText() {
-    index = (index + 1) % messages.length;
-    updateText(index);
+    if (!isPaused) {
+      index = (index + 1) % messages.length;
+      updateText(index);
+    }
   }
 
   function prevText() {
-    index = (index - 1 + messages.length) % messages.length;
-    updateText(index);
+    if (!isPaused) {
+      index = (index - 1 + messages.length) % messages.length;
+      updateText(index);
+    }
   }
 
   function restartInterval() {
-    clearInterval(intervalId);
-    intervalId = setInterval(nextText, 6000);
-  }
-
-  // Clear any existing interval
-  if (window.homeSliderIntervalId) {
     clearInterval(window.homeSliderIntervalId);
+    if (!isPaused) {
+      window.homeSliderIntervalId = setInterval(nextText, 4000);
+    }
   }
 
   // Initialize the slider
   updateText(index);
   window.homeSliderIntervalId = setInterval(nextText, 4000);
 
-  // Use event delegation for dot clicks
-  dotsContainer.addEventListener("click", (e) => {
-    const dot = e.target.closest(".dot");
-    if (dot) {
-      const dotIndex = parseInt(dot.dataset.index);
-      updateText(dotIndex);
-      restartInterval();
-    }
-  });
-
-  // Add hover effects for dots
-  dots.forEach(dot => {
+  // Add event listeners to dots
+  dots.forEach((dot, i) => {
+    // Add hover effect
+    dot.style.transition = "transform 0.2s ease";
+    
     dot.addEventListener("mouseenter", () => {
       dot.style.transform = "scale(1.25)";
     });
     
     dot.addEventListener("mouseleave", () => {
       dot.style.transform = "scale(1)";
+    });
+
+    // Click handler
+    dot.addEventListener("click", () => {
+      isPaused = true;
+      clearInterval(window.homeSliderIntervalId);
+      updateText(i);
+      
+      // Add resume functionality after 5 seconds
+      setTimeout(() => {
+        isPaused = false;
+        restartInterval();
+      }, 15000);
     });
   });
 
@@ -213,15 +229,13 @@ function initHomeTextSlider() {
   });
 
   function handleSwipe() {
-    const swipeThreshold = 50; // Minimum distance for a swipe
+    const swipeThreshold = 50;
     const diff = touchStartX - touchEndX;
 
     if (Math.abs(diff) > swipeThreshold) {
       if (diff > 0) {
-        // Swiped left
         nextText();
       } else {
-        // Swiped right
         prevText();
       }
       restartInterval();
@@ -234,18 +248,20 @@ function initHomeTextSlider() {
   });
 
   sliderContainer.addEventListener("mouseleave", () => {
-    window.homeSliderIntervalId = setInterval(nextText, 4000);
+    if (!isPaused) {
+      window.homeSliderIntervalId = setInterval(nextText, 4000);
+    }
   });
 
   console.log("✅ Slider initialized with enhanced features");
 }
 
-// 👇 Auto-load home by default
+// 👇 Auto-load Home by default
 window.onload = () => {
-  loadPage('home');
+  loadPage('Home');
 };
 
-let currentPage = 'home'; // default
+let currentPage = 'Home'; // default
 
 function toggleDrawerMenu() {
   const drawerMenu = document.getElementById('drawerMenu');
@@ -365,6 +381,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Auto-highlight on initial load
 window.onload = () => {
-  loadPage('home');
-  highlightActiveLink('home');
+  loadPage('Home');
+  highlightActiveLink('Home');
 };
