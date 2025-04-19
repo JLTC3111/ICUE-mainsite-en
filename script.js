@@ -25,8 +25,13 @@ function attachProfileEvents() {
   ];
 
   let currentIndex = 0;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const MIN_SWIPE_DISTANCE = 15;
+  
   const textBox = document.getElementById('profile-text');
   const photo = document.getElementById('profile-photo');
+  const container = document.querySelector('.image-container');
 
   function updateProfile(index) {
     textBox.classList.remove('fade-In');
@@ -48,6 +53,26 @@ function attachProfileEvents() {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
     updateProfile(currentIndex);
   });
+
+  // Add touch support for mobile
+  if (container) {
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeDistance = touchEndX - touchStartX;
+      
+      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        if (swipeDistance > 0) {
+          document.getElementById('prev-btn')?.click();
+        } else {
+          document.getElementById('next-btn')?.click();
+        }
+      }
+    });
+  }
 
   // Start first profile
   updateProfile(0);
@@ -123,8 +148,6 @@ function initHomeTextSlider() {
   }
 
   let index = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
   let isPaused = true;
 
   function updateText(newIndex) {
@@ -217,30 +240,6 @@ function initHomeTextSlider() {
       restartInterval();
     }
   });
-
-  // Touch support
-  sliderContainer.addEventListener("touchstart", (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-  });
-
-  sliderContainer.addEventListener("touchend", (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  });
-
-  function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        nextText();
-      } else {
-        prevText();
-      }
-      restartInterval();
-    }
-  }
 
   // Pause on hover
   sliderContainer.addEventListener("mouseenter", () => {
