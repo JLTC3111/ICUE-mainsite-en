@@ -650,7 +650,7 @@ footer p {
 
   .home-text-slider {
     text-align: center;
-    margin-top: 4rem;
+    margin-top: 4.5rem;
     margin-bottom:0;
     z-index: 10;
   }
@@ -737,7 +737,7 @@ footer p {
   .arrow-button {
     width: 48px;
     height: 48px;
-    top: 30%;
+    top: 40%;
   }  
 
   .arrow-icon {
