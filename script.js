@@ -6,19 +6,19 @@ function attachProfileEvents() {
       img: "public/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span> Experienced accounting professional with over 10 years in financial management, reporting, and compliance. Holds a Bachelor’s degree in Accounting and has successfully led accounting departments, managed financial settlements, conducted audits, and prepared accurate financial statements. Skilled in monitoring financial transactions, ensuring legal and regulatory compliance, and supporting project-based financial operations. Proficient in accounting software and known for a strong work ethic, adaptability, and attention to detail. Brings strong leadership and organizational skills, with a focus on delivering accurate financial insights.`,
+      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span> Experienced accounting professional with over 10 years in financial management, reporting, and compliance. Holds a Bachelor's degree in Accounting and has successfully led accounting departments, managed financial settlements, conducted audits, and prepared accurate financial statements. Skilled in monitoring financial transactions, ensuring legal and regulatory compliance, and supporting project-based financial operations. Proficient in accounting software and known for a strong work ethic, adaptability, and attention to detail. Brings strong leadership and organizational skills, with a focus on delivering accurate financial insights.`,
       img: "public/hoangthuha.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Lan Anh</span> Urban planning and development expert with over 20 years of experience in strategic urban design, policy-making, and sustainable development. Holds a PhD and Master’s from The University of Tokyo, with a strong background in climate change adaptation, urban classification laws, and national development strategies. Former Deputy General Director at Vietnam’s Urban Development Agency, leading major programs for urban resilience and planning to 2050. A published researcher, educator, and active member of key professional associations. Skilled in coordinating large-scale projects, legal frameworks, and cross-sector collaboration. Fluent in multiple languages and passionate about shaping livable, sustainable urban futures.`,
+      name: `<span class="intro-people">Ms. Lan Anh</span> Urban planning and development expert with over 20 years of experience in strategic urban design, policy-making, and sustainable development. Holds a PhD and Master's from The University of Tokyo, with a strong background in climate change adaptation, urban classification laws, and national development strategies. Former Deputy General Director at Vietnam's Urban Development Agency, leading major programs for urban resilience and planning to 2050. A published researcher, educator, and active member of key professional associations. Skilled in coordinating large-scale projects, legal frameworks, and cross-sector collaboration. Fluent in multiple languages and passionate about shaping livable, sustainable urban futures.`,
       img: "public/tranthilananh.jpg"
     },
     {
-      name: `<span class="intro-people">Mr. Trần Quốc Toản </span> Urban Planning and Climate Change Expert with over 25 years of experience in sustainable infrastructure, transport planning, and climate resilience. Holds a degree in Bridge and Tunnel Engineering and has served in key leadership roles within Vietnam’s Ministry of Transport and civil engineering associations. Skilled in policy advisory, smart city planning, and green growth strategy development. Led major national projects focused on urban mobility, environmental sustainability, and legal reform. A respected lecturer and expert trainer for organizations such as the World Bank and ADB, known for his deep expertise, strategic thinking, and commitment to building climate-resilient urban futures.`,
+      name: `<span class="intro-people">Mr. Trần Quốc Toản </span> Urban Planning and Climate Change Expert with over 25 years of experience in sustainable infrastructure, transport planning, and climate resilience. Holds a degree in Bridge and Tunnel Engineering and has served in key leadership roles within Vietnam's Ministry of Transport and civil engineering associations. Skilled in policy advisory, smart city planning, and green growth strategy development. Led major national projects focused on urban mobility, environmental sustainability, and legal reform. A respected lecturer and expert trainer for organizations such as the World Bank and ADB, known for his deep expertise, strategic thinking, and commitment to building climate-resilient urban futures.`,
       img: "public/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master’s degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, (smart) contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬
+      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master's degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, (smart) contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬
       https://dobaolongicueltd.netlify.app/`,
       img: "public/longdo.jpg"
     }
@@ -75,7 +75,6 @@ function loadPage(page) {
         if (page === 'home') {
           initHomeTextSlider();         // Start slider
           attachHomeButtonEvents();     // Reactivate buttons
-          attachDotEvents();            // Rebind dot click handlers
         }
       });
     });
@@ -89,24 +88,6 @@ function attachHomeButtonEvents() {
     });
   });
 }
-
-function attachDotEvents() {
-  const dots = document.querySelectorAll('#sliderDots .dot');
-
-  if (dots.length === 0) {
-    console.log('No dots found');
-    return;
-  }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const dotIndex = parseInt(dot.dataset.index);
-      updateText(dotIndex);  // Update slider
-      restartInterval();     // Reset slider interval
-    });
-  });
-}
-
 
 function initHomeTextSlider() {
   const messages = [
@@ -124,38 +105,54 @@ function initHomeTextSlider() {
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
+  const dotsContainer = document.querySelector("#sliderDots");
   const dots = document.querySelectorAll("#sliderDots .dot");
+  const sliderContainer = document.querySelector("#homeTextSlider");
 
   // ✅ Prevent running if DOM isn't ready yet
-  if (!textElement || dots.length === 0) {
+  if (!textElement || dots.length === 0 || !sliderContainer || !dotsContainer) {
     console.warn("Slider elements not found. Skipping slider init.");
     return;
   }
 
   let index = 0;
   let intervalId;
+  let touchStartX = 0;
+  let touchEndX = 0;
 
   function updateText(newIndex) {
     index = newIndex;
     const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
     
-    // Log to see if the element is selected properly
-    console.log("Text Element:", textElement);
-    
     if (!textElement) {
       console.error("highlight-text element not found!");
-      return;  // Exit the function if the element is not found
+      return;
     }
   
+    // Add transition class
+    textElement.classList.add("transitioning");
     textElement.classList.remove("fade-In");
-    void textElement.offsetWidth; // Reflow
-    textElement.textContent = messages[index];
-    textElement.classList.add("fade-In");
+    
+    // Wait for transition to complete
+    setTimeout(() => {
+      textElement.textContent = messages[index];
+      textElement.classList.remove("transitioning");
+      textElement.classList.add("fade-In");
+      
+      // Update dot states
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+    }, 300); // Match this with CSS transition duration
   }
-  
 
   function nextText() {
     index = (index + 1) % messages.length;
+    updateText(index);
+  }
+
+  function prevText() {
+    index = (index - 1 + messages.length) % messages.length;
     updateText(index);
   }
 
@@ -164,26 +161,83 @@ function initHomeTextSlider() {
     intervalId = setInterval(nextText, 6000);
   }
 
-  updateText(index);
+  // Clear any existing interval
   if (window.homeSliderIntervalId) {
     clearInterval(window.homeSliderIntervalId);
   }
-  
-  // Start a fresh interval and store it globally
+
+  // Initialize the slider
+  updateText(index);
   window.homeSliderIntervalId = setInterval(nextText, 4000);
 
-  dots.forEach(dot => {
-    const newDot = dot.cloneNode(true); // clone the dot element
-    dot.parentNode.replaceChild(newDot, dot); // replace it to remove old listeners
-  
-    newDot.addEventListener("click", () => {
-      const dotIndex = parseInt(newDot.dataset.index);
+  // Use event delegation for dot clicks
+  dotsContainer.addEventListener("click", (e) => {
+    const dot = e.target.closest(".dot");
+    if (dot) {
+      const dotIndex = parseInt(dot.dataset.index);
       updateText(dotIndex);
       restartInterval();
+    }
+  });
+
+  // Add hover effects for dots
+  dots.forEach(dot => {
+    dot.addEventListener("mouseenter", () => {
+      dot.style.transform = "scale(1.25)";
+    });
+    
+    dot.addEventListener("mouseleave", () => {
+      dot.style.transform = "scale(1)";
     });
   });
 
-  console.log("✅ Slider initialized");
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      prevText();
+      restartInterval();
+    } else if (e.key === "ArrowRight") {
+      nextText();
+      restartInterval();
+    }
+  });
+
+  // Touch support
+  sliderContainer.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  sliderContainer.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+
+  function handleSwipe() {
+    const swipeThreshold = 50; // Minimum distance for a swipe
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        // Swiped left
+        nextText();
+      } else {
+        // Swiped right
+        prevText();
+      }
+      restartInterval();
+    }
+  }
+
+  // Pause on hover
+  sliderContainer.addEventListener("mouseenter", () => {
+    clearInterval(window.homeSliderIntervalId);
+  });
+
+  sliderContainer.addEventListener("mouseleave", () => {
+    window.homeSliderIntervalId = setInterval(nextText, 4000);
+  });
+
+  console.log("✅ Slider initialized with enhanced features");
 }
 
 // 👇 Auto-load home by default
