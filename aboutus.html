@@ -39,6 +39,8 @@
             font-size: 2em;
             color: #333;
             margin: 10px 0;
+            transform: rotate(-3deg);
+            display: inline-block;
         }
 
         .highlight {
@@ -46,20 +48,14 @@
             padding: 5px 10px;
             border-radius: 4px;
             display: inline-block;
+            transform: rotate(-5deg);
+            font-style: italic;
+        }
+
+        .regular-text {
             transform: rotate(-2deg);
-        }
-
-        .logo-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            position: relative;
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            display: inline-block;
+            font-style: italic;
         }
 
         .image-grid {
@@ -75,10 +71,11 @@
             object-fit: cover;
             border-radius: 10px;
             transition: transform 0.3s ease;
+            transform: rotate(-2deg);
         }
 
         .image-grid img:hover {
-            transform: scale(1.05);
+            transform: rotate(-2deg) scale(1.05);
         }
 
         .fuzzy-text {
@@ -87,6 +84,8 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             margin: 20px 0;
             font-weight: bold;
+            transform: rotate(-4deg);
+            display: inline-block;
         }
 
         .contact-section {
@@ -128,7 +127,7 @@
 
         @media (max-width: 768px) {
             #model-container {
-                display: none; /* Hide on mobile for better performance */
+                display: none;
             }
         }
     </style>
@@ -148,9 +147,6 @@
     
     <div class="about-container">
         <div class="section">
-            <div class="logo-container">
-                <img src="public/logo.png" alt="ICUE Logo">
-            </div>
             <h1 class="handwritten">Hi There!</h1>
             <p class="highlight">Welcome to ICUE - Where Innovation Meets Urban Excellence</p>
         </div>
@@ -158,15 +154,15 @@
         <div class="section">
             <h2 class="handwritten">We're a</h2>
             <div class="fuzzy-text">PASSIONATE</div>
-            <p>team of urban development experts</p>
+            <p class="regular-text">team of urban development experts</p>
         </div>
 
         <div class="section">
-            <h2 class="handwritten">Our Expertise</h2>
+            <h2 class="handwritten">Our Experts</h2>
             <div class="image-grid">
-                <img src="public/home-alt-bg.jpg" alt="Urban Planning">
-                <img src="public/people-alt-bg.jpg" alt="Team Collaboration">
-                <img src="public/under_construction.jpg" alt="Construction">
+                <img src="public/kids.png" alt="Urban Planning">
+                <img src="public/hat.png" alt="Team Collaboration">
+                <img src="public/aboutUs5.png" alt="Construction">
             </div>
             <p class="highlight">20 Years of Urban Excellence</p>
         </div>
@@ -174,19 +170,23 @@
         <div class="section">
             <h2 class="handwritten">Meet Our Amazing Team</h2>
             <div class="image-grid">
-                <img src="public/nguyenhonghanh.jpg" alt="Dr. Nguyễn Hồng Hạnh">
-                <img src="public/hoangthuha.jpg" alt="Ms. Hoàng Thu Hà">
-                <img src="public/tranthilananh.jpg" alt="Ms. Lan Anh">
-                <img src="public/tranquoctoan.jpg" alt="Mr. Trần Quốc Toản">
+                <img src="public/aboutUs4.png" alt="Our Team">
+                <img src="public/aboutUs1.png" alt="Our Vision">
+                <img src="public/aboutUs2.png" alt="Our Mission">
+                <img src="public/aboutUs3.png" alt="Our Values">
             </div>
         </div>
 
         <div class="section contact-section">
             <h2 class="handwritten">Let's Connect!</h2>
-            <p>Feel free to reach out and explore opportunities with us</p>
+            <p class="regular-text">Feel free to reach out and explore opportunities with us</p>
             <p class="highlight">info@icue.vn</p>
-            <p>83 Yên Lãng, Thành Công, Ba Đình, HN</p>
+            <p class="regular-text">83 Yên Lãng, Thành Công, Ba Đình, HN</p>
         </div>
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="public/bg3.mp4"type="video/mp4" media="(min-width: 768px)">
+            <source src="public/bg3-mobile.mp4"type="video/mp4">
+          </video>
     </div>
 
     <script type="module">
