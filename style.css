@@ -863,6 +863,11 @@ footer p {
     content: none;
   }
 
+  .highlight-text {
+    font-size: 12px;
+    margin-top: 1rem;
+  }
+
   footer {
     display: none;
   }}
