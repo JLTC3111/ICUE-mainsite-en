@@ -177,6 +177,7 @@ footer p {
   margin-top: -45rem;
   margin-left: 100px;
   margin-bottom: 55px;
+  transition: transform 0.3s ease-out;
 }
 
 .profile-photo {
@@ -185,6 +186,7 @@ footer p {
   align-content: center;
   width: 300px;
   height: auto;
+  will-change: transform, opacity;
 }
 
 .fade-Out {
@@ -258,6 +260,7 @@ footer p {
   text-shadow: none;
   line-height: 1.5;
   word-spacing: 2px;
+  will-change: transform, opacity;
 }
 
 .fade-In {
@@ -660,7 +663,7 @@ footer p {
     font-size: 15px;
     font-style: normal;
     font-weight: 300;
-    visibility: visible; /* Ensure it’s visible */
+    visibility: visible; /* Ensure it's visible */
     opacity: 1;          /* Ensure it's not transparent */
     transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
   }
@@ -871,3 +874,74 @@ footer p {
   footer {
     display: none;
   }}
+
+/* Sliding animations */
+.slide-exit-left {
+  animation: slideOutLeft 0.3s forwards;
+}
+
+.slide-exit-right {
+  animation: slideOutRight 0.3s forwards;
+}
+
+.slide-enter-left {
+  animation: slideInLeft 0.3s forwards;
+}
+
+.slide-enter-right {
+  animation: slideInRight 0.3s forwards;
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Ensure smooth transitions */
+.image-container {
+  transition: transform 0.3s ease-out;
+}
+
+.profile-photo,
+.montserrat-pepple {
+  will-change: transform, opacity;
+}

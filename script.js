@@ -27,42 +27,86 @@ function attachProfileEvents() {
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
+  let currentX = 0;
   const MIN_SWIPE_DISTANCE = 15;
   
   const textBox = document.getElementById('profile-text');
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
 
-  function updateProfile(index) {
-    textBox.classList.remove('fade-In');
-    photo.classList.remove('fade-In');
-    void textBox.offsetWidth;
-    void photo.offsetWidth;
-    textBox.innerHTML = `<div>${profileData[index].name}</div>`;
-    photo.src = profileData[index].img;
-    textBox.classList.add('fade-In');
-    photo.classList.add('fade-In');
+  function updateProfile(index, direction = 'none') {
+    const oldContent = textBox.innerHTML;
+    const oldImage = photo.src;
+    
+    // Prepare new content
+    const newContent = `<div>${profileData[index].name}</div>`;
+    
+    // Add transition classes based on direction
+    if (direction !== 'none') {
+      const exitClass = direction === 'right' ? 'slide-exit-left' : 'slide-exit-right';
+      const enterClass = direction === 'right' ? 'slide-enter-right' : 'slide-enter-left';
+      
+      // Animate old content out
+      textBox.classList.add(exitClass);
+      photo.classList.add(exitClass);
+      
+      setTimeout(() => {
+        // Update content
+        textBox.innerHTML = newContent;
+        photo.src = profileData[index].img;
+        
+        // Remove exit classes
+        textBox.classList.remove(exitClass);
+        photo.classList.remove(exitClass);
+        
+        // Add enter classes
+        textBox.classList.add(enterClass);
+        photo.classList.add(enterClass);
+        
+        // Remove enter classes after animation
+        setTimeout(() => {
+          textBox.classList.remove(enterClass);
+          photo.classList.remove(enterClass);
+        }, 300);
+      }, 300);
+    } else {
+      // No animation for initial load
+      textBox.innerHTML = newContent;
+      photo.src = profileData[index].img;
+    }
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
-    updateProfile(currentIndex);
+    updateProfile(currentIndex, 'right');
   });
 
   document.getElementById('prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-    updateProfile(currentIndex);
+    updateProfile(currentIndex, 'left');
   });
 
-  // Add touch support for mobile
+  // Add touch support for mobile with sliding animation
   if (container) {
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
+      currentX = 0;
+      container.style.transition = 'none';
+    });
+
+    container.addEventListener('touchmove', (e) => {
+      const touch = e.changedTouches[0];
+      currentX = touch.screenX - touchStartX;
+      const transform = Math.min(Math.max(currentX, -100), 100);
+      container.style.transform = `translateX(${transform}px)`;
     });
 
     container.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
+      
+      container.style.transition = 'transform 0.3s ease-out';
+      container.style.transform = '';
       
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
