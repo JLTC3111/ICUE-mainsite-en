@@ -177,7 +177,6 @@ footer p {
   margin-top: -45rem;
   margin-left: 100px;
   margin-bottom: 55px;
-  transition: transform 0.3s ease-out;
 }
 
 .profile-photo {
@@ -186,7 +185,6 @@ footer p {
   align-content: center;
   width: 300px;
   height: auto;
-  will-change: transform, opacity;
 }
 
 .fade-Out {
@@ -253,14 +251,13 @@ footer p {
   font-size: 24px;
   color: black;
   font-optical-sizing: auto;
-  font-weight: 100; /* Make sure this weight is imported */
+  font-weight: 100;
   margin-top: -500px;
   margin-left: 450px;
   margin-right: 250px;
   text-shadow: none;
   line-height: 1.5;
   word-spacing: 2px;
-  will-change: transform, opacity;
 }
 
 .fade-In {
@@ -707,7 +704,7 @@ footer p {
     height: 266px;
     overflow: hidden;
     border-radius: 50px;
-    margin-top: -52rem;
+    margin-top: -48rem;
     margin-left: 100px;
     margin-bottom: 5px;
   }
@@ -868,7 +865,7 @@ footer p {
 
   .highlight-text {
     font-size: 14px;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
   footer {
