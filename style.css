@@ -670,7 +670,7 @@ footer p {
     position: relative;
     justify-content: center;
     margin-top: 1.5rem;
-    margin-left: -1.5rem;
+    margin-left: -1.2rem;
     gap: 14px;
     z-index: 99;
   }
