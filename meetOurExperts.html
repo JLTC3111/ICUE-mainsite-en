@@ -1,5 +1,3 @@
-
-
 <div class="video-background" id="video-bg-container">
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="public/bg2.mp4"type="video/mp4" media="(min-width: 768px)">
@@ -7,10 +5,22 @@
   </video>
 </div>
 
-<div class="image-container">
-  <div class="shutter-top"></div>
-  <div class="shutter-bottom"></div>
-  <img id="profile-photo" class="profile-photo fade-In" src="public/nguyenhonghanh.jpg" alt="Profile Photo" />
+<div class="swipe-container">
+  <div class="swipe-indicator left">
+    <div class="indicator-dot"></div>
+    <div class="indicator-text">Swipe</div>
+  </div>
+
+  <div class="image-container">
+    <div class="shutter-top"></div>
+    <div class="shutter-bottom"></div>
+    <img id="profile-photo" class="profile-photo fade-In" src="public/nguyenhonghanh.jpg" alt="Profile Photo" />
+  </div>
+
+  <div class="swipe-indicator right">
+    <div class="indicator-dot"></div>
+    <div class="indicator-text">Swipe</div>
+  </div>
 </div>
 
 <div class="text-container" id="text-slider">
@@ -20,7 +30,6 @@
     </div>
   </div>
 </div>
-
 
 <div id="prev-btn" class="arrow-button left-arrow">
   <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -34,8 +43,126 @@
   </svg>
 </div>
 
-<script>
+<style>
+  .swipe-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: pan-y pinch-zoom;
+  }
 
+  .swipe-indicator {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .swipe-indicator.left {
+    left: 20px;
+  }
+
+  .swipe-indicator.right {
+    right: 20px;
+  }
+
+  .indicator-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 0 auto 5px;
+  }
+
+  .indicator-text {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .swipe-indicator {
+      display: block;
+    }
+
+    .arrow-button {
+      display: none;
+    }
+
+    .image-container {
+      touch-action: pan-y pinch-zoom;
+    }
+
+    .swiping .swipe-indicator {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+let touchStartX = 0;
+let touchEndX = 0;
+const swipeContainer = document.querySelector('.swipe-container');
+const container = document.querySelector('.image-container');
+const MIN_SWIPE_DISTANCE = 50;
+
+function showSwipeHint() {
+  const indicators = document.querySelectorAll('.swipe-indicator');
+  indicators.forEach(indicator => {
+    indicator.style.opacity = '1';
+    setTimeout(() => {
+      indicator.style.opacity = '0';
+    }, 2000);
+  });
+}
+
+// Show swipe hint on mobile when page loads
+if (window.innerWidth <= 768) {
+  setTimeout(showSwipeHint, 1000);
+}
+
+container.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+  swipeContainer.classList.add('swiping');
+});
+
+container.addEventListener('touchmove', (e) => {
+  const currentX = e.changedTouches[0].screenX;
+  const diff = currentX - touchStartX;
+  
+  // Add some resistance to the movement
+  const transform = Math.min(Math.max(diff * 0.3, -50), 50);
+  container.style.transform = `translateX(${transform}px)`;
+});
+
+container.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchEndX - touchStartX;
+  
+  container.style.transform = '';
+  swipeContainer.classList.remove('swiping');
+
+  if (Math.abs(diff) > MIN_SWIPE_DISTANCE) {
+    if (diff > 0) {
+      document.getElementById('prev-btn').click();
+    } else {
+      document.getElementById('next-btn').click();
+    }
+  }
+});
+
+// Prevent default touch behavior to avoid page scrolling during swipe
+container.addEventListener('touchmove', (e) => {
+  if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 10) {
+    e.preventDefault();
+  }
+}, { passive: false });
 </script>
 
 
