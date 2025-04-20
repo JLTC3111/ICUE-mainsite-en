@@ -21,13 +21,13 @@
   <nav class="menu-bar">
     <div class="logo-banner">
       <a href="#" onclick="navigateToPage('Home')">
-        <img class="logo-content" src="public/logo.png" alt="Logo" />
+        <img class="logo-content" src="public/logoIcons/logo.png" alt="Logo" />
       </a>
     </div>
   
     <!-- Centered Hamburger Menu -->
     <div class="menu-toggle" onclick="toggleDrawerMenu()">
-      <img id="menuIcon" src="/public/menu-icon.png" alt="menu" width="32" />
+      <img id="menuIcon" src="public/logoIcons/menu-icon.png" alt="menu" width="32" />
     </div>
   
     <!-- Contact stays to the right -->
@@ -49,6 +49,10 @@
   <main id="content">
       <h1>Welcome to ICUE!</h1>
       <p>Let's Start</p>
+      <video class="video-bg" autoplay muted loop playsinline>
+          <source src="public/bgVideos/bg1.mp4" type="video/mp4" media="(min-width: 768px)">
+          <source src="public/bgVideos/bg1-mobile.mp4" type="video/mp4">
+      </video>
   </main>
 
   <script src="script.js"></script>
