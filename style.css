@@ -888,6 +888,10 @@ footer p {
     transform: translateX(-15px) !important;
     margin-left: 60px;
   }
+
+  .image-grid-mid {
+    transform: translateX(100px) !important;
+  }
 }
 
 /* Sliding animations */
@@ -1020,10 +1024,14 @@ footer p {
 }
 
 .highlight-firstPart, .highlight-secondPart {
-    padding: 5px 10px;
-    border-radius: 4px;
+    font-family: 'IMB Plex Sans', sans-serif;
+    padding: 8px 15px;
+    border-radius: 6px;
     font-style: italic;
-  
+    font-size: 1.8em;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
 }
 
 .highlight-firstPart {
@@ -1053,8 +1061,9 @@ footer p {
 /* Make sure the colors work with the background */
 .highlight-firstPart span,
 .highlight-secondPart span {
-    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
-    font-weight: 500;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .highlight-fourthPart {
@@ -1156,7 +1165,7 @@ footer p {
     .highlight-firstPart,
     .highlight-secondPart {
         margin: 5px;
-        font-size: 0.9em;
+        font-size: 1.0em;
     }
 
     .handwritten {
