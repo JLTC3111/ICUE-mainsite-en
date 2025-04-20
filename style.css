@@ -174,17 +174,19 @@ footer p {
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
-  margin-top: -45rem;
+  margin-top: 50px;
   margin-left: 100px;
   margin-bottom: 55px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 .profile-photo {
-  position: relative;
-  display: flex;
-  align-content: center;
-  width: 300px;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .fade-Out {
@@ -248,16 +250,11 @@ footer p {
 
 .montserrat-pepple {
   font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  color: black;
-  font-optical-sizing: auto;
-  font-weight: 100;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  text-align: justify;
   margin-top: -500px;
-  margin-left: 450px;
-  margin-right: 250px;
-  text-shadow: none;
-  line-height: 1.5;
-  word-spacing: 2px;
 }
 
 .fade-In {
@@ -283,18 +280,26 @@ footer p {
   letter-spacing: 1.5px; 
   display: flex;
   justify-content: center;
-  font-size: 45px; /* Adjust as needed */
+  font-size: 45px;
   font-weight: bold;
-  background: linear-gradient(45deg, #000000, #a09b0e); /* Change colors as needed */
-  -webkit-background-clip: text; /* For Safari */
-  background-clip: text; /* For other browsers */
-  color: transparent; /* Ensure the text color is transparent so the gradient is visible */
+  background: linear-gradient(45deg, #000000, #a09b0e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .text-container {
-  display: flex;
-  position: absolute;
-  margin-top: -10px;
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  margin: 30px auto;
+  margin-left: 450px;
+  margin-right: 250px;
+  padding: 20px;
+  background: transparent;
+  border-radius: 20px;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .slideInFromLeft {
@@ -318,6 +323,9 @@ footer p {
 }
 
 .arrow-button {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
   width: 75px;
   height: 75px;
   background-color: whitesmoke;
@@ -329,16 +337,14 @@ footer p {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
-  color:darkgoldenrod;
-  position: absolute;
-  top: 45%;
-  transform: translateY(-50%);
+  color: darkgoldenrod;
   z-index: 100;
 }
 
 .arrow-icon {
   width: 90px;
   height: 90px;
+  color: darkgoldenrod;
 }
 
 .left-arrow {
@@ -352,7 +358,7 @@ footer p {
 .arrow-button:hover {
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  color: rgb(0, 68, 5); /* Change to any accent color you like */
+  color: rgb(0, 68, 5);
   background-color: rgb(255, 255, 255);
 }
 
@@ -702,25 +708,20 @@ footer p {
   }
 
   .image-container {
-    position: relative;
-    width: 200px;
-    height: 266px;
-    overflow: hidden;
-    border-radius: 50px;
-    margin-top: -48rem;
-    margin-left: 100px;
-    margin-bottom: 5px;
-  }
-
-  .profile-photo {
-    width: 100%;
+    justify-content: center;
+    width: 250px;
+    height: 350px;
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-bottom: 20px;
   }
 
   .text-container {
-    position: relative;
-    flex-direction: column;
-    margin-top: 0.5rem;
-    padding: 1rem;
+    width: 90%;
+    margin: 20px auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 15px;
   }
 
   .montserrat-pepple {
@@ -731,30 +732,20 @@ footer p {
   }
 
   .intro-people {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    justify-content: center;
-    text-align: center;
-    margin: 0 auto 1rem auto;
+    font-size: 30px;
+    margin-right: 20px;
+    margin-bottom: 20px;
   }
 
   .arrow-button {
     width: 48px;
     height: 48px;
-    top: 40%;
-  }  
+  }
 
   .arrow-icon {
     width: 48px;
     height: 48px;
     color: #ffcc00;
-  }
-
-  .left-arrow {
-    left: 5px;
-  }
-  
-  .right-arrow {
-    right: 12.5px;
   }
 
   .language-switcher {
@@ -787,6 +778,10 @@ footer p {
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
     z-index: 1100;
+  }
+
+  .right-arrow {
+    right: 1.5rem;
   }
 
   .contact-link {
@@ -876,60 +871,60 @@ footer p {
 
 /* Sliding animations */
 .slide-exit-left {
-  animation: slideOutLeft 0.3s forwards;
+  animation: slideOutLeft 0.3s ease forwards;
 }
 
 .slide-exit-right {
-  animation: slideOutRight 0.3s forwards;
+  animation: slideOutRight 0.3s ease forwards;
 }
 
 .slide-enter-left {
-  animation: slideInLeft 0.3s forwards;
+  animation: slideInLeft 0.3s ease forwards;
 }
 
 .slide-enter-right {
-  animation: slideInRight 0.3s forwards;
+  animation: slideInRight 0.3s ease forwards;
 }
 
 @keyframes slideOutLeft {
-  from {
+  0% {
     transform: translateX(0);
     opacity: 1;
   }
-  to {
+  100% {
     transform: translateX(-100%);
     opacity: 0;
   }
 }
 
 @keyframes slideOutRight {
-  from {
+  0% {
     transform: translateX(0);
     opacity: 1;
   }
-  to {
+  100% {
     transform: translateX(100%);
     opacity: 0;
   }
 }
 
 @keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
+  0% {
+    transform: translateX(100%);
     opacity: 0;
   }
-  to {
+  100% {
     transform: translateX(0);
     opacity: 1;
   }
 }
 
 @keyframes slideInRight {
-  from {
-    transform: translateX(100%);
+  0% {
+    transform: translateX(-100%);
     opacity: 0;
   }
-  to {
+  100% {
     transform: translateX(0);
     opacity: 1;
   }

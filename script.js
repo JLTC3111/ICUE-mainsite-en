@@ -3,24 +3,24 @@ function attachProfileEvents() {
     {
       name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span> An expert in urban development and construction management, she holds a PhD in the field and currently serves as Director of the Institute for Economic, Urban, and Construction Research under the Vietnam Construction Association. Her extensive career includes serving as Deputy Director at both the Institute for Urban and Construction Economics Research (2013–2018) and the Department of Urban Development at the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning, and architectural design, with a strong focus on sustainable, well-governed cities. She has led major initiatives in green urban development, climate resilience, and policy advisory for national and regional planning, supported by international partners like the World Bank and ADB.
                     <i class="fa-solid fa-layer-group"></i>`,
-      img: "public/meetOurExperts/nguyenhonghanh.jpg"
+      img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
       name: `<span class="intro-people">Ms. Hoàng Thu Hà</span> Experienced accounting professional with over 10 years in financial management, reporting, and compliance. Holds a Bachelor's degree in Accounting and has successfully led accounting departments, managed financial settlements, conducted audits, and prepared accurate financial statements. Skilled in monitoring financial transactions, ensuring legal and regulatory compliance, and supporting project-based financial operations. Proficient in accounting software and known for a strong work ethic, adaptability, and attention to detail. Brings strong leadership and organizational skills, with a focus on delivering accurate financial insights.`,
-      img: "public/meetOurExperts/hoangthuha.jpg"
+      img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
       name: `<span class="intro-people">Ms. Lan Anh</span> Urban planning and development expert with over 20 years of experience in strategic urban design, policy-making, and sustainable development. Holds a PhD and Master's from The University of Tokyo, with a strong background in climate change adaptation, urban classification laws, and national development strategies. Former Deputy General Director at Vietnam's Urban Development Agency, leading major programs for urban resilience and planning to 2050. A published researcher, educator, and active member of key professional associations. Skilled in coordinating large-scale projects, legal frameworks, and cross-sector collaboration. Fluent in multiple languages and passionate about shaping livable, sustainable urban futures.`,
-      img: "public/meetOurExperts/tranthilananh.jpg"
+      img: "public/profilePhotos/tranthilananh.jpg"
     },
     {
       name: `<span class="intro-people">Mr. Trần Quốc Toản </span> Urban Planning and Climate Change Expert with over 25 years of experience in sustainable infrastructure, transport planning, and climate resilience. Holds a degree in Bridge and Tunnel Engineering and has served in key leadership roles within Vietnam's Ministry of Transport and civil engineering associations. Skilled in policy advisory, smart city planning, and green growth strategy development. Led major national projects focused on urban mobility, environmental sustainability, and legal reform. A respected lecturer and expert trainer for organizations such as the World Bank and ADB, known for his deep expertise, strategic thinking, and commitment to building climate-resilient urban futures.`,
-      img: "public/meetOurExperts/tranquoctoan.jpg"
+      img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
       name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master's degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, (smart) contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬
       https://dobaolongicueltd.netlify.app/`,
-      img: "public/meetOurExperts/longdo.jpg"
+      img: "public/profilePhotos/longdo.jpg"
     }
   ];
 
@@ -33,19 +33,40 @@ function attachProfileEvents() {
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
 
-  function updateProfile(index) {
-    textBox.innerHTML = `<div>${profileData[index].name}</div>`;
-    photo.src = profileData[index].img;
+  function updateProfile(index, direction = 'right') {
+    if (!textBox || !photo) return;
+
+    // Add exit animation
+    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+
+    setTimeout(() => {
+      // Update content
+      textBox.innerHTML = `<div>${profileData[index].name}</div>`;
+      photo.src = profileData[index].img;
+
+      // Remove exit animation and add enter animation
+      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
+      photo.classList.remove('slide-exit-left', 'slide-exit-right');
+      textBox.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
+      photo.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
+
+      // Remove enter animation after transition
+      setTimeout(() => {
+        textBox.classList.remove('slide-enter-right', 'slide-enter-left');
+        photo.classList.remove('slide-enter-right', 'slide-enter-left');
+      }, 300);
+    }, 300);
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
-    updateProfile(currentIndex);
+    updateProfile(currentIndex, 'right');
   });
 
   document.getElementById('prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-    updateProfile(currentIndex);
+    updateProfile(currentIndex, 'left');
   });
 
   // Add touch support for mobile
