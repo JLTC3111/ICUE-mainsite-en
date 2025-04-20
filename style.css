@@ -175,8 +175,8 @@ footer p {
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
-  margin-top: 50px;
-  margin-left: 100px;
+  margin-top: 125px;
+  margin-left: 175px;
   margin-bottom: 55px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.1);
@@ -294,8 +294,9 @@ footer p {
   width: 80%;
   max-width: 800px;
   margin: 30px auto;
-  margin-left: 450px;
+  margin-left: 500px;
   margin-right: 250px;
+  margin-top: 100px;
   padding: 20px;
   background: transparent;
   border-radius: 20px;
@@ -1170,9 +1171,13 @@ footer p {
     text-align: center;
     font-family: 'Montserrat', sans-serif;
     font-size: 2.5em;
-    margin-bottom: 30px;
+    margin: 0 auto 30px;
     text-transform: uppercase;
     letter-spacing: 2px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .contact-form {
