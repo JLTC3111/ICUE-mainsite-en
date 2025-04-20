@@ -746,7 +746,7 @@ footer p {
   .arrow-button {
     width: 48px;
     height: 48px;
-  }
+  }  
 
   .arrow-icon {
     width: 48px;
@@ -1370,3 +1370,74 @@ footer p {
 .postcard-image:hover {
     transform: rotate(-10deg) scale(1.05);
 }
+
+.balloon-button {
+    position: relative;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    font-size: 1.2em;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeead, #d4a5a5, #9b5de5);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000;
+}
+
+.balloon-button:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.balloon {
+    position: fixed;
+    bottom: 0;
+    width: 40px;
+    height: 50px;
+    border-radius: 50%;
+    animation: floatUp 4s ease-in forwards;
+    z-index: 999;
+}
+
+.balloon::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Balloon colors */
+.balloon:nth-child(1) { background-color: #ff6b6b; left: 10%; }
+.balloon:nth-child(2) { background-color: #4ecdc4; left: 20%; }
+.balloon:nth-child(3) { background-color: #45b7d1; left: 30%; }
+.balloon:nth-child(4) { background-color: #96ceb4; left: 40%; }
+.balloon:nth-child(5) { background-color: #ffeead; left: 50%; }
+.balloon:nth-child(6) { background-color: #d4a5a5; left: 60%; }
+.balloon:nth-child(7) { background-color: #9b5de5; left: 70%; }
+.balloon:nth-child(8) { background-color: #ff6b6b; left: 80%; }
+.balloon:nth-child(9) { background-color: #4ecdc4; left: 90%; }
+.balloon:nth-child(10) { background-color: #45b7d1; left: 15%; }
+.balloon:nth-child(11) { background-color: #96ceb4; left: 25%; }
+.balloon:nth-child(12) { background-color: #ffeead; left: 35%; }
+.balloon:nth-child(13) { background-color: #d4a5a5; left: 45%; }
+.balloon:nth-child(14) { background-color: #9b5de5; left: 55%; }
+.balloon:nth-child(15) { background-color: #ff6b6b; left: 65%; }

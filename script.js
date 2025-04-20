@@ -398,3 +398,34 @@ window.onload = () => {
   loadPage('Home');
   highlightActiveLink('Home');
 };
+
+function createBalloons() {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
+    const container = document.body;
+    
+    // Create 15 balloons
+    for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
+        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
+        
+        container.appendChild(balloon);
+        
+        // Remove balloon after animation completes
+        balloon.addEventListener('animationend', () => {
+            balloon.remove();
+        });
+    }
+}
+
+// Initialize balloon button when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const balloonButton = document.getElementById('balloonButton');
+    if (balloonButton) {
+        balloonButton.addEventListener('click', function() {
+            createBalloons();
+        });
+    }
+});
