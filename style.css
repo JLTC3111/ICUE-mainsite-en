@@ -616,6 +616,11 @@ footer p {
     padding: 1rem;
   }
 
+  .submenu {
+    margin-top: 1rem;
+    margin-left: -1rem;
+  }
+
   .logo-banner {
     display: flex;
     margin: 0 auto;
@@ -708,11 +713,10 @@ footer p {
   }
 
   .image-container {
-    justify-content: center;
     width: 250px;
     height: 350px;
     margin-top: 30px;
-    margin-left: 20px;
+    margin-left: 100px;
     margin-bottom: 20px;
   }
 
@@ -815,6 +819,7 @@ footer p {
     display: flex;
     flex-direction: column;
     padding: 15rem 0.5rem;
+    margin-left: -1rem;
     transform: translateX(-100%); /* Hide off-screen initially */
     transition: transform 0.4s ease-in-out;
     z-index: 1000;
