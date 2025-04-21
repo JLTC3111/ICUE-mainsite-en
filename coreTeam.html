@@ -3,25 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Core Team</title>
+    <title>Core Team - ICUE</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="core-team-container">
-        <div class="core-team-info">
-            <h2>Our Core Team</h2>
-            <p>Our core team consists of 5-6 dedicated professionals who manage day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, customer relations, marketing, and finance, each member plays a crucial role in driving the organization’s success. Through strong collaboration and open communication, they work together to tackle challenges and seize opportunities. From client interactions to internal processes, the team’s collective efforts ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.</p>
-        </div>
-        <div class="core-team-images">
-            <img src="public/coreTeam/shape.png" alt="Core Team Shape" class="shape-image">
-            <img src="public/coreTeam/coreTeam1.jpg" alt="Core Team 1" class="team-image">
-            <img src="public/coreTeam/coreTeam2.jpg" alt="Core Team 2" class="team-image">
-            <img src="public/coreTeam/coreTeam3.jpg" alt="Core Team 3" class="team-image">
+    <div class="video-background" id="video-bg-container">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="public/bgVideos/bg1.mp4" type="video/mp4" media="(min-width: 768px)">
+            <source src="public/bgVideos/bg1-mobile.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="image-container-coreTeam">
+        <div class="shutter-top"></div>
+        <div class="shutter-bottom"></div>
+        <img id="profile-photo-coreTeam" class="profile-photo fade-In" src="public/profilePhotos/tam.png" alt="Profile Photo" />
+    </div>
+
+    <div class="text-container" id="text-slider-coreTeam">
+        <div class="montserrat-pepple fade-In" id="profile-text-coreTeam">
+            <div>
+                <span class="intro-people"></span> 
+            </div>
         </div>
     </div>
-          
-</body>
 
+    <div id="prev-btn" class="arrow-button left-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </div>
+
+    <div id="next-btn" class="arrow-button right-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 6l6 6-6 6"/>
+        </svg>
+    </div>
+</body>
 </html>
+
+
+

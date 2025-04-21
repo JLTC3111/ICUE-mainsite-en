@@ -111,7 +111,9 @@ function loadPage(page) {
         if (page === 'meetOurExperts') {
           attachProfileEvents();
         }
-
+        if (page === 'coreTeam') {
+          attachProfileEvents_coreTeam();
+        }
         if (page === 'Home') {
           initHomeTextSlider();         // Start slider
           attachHomeButtonEvents();     // Reactivate buttons
@@ -430,20 +432,95 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function startImageFade() {
-  const images = document.querySelectorAll('.core-team-images img');
-  let currentIndex = 0;
+function attachProfileEvents_coreTeam() {
+  const profileData_coreTeam = [
+    {
+      name: `<span class="intro-people">Nguyen Thanh Tam</span> tam la vien
+                    <i class="fa-solid fa-layer-group"></i>`,
+      img: "public/profilePhotos/tam.png"
+    },
+    {
+      name: `<span class="intro-people">Duong</span> sadasdasdj  hs duong duong `,
+      img: "public/profilePhotos/duong.png"
+    },
+    {
+      name: `<span class="intro-people">Ly Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`,
+      img: "public/profilePhotos/lyly.png"
+    },
+    {
+      name: `<span class="intro-people">Trinh Tinh </span> phong hanh chinh`,
+      img: "public/profilePhotos/trinhtinh.png"
+    }
+  ];
 
-  // Hide all images initially
-  images.forEach((img, index) => {
-    img.style.opacity = index === currentIndex ? '1' : '0';
+  let currentIndex = 0;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const MIN_SWIPE_DISTANCE = 15;
+  
+  const textBox = document.getElementById('profile-text-coreTeam');
+  const photo = document.getElementById('profile-photo-coreTeam');
+  const container = document.querySelector('.image-container'); // Fixed class name here
+
+  function updateProfile_coreTeam(index, direction = 'right') {
+    if (!textBox || !photo) return;
+
+    // Add exit animation
+    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+
+    setTimeout(() => {
+      // Update content
+      textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
+      photo.src = profileData_coreTeam[index].img;
+
+      // Remove exit animation and add enter animation
+      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
+      photo.classList.remove('slide-exit-left', 'slide-exit-right');
+      textBox.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
+      photo.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
+
+      // Remove enter animation after transition
+      setTimeout(() => {
+        textBox.classList.remove('slide-enter-right', 'slide-enter-left');
+        photo.classList.remove('slide-enter-right', 'slide-enter-left');
+      }, 300);
+    }, 300);
+  }
+
+  document.getElementById('next-btn')?.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+    updateProfile_coreTeam(currentIndex, 'right');
   });
 
-  setInterval(() => {
-    images[currentIndex].style.opacity = '0';
-    currentIndex = (currentIndex + 1) % images.length;
-    images[currentIndex].style.opacity = '1';
-  }, 10000);
+  document.getElementById('prev-btn')?.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+    updateProfile_coreTeam(currentIndex, 'left');
+  });
+
+  // Add touch support for mobile
+  if (container) {
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeDistance = touchEndX - touchStartX;
+      
+      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        if (swipeDistance > 0) {
+          document.getElementById('prev-btn')?.click();
+        } else {
+          document.getElementById('next-btn')?.click();
+        }
+      }
+    });
+  }
+
+  // Start first profile
+  updateProfile_coreTeam(0); // Fixed here
 }
 
-startImageFade();
+attachProfileEvents_coreTeam(); // Initialize the function
+
