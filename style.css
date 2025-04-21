@@ -348,6 +348,7 @@ footer p {
 }
 
 .arrow-icon {
+
   width: 90px;
   height: 90px;
   z-index: 100;
@@ -358,7 +359,6 @@ footer p {
 }
 
 .right-arrow {
-
   right: 7.5rem;
 }
 
@@ -674,6 +674,20 @@ footer p {
   z-index: -5;
 }
 
+.intro-core {
+  margin-right: 100px;
+  margin-bottom: 30px;
+  letter-spacing: 1.5px; 
+  display: flex;
+  justify-content: center;
+  font-size: 45px;
+  font-weight: bold;
+  background: linear-gradient(to left, #000000, #a09b0e, rgb(45, 73, 4), rgb(174, 15, 15));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .core-team-text {
   position: relative;
   width: 80%;
@@ -681,6 +695,45 @@ footer p {
   margin: 30px auto;
   margin-left: 200px;
   z-index: 11;
+}
+
+.arrow-symbol {
+  position: relative;
+  display: flex;
+  width: 75px;
+  height: 75px;
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: darkgoldenrod;
+  background-color: whitesmoke;
+  z-index: 100;
+}
+
+.arrow-symbol:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  color: rgb(0, 68, 5);
+  background-color: rgb(159, 158, 158);
+}
+
+.arrow-symbol:active {
+  transform: scale(1.1);
+  color:#0b3f10;
+}
+
+.left-arrow-symbol {
+  top: -24rem;
+  left: 4rem;
+}
+
+.right-arrow-symbol {
+  top: -28rem;
+  right: -90rem;
 }
 
 @media (max-width: 768px) {
