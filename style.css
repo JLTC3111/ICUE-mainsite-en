@@ -350,7 +350,7 @@ footer p {
 .arrow-icon {
   width: 90px;
   height: 90px;
-  color: darkgoldenrod;
+  z-index: 100;
 }
 
 .left-arrow {
@@ -358,6 +358,7 @@ footer p {
 }
 
 .right-arrow {
+
   right: 7.5rem;
 }
 
@@ -370,6 +371,7 @@ footer p {
 
 .arrow-button:active {
   transform: translateY(-50%) scale(1.25);
+  color:#0b3f10;
 }
 
 .language-switcher {
@@ -592,7 +594,7 @@ footer p {
   display: flex;
   position: relative;
   justify-content: center;
-  margin-top: -0.5rem;
+  margin-top: -2.5rem;
   margin-left: -1.5rem;
   gap: 14px;
   z-index: 99999;
@@ -670,6 +672,15 @@ footer p {
   width: 100%;
   height: 100%;
   z-index: -5;
+}
+
+.core-team-text {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  margin: 30px auto;
+  margin-left: 200px;
+  z-index: 11;
 }
 
 @media (max-width: 768px) {

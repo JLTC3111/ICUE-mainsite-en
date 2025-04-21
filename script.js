@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function attachProfileEvents_coreTeam() {
   const profileData_coreTeam = [
     {
-      name: `<span class="intro-people">Nguyễn Thanh Tâm</span> tam la vien ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,  
+      name: `<span class="intro-people">Nguyễn Thanh Tâm</span> ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,  
       img: "public/profilePhotos/tam.png"
     },
     {
