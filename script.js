@@ -429,3 +429,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function startImageFade() {
+  const images = document.querySelectorAll('.core-team-images img');
+  let currentIndex = 0;
+
+  // Hide all images initially
+  images.forEach((img, index) => {
+    img.style.opacity = index === currentIndex ? '1' : '0';
+  });
+
+  setInterval(() => {
+    images[currentIndex].style.opacity = '0';
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].style.opacity = '1';
+  }, 10000);
+}
+
+startImageFade();

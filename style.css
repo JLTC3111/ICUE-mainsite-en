@@ -9,9 +9,9 @@ main {
 }
 
 h1 {
-  justify-content: center;
   align-items: center;
   animation: slideInFromLeft 1s ease-in-out forwards; 
+  
 }
 
 @keyframes slideInFromLeft {
@@ -37,6 +37,7 @@ h2:hover {
 }
 
 .sub-text {
+  margin-left: -50rem;
   font-family: 'Rubik';
   font-style: normal;
   color: whitesmoke;
@@ -48,13 +49,14 @@ h2:hover {
   font-family: cursive;
   font-weight: 900;
   font-style: italic;
-  font-size: 80px;
+  font-size: 75px;
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
-  margin-left: 0.5rem;
+  margin-left: -10.5px;
   margin-right: 25rem;
-  margin-top: -1rem;
+  margin-top: 2.5rem;
+  margin-bottom: 5rem;
 }
 
 p {
@@ -566,15 +568,16 @@ footer p {
 }
 
 .slider-text {
-  color: #000000;
+  text-align: left;
+  color: rgb(44, 44, 44);
   max-width: 80%;
   z-index: 10;
-  margin-top: -50px;
+  margin-top: -25px;
 }
 
 .highlight-text {
   font-family: 'Rubik', cursive ;
-  font-size: 20px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 300;
   visibility: visible; 
@@ -587,7 +590,7 @@ footer p {
   display: flex;
   position: relative;
   justify-content: center;
-  margin-top: -3rem;
+  margin-top: -0.5rem;
   margin-left: -1.5rem;
   gap: 14px;
   z-index: 99999;
@@ -611,6 +614,47 @@ footer p {
   background-color: #ffcc00; /* Highlight active dot */
 }
 
+.core-team-container {
+  display: flex; /* Use flexbox for layout */
+  align-items: flex-start; /* Align items at the start */
+  margin: 20px; /* Margin around the container */
+}
+
+.core-team-info {
+  position: relative;
+  flex: 1; /* Allow the text to take available space */
+  margin-right: 20px; /* Space between text and image */
+}
+
+.shape-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: auto;
+}
+
+.core-team-images {
+  position: absolute; /* Position relative for stacking */
+  width: 300px; /* Set a width for the image container */
+  height: auto; /* Set a height for the image container */
+  overflow: hidden; /* Hide overflow for fading effect */
+  
+}
+
+.core-team-images img {
+  position: relative; /* Position images absolutely */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  object-fit: cover; /* Cover the container */
+  opacity: 0; /* Start with hidden images */
+  transition: opacity 1s ease; /* Smooth transition for fade effect */
+  
+}
+
+.core-team-images img.active {
+  opacity: 1; /* Show active image */
+}
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
@@ -635,6 +679,7 @@ footer p {
   /* Shrink big headers */
   h1 {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
+    text-align: left;
   }
 
   h2 {
@@ -642,17 +687,21 @@ footer p {
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     margin-left: 1rem;
     margin-top: 5rem;
+    display: none;
   }
 
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
-   
+    margin-left: -10rem;
+    
   } 
   
   .cursive-default {
-    font-size: clamp(2rem, 6vw, 3rem);
+    font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
-    margin-left: -0.25rem;
+    margin-top: 14.5rem;
+    margin-left: 0.5rem;
+    margin-bottom: -1.5rem;
   }
 
   p {
@@ -664,18 +713,20 @@ footer p {
     letter-spacing: normal;
   }
 
+
   .home-text-slider {
-    text-align: center;
-    margin-top: 4.5rem;
-    margin-bottom:0;
+    text-align: left;
+    margin-top: 5.5rem;
+    margin-bottom: 2.5rem;
     z-index: 10;
   }
 
   .highlight-text {
+    color:rgb(44, 44, 44);
     font-family: 'Rubik', cursive ;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 300;
+    font-size: 13.5px;
+    font-style:italic;
+    font-weight: 400;
     visibility: visible; /* Ensure it's visible */
     opacity: 1;          /* Ensure it's not transparent */
     transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
@@ -861,10 +912,7 @@ footer p {
     content: none;
   }
 
-  .highlight-text {
-    font-size: 14px;
-    margin-top: 1.5rem;
-  }
+  
 
   footer {
     display: none;
@@ -1526,3 +1574,4 @@ button:hover {
   margin: 5px 0; /* Space above and below paragraphs */
   color: #666; /* Lighter text color */
 }
+
