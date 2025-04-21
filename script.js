@@ -435,22 +435,31 @@ document.addEventListener('DOMContentLoaded', function() {
 function attachProfileEvents_coreTeam() {
   const profileData_coreTeam = [
     {
-      name: `<span class="intro-people">Nguyen Thanh Tam</span> tam la vien
-                    <i class="fa-solid fa-layer-group"></i>`,
+      name: `<span class="intro-people">Nguyễn Thanh Tâm</span> tam la vien ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,  
       img: "public/profilePhotos/tam.png"
     },
     {
-      name: `<span class="intro-people">Duong</span> sadasdasdj  hs duong duong `,
+      name: `<span class="intro-people">Đinh Tùng Dương</span> My name is Đinh Tùng Dương, a graduate of Urban Management from Hanoi Architectural University. I was honored to be recognized as the Valedictorian of Hanoi in 2023. Over the past two years, I have gained valuable experience in the field of urban development, contributing to projects related to spatial planning, landscape improvement, and sustainable urban living. I possess strong analytical and organizational skills, along with proficiency in both office and technical software tools. I am committed to continuous professional growth and aspire to contribute meaningfully within a reputable and forward-thinking organization. `,
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-people">Ly Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`,
+      name: `<span class="intro-people">Nguyễn Quỳnh Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`,
       img: "public/profilePhotos/lyly.png"
     },
     {
-      name: `<span class="intro-people">Trinh Tinh </span> phong hanh chinh`,
-      img: "public/profilePhotos/trinhtinh.png"
-    }
+      name: `<span class="intro-people">Trịnh Thị Tình </span> phong hanh chinh tam la vien ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,
+      img: "public/profilePhotos/tinh.png"
+    },
+    {
+      name: `<span class="intro-people">Nguyễn Thị Ly </span>Tôi là Nguyễn Quỳnh Ly, tôi tốt nghiệp trường Đại học Kinh tế quốc dân, được đào tạo bài bản và có ý thức trách nhiệm cao trong công việc. Tôi có kinh nghiệm làm các công việc liên quan đến thầu các dự án máy móc thiết bị và những dự án liên quan đến lĩnh vực quy hoạch, ngoài ra tôi có thể làm các công việc hành chính khác. Qua đó tích lũy kỹ năng chuyên môn và kỹ năng làm việc nhóm. Tôi mong muốn được làm việc trong môi trường chuyên nghiệp để phát huy năng lực và đóng góp tích cực cho sự phát triển của đơn vị.`,
+      img: "public/profilePhotos/lyicue.png"
+    },
+    {
+      name: `<span class="intro-people">Phan Thị Hiến </span>`,
+      img: "public/profilePhotos/hien.png"
+    },
+    
+    
   ];
 
   let currentIndex = 0;
