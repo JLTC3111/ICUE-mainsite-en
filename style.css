@@ -620,12 +620,12 @@ footer p {
 
 .image-container-coreTeam {
   position: relative;
-  width: 300px;
-  height: 400px;
+  width: 350px;
+  height: 466px;
   overflow: hidden;
   transform: translateX(100px);
   left: 50%;
-  margin-top: 125px;
+  margin-top: 225px;
   margin-left: 175px;
   margin-bottom: 55px;
   background: transparent;
@@ -635,6 +635,7 @@ footer p {
 
 .profile-photo-coreTeam {
   position: absolute;
+  transform: translateX(30px);
   width: 300px;
   height: auto;
   z-index: 3;
@@ -647,11 +648,9 @@ footer p {
   margin: 30px auto;
   margin-left: 200px;
   margin-right: 150px;
-  margin-top: 125px;
+  margin-top: 100px;
   padding: 10px;
   background: transparent;
-  border-radius: 50px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   backdrop-filter: none;
   z-index: 2;
 }
@@ -750,18 +749,38 @@ footer p {
 
 .deco-object {
   position: relative;
-  width: 75px;
+  width: 95px;
   height: auto;
   margin: 20px;
   z-index: 15;
 }
 /* Decorative objects */
-.deco-object1 { top: 250px; left: 72rem; }
+.deco-object1 { top: 250px; left: 72rem; transform: rotate(10deg);}
 .deco-object2 { top: 50px; left: 120px; }
-.deco-object3 { top: 250px; right: -435px; }
+.deco-object3 { top: 600px; right: -500px; }
 .deco-object4 { bottom: 60px; left: 80px; }
 .deco-object5 { bottom: 20px; right: 30px; }
 .deco-object6 { top: 650px; right: -100px; }
+
+.download-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #4CAF50, #2E7D32);
+  border: none;
+  border-radius: 24px;
+  transform: translate(270px, 50px);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+  background: linear-gradient(to right, #460000, #388E3C);
+}
+
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
