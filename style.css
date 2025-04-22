@@ -331,10 +331,9 @@ footer p {
 .arrow-button {
   position: fixed;
   top: 50%;
-  transform: translateY(-50%);
-  width: 75px;
-  height: 75px;
-  background-color: rgb(169, 158, 158);
+  width: 50px;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -348,10 +347,21 @@ footer p {
 }
 
 .arrow-icon {
-
-  width: 90px;
-  height: 90px;
+  width: 75px;
+  height: 75px;
   z-index: 100;
+}
+
+.arrow-button:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  color: rgb(255, 255, 255);
+  background-color: rgb(9, 172, 4);
+  transform: scale(1.1);
+}
+
+.arrow-button:active {
+  transform: scale(1.1);
+  color:#0b3f10;
 }
 
 .left-arrow {
@@ -362,17 +372,6 @@ footer p {
   right: 7.5rem;
 }
 
-.arrow-button:hover {
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  color: rgb(0, 68, 5);
-  background-color: rgb(255, 255, 255);
-}
-
-.arrow-button:active {
-  transform: translateY(-50%) scale(1.25);
-  color:#0b3f10;
-}
 
 .language-switcher {
   position: absolute;
