@@ -450,7 +450,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/tam.png"
     },
     {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated in Business Administration from Hanoi College of Tourism. In addition to managing office administration tasks, I have also contributed to and supported various scientific research projects. I am a dynamic and responsible individual, always eager to learn and grow. With a strong sense of detail and accountability, I value teamwork and apply my accumulated experience to deliver quality results. I aim to further develop my career in a professional environment where I can contribute positively to the organization’s success.<i class="fa-solid fa-layer-group"></i>`,
+      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated in Business Administration from Hanoi College of Tourism. In addition to managing office administration tasks, I have also contributed to and supported various scientific research projects. I am a dynamic and responsible individual, always eager to learn and grow. With a strong sense of detail and accountability, I value teamwork and apply my accumulated experience to deliver quality results. I aim to further develop my career in a professional environment where I can contribute positively to the organization’s success.`,
       img: "public/profilePhotos/tinh.png"
     },
     {
