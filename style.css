@@ -331,20 +331,25 @@ footer p {
 .arrow-button {
   position: fixed;
   top: 50%;
-  width: 50px;
-  height: 50px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background-color: transparent; /* Transparent background */
+  border-radius: 0;               /* Removes the circular shape */
+  box-shadow: none;              /* Removes the shadow */
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 1s ease;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   color: darkgoldenrod;
+  width: auto;                   /* Let content define width */
+  height: auto;
   z-index: 100;
 }
+
+.fill-bright-blue {fill: #63D3FD;}
+.fill-blue {fill: #3DB9F9;}
+.fill-white {fill: #FFFFFF;}
+.fill-dark {fill: #111;}
 
 .arrow-icon {
   width: 75px;
@@ -353,23 +358,33 @@ footer p {
 }
 
 .arrow-button:hover {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  color: rgb(255, 255, 255);
-  background-color: rgb(9, 172, 4);
-  transform: scale(1.1);
+  transform: scale(1.2);
+}
+
+.arrow-button:hover .fill-bright-blue,
+.arrow-button:hover .fill-blue,
+.arrow-button:hover .fill-white,
+.arrow-button:hover .fill-dark {
+  fill: #ffbc41;
 }
 
 .arrow-button:active {
   transform: scale(1.1);
-  color:#0b3f10;
+}
+
+.arrow-button:active .fill-bright-blue,
+.arrow-button:active .fill-blue,
+.arrow-button:active .fill-white,
+.arrow-button:active .fill-dark {
+  fill: #ffbc41;
 }
 
 .left-arrow {
-  left: 1.5rem;
+  left: 4.5rem;
 }
 
 .right-arrow {
-  right: 7.5rem;
+  right: 11.5rem;
 }
 
 
@@ -733,6 +748,7 @@ footer p {
 .arrow-symbol:active .fill-dark {
   fill: #0b3f10;
 }
+
 .left-arrow-symbol {
   top: -24rem;
   left: 4rem;
@@ -932,28 +948,19 @@ footer p {
   }
 
   .arrow-button {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
   }  
 
-  .arrow-icon {
-    width: 48px;
-    height: 48px;
-    color: #ffcc00;
+  .left-arrow {
+    margin-top: -50px;
+    left: 1.5rem;
   }
 
-  .arrow-button:hover {
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    color: rgb(255, 255, 255);
-    background-color: rgb(9, 172, 4);
-    transform: scale(1.1);
+  .right-arrow {
+    margin-top: -50px;
+    right: 1.5rem;
   }
-  
-  .arrow-button:active {
-    transform: scale(1.1);
-    color:#0b3f10;
-  }
-
   .language-switcher {
     position: fixed;
     top: 20px;
