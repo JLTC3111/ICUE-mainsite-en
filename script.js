@@ -438,7 +438,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/coreTeam.jpg"
     },
     {name: 
-      `<span class="intro-core">Nguyễn Quỳnh Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`, 
+      `<span class="intro-core">Nguyễn Thị Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`, 
       img: "public/profilePhotos/lyly.png"
     },
     {
@@ -454,7 +454,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/tinh.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thị Ly </span>Tôi là Nguyễn Quỳnh Ly, tôi tốt nghiệp trường Đại học Kinh tế quốc dân, được đào tạo bài bản và có ý thức trách nhiệm cao trong công việc. Tôi có kinh nghiệm làm các công việc liên quan đến thầu các dự án máy móc thiết bị và những dự án liên quan đến lĩnh vực quy hoạch, ngoài ra tôi có thể làm các công việc hành chính khác. Qua đó tích lũy kỹ năng chuyên môn và kỹ năng làm việc nhóm. Tôi mong muốn được làm việc trong môi trường chuyên nghiệp để phát huy năng lực và đóng góp tích cực cho sự phát triển của đơn vị.`,
+      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span>Tôi là Nguyễn Quỳnh Ly, tôi tốt nghiệp trường Đại học Kinh tế quốc dân, được đào tạo bài bản và có ý thức trách nhiệm cao trong công việc. Tôi có kinh nghiệm làm các công việc liên quan đến thầu các dự án máy móc thiết bị và những dự án liên quan đến lĩnh vực quy hoạch, ngoài ra tôi có thể làm các công việc hành chính khác. Qua đó tích lũy kỹ năng chuyên môn và kỹ năng làm việc nhóm. Tôi mong muốn được làm việc trong môi trường chuyên nghiệp để phát huy năng lực và đóng góp tích cực cho sự phát triển của đơn vị.`,
       img: "public/profilePhotos/lyicue.png"
     },
     {

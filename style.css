@@ -1064,8 +1064,8 @@ footer p {
   @media (max-width: 768px) {
 
     .image-container-coreTeam {
-      width: 215px;
-      height: 315px;
+      width: 185px;
+      height: 262.5px;
       transform: translateX(0);
       top: -350px;
       margin: 150px auto 30px auto;
@@ -1141,9 +1141,9 @@ footer p {
     }
     
     .deco-bg1 { top: -55px; left: 175px; display: none;}
-    .deco-bg2 { top: -55px; right: 265px; display: none;}
-    .deco-bg3 { top: -55px; left: 175px; display:flex;}
-    .deco-bg4 { top: -55px; left: 665px; display: none;}
+    .deco-bg2 { top: -55px; right: 175px; display: none;}
+    .deco-bg3 { top: -55px; left: 175px; display:none;}
+    .deco-bg4 { top: -55px; left: 175px; display: flex;}
     .deco-bg5 { top: -55px; right: 265px; display:flex;}
 
     .download-btn {
