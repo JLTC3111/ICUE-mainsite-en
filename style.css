@@ -620,8 +620,8 @@ footer p {
 
 .image-container-coreTeam {
   position: relative;
-  width: 350px;
-  height: 466px;
+  width: 325px;
+  height: 433px;
   overflow: hidden;
   transform: translateX(100px);
   left: 50%;
@@ -636,8 +636,9 @@ footer p {
 .profile-photo-coreTeam {
   position: absolute;
   transform: translateX(30px);
-  width: 300px;
+  width: 335px;
   height: auto;
+  transform: translateX(-15px);
   z-index: 3;
 }
 
@@ -733,7 +734,8 @@ footer p {
   margin: 20px;
   z-index: 2;
 }
-.deco-bg1 { top: -55px; left: 175px; z-index: -9;}
+
+.deco-bg1 { top: -55px; left: 175px;}
 .deco-bg2 { top: -55px; right: 265px;}
 .deco-bg3 { top: -55px; left: 425px;}
 .deco-bg4 { top: -55px; left: 665px;}
@@ -744,14 +746,6 @@ footer p {
   position: relative;
   width: 100vw;
   height: auto;
-  z-index: 15;
-}
-
-.deco-object {
-  position: relative;
-  width: 95px;
-  height: auto;
-  margin: 20px;
   z-index: 15;
 }
 /* Decorative objects */
@@ -960,6 +954,7 @@ footer p {
     height: 100%;
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
+    transform: translateX(-60px);
     z-index: 1100;
   }
 
@@ -1072,6 +1067,7 @@ footer p {
       width: 215px;
       height: 315px;
       transform: translateX(0);
+      top: -350px;
       margin: 150px auto 30px auto;
       left: auto;
     }
@@ -1082,8 +1078,9 @@ footer p {
     }
   
     .text-container-coreTeam {
-      margin: 20px auto;
+      margin: 10px auto;
       width: 90%;
+      top: -375px;
       margin-left: auto;
       margin-right: auto;
       padding: 5px;
@@ -1103,36 +1100,61 @@ footer p {
       font-size: 14px;
       line-height: 22px;
     }
-  
     .arrow-symbol {
+      position: absolute;
+      display: flex;
       width: 50px;
       height: 50px;
       font-size: 1.5rem;
     }
   
     .left-arrow-symbol {
-      top: -50rem;
-      left: 0.5rem;
+      top: 50%;
+      left: 1.5rem;
     }
   
     .right-arrow-symbol {
-      top: -52.5rem;
-      right: -22.5rem;
+      top: 50%;
+      left: 85%;
     }
   
   
     .deco-object-container {
+      display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 20px;
+      height: auto;
+      min-height: 300px; /* optional minimum height */
+      overflow: hidden;
     }
   
-  
+    .deco-bg {
+      display: flex;
+      position: absolute;
+      width: 220px;
+      height: 124px;
+      margin: 20px;
+      z-index: 2;
+    }
+    
+    .deco-bg1 { top: -55px; left: 175px; display: none;}
+    .deco-bg2 { top: -55px; right: 265px; display: none;}
+    .deco-bg3 { top: -55px; left: 175px; display:flex;}
+    .deco-bg4 { top: -55px; left: 665px; display: none;}
+    .deco-bg5 { top: -55px; right: 265px; display:flex;}
+
     .download-btn {
-      transform: translate(0, 20px);
-      display: block;
-      margin: 30px auto 0 auto;
+      transform: translate(0, 30px); /* Centered horizontally */
+      width: 70%; /* More natural width */
+      max-width: 280px;
+      padding: 10px 16px;
       font-size: 0.9rem;
-      padding: 10px 20px;
+      text-align: center;
+      display: block;
+      margin: 0 auto;
     }
   }
   

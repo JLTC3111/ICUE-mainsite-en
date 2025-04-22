@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function attachProfileEvents_coreTeam() {
   const profileData_coreTeam = [
     {name: '<span class="intro-core">Core Team</span>Our team consists of 5-6 dedicated professionals who manage day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, customer relations, marketing, and finance, each member plays a crucial role in driving the organization’s success. Through strong collaboration and open communication, they work together to tackle challenges and seize opportunities. From client interactions to internal processes, the team’s collective efforts ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.',
-      img: "public/profilePhotos/coreTeam.png"
+      img: "public/profilePhotos/coreTeam.jpg"
     },
     {name: 
       `<span class="intro-core">Nguyễn Quỳnh Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`, 
@@ -458,7 +458,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span>ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no.slbbjkvdbkgebjfb bgfebo;beoqfbe bkebugbegbuoefb b oubebfqbweiulf bbfebiufqb bf bfbkjjbkf bjfsajblfbfbebkjfbaekjbf jfbwf bfbwjkf bfwjb bfbqbilfqofobbiof bob boebf boueqf bbf uboub bf bjbj bf buwqb fbw bfjejbfb fbj bbjf jfb jebjefjbb jbf jbf bjfj bbj</i>`,
+      name: `<span class="intro-core">Phan Thị Hiến </span>My name is Pham Thi Hien, a bachelor of accounting from Hanoi Open University. I am currently working in the accounting field. With experience I have accumulated a lot of knowledge and skills in bookkeeping, financial reporting and data analysis. I always focus on accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue developing my career in accounting and contributing to the success of the company.</i>`,
       img: "public/profilePhotos/hien.png"
     },
     
