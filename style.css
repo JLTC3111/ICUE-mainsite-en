@@ -942,6 +942,18 @@ footer p {
     color: #ffcc00;
   }
 
+  .arrow-button:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    color: rgb(255, 255, 255);
+    background-color: rgb(9, 172, 4);
+    transform: scale(1.1);
+  }
+  
+  .arrow-button:active {
+    transform: scale(1.1);
+    color:#0b3f10;
+  }
+
   .language-switcher {
     position: fixed;
     top: 20px;
@@ -1160,8 +1172,8 @@ footer p {
     .deco-bg1 { top: -55px; left: 175px; display: none;}
     .deco-bg2 { top: -55px; right: 175px; display: none;}
     .deco-bg3 { top: -55px; left: 175px; display:none;}
-    .deco-bg4 { top: -55px; left: 175px; display: flex;}
-    .deco-bg5 { top: -55px; right: 265px; display:flex;}
+    .deco-bg4 { top: -55px; left: 155px; display: flex;}
+    .deco-bg5 { top: -55px; right: 245px; display:flex;}
 
     .download-btn {
       transform: translate(0, 30px); /* Centered horizontally */
