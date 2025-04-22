@@ -434,20 +434,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function attachProfileEvents_coreTeam() {
   const profileData_coreTeam = [
-    {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,  
-      img: "public/profilePhotos/tam.png"
+    {name: '<span class="intro-core">Core Team</span>Our team consists of 5-6 dedicated professionals who manage day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, customer relations, marketing, and finance, each member plays a crucial role in driving the organization’s success. Through strong collaboration and open communication, they work together to tackle challenges and seize opportunities. From client interactions to internal processes, the team’s collective efforts ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.',
+      img: "public/profilePhotos/coreTeam.png"
+    },
+    {name: 
+      `<span class="intro-core">Nguyễn Quỳnh Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`, 
+      img: "public/profilePhotos/lyly.png"
     },
     {
       name: `<span class="intro-core">Đinh Tùng Dương</span> My name is Đinh Tùng Dương, a graduate of Urban Management from Hanoi Architectural University. I was honored to be recognized as the Valedictorian of Hanoi in 2023. Over the past two years, I have gained valuable experience in the field of urban development, contributing to projects related to spatial planning, landscape improvement, and sustainable urban living. I possess strong analytical and organizational skills, along with proficiency in both office and technical software tools. I am committed to continuous professional growth and aspire to contribute meaningfully within a reputable and forward-thinking organization. `,
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span>Possesses a strong academic foundation in urban planning, sustainable urban development, infrastructure management, and public space design. Contributed to various research and technical support projects focused on public spaces, community development, and urban development programs. Demonstrates excellent teamwork, clear organizational skills, and a strong sense of responsibility. Proactive, eager to learn, and committed to furthering professional expertise through participation in urban projects that prioritize sustainability and environmentally friendly solutions.`,
-      img: "public/profilePhotos/lyly.png"
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,  
+      img: "public/profilePhotos/tam.png"
     },
     {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> phong hanh chinh tam la vien ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,
+      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated from Business Administration at Hanoi College of Tourism. In addition to being in charge of office administration, I have participated in and supported scientific research topics and projects. I am a dynamic, responsible person and always ready to learn. In my work, with meticulousness and responsibility, I promote the spirit of teamwork and demonstrate the accumulated experience. I wish to develop myself in a professional environment and contribute positive values ​​to the organization.<i class="fa-solid fa-layer-group"></i>`,
       img: "public/profilePhotos/tinh.png"
     },
     {

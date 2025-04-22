@@ -381,7 +381,7 @@ footer p {
   display: flex;
   gap: 9px;
   margin-top: -6.0rem;
-  margin-right: 5rem;
+  margin-right: 9.5rem;
   z-index: 1100;
 }
 
@@ -408,7 +408,8 @@ footer p {
 }
 
 .flag-icon {
-  display: inline-block;
+  display: flex;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-size: cover;
@@ -629,7 +630,7 @@ footer p {
   margin-left: 175px;
   margin-bottom: 55px;
   background: transparent;
-  border-radius: 50px;
+  border-radius: 450px;
   z-index: 2;
 }
 
@@ -638,16 +639,6 @@ footer p {
   width: 300px;
   height: auto;
   z-index: 3;
-}
-
-.shape-image {
-  position: absolute;
-  top: 50%;
-  left: 75%;
-  width: 365px;
-  height: auto;
-  transform: translate(-150px, -130px);
-  z-index: 1;
 }
 
 .text-container-coreTeam {
@@ -666,14 +657,6 @@ footer p {
   z-index: 2;
 }
 
-.bg-image {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-  z-index: -5;
-}
-
 .intro-core {
   margin-right: 100px;
   margin-bottom: 30px;
@@ -689,12 +672,20 @@ footer p {
 }
 
 .core-team-text {
-  position: relative;
-  width: 80%;
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  width: 100%;
   max-width: 800px;
-  margin: 30px auto;
+  margin-top: 100px;
   margin-left: 200px;
-  z-index: 11;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: rgb(51, 51, 51);
+
+  z-index: 1;
 }
 
 .arrow-symbol {
@@ -717,7 +708,7 @@ footer p {
 .arrow-symbol:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  color: rgb(0, 68, 5);
+  color: rgb(5, 249, 22);
   background-color: rgb(159, 158, 158);
 }
 
@@ -735,6 +726,28 @@ footer p {
   top: -28rem;
   right: -90rem;
 }
+
+.deco-object-container {
+  display: flex;
+  position: relative;
+  width: 100vw;
+  height: auto;
+  z-index: 15;
+}
+
+.deco-bg {
+  display: flex;
+  position: absolute;
+  width: 220px;
+  height: 124px;
+  margin: 20px;
+  z-index: 2;
+}
+.deco-bg1 { top: -55px; left: 175px; z-index: -9;}
+.deco-bg2 { top: -55px; right: 265px;}
+.deco-bg3 { top: -55px; left: 425px;}
+.deco-bg4 { top: -55px; left: 665px;}
+.deco-bg5 { top: -55px; right: 505px;}
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
