@@ -450,7 +450,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/tam.png"
     },
     {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated from Business Administration at Hanoi College of Tourism. In addition to being in charge of office administration, I have participated in and supported scientific research topics and projects. I am a dynamic, responsible person and always ready to learn. In my work, with meticulousness and responsibility, I promote the spirit of teamwork and demonstrate the accumulated experience. I wish to develop myself in a professional environment and contribute positive values ​​to the organization.<i class="fa-solid fa-layer-group"></i>`,
+      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated in Business Administration from Hanoi College of Tourism. In addition to managing office administration tasks, I have also contributed to and supported various scientific research projects. I am a dynamic and responsible individual, always eager to learn and grow. With a strong sense of detail and accountability, I value teamwork and apply my accumulated experience to deliver quality results. I aim to further develop my career in a professional environment where I can contribute positively to the organization’s success.<i class="fa-solid fa-layer-group"></i>`,
       img: "public/profilePhotos/tinh.png"
     },
     {
@@ -458,7 +458,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span>My name is Pham Thi Hien, a bachelor of accounting from Hanoi Open University. I am currently working in the accounting field. With experience I have accumulated a lot of knowledge and skills in bookkeeping, financial reporting and data analysis. I always focus on accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue developing my career in accounting and contributing to the success of the company.</i>`,
+      name: `<span class="intro-core">Phan Thị Hiến </span>A bachelor of accounting from Hanoi Open University. I am currently working in the accounting field. With experience I have accumulated a lot of knowledge and skills in bookkeeping, financial reporting and data analysis. I always focus on accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue developing my career in accounting and contributing to the success of the company.</i>`,
       img: "public/profilePhotos/hien.png"
     },
     
