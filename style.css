@@ -1066,6 +1066,76 @@ footer p {
   .image-grid-mid {
     transform: translateX(100px) !important;
   }
+  @media (max-width: 768px) {
+
+    .image-container-coreTeam {
+      width: 215px;
+      height: 315px;
+      transform: translateX(0);
+      margin: 150px auto 30px auto;
+      left: auto;
+    }
+  
+    .profile-photo-coreTeam {
+      width: 200px;
+      transform: translateX(0);
+    }
+  
+    .text-container-coreTeam {
+      margin: 20px auto;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 5px;
+    }
+  
+    .intro-core {
+      text-align: left;
+      margin: 0 auto;
+      font-size: 28px;
+      text-align: center;
+    }
+  
+    .core-team-text {
+      text-align: left;
+      margin-left: auto;
+      margin-top: 40px;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  
+    .arrow-symbol {
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+    }
+  
+    .left-arrow-symbol {
+      top: -50rem;
+      left: 0.5rem;
+    }
+  
+    .right-arrow-symbol {
+      top: -52.5rem;
+      right: -22.5rem;
+    }
+  
+  
+    .deco-object-container {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+  
+    .download-btn {
+      transform: translate(0, 20px);
+      display: block;
+      margin: 30px auto 0 auto;
+      font-size: 0.9rem;
+      padding: 10px 20px;
+    }
+  }
+  
 }
 
 /* Sliding animations */
@@ -1695,4 +1765,5 @@ button:hover {
   margin: 5px 0; /* Space above and below paragraphs */
   color: #666; /* Lighter text color */
 }
+
 

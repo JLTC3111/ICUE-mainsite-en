@@ -446,7 +446,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no. <i class="fa-solid fa-layer-group"></i>`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no.slbbjkvdbkgebjfb bgfebo;beoqfbe bkebugbegbuoefb b oubebfqbweiulf bbfebiufqb bf bfbkjjbkf bjfsajblfbfbebkjfbaekjbf jfbwf bfbwjkf bfwjb bfbqbilfqofobbiof bob boebf boueqf bbf uboub bf bjbj bf buwqb fbw bfjejbfb fbj bbjf jfb jebjefjbb jbf jbf bjfj bbj`,  
       img: "public/profilePhotos/tam.png"
     },
     {
@@ -458,7 +458,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span>`,
+      name: `<span class="intro-core">Phan Thị Hiến </span>ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no.slbbjkvdbkgebjfb bgfebo;beoqfbe bkebugbegbuoefb b oubebfqbweiulf bbfebiufqb bf bfbkjjbkf bjfsajblfbfbebkjfbaekjbf jfbwf bfbwjkf bfwjb bfbqbilfqofobbiof bob boebf boueqf bbf uboub bf bjbj bf buwqb fbw bfjejbfb fbj bbjf jfb jebjefjbb jbf jbf bjfj bbj</i>`,
       img: "public/profilePhotos/hien.png"
     },
     
