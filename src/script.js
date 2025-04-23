@@ -1,8 +1,7 @@
-function attachProfileEvents() {
+window.attachProfileEvents = () => {
   const profileData = [
     {
-      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span> An expert in urban development and construction management, she holds a PhD in the field and currently serves as Director of the Institute for Economic, Urban, and Construction Research under the Vietnam Construction Association. Her extensive career includes serving as Deputy Director at both the Institute for Urban and Construction Economics Research (2013–2018) and the Department of Urban Development at the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning, and architectural design, with a strong focus on sustainable, well-governed cities. She has led major initiatives in green urban development, climate resilience, and policy advisory for national and regional planning, supported by international partners like the World Bank and ADB.
-                    <i class="fa-solid fa-layer-group"></i>`,
+      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span> An expert in urban development and construction management, she holds a PhD in the field and currently serves as Director of the Institute for Economic, Urban, and Construction Research under the Vietnam Construction Association. Her extensive career includes serving as Deputy Director at both the Institute for Urban and Construction Economics Research (2013–2018) and the Department of Urban Development at the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning, and architectural design, with a strong focus on sustainable, well-governed cities. She has led major initiatives in green urban development, climate resilience, and policy advisory for national and regional planning, supported by international partners like the World Bank and ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
@@ -93,7 +92,7 @@ function attachProfileEvents() {
   updateProfile(0);
 }
 
-function loadPage(page) {
+window.loadPage = (page) => {
   const content = document.getElementById('content');
 
   fetch(`/src/pages/${page}.html`)
@@ -122,7 +121,7 @@ function loadPage(page) {
     });
 }
 
-function attachHomeButtonEvents() {
+window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
     button.addEventListener('click', () => {
       console.log('Button clicked:', button.textContent);
@@ -131,7 +130,7 @@ function attachHomeButtonEvents() {
   });
 }
 
-function initHomeTextSlider() {
+window.initHomeTextSlider = () => {
   // Clean up existing event listeners and intervals
   const sliderContainer = document.querySelector("#homeTextSlider");
   const dotsContainer = document.querySelector("#sliderDots");
@@ -279,7 +278,7 @@ window.onload = () => {
 
 let currentPage = 'Home'; // default
 
-function toggleDrawerMenu() {
+window.toggleDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon');
   const isOpen = drawerMenu.classList.contains('open');
@@ -305,7 +304,7 @@ function toggleDrawerMenu() {
   }
 }
 
-function closeDrawerMenu() {
+window.closeDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon');
 
@@ -323,7 +322,7 @@ function closeDrawerMenu() {
   }, 200);
 }
 
-function handleOutsideClick(e) {
+window.handleOutsideClick = (e) => {
   const drawer = document.getElementById('drawerMenu');
   const toggle = document.querySelector('.menu-toggle');
 
@@ -332,24 +331,24 @@ function handleOutsideClick(e) {
   }
 }
 
-function handleEscKey(e) {
+window.handleEscKey = (e) => {
   if (e.key === 'Escape') {
     closeDrawerMenu();
   }
 }
 
-function addOverlayListener() {
+window.addOverlayListener = () => {
   document.addEventListener('click', handleOutsideClick);
   document.addEventListener('keydown', handleEscKey);
 }
 
-function removeOverlayListener() {
+window.removeOverlayListener = () => {
   document.removeEventListener('click', handleOutsideClick);
   document.removeEventListener('keydown', handleEscKey);
 }
 
 // Navigation handler + page loader
-function navigateToPage(page) {
+window.navigateToPage = (page) => {
   currentPage = page;
   loadPage(page); // Your existing page loader
   highlightActiveLink(page);
@@ -357,7 +356,7 @@ function navigateToPage(page) {
 }
 
 // Highlight active link
-function highlightActiveLink(page) {
+window.highlightActiveLink = (page) => {
   const links = document.querySelectorAll('#drawerMenu a');
   links.forEach(link => {
     link.classList.remove('active');
@@ -367,7 +366,7 @@ function highlightActiveLink(page) {
   });
 }
 
-function toggleSubmenu(e) {
+window.toggleSubmenu = (e) => {
   e.preventDefault(); // prevent page from jumping
   const submenu = document.getElementById('ourTeamSubmenu');
   submenu.classList.toggle('open');
@@ -401,7 +400,7 @@ window.onload = () => {
   highlightActiveLink('Home');
 };
 
-function createBalloons() {
+window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
     
@@ -432,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function attachProfileEvents_coreTeam() {
+window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
     {name: '<span class="intro-core">Core Team</span>Our team consists of 5-6 dedicated professionals who manage day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, customer relations, marketing, and finance, each member plays a crucial role in driving the organization’s success. Through strong collaboration and open communication, they work together to tackle challenges and seize opportunities. From client interactions to internal processes, the team’s collective efforts ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.',
       img: "public/profilePhotos/coreTeam.jpg"
@@ -458,7 +457,7 @@ function attachProfileEvents_coreTeam() {
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span>A bachelor of accounting from Hanoi Open University. I am currently working in the accounting field. With experience I have accumulated a lot of knowledge and skills in bookkeeping, financial reporting and data analysis. I always focus on accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue developing my career in accounting and contributing to the success of the company.</i>`,
+      name: `<span class="intro-core">Phan Thị Hiến </span>A bachelor of accounting from Hanoi Open University. I am currently working in the accounting field. With experience I have accumulated a lot of knowledge and skills in bookkeeping, financial reporting and data analysis. I always focus on accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue developing my career in accounting and contributing to the success of the company.`,
       img: "public/profilePhotos/hien.png"
     },
     
@@ -474,7 +473,7 @@ function attachProfileEvents_coreTeam() {
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.querySelector('.image-container'); // Fixed class name here
 
-  function updateProfile_coreTeam(index, direction = 'right') {
+  window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
 
     // Add exit animation
