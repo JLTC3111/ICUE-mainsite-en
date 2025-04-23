@@ -824,6 +824,14 @@ footer p {
   flex-shrink: 0; /* Don’t let it shrink */
 }
 
+.model-description {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0px;
+  text-align: left;
+}
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
@@ -854,9 +862,9 @@ footer p {
   h2 {
     color: rgb(0, 0, 0);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
-    margin-left: 1rem;
-    margin-top: 5rem;
-    display: none;
+    left: 50%;
+    top: 50%;
+    display: flex;
   }
 
   .sub-text {
