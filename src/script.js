@@ -96,7 +96,7 @@ function attachProfileEvents() {
 function loadPage(page) {
   const content = document.getElementById('content');
 
-  fetch(`${page}.html`)
+  fetch(`/src/pages/${page}.html`)
     .then(response => response.text())
     .then(data => {
       content.innerHTML = data;
