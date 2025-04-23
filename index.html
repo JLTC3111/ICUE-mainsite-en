@@ -12,6 +12,7 @@
 </head>
 <body>
   
+  
   <div class="language-switcher">
     <a href="https://icuevn-mainsite.netlify.app/#" class="flag-link">
         <span class="flag-icon flag-icon-vn"></span>    
@@ -31,28 +32,31 @@
     </div>
   
     <!-- Contact stays to the right -->
-    <a href="#" onclick="loadPage('Contact'); closeDrawerMenu();" data-page="Contact" class="contact-link">Contact</a>
+    <a href="#/Contact" onclick="loadPage('Contact'); closeDrawerMenu();" data-page="Contact" class="contact-link">Contact</a>
   
     <!-- Fullscreen Drawer Menu -->
     <div class="drawer-menu" id="drawerMenu">
-      <a href="#" onclick="loadPage('Home'); closeDrawerMenu();" data-page="Home">🏚️ Home</a>
-      <a href="#" onclick="loadPage('ourWork'); closeDrawerMenu();" data-page="ourWork">⇲ Our Work</a>
-      <a href="#" onclick="loadPage('aboutUs'); closeDrawerMenu();" data-page="aboutUs">〶 About Us</a>
+      <a href="#/Home" onclick="loadPage('Home'); closeDrawerMenu();" data-page="Home">🏚️ Home</a>
+      <a href="#/ourWork" onclick="loadPage('ourWork'); closeDrawerMenu();" data-page="ourWork">⇲ Our Work</a>
+      <a href="#/aboutUs" onclick="loadPage('aboutUs'); closeDrawerMenu();" data-page="aboutUs">〶 About Us</a>
       <a href="#" class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourPeople">📉 Our People</a>
       <div class="submenu">
-        <a href="#" onclick="loadPage('meetOurExperts'); closeDrawerMenu();";  data-page="meetOurExperts">Meet Our Experts</a>
-        <a href="#" onclick="loadPage('coreTeam'); closeDrawerMenu();" data-page="coreTeam">Core Team</a>
+        <a href="#/meetOurExperts" onclick="loadPage('meetOurExperts'); closeDrawerMenu();"  data-page="meetOurExperts">Meet Our Experts</a>
+        <a href="#/coreTeam" onclick="loadPage('coreTeam'); closeDrawerMenu();" data-page="coreTeam">Core Team</a>
       </div>
     </div>
   </nav>
 
   <main id="content">
-      <h1>Welcome to ICUE!</h1>
-      <p>Let's Start</p>
+      
       
   </main>
+  <!-- Load model-viewer once -->
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <script src="script.js"></script>
+<!-- Your app's logic -->
+<script src="./script.js"></script>
+  
   
 </body>
 <footer>Made by LD⭐️</footer>
