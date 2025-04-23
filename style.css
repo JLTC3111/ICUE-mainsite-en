@@ -46,7 +46,7 @@ h2:hover {
 }
 
 .cursive-default {
-  font-family: cursive;
+  font-family: 'IBM Plex Serif', serif;
   font-weight: 900;
   font-style: italic;
   font-size: 75px;
@@ -814,14 +814,13 @@ footer p {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 15rem;
-  right: 2.5rem;
-  
+  top: 9rem;
+  right: -16.5rem;
 }
 
 .model-viewer {
-  width: 600px;
-  height: 600px;
+  width: 900px;
+  height: 900px;
   flex-shrink: 0; /* Don’t let it shrink */
 }
 
@@ -1114,6 +1113,17 @@ footer p {
   .image-grid-mid {
     transform: translateX(100px) !important;
   }
+
+  .model-section {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Optional: stack on small screens */
+    top: -1.5rem;
+    right: 5.5rem;
+  }
+
   @media (max-width: 768px) {
 
     .image-container-coreTeam {
