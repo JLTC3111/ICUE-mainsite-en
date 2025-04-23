@@ -3,11 +3,13 @@
     "@google/model-viewer": "^4.1.0"
   },
   "devDependencies": {
+    "cpy": "^11.1.0",
     "vite": "^6.3.2"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run copy-models",
+    "copy-models": "cpy ./src/models/**/* /dist/models",
     "preview": "vite preview"
   }
 }
