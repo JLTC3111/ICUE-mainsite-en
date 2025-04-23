@@ -1,10 +1,9 @@
 {
-  "devDependencies": {
-    "@google/model-viewer": "^4.1.0",
-    "vite": "^6.3.2"
-  },
   "dependencies": {
     "@google/model-viewer": "^4.1.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.2"
   },
   "scripts": {
     "dev": "vite",
