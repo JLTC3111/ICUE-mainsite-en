@@ -808,6 +808,23 @@ footer p {
   background: linear-gradient(to right, #460000, #388E3C);
 }
 
+.model-section {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Optional: stack on small screens */
+  top: 15rem;
+  right: 2.5rem;
+  
+}
+
+.model-viewer {
+  width: 600px;
+  height: 600px;
+  flex-shrink: 0; /* Don’t let it shrink */
+}
+
 
 @media (max-width: 768px) {
   /* Adjust main layout padding */
