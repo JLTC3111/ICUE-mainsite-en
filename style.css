@@ -1130,6 +1130,16 @@ footer p {
     flex-wrap: wrap; /* Optional: stack on small screens */
     top: -1.5rem;
     right: 5.5rem;
+    animation: slideDownFromTop 3s ease-in-out;
+  }
+
+  @keyframes slideDownFromTop {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
   }
 
   @media (max-width: 768px) {
