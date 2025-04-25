@@ -5,7 +5,7 @@ body {
 }
 
 main {
-  padding: 2em;
+  padding: 0;
 }
 
 h1 {
@@ -850,9 +850,9 @@ footer p {
 
 .sci-fi-clock {
   position: relative;
-  width: 120px;
-  height: 120px;
-  margin-top: 20px;
+  width: 100px;
+  height: 100px;
+  margin-top: 50px;
 }
 
 .clock-circle {
@@ -871,8 +871,8 @@ footer p {
 
 .clock-center {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 35px;
+  height: 35px;
   background: #00ffcc;
   border-radius: 50%;
   top: 50%;
@@ -881,13 +881,15 @@ footer p {
 }
 
 .loading-text {
+  display: flex;
+  flex-direction: column;
   font-family: 'Audiowide', sans-serif;
   font-size: 1.5rem;
   color: whitesmoke;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  margin-left: -2.5rem;
+  margin-top: 60px;
+  margin-left: 3rem;
   text-shadow: 0 0 8px #00ffcc;
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -910,6 +912,11 @@ body.loading .video-bg {
   visibility: hidden;
   pointer-events: none;
 }
+
+.content-wrapper {
+  margin-top: -15rem;
+}
+
 @media (max-width: 768px) {
   /* Adjust main layout padding */
   main {
@@ -919,6 +926,12 @@ body.loading .video-bg {
   .submenu {
     margin-top: 1rem;
     margin-left: -1rem;
+  }
+
+  .loading-logo {
+    width: 400px;
+    height: auto;
+    transform: translateX(25px);
   }
 
   .logo-banner {
@@ -1206,7 +1219,7 @@ body.loading .video-bg {
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
     top: -1.5rem;
-    right: 5.5rem;
+    right: 2.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
