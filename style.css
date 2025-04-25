@@ -2,6 +2,7 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 main {
@@ -129,8 +130,9 @@ nav a {
   height: 100vh;
   position: fixed;
   overflow: hidden;
-  margin-top: -50px;
-  margin-left: -35px;
+  top: 0;
+  left: 0;
+  z-index: -99; 
 }
 
 .video-bg {
