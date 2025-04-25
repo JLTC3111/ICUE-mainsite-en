@@ -94,59 +94,30 @@ window.attachProfileEvents = () => {
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
-  const loader = document.getElementById('loading-overlay');
-  const stopwatchEl = document.getElementById('stopwatch');
-
-  let loadingStart = null;
-  let stopwatchInterval = null;
-
-  // Timer for delayed loader
-  const loadingTimer = setTimeout(() => {
-    loader.style.display = 'flex';
-    loadingStart = Date.now();
-
-    // Start stopwatch
-    stopwatchInterval = setInterval(() => {
-      const now = Date.now();
-      const elapsed = now - loadingStart;
-
-      const minutes = String(Math.floor(elapsed / 60000)).padStart(2, '0');
-      const seconds = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0');
-      const milliseconds = String(elapsed % 1000).padStart(3, '0');
-
-      stopwatchEl.textContent = `⏱ ${minutes}:${seconds}.${milliseconds}`;
-    }, 33); // update ~30fps
-  }, 1500); // only show loader after 1.5s
 
   fetch(`/src/pages/${page}.html`)
     .then(response => response.text())
     .then(data => {
-      clearTimeout(loadingTimer);
-      clearInterval(stopwatchInterval);
-      loader.style.display = 'none';
-      stopwatchEl.textContent = '⏱ 00:00.000'; // Reset
-
       content.innerHTML = data;
 
+      // 🔸 Highlight active nav link
       document.querySelectorAll('.drawer-menu a').forEach(link => {
         link.classList.toggle('active', link.dataset.page === page);
       });
 
+      // 🔸 Wait for content to be in DOM
       requestAnimationFrame(() => {
-        if (page === 'meetOurExperts') attachProfileEvents();
-        if (page === 'coreTeam') attachProfileEvents_coreTeam();
+        if (page === 'meetOurExperts') {
+          attachProfileEvents();
+        }
+        if (page === 'coreTeam') {
+          attachProfileEvents_coreTeam();
+        }
         if (page === 'Home') {
-          initHomeTextSlider();
-          attachHomeButtonEvents();
+          initHomeTextSlider();         // Start slider
+          attachHomeButtonEvents();     // Reactivate buttons
         }
       });
-    })
-    .catch(err => {
-      clearTimeout(loadingTimer);
-      clearInterval(stopwatchInterval);
-      loader.style.display = 'none';
-      stopwatchEl.textContent = '⏱ 00:00.000';
-      content.innerHTML = `<p style="color: red;">Error loading page: ${err.message}</p>`;
     });
 }
 

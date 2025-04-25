@@ -611,7 +611,7 @@ footer p {
   margin-top: -2.5rem;
   margin-left: -1.5rem;
   gap: 14px;
-  z-index: 99999;
+  z-index: 1;
 }
 
 .dot {
@@ -621,7 +621,7 @@ footer p {
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  z-index: 99999;
+  z-index: 1;
 }
 
 .dot:hover {
@@ -1226,41 +1226,6 @@ body.loading .video-bg {
     }
   }
 
-  #loading-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    z-index: 9998;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #00ffcc;
-    font-family: 'Audiowide', monospace;
-  }
-  
-  #loading-overlay .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #444;
-    border-top: 5px solid #00ffcc;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  #stopwatch {
-    font-size: 1.2rem;
-    font-family: 'IBM Plex Mono', monospace;
-    color: #00ffcc;
-    margin-top: 0.5rem;
-    text-shadow: 0 0 4px #00ffcc;
-  }
-  
   @media (max-width: 768px) {
 
     .image-container-coreTeam {

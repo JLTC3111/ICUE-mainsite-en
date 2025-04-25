@@ -11,14 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Bungee+Tint&family=Pinyon+Script&family=Rubik:ital,wght@0,300..900;1,300..900&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <div id="loading-overlay">
-    <div class="spinner"></div>
-    <p>Loading page...</p>
-    <p id="stopwatch">⏱ 00:00.000</p>
-  </div>              
   <!-- ✅ Standalone landing page -->
-   
   <div id="landing-page" class="content-wrapper">
     <img src="public/logoIcons/logo.png" class="loading-logo" alt="Logo" />
     <div class="sci-fi-clock">
@@ -85,7 +80,7 @@
         landing.style.display = 'none';
         document.body.classList.remove('loading'); // ✅ Reveal rest of the UI
       }, 1000);
-    }, 1000); // 👈 tweak this to control delay
+    }, 2000); // 👈 tweak this to control delay
   }
 });
 </script>
