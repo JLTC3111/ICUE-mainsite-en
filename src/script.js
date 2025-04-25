@@ -453,7 +453,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/tinh.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span>Tôi là Nguyễn Quỳnh Ly, tôi tốt nghiệp trường Đại học Kinh tế quốc dân, được đào tạo bài bản và có ý thức trách nhiệm cao trong công việc. Tôi có kinh nghiệm làm các công việc liên quan đến thầu các dự án máy móc thiết bị và những dự án liên quan đến lĩnh vực quy hoạch, ngoài ra tôi có thể làm các công việc hành chính khác. Qua đó tích lũy kỹ năng chuyên môn và kỹ năng làm việc nhóm. Tôi mong muốn được làm việc trong môi trường chuyên nghiệp để phát huy năng lực và đóng góp tích cực cho sự phát triển của đơn vị.`,
+      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, was well-trained and have a high sense of responsibility in my work. I have experience in jobs related to bidding for machinery and equipment projects and projects related to the planning field, in addition I can do other administrative jobs. Thereby accumulating professional skills and teamwork skills. I wish to work in a professional environment to promote my capacity and contribute positively to the development of the unit.`,
       img: "public/profilePhotos/lyicue.png"
     },
     {
