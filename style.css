@@ -834,6 +834,82 @@ footer p {
   text-align: left;
 }
 
+#landing-page {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #000 40%, #111);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: #00ffcc;
+  font-family: 'Audiowide', 'Courier New', monospace;
+  
+}
+
+.sci-fi-clock {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-top: 20px;
+}
+
+.clock-circle {
+  width: 100%;
+  height: 100%;
+  border: 3px dashed #00ffcc;
+  border-radius: 50%;
+  animation: rotateClock 8s linear infinite;
+}
+
+@keyframes rotateClock {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.clock-center {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #00ffcc;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-text {
+  font-family: 'Audiowide', sans-serif;
+  font-size: 1.5rem;
+  color: whitesmoke;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: -2.5rem;
+  text-shadow: 0 0 8px #00ffcc;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4 }
+  50% { opacity: 1 }
+}
+
+body.loading nav,
+body.loading main,
+body.loading footer,
+body.loading .slider,
+body.loading .dot,
+body.loading .language-switcher,
+body.loading .menu-toggle,
+body.loading .drawer-menu,
+body.loading .content,
+body.loading .video-bg {
+  visibility: hidden;
+  pointer-events: none;
+}
 @media (max-width: 768px) {
   /* Adjust main layout padding */
   main {
@@ -852,7 +928,7 @@ footer p {
     height: 20px;
     margin-left: 1px;
     margin-top: -2rem;
-    z-index: 1001;
+    z-index: 11;
   }
   /* Shrink big headers */
   h1 {
@@ -917,7 +993,7 @@ footer p {
     margin-top: 1.5rem;
     margin-left: -1.2rem;
     gap: 14px;
-    z-index: 99;
+    z-index: 1;
   }
 
   .dot {
@@ -927,7 +1003,7 @@ footer p {
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    z-index: 99;
+    z-index: 1;
   }
 
   nav {
