@@ -100,58 +100,60 @@ window.loadPage = (page) => {
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
 
-  progressBar.style.strokeDasharray = `${circumference}`;
-  landing.style.display = 'grid'; // show it again
-  landing.style.opacity = 1;
-  landing.style.pointerEvents = 'all';
-
   let progress = 0;
-  function setProgress(percent) {
+  progressBar.style.strokeDasharray = `${circumference}`;
+
+  const setProgress = (percent) => {
     const offset = circumference - (percent / 100) * circumference;
     progressBar.style.strokeDashoffset = offset;
     progressText.textContent = `${Math.round(percent)}%`;
-  }
+  };
+
+  landing.style.display = 'grid';
+  landing.style.opacity = 1;
+  landing.style.pointerEvents = 'all';
 
   let fakeProgress = setInterval(() => {
     progress += Math.random() * 5;
     if (progress > 90) progress = 90;
     setProgress(progress);
-  }, 100);
+  }, 80);
 
-  // 🔁 Begin fetch
   fetch(`/src/pages/${page}.html`)
-    .then((response) => response.text())
-    .then((data) => {
+    .then(response => response.text())
+    .then(data => {
+      content.innerHTML = data;
+
       clearInterval(fakeProgress);
-      let finalizeProgress = setInterval(() => {
+
+      let finalize = setInterval(() => {
         progress += 2;
         setProgress(progress);
         if (progress >= 100) {
-          clearInterval(finalizeProgress);
+          clearInterval(finalize);
           landing.style.opacity = 0;
           landing.style.pointerEvents = 'none';
+
           setTimeout(() => {
             landing.style.display = 'none';
-          }, 800);
+
+            // ✅ Delay script activation *after* loader is gone
+            requestAnimationFrame(() => {
+              if (page === 'meetOurExperts') {
+                attachProfileEvents();
+              }
+              if (page === 'coreTeam') {
+                attachProfileEvents_coreTeam();
+              }
+              if (page === 'Home') {
+                initHomeTextSlider();
+                attachHomeButtonEvents();
+              }
+            });
+
+          }, 400); // After fade-out
         }
-      }, 20);
-
-      content.innerHTML = data;
-
-      // Re-initialize page-specific JS
-      requestAnimationFrame(() => {
-        if (page === 'meetOurExperts') attachProfileEvents();
-        if (page === 'coreTeam') attachProfileEvents_coreTeam();
-        if (page === 'Home') {
-          initHomeTextSlider();
-          attachHomeButtonEvents();
-        }
-      });
-
-      // Update nav highlights
-      document.querySelectorAll('.drawer-menu a').forEach(link => {
-        link.classList.toggle('active', link.dataset.page === page);
-      });
+      },);
     });
 }
 
