@@ -119,7 +119,7 @@ window.loadPage = (page) => {
   landing.style.pointerEvents = 'all';
 
   let fakeProgress = setInterval(() => {
-    progress += Math.random() * 5;
+    progress += Math.random() * 1.5;
     if (progress > 90) progress = 90;
     setProgress(progress);
   }, 80);
@@ -156,7 +156,7 @@ window.loadPage = (page) => {
               }
             });
 
-          }, 600); // After fade-out
+          }, 400); // After fade-out
         }
       },);
     });
@@ -482,7 +482,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/lyly.png"
     },
     {
-      name: `<span class="intro-core">Đinh Tùng Dương</span> My name is Đinh Tùng Dương, a graduate of Urban Management from Hanoi Architectural University. I was honored to be recognized as the Valedictorian of Hanoi in 2023. Over the past two years, I have gained valuable experience in the field of urban development, contributing to projects related to spatial planning, landscape improvement, and sustainable urban living. I possess strong analytical and organizational skills, along with proficiency in both office and technical software tools. I am committed to continuous professional growth and aspire to contribute meaningfully within a reputable and forward-thinking organization. `,
+      name: `<span class="intro-core">Đinh Tùng Dương</span> I hold a degree in Urban Management from Hanoi Architectural University, where I was honored to be named Valedictorian of Hanoi in 2023. Over the past two years, I’ve actively contributed to urban development projects focusing on spatial planning, landscape enhancement, and sustainable city living. I bring strong analytical and organizational abilities, along with proficiency in both office and technical software. I am committed to ongoing professional growth and aim to contribute effectively to a progressive, reputable organization. `,
       img: "public/profilePhotos/duong.png"
     },
     {
@@ -494,7 +494,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/tinh.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, was well-trained and have a high sense of responsibility in my work. I have experience in jobs related to bidding for machinery and equipment projects and projects related to the planning field, in addition I can do other administrative jobs. Thereby accumulating professional skills and teamwork skills. I wish to work in a professional environment to promote my capacity and contribute positively to the development of the unit.`,
+      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I am a graduate of the National Economics University, equipped with solid training and a strong sense of responsibility in my work. I have experience in bidding for machinery and equipment projects, as well as in projects related to urban planning. Additionally, I am capable of handling various administrative tasks. These roles have helped me build strong professional and teamwork skills. I look forward to working in a professional environment where I can apply my abilities and contribute to the growth of the organization.`,
       img: "public/profilePhotos/lyicue.png"
     },
     {
