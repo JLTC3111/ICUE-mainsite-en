@@ -920,6 +920,18 @@ svg {
   font-family: 'Audiowide', sans-serif;
 }
 
+/* Prevent flash of unstyled content */
+body.preload #app {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+body.loaded #app {
+  visibility: visible;
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
   /* Adjust main layout padding */
   main {
