@@ -409,7 +409,7 @@ window.highlightActiveLink = (page) => {
 
 window.toggleSubmenu = (e) => {
   e.preventDefault(); // prevent page from jumping
-  const submenu = document.getElementById('ourTeamSubmenu');
+  const submenu = document.getElementById('ourPeopleSubmenu');
   submenu.classList.toggle('open');
 }
 
