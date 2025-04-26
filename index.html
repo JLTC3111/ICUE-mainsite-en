@@ -75,38 +75,44 @@
   <!-- Load model-viewer once -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script>
+  const landingPage = document.getElementById('landing-page');
   const progressBar = document.querySelector('.progress-bar');
   const progressText = document.getElementById('progress-text');
-  const landingPage = document.getElementById('landing-page');
 
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
-
   progressBar.style.strokeDasharray = `${circumference}`;
-  progressBar.style.strokeDashoffset = `${circumference}`;
 
   function setProgress(percent) {
     const offset = circumference - (percent / 100) * circumference;
     progressBar.style.strokeDashoffset = offset;
-    progressText.textContent = `${percent}%`;
+    progressText.textContent = `${Math.round(percent)}%`;
   }
 
-  // Animate from 0 to 100%
-  let current = 0;
-  const interval = setInterval(() => {
-    if (current > 100) {
-      clearInterval(interval);
-      // Hide the landing page
-      landingPage.style.opacity = 0;
-      landingPage.style.pointerEvents = 'none';
-      setTimeout(() => {
-        landingPage.style.display = 'none';
-      }, 800);
-    } else {
-      setProgress(current);
-      current++;
-    }
-  }, 20);
+  // Track loading progress
+  let progress = 0;
+  const fakeIncrement = setInterval(() => {
+    progress += Math.random() * 5; // simulate progress
+    if (progress > 90) progress = 90; // cap until real load
+    setProgress(progress);
+  }, 100);
+
+  // When everything is fully loaded (images, scripts, fonts, etc.)
+  window.addEventListener('load', () => {
+    clearInterval(fakeIncrement);
+    const fullInterval = setInterval(() => {
+      progress += 1.5;
+      setProgress(progress);
+      if (progress >= 100) {
+        clearInterval(fullInterval);
+        landingPage.style.opacity = 0;
+        landingPage.style.pointerEvents = 'none';
+        setTimeout(() => {
+          landingPage.style.display = 'none';
+        }, 800);
+      }
+    }, 30);
+  });
 </script>
 <!-- Your app's logic -->
 <script type="module" src="/src/script.js"></script>
