@@ -16,15 +16,23 @@
   <!-- ✅ Standalone landing page -->
   <div id="landing-page" class="content-wrapper">
     <img src="public/logoIcons/logo.png" class="loading-logo" alt="Logo" />
-    <div class="sci-fi-clock">
-      <div class="clock-circle"></div>
-      <div class="clock-center"></div>
-      <p class="loading-text">
-        <span>Initializing</span><br>
-        <span>Core</span><br>
-        <span>Systems</span>
-      </p>
-    </div>
+
+      <div class="progress-container">
+        <svg width="200" height="200">
+          <circle class="progress-bg" cx="100" cy="100" r="90" stroke-width="20" fill="none" />
+          <circle class="progress-bar" cx="100" cy="100" r="90" stroke-width="20" fill="none"
+                  stroke-dasharray="565.48" stroke-dashoffset="565.48" />
+        </svg>
+        <div class="progress-text" id="progress-text">0%</div>
+        <p class="loading-text"> 
+          <span>Loading</span>
+          <span>Page...</span>
+          
+        </p>
+      
+      </div>
+    
+  
   </div>
 
   <div class="language-switcher">
@@ -67,22 +75,38 @@
   <!-- Load model-viewer once -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script>
-  window.addEventListener('load', () => {
-  const landing = document.getElementById('landing-page');
-  if (landing) {
-    // Simulate slow loading (e.g., 3 seconds)
-    setTimeout(() => {
-      landing.style.opacity = '0';
-      landing.style.pointerEvents = 'none';
-      landing.style.transition = 'opacity 1s ease';
-      
-      setTimeout(() => {
-        landing.style.display = 'none';
-        document.body.classList.remove('loading'); // ✅ Reveal rest of the UI
-      }, 1000);
-    }, 2000); // 👈 tweak this to control delay
+  const progressBar = document.querySelector('.progress-bar');
+  const progressText = document.getElementById('progress-text');
+  const landingPage = document.getElementById('landing-page');
+
+  const radius = 90;
+  const circumference = 2 * Math.PI * radius;
+
+  progressBar.style.strokeDasharray = `${circumference}`;
+  progressBar.style.strokeDashoffset = `${circumference}`;
+
+  function setProgress(percent) {
+    const offset = circumference - (percent / 100) * circumference;
+    progressBar.style.strokeDashoffset = offset;
+    progressText.textContent = `${percent}%`;
   }
-});
+
+  // Animate from 0 to 100%
+  let current = 0;
+  const interval = setInterval(() => {
+    if (current > 100) {
+      clearInterval(interval);
+      // Hide the landing page
+      landingPage.style.opacity = 0;
+      landingPage.style.pointerEvents = 'none';
+      setTimeout(() => {
+        landingPage.style.display = 'none';
+      }, 800);
+    } else {
+      setProgress(current);
+      current++;
+    }
+  }, 20);
 </script>
 <!-- Your app's logic -->
 <script type="module" src="/src/script.js"></script>

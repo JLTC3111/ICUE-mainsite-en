@@ -879,12 +879,12 @@ footer p {
   display: flex;
   flex-direction: column;
   font-family: 'Audiowide', sans-serif;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: whitesmoke;
   justify-content: center;
   align-items: center;
-  margin-top: 60px;
-  margin-left: 3rem;
+  margin-top: 30px;
+  margin-left: 6.5rem;
   text-shadow: 0 0 8px #00ffcc;
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -910,6 +910,36 @@ body.loading .video-bg {
 
 .content-wrapper {
   margin-top: -15rem;
+}
+
+.progress-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-top: 2rem;
+}
+
+svg {
+  transform: rotate(-90deg);
+}
+
+.progress-bg {
+  stroke: #333;
+}
+
+.progress-bar {
+  stroke: #00f7ff;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: #00f7ff;
+  font-family: 'Audiowide', sans-serif;
 }
 
 @media (max-width: 768px) {
