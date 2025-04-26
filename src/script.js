@@ -94,29 +94,63 @@ window.attachProfileEvents = () => {
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
+  const landing = document.getElementById('landing-page');
+  const progressBar = document.querySelector('.progress-bar');
+  const progressText = document.getElementById('progress-text');
+  const radius = 90;
+  const circumference = 2 * Math.PI * radius;
 
+  progressBar.style.strokeDasharray = `${circumference}`;
+  landing.style.display = 'grid'; // show it again
+  landing.style.opacity = 1;
+  landing.style.pointerEvents = 'all';
+
+  let progress = 0;
+  function setProgress(percent) {
+    const offset = circumference - (percent / 100) * circumference;
+    progressBar.style.strokeDashoffset = offset;
+    progressText.textContent = `${Math.round(percent)}%`;
+  }
+
+  let fakeProgress = setInterval(() => {
+    progress += Math.random() * 5;
+    if (progress > 90) progress = 90;
+    setProgress(progress);
+  }, 100);
+
+  // 🔁 Begin fetch
   fetch(`/src/pages/${page}.html`)
-    .then(response => response.text())
-    .then(data => {
+    .then((response) => response.text())
+    .then((data) => {
+      clearInterval(fakeProgress);
+      let finalizeProgress = setInterval(() => {
+        progress += 2;
+        setProgress(progress);
+        if (progress >= 100) {
+          clearInterval(finalizeProgress);
+          landing.style.opacity = 0;
+          landing.style.pointerEvents = 'none';
+          setTimeout(() => {
+            landing.style.display = 'none';
+          }, 800);
+        }
+      }, 20);
+
       content.innerHTML = data;
 
-      // 🔸 Highlight active nav link
-      document.querySelectorAll('.drawer-menu a').forEach(link => {
-        link.classList.toggle('active', link.dataset.page === page);
+      // Re-initialize page-specific JS
+      requestAnimationFrame(() => {
+        if (page === 'meetOurExperts') attachProfileEvents();
+        if (page === 'coreTeam') attachProfileEvents_coreTeam();
+        if (page === 'Home') {
+          initHomeTextSlider();
+          attachHomeButtonEvents();
+        }
       });
 
-      // 🔸 Wait for content to be in DOM
-      requestAnimationFrame(() => {
-        if (page === 'meetOurExperts') {
-          attachProfileEvents();
-        }
-        if (page === 'coreTeam') {
-          attachProfileEvents_coreTeam();
-        }
-        if (page === 'Home') {
-          initHomeTextSlider();         // Start slider
-          attachHomeButtonEvents();     // Reactivate buttons
-        }
+      // Update nav highlights
+      document.querySelectorAll('.drawer-menu a').forEach(link => {
+        link.classList.toggle('active', link.dataset.page === page);
       });
     });
 }
