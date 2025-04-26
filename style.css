@@ -174,7 +174,7 @@ footer p {
   height: auto;
   margin-left: 25px;
   margin-top: 5px;
-  animation: slideInFromLeft 2.5s ease-in-out forwards;
+  animation: slideInFromLeft 3.5s ease-in-out forwards;
   z-index: 99;
 }
 
@@ -422,7 +422,6 @@ footer p {
   margin-top: -6.0rem;
   margin-right: 9.5rem;
   z-index: 1100;
-  
 }
 
 .flag-link {
@@ -439,7 +438,7 @@ footer p {
   cursor: pointer;
   box-shadow: 0 2px 6px rgb(155, 255, 34);
   z-index: 1100; 
-  animation: dropDown 1.5s ease-in-out forwards;
+  animation: dropDown 4.5s ease-in-out forwards;
 }
 
 .flag-link:hover {
@@ -464,7 +463,7 @@ footer p {
   left: 50%;
   cursor: pointer;
   z-index: 1001;
-  animation: dropDown 2.5s ease-in-out forwards;
+  animation: dropDown 4.5s ease-in-out forwards;
 }
 
 #menuIcon {
@@ -527,7 +526,7 @@ footer p {
   margin-right: 15rem;
   text-decoration: none;
   font-weight: bold;
-  animation: slideInFromRight 2.5s ease-in-out forwards;
+  animation: slideInFromRight 5.5s ease-in-out forwards;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
   z-index: 1000;
