@@ -665,7 +665,7 @@ footer p {
   width: 80%;
   max-width: 800px;
   top: 40vh;
-  left: 15vw;
+  left: 12.5vw;
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
@@ -702,6 +702,9 @@ footer p {
   z-index: 1;
 }
 
+.arrow-container {
+  display: flex;
+  flex-direction: row;}
 .arrow-symbol {
   position: relative;
   display: flex;
@@ -735,7 +738,7 @@ footer p {
 }
 
 .arrow-symbol:hover {
-  transform: scale(1.1);
+  transform: translateY(-50%) scale(1.25);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
   background-color: rgb(109, 109, 109);
 }
@@ -754,12 +757,15 @@ footer p {
 }
 
 .left-arrow-symbol {
-  left: 7.5%;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
 }
 
 .right-arrow-symbol {
-  right: 0;
-  transform: translate(87.5vw, -7.5vh);
+  left: 82.5%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .deco-bg {
@@ -1284,7 +1290,6 @@ body.loaded #app {
       transform: translateY(-50%); /* Pull up by 50% of its height */
       width: 42.5px;
       height: 42.5px;
-      
     }
     
     .arrow-symbol svg {
