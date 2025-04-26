@@ -11,8 +11,7 @@ main {
 
 h1 {
   align-items: center;
-  animation: slideInFromLeft 1s ease-in-out forwards; 
-  
+  animation: slideInFromLeft 3.5s ease-in-out forwards; 
 }
 
 @keyframes slideInFromLeft {
@@ -30,11 +29,21 @@ h2 {
   margin-top: 3rem;
   font-size: 28px;
   text-decoration: underline;
+  animation: slideUp 2.5s ease-in-out forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 h2:hover {
-  animation:wiggle 0.5s ease-in;
   color: aqua;
+  transition: color 0.5s ease-in-out;
 }
 
 .sub-text {
@@ -45,6 +54,7 @@ h2:hover {
   font-size: 80px;
   font-weight: 300;
 }
+
 
 .cursive-default {
   font-family: 'IBM Plex Serif', serif;
@@ -164,9 +174,18 @@ footer p {
   height: auto;
   margin-left: 25px;
   margin-top: 5px;
+  animation: slideInFromLeft 2.5s ease-in-out forwards;
   z-index: 99;
 }
 
+@keyframes dropDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 .logo-content {
   width: 150px;
   height: auto;
@@ -403,6 +422,7 @@ footer p {
   margin-top: -6.0rem;
   margin-right: 9.5rem;
   z-index: 1100;
+  
 }
 
 .flag-link {
@@ -419,6 +439,7 @@ footer p {
   cursor: pointer;
   box-shadow: 0 2px 6px rgb(155, 255, 34);
   z-index: 1100; 
+  animation: dropDown 1.5s ease-in-out forwards;
 }
 
 .flag-link:hover {
@@ -443,6 +464,7 @@ footer p {
   left: 50%;
   cursor: pointer;
   z-index: 1001;
+  animation: dropDown 2.5s ease-in-out forwards;
 }
 
 #menuIcon {
@@ -505,10 +527,23 @@ footer p {
   margin-right: 15rem;
   text-decoration: none;
   font-weight: bold;
+  animation: slideInFromRight 2.5s ease-in-out forwards;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
   z-index: 1000;
 }
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 
 .menu-bar .contact-link:hover {
   transform: scale(1.25);
@@ -968,10 +1003,10 @@ body.loaded #app {
     display: flex;
   }
 
+
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
     margin-left: -10rem;
-    
   } 
   
   .cursive-default {
