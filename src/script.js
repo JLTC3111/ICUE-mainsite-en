@@ -54,8 +54,8 @@ window.attachProfileEvents = () => {
       setTimeout(() => {
         textBox.classList.remove('slide-enter-right', 'slide-enter-left');
         photo.classList.remove('slide-enter-right', 'slide-enter-left');
-      }, 300);
-    }, 300);
+      }, 100);
+    }, 100);
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
@@ -536,8 +536,8 @@ window.attachProfileEvents_coreTeam = () => {
       setTimeout(() => {
         textBox.classList.remove('slide-enter-right', 'slide-enter-left');
         photo.classList.remove('slide-enter-right', 'slide-enter-left');
-      }, 300);
-    }, 300);
+      }, 100);
+    }, 100);
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
@@ -570,6 +570,11 @@ window.attachProfileEvents_coreTeam = () => {
     });
   }
 
+  // Preload all profile images
+profileData_coreTeam.forEach(profile => {
+  const img = new Image();
+  img.src = profile.img;
+});
   // Start first profile
   updateProfile_coreTeam(0); // Fixed here
 }
