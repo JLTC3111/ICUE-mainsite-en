@@ -923,9 +923,18 @@ svg {
   }
 
   .loading-logo {
-    width: 400px;
+    width: 300px;
     height: auto;
-    transform: translateX(25px);
+    transform: translateX(35px);
+  }
+
+  .progress-container {
+    margin-top: -25rem;
+    margin-left: 4.5rem;
+  }
+
+  .loading-text {
+    margin-left: 0.5rem;
   }
 
   .logo-banner {
