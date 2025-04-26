@@ -348,6 +348,11 @@ footer p {
   z-index: 100;
 }
 
+.arrow-button svg {
+  transform: none !important;
+  rotate: 0deg !important;
+}
+
 .fill-bright-blue {fill: #63D3FD;}
 .fill-blue {fill: #3DB9F9;}
 .fill-white {fill: #FFFFFF;}
@@ -382,11 +387,11 @@ footer p {
 }
 
 .left-arrow {
-  left: 1.5rem;
+  left: 2.5rem;
 }
 
 .right-arrow {
-  right: 12.5rem;
+  right: 11.5rem;
 }
 
 
@@ -720,6 +725,10 @@ footer p {
   z-index: 100;
 }
 
+.arrow-symbol svg {
+  transform: none !important;
+  rotate: 0deg !important;
+}
 /* Base fills */
 .fill-yellow { fill: #FFE100; }
 .fill-orange { fill: #FFA800; }

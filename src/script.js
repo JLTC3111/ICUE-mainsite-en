@@ -151,7 +151,7 @@ window.loadPage = (page) => {
               }
             });
 
-          }, 400); // After fade-out
+          }, 600); // After fade-out
         }
       },);
     });
