@@ -773,32 +773,19 @@ footer p {
 .deco-bg {
   display: flex;
   position: absolute;
+  top: 75px;
+  left: 185px;
   width: 220px;
   height: 124px;
   margin: 20px;
   z-index: 2;
 }
 
-.deco-bg1 { top: -55px; left: 175px;}
-.deco-bg2 { top: -55px; right: 265px;}
-.deco-bg3 { top: -55px; left: 425px;}
-.deco-bg4 { top: -55px; left: 665px;}
-.deco-bg5 { top: -55px; right: 505px;}
-
-.deco-object-container {
-  display: flex;
-  position: relative;
-  width: 100vw;
-  height: auto;
-  z-index: 15;
-}
-/* Decorative objects */
-.deco-object1 { top: 250px; left: 72rem; transform: rotate(10deg);}
-.deco-object2 { top: 50px; left: 120px; }
-.deco-object3 { top: 600px; right: -500px; }
-.deco-object4 { bottom: 60px; left: 80px; }
-.deco-object5 { bottom: 20px; right: 30px; }
-.deco-object6 { top: 650px; right: -100px; }
+.deco-bg1 { transform: translate(0px, 0px);} 
+.deco-bg2 { transform: translate(245px, 0px);}
+.deco-bg3 { transform: translate(485px, 0px);}
+.deco-bg4 { transform: translate(735px, 0px);}
+.deco-bg5 { transform: translate(975px, 0px);}
 
 .download-btn {
   display: inline-block;
