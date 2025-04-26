@@ -337,20 +337,26 @@ footer p {
   justify-content: center;
   align-items: center;
   background-color: transparent; /* Transparent background */
-  border-radius: 50%;               /* Removes the circular shape */
+  border-radius: 0;               /* Removes the circular shape */
   box-shadow: none;              /* Removes the shadow */
   cursor: pointer;
   transition: transform 1s ease;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  color: darkgoldenrod;
+  width: auto;                   /* Let content define width */
+  height: auto;
   z-index: 100;
 }
 
 .arrow-button svg {
-  fill: rgb(3, 101, 64);
   transform: none !important;
   rotate: 0deg !important;
 }
 
+.fill-bright-blue {fill: #63D3FD;}
+.fill-blue {fill: #3DB9F9;}
+.fill-white {fill: #FFFFFF;}
+.fill-dark {fill: #111;}
 
 .arrow-icon {
   width: 75px;
@@ -360,15 +366,25 @@ footer p {
 
 .arrow-button:hover {
   transform: scale(1.2);
-  fill: rgb(244, 172, 3);
 }
 
-
-.arrow-button:active {
-  transform: scale(1.1);
+.arrow-button:hover .fill-bright-blue,
+.arrow-button:hover .fill-blue,
+.arrow-button:hover .fill-white,
+.arrow-button:hover .fill-dark {
   fill: #ffbc41;
 }
 
+.arrow-button:active {
+  transform: scale(1.1);
+}
+
+.arrow-button:active .fill-bright-blue,
+.arrow-button:active .fill-blue,
+.arrow-button:active .fill-white,
+.arrow-button:active .fill-dark {
+  fill: #ffbc41;
+}
 
 .left-arrow {
   left: 2.5rem;
@@ -1010,7 +1026,6 @@ body.loaded #app {
   }
 
   nav {
-    position: sticky;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
