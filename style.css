@@ -1245,10 +1245,9 @@ body.loaded #app {
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
-      transform: translateX(0);
-      top: -350px;
-      margin: 150px auto 30px auto;
-      left: auto;
+      transform: translate(25vw, 20vh);
+      top:0;
+      left: 0;
     }
   
     .profile-photo-coreTeam {
@@ -1257,11 +1256,10 @@ body.loaded #app {
     }
   
     .text-container-coreTeam {
-      margin: 10px auto;
       width: 90%;
-      top: -375px;
-      margin-left: auto;
-      margin-right: auto;
+      transform: translate(-15vw, -20vh);
+      margin-left: 5%;
+      margin-right: 5%;
       padding: 5px;
     }
   
@@ -1288,42 +1286,36 @@ body.loaded #app {
     }
   
     .left-arrow-symbol {
-      top: 50%;
-      left: 1.5rem;
+      top: 0%;
+      left: 10vw;
     }
   
     .right-arrow-symbol {
       top: 50%;
-      left: 85%;
+      right: 15%;
     }
-  
-  
+    
     .deco-object-container {
+      position: relative;
+      top: 0;
+      left: 50%;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 20px;
-      height: auto;
-      min-height: 300px; /* optional minimum height */
-      overflow: hidden;
+      flex-direction: row;
+      justify-content: center; /* optional: centers content horizontally */
+      align-items: center;     /* optional: aligns vertically */
+      flex-wrap: wrap;         /* in case of small screens */
     }
-  
+
     .deco-bg {
-      display: flex;
       position: absolute;
+      display: none;
       width: 220px;
       height: 124px;
-      margin: 20px;
       z-index: 2;
     }
     
-    .deco-bg1 { top: -55px; left: 175px; display: none;}
-    .deco-bg2 { top: -55px; right: 175px; display: none;}
-    .deco-bg3 { top: -55px; left: 175px; display:none;}
-    .deco-bg4 { top: -55px; left: 155px; display: flex;}
-    .deco-bg5 { top: -55px; right: 245px; display:flex;}
+    .deco-bg4 { transform: translate(50vw, 0); display: inline;}
+    .deco-bg5 { transform: translate(50vw, 0); display: inline;}
 
     .download-btn {
       transform: translate(0, 30px); /* Centered horizontally */
