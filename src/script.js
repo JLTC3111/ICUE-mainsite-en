@@ -31,6 +31,10 @@ window.attachProfileEvents = () => {
   const textBox = document.getElementById('profile-text');
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
+  const preloadImg = new Image();
+  preloadImg.onload = () => {
+    photo.src = preloadImg.src;};
+  preloadImg.src = profileData[index].img;
 
   function updateProfile(index, direction = 'right') {
     if (!textBox || !photo) return;
