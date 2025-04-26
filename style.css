@@ -164,7 +164,7 @@ footer p {
   height: auto;
   margin-left: 25px;
   margin-top: 5px;
-  z-index: 9999;
+  z-index: 99;
 }
 
 .logo-content {
@@ -711,8 +711,7 @@ footer p {
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   border-radius: 50%;
   top: 0.5vh;
-  border: 1px solid #000000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgb(0, 0, 0);
   cursor: pointer;
   transition: all 0.3s ease;  
   color: darkgoldenrod;
@@ -1084,11 +1083,12 @@ body.loaded #app {
     transform: translateX(15px);
   }
   .language-switcher {
-    position: fixed;
-    top: 20px;
-    right: 50px;
+    position: relative;
+    top: 0;
+    right: 5vw;
+    transform: translate(92.5vw, 2.5vh);
     margin: 0;
-    z-index: 1100;
+    z-index: 2000;
   }
   
   .flag-link {
@@ -1277,45 +1277,62 @@ body.loaded #app {
       font-size: 14px;
       line-height: 22px;
     }
+
     .arrow-symbol {
       position: absolute;
       display: flex;
-      width: 50px;
-      height: 50px;
-      font-size: 1.5rem;
+      top: 50%; /* Always center vertically */
+      transform: translateY(-50%); /* Pull up by 50% of its height */
+      width: 42.5px;
+      height: 42.5px;
+      
     }
-  
+    
+    .arrow-symbol svg {
+      width: 95%; /* shrink SVG to fit nicely */
+      height: 95%;
+      transform: none; /* Make sure SVG is not rotated/moved */
+    }
+
     .left-arrow-symbol {
-      top: 0%;
-      left: 10vw;
+      left: 1.5rem;
     }
   
     .right-arrow-symbol {
-      top: 50%;
-      right: 15%;
+      right: 1.5rem;
     }
     
     .deco-object-container {
-      position: relative;
-      top: 0;
-      left: 50%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center; /* optional: centers content horizontally */
-      align-items: center;     /* optional: aligns vertically */
-      flex-wrap: wrap;         /* in case of small screens */
-    }
-
-    .deco-bg {
       position: absolute;
-      display: none;
-      width: 220px;
-      height: 124px;
-      z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: 5;
+      pointer-events: none; /* very good idea to let clicks pass through */
     }
     
-    .deco-bg4 { transform: translate(50vw, 0); display: inline;}
-    .deco-bg5 { transform: translate(50vw, 0); display: inline;}
+    .deco-bg {
+      display: none;
+      position: absolute;
+      width: 200px;
+      height: 114px;
+    }
+    
+    /* Specific placements */
+    .deco-bg4 {
+      display: grid;
+      top: 10vh;
+      left: -5vw;
+      transform: translate(5vw, 0);
+    }
+    
+    .deco-bg5 {
+      display: grid;
+      top: 10vh;
+      right: 15vw;
+      transform: translate(27.5vw, 0);
+    }
 
     .download-btn {
       transform: translate(0, 30px); /* Centered horizontally */
