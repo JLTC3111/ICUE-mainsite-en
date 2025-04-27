@@ -486,7 +486,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span>Dedicated professional specializing in quantity surveying, detailed planning, and technical drawing. With strong teamwork skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active ICUE partner, I have built strong networks with local authorities, ensuring smooth communication and project support. I am well-versed in regular administrative tasks, project documentation, and on-site coordination. My attention to detail and commitment to delivering high-quality work enable me to meet project requirements efficiently. I am passionate about contributing to dynamic teams and supporting the growth and success of the organization.`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span>Dedicated professional specializing in quantity surveying, detailed planning, and technical drawing. With strong teamwork skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active ICUE partner, I have built strong networks with local authorities, ensuring smooth communication and project support. I am well-versed in regular administrative tasks, project documentation, and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization`,  
       img: "public/profilePhotos/tam.png"
     },
     {

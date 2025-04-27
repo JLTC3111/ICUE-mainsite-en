@@ -214,6 +214,9 @@ footer p {
   transition: transform 0.3s ease;
   z-index: 10;
 }
+.profile-photo:hover {
+  transform: scale(1.2);
+}
 
 .fade-Out {
   animation: FadeOut 2s ease-in-out forwards;
