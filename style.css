@@ -944,7 +944,7 @@ body.loaded #app {
 }
 
 .cursor-symbol {
-  cursor: url('/cursors/pencil.cur'), auto;
+  cursor: url('public/cursors/pencil.cur'), auto;
 }
 
 @media (max-width: 768px) {
