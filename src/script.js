@@ -17,7 +17,7 @@ window.attachProfileEvents = () => {
       img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people">Long Đỗ - IT manager</span> A dedicated Project Officer with a Master's degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, (smart) contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬
+      name: `<span class="intro-people">Long Đỗ - Project Manager</span> A dedicated Project Officer with a Master's degree in Project Management from the University of Salford, UK, along with certifications in CCNA and Cybersecurity. Brings over 5 years of broad-based experience across banking, retail, (smart) contract management, and finance, with a proven ability to manage complex projects and deliver results efficiently. Combines strong technical skills with hands-on execution, ensuring smooth coordination between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding, and gaming. Experienced with designing and creative problem solving. 🔧💬
       https://dobaolongicueltd.netlify.app/`,
       img: "public/profilePhotos/longdo.jpg"
     }
@@ -486,7 +486,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> ákfbahvsbvbsvhbjakejkvbvjbjvej bjefbjkegbkekj fbkjebjkfbjk fbjkbj kjb q bjkfejbfbefbkkbafbjebjkbejkfbb jbkfbkjefbkj j bjfebkjfbkj kjbmanqpnpifh -pìhnie bjbgfbjla jbbg obi niogint33hi pjnpfgnoi3b nio3ipp nf pihih13i inii ni nfnie no.slbbjkvdbkgebjfb bgfebo;beoqfbe bkebugbegbuoefb b oubebfqbweiulf bbfebiufqb bf bfbkjjbkf bjfsajblfbfbebkjfbaekjbf jfbwf bfbwjkf bfwjb bfbqbilfqofobbiof bob boebf boueqf bbf uboub bf bjbj bf buwqb fbw bfjejbfb fbj bbjf jfb jebjefjbb jbf jbf bjfj bbj`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span>Dedicated professional specializing in quantity surveying, detailed planning, and technical drawing. With strong teamwork skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active ICUE partner, I have built strong networks with local authorities, ensuring smooth communication and project support. I am well-versed in regular administrative tasks, project documentation, and on-site coordination. My attention to detail and commitment to delivering high-quality work enable me to meet project requirements efficiently. I am passionate about contributing to dynamic teams and supporting the growth and success of the organization.`,  
       img: "public/profilePhotos/tam.png"
     },
     {
