@@ -329,15 +329,6 @@ footer p {
   backdrop-filter: none;
 }
 
-.slideInFromLeft {
-  font-size: 50px;
-  font-weight: bold;
-  color: #3498db;
-  letter-spacing: 6px;
-  /* Apply the animation */
-  animation: slideInFromLeft 2s ease-out forwards;
-  transform-style: preserve-3d;
-}
 @keyframes slideInFromLeft {
   0% {
     transform: translateX(-100%);
@@ -438,7 +429,7 @@ footer p {
   cursor: pointer;
   box-shadow: 0 2px 6px rgb(155, 255, 34);
   z-index: 1100; 
-  animation: dropDown 4.5s ease-in-out forwards;
+  animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
 .flag-link:hover {
@@ -526,7 +517,6 @@ footer p {
   margin-right: 15rem;
   text-decoration: none;
   font-weight: bold;
-  animation: slideInFromRight 5.5s ease-in-out forwards;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
   z-index: 1000;
@@ -951,6 +941,10 @@ body.preload #app {
 body.loaded #app {
   visibility: visible;
   opacity: 1;
+}
+
+.cursor-symbol {
+  cursor: url('/cursors/pencil.cur'), auto;
 }
 
 @media (max-width: 768px) {
