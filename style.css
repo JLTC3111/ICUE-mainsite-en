@@ -814,7 +814,17 @@ footer p {
   background: linear-gradient(to right, #460000, #388E3C);
 }
 
-.model-section {
+.model-building {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Optional: stack on small screens */
+  top: 9rem;
+  right: -16.5rem;
+}
+
+.model-butterfly {
   position: absolute;
   display: flex;
   align-items: center;
@@ -1011,7 +1021,7 @@ body.loaded #app {
   .cursive-default {
     font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
-    margin-top: 11.5rem;
+    margin-top: 9.5rem;
     margin-left: 0.5rem;
     margin-bottom: -1.5rem;
   }
@@ -1256,13 +1266,24 @@ body.loaded #app {
     transform: translateX(100px) !important;
   }
 
-  .model-section {
+  .model-building {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
-    top: -2.5rem;
+    top: -5.5rem;
+    right: 2.5rem;
+    animation: slideDownFromTop 3s ease-in-out;
+  }
+
+  .model-butterfly {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Optional: stack on small screens */
+    top: 17.5rem;
     right: 2.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
