@@ -2003,6 +2003,7 @@ button:hover {
 }
 
 .contact-info h2 {
+  justify-content: center;
   margin-bottom: 10px; /* Space below the heading */
   color: #333; /* Dark text color */
 }
