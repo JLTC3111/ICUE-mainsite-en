@@ -14,15 +14,6 @@ h1 {
   animation: slideInFromLeft 3.5s ease-in-out forwards; 
 }
 
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
 h2 {
   color: rgb(0, 0, 0);
   margin-left: 1.5rem;
@@ -212,7 +203,7 @@ footer p {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
-  z-index: 10;
+  z-index: 5;
 }
 .profile-photo:hover {
   transform: scale(1.2);
@@ -286,11 +277,12 @@ footer p {
   margin-top: -500px;
 }
 
+/* 
 .fade-In {
   opacity: 0;
   visibility: hidden;
   animation: fadeIn 1.5s ease-in forwards;
-}
+}*/
 
 @keyframes fadeIn {
   0% {
@@ -330,17 +322,6 @@ footer p {
   border-radius: 20px;
   box-shadow: none;
   backdrop-filter: none;
-}
-
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
 }
 
 .arrow-button {
@@ -536,7 +517,6 @@ footer p {
   }
 }
 
-
 .menu-bar .contact-link:hover {
   transform: scale(1.25);
   color: white;
@@ -611,7 +591,7 @@ footer p {
   line-height: 1.5;
   align-items: center;
   height: 120px;
-  padding: 1rem;
+  padding: 2.5rem;
   text-align: center;
   margin-top: 3rem;
   margin-bottom: 3rem;
@@ -620,7 +600,7 @@ footer p {
 
 
 .slider-text {
-  text-align: left;
+  text-align: center;
   color: rgb(44, 44, 44);
   max-width: 80%;
   z-index: 10;
@@ -947,6 +927,28 @@ body.loaded #app {
   opacity: 1;
 }
 
+#homeSliderText {
+  background: rgba(236, 236, 236, 0.2); /* Semi-transparent */
+  backdrop-filter: blur(5px);           /* Glass blur */
+  border-radius: 15px;
+  padding: 1rem 2rem;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  animation: slideUp 3.5s ease-in-out; 
+}
+
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .cursor-symbol {
   cursor: url('public/cursors/pencil.cur'), auto;
 }
@@ -1035,7 +1037,6 @@ body.loaded #app {
     color:rgb(44, 44, 44);
     font-family: 'Rubik', cursive ;
     font-size: 13.5px;
-    font-style:italic;
     font-weight: 400;
     visibility: visible; /* Ensure it's visible */
     opacity: 1;          /* Ensure it's not transparent */
@@ -1386,19 +1387,19 @@ body.loaded #app {
 
 /* Sliding animations */
 .slide-exit-left {
-  animation: slideOutLeft 0.3s ease forwards;
+  animation: slideOutLeft 0.5s ease forwards;
 }
 
 .slide-exit-right {
-  animation: slideOutRight 0.3s ease forwards;
+  animation: slideOutRight 0.5s ease forwards;
 }
 
 .slide-enter-left {
-  animation: slideInLeft 0.3s ease forwards;
+  animation: slideInLeft 0.5s ease forwards;
 }
 
 .slide-enter-right {
-  animation: slideInRight 0.3s ease forwards;
+  animation: slideInRight 0.5s ease forwards;
 }
 
 @keyframes slideOutLeft {
@@ -1444,6 +1445,21 @@ body.loaded #app {
     opacity: 1;
   }
 }
+
+
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+
 
 .profile-photo,
 .montserrat-pepple {

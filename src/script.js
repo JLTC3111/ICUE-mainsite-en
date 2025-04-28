@@ -32,30 +32,45 @@ window.attachProfileEvents = () => {
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
 
-  function updateProfile(index, direction = 'right') {
+  
+  window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo) return;
+  
+    // Step 1: Add exit animation classes
+    const isFirstLoad = (currentIndex === 0 && index === 0);
 
-    // Add exit animation
+    if (!isFirstLoad) {
     textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-
+    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
+  
     setTimeout(() => {
-      // Update content
+      // Step 2: Update the content
       textBox.innerHTML = `<div>${profileData[index].name}</div>`;
       photo.src = profileData[index].img;
-
-      // Remove exit animation and add enter animation
+  
+      // Step 3: Remove exit animation classes
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
-      photo.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
-
-      // Remove enter animation after transition
-      setTimeout(() => {
-        textBox.classList.remove('slide-enter-right', 'slide-enter-left');
-        photo.classList.remove('slide-enter-right', 'slide-enter-left');
-      }, 100);
-    }, 100);
+  
+      // (Optional) remove old enter classes in case
+      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
+      photo.classList.remove('slide-enter-left', 'slide-enter-right');
+  
+      // Step 4: Animate using GSAP (✅ after content is updated)
+      const tl = gsap.timeline();
+  
+      tl.fromTo(photo, 
+        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 7.5, ease: "power2.out" }
+      );
+  
+      tl.fromTo(textBox, 
+        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 7.5, ease: "power2.out" },
+        "-=0.5" // Start slightly overlapping with photo animation
+      );
+  
+    }, 500); // ← match exit animation duration (0.3s)
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
@@ -309,13 +324,6 @@ window.initHomeTextSlider = () => {
     }
   });
 
-  gsap.from("#homeTextSlider", {
-    xPercent: -100,    // instead of fixed x pixels
-    opacity: 0,
-    duration: 1.2,
-    ease: "power4.out"
-  });
-
   console.log("✅ Slider initialized with enhanced features");  
 }
 
@@ -523,28 +531,58 @@ window.attachProfileEvents_coreTeam = () => {
 
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
-
-    // Add exit animation
-    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-
-    setTimeout(() => {
-      // Update content
-      textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
-      photo.src = profileData_coreTeam[index].img;
-
-      // Remove exit animation and add enter animation
-      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
-      photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
-      photo.classList.add(direction === 'right' ? 'slide-enter-right' : 'slide-enter-left');
-
-      // Remove enter animation after transition
+  
+    const isFirstLoad = (currentIndex === 0 && index === 0);
+  
+    if (!isFirstLoad) {
+      // Normal navigation exit animations
+      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+  
       setTimeout(() => {
-        textBox.classList.remove('slide-enter-right', 'slide-enter-left');
-        photo.classList.remove('slide-enter-right', 'slide-enter-left');
-      }, 100);
-    }, 100);
+        switchProfile(index, direction);
+      }, 300); // wait for exit animation to finish
+    } else {
+      // 🚀 Directly switch profile without delay on first load
+      switchProfile(index, direction, true);
+    }
+  };
+  
+  // Move the profile updating + GSAP into a separate function
+  function switchProfile(index, direction, isFirstLoad = false) {
+    textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
+    photo.src = profileData_coreTeam[index].img;
+  
+    textBox.classList.remove('slide-exit-left', 'slide-exit-right', 'slide-enter-left', 'slide-enter-right');
+    photo.classList.remove('slide-exit-left', 'slide-exit-right', 'slide-enter-left', 'slide-enter-right');
+  
+    const tl = gsap.timeline();
+  
+    if (isFirstLoad) {
+      // 🎉 First Load
+      tl.fromTo(photo, 
+        { y: 100, scale: 0.8, opacity: 0, filter: "blur(5px)" },
+        { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }
+      );
+  
+      tl.fromTo(textBox,
+        { y: -50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
+        "-=0.8"
+      );
+    } else {
+      // ✨ Normal next/prev transitions
+      tl.fromTo(photo, 
+        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+      );
+  
+      tl.fromTo(textBox, 
+        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+        "-=0.5"
+      );
+    }
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
