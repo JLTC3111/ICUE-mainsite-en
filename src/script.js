@@ -532,58 +532,58 @@ window.attachProfileEvents_coreTeam = () => {
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
   
+    // Step 1: Add exit animation classes
     const isFirstLoad = (currentIndex === 0 && index === 0);
-  
+
     if (!isFirstLoad) {
-      // Normal navigation exit animations
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
   
-      setTimeout(() => {
-        switchProfile(index, direction);
-      }, 300); // wait for exit animation to finish
-    } else {
-      // 🚀 Directly switch profile without delay on first load
-      switchProfile(index, direction, true);
-    }
+    setTimeout(() => {
+      // Step 2: Update the content
+      textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
+      photo.src = profileData_coreTeam[index].img;
+  
+      // Step 3: Remove exit animation classes
+      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
+      photo.classList.remove('slide-exit-left', 'slide-exit-right');
+  
+      // (Optional) remove old enter classes in case
+      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
+      photo.classList.remove('slide-enter-left', 'slide-enter-right');
+  
+      // Step 4: Animate using GSAP (✅ after content is updated)
+      const tl = gsap.timeline();
+  
+      if (isFirstLoad) {
+        // 👑 First time opening animation
+        tl.fromTo(photo, 
+          { y: 100, scale: 0.8, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
+        );
+  
+        tl.fromTo(textBox,
+          { y: -50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
+          "-=0.8" // overlap a bit
+        );
+  
+      } else {
+        // 👉 Normal sliding between profiles
+        tl.fromTo(photo, 
+          { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+        );
+  
+        tl.fromTo(textBox, 
+          { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+          "-=0.5"
+        );
+      }
+  
+    }, isFirstLoad ? 0 : 800); // No delay if first load
   };
-  
-  // Move the profile updating + GSAP into a separate function
-  function switchProfile(index, direction, isFirstLoad = false) {
-    textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
-    photo.src = profileData_coreTeam[index].img;
-  
-    textBox.classList.remove('slide-exit-left', 'slide-exit-right', 'slide-enter-left', 'slide-enter-right');
-    photo.classList.remove('slide-exit-left', 'slide-exit-right', 'slide-enter-left', 'slide-enter-right');
-  
-    const tl = gsap.timeline();
-  
-    if (isFirstLoad) {
-      // 🎉 First Load
-      tl.fromTo(photo, 
-        { y: 100, scale: 0.8, opacity: 0, filter: "blur(5px)" },
-        { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }
-      );
-  
-      tl.fromTo(textBox,
-        { y: -50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
-        "-=0.8"
-      );
-    } else {
-      // ✨ Normal next/prev transitions
-      tl.fromTo(photo, 
-        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
-      );
-  
-      tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-        "-=0.5"
-      );
-    }
-  }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData_coreTeam.length;

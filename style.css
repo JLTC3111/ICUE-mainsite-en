@@ -1011,7 +1011,7 @@ body.loaded #app {
   .cursive-default {
     font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
-    margin-top: 14.5rem;
+    margin-top: 11rem;
     margin-left: 0.5rem;
     margin-bottom: -1.5rem;
   }
@@ -1229,8 +1229,6 @@ body.loaded #app {
     content: none;
   }
 
-  
-
   footer {
     display: none;
   }
@@ -1264,7 +1262,7 @@ body.loaded #app {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
-    top: -1.5rem;
+    top: -4.5rem;
     right: 2.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
