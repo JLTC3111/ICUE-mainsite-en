@@ -1,5 +1,3 @@
-import { gsap } from "gsap";
-
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -97,15 +95,6 @@ profileData.forEach(profile => {
 });
   // Start first profile
   updateProfile(0);
-
-  // 🌀 Animate elements with GSAP after page is loaded
-  const timeline = gsap.timeline({ defaults: { ease: "power2.out", duration: 1 } });
-  timeline
-    .from(".video-bg", { opacity: 0, duration: 1.2 })
-    .from("#profile-photo", { scale: 0.8, opacity: 0, duration: 1 }, "-=1")
-    .from("#profile-text", { y: 60, opacity: 0 }, "-=0.8")
-    .from(".arrow-button", { opacity: 0, scale: 0.5, stagger: 0.2 }, "-=0.7")
-    .from(".model-section", { opacity: 0, scale: 0.6, duration: 1 }, "-=0.5");
 }
 
 window.loadPage = (page) => {
@@ -595,13 +584,6 @@ profileData_coreTeam.forEach(profile => {
 });
   // Start first profile
   updateProfile_coreTeam(0); // Fixed here
-  // 🌀 Animate elements with GSAP after page is loaded
-  const timeline = gsap.timeline({ defaults: { ease: "power2.out", duration: 1 } });
-  timeline
-    .from(".video-bg", { opacity: 0, duration: 1.2 })
-    
-    .from("#profile-text-coreTeam", { y: 60, opacity: 0 }, "-=0.8")
-    .from(".model-section", { opacity: 0, scale: 0.6, duration: 1 }, "-=0.5");
 }
 
 attachProfileEvents_coreTeam(); // Initialize the function
