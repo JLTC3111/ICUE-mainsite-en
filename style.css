@@ -166,7 +166,7 @@ footer p {
   margin-left: 25px;
   margin-top: 5px;
   animation: slideInFromLeft 3.5s ease-in-out forwards;
-  z-index: 99;
+  z-index: 111;
 }
 
 @keyframes dropDown {
@@ -419,7 +419,7 @@ footer p {
 .flag-link:hover {
   transform: scale(1.5);
   background-color: #acd606;
-  z-index: 1100;
+  z-index: 11;
 }
 
 .flag-icon {
@@ -430,14 +430,14 @@ footer p {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* ✅ Makes it circular */
-  z-index: 1100;
+  z-index: 11;
 }
 
 .menu-toggle {
   position: absolute;
   left: 50%;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 6;
   animation: dropDown 4.5s ease-in-out forwards;
 }
 
@@ -467,7 +467,7 @@ footer p {
   padding: 10rem 2.5rem;
   transform: translateX(-100%); /* Hide off-screen initially */
   transition: transform 0.4s ease-in-out;
-  z-index: 1000;
+  z-index: 5;
 }
 
 
@@ -503,7 +503,7 @@ footer p {
   font-weight: bold;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
-  z-index: 1000;
+  z-index: 10;
 }
 
 @keyframes slideInFromRight {
@@ -595,7 +595,7 @@ footer p {
   text-align: center;
   margin-top: 3rem;
   margin-bottom: 3rem;
-  z-index: 10;
+  z-index: 4;
 }
 
 
@@ -713,6 +713,7 @@ footer p {
 .arrow-container {
   display: flex;
   flex-direction: row;}
+
 .arrow-symbol {
   position: relative;
   display: flex;
@@ -726,7 +727,7 @@ footer p {
   transition: all 0.3s ease;  
   color: darkgoldenrod;
   background-color: transparent;
-  z-index: 50;
+  z-index: 5;
 }
 
 .arrow-symbol svg {
@@ -1000,7 +1001,7 @@ body.loaded #app {
     height: 20px;
     margin-left: 1px;
     margin-top: -2rem;
-    z-index: 11;
+    z-index: 111;
   }
   /* Shrink big headers */
   h1 {
@@ -1140,7 +1141,7 @@ body.loaded #app {
     right: 5vw;
     transform: translate(92.5vw, 2.5vh);
     margin: 0;
-    z-index: 2000;
+    z-index: 20;
   }
   
   .flag-link {
@@ -1155,7 +1156,7 @@ body.loaded #app {
     font-size: 12px; 
     cursor: pointer;
     box-shadow: 0 2px 6px rgb(221, 255, 52);
-    z-index: 1100; 
+    z-index: 11; 
   }
   
   .flag-icon {
@@ -1165,7 +1166,7 @@ body.loaded #app {
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
     transform: translateX(0px);
-    z-index: 1100;
+    z-index: 11;
   }
 
   .right-arrow {
@@ -1183,14 +1184,14 @@ body.loaded #app {
     background-color: #fffb00;
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    z-index: 1001;
+    z-index: 11;
   }
 
   .menu-toggle {
     position: absolute;
     left: 47.5%;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 6;
   }
 
   .drawer-menu {
@@ -1206,7 +1207,7 @@ body.loaded #app {
     margin-left: -1rem;
     transform: translateX(-100%); /* Hide off-screen initially */
     transition: transform 0.4s ease-in-out;
-    z-index: 1000;
+    z-index: 5;
   }
 
   .drawer-menu a {
@@ -1909,7 +1910,7 @@ body.loaded #app {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index: 1000;
+    z-index: 10;
 }
 
 .balloon-button:hover {
@@ -1924,7 +1925,7 @@ body.loaded #app {
     height: 50px;
     border-radius: 50%;
     animation: floatUp 4s ease-in forwards;
-    z-index: 999;
+    z-index: 99;
 }
 
 .balloon::before {
@@ -1937,6 +1938,7 @@ body.loaded #app {
     height: 20px;
     background: rgba(0, 0, 0, 0.2);
 }
+
 
 @keyframes floatUp {
     0% {
