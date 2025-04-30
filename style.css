@@ -109,7 +109,7 @@ nav a {
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 9;
 }
 
 .menu-bar a:hover {
@@ -437,7 +437,7 @@ footer p {
   position: absolute;
   left: 50%;
   cursor: pointer;
-  z-index: 6;
+  z-index: 12;
   animation: dropDown 4.5s ease-in-out forwards;
 }
 
@@ -603,7 +603,7 @@ footer p {
   text-align: center;
   color: rgb(44, 44, 44);
   max-width: 80%;
-  z-index: 10;
+  z-index: 4;
   margin-top: -25px;
 }
 
@@ -1045,7 +1045,7 @@ body.loaded #app {
     text-align: left;
     margin-top: 3.5rem;
     margin-bottom: 2.5rem;
-    z-index: 10;
+    z-index: 5;
   }
 
   .highlight-text {
