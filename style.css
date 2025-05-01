@@ -1076,8 +1076,10 @@ body.loaded #app {
   }
 
   nav {
+    position: sticky;
     display: flex;
     flex-wrap: wrap;
+    margin-top: -7.5%;
     justify-content: center;
   }
 
