@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
-    {name: '<span class="intro-core">Cán Bộ Viện</span> Our team consists of 5-6 dedicated professionals who manage the day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, client relations, marketing and finance, each member plays a vital role in driving the success of the organization. Through close collaboration and open communication, they work together to solve challenges and seize opportunities. From customer interactions to internal processes, the collective efforts of the team ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.',
+    {name: '<span class="intro-core">Core Team</span> Our team consists of 5-6 dedicated professionals who manage the day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, client relations, marketing and finance, each member plays a vital role in driving the success of the organization. Through close collaboration and open communication, they work together to solve challenges and seize opportunities. From customer interactions to internal processes, the collective efforts of the team ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.',
       img: "public/profilePhotos/coreTeam.jpg"
     },
     {name: 
