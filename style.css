@@ -183,6 +183,7 @@ footer p {
   display: flex;
   object-fit: contain;
 }
+
 .image-container {
   position: relative;
   width: 300px;
@@ -205,6 +206,7 @@ footer p {
   transition: transform 0.3s ease;
   z-index: 5;
 }
+
 .profile-photo:hover {
   transform: scale(1.2);
 }
@@ -213,6 +215,7 @@ footer p {
   animation: FadeOut 2s ease-in-out forwards;
   animation-delay: 3s;
 }
+
 @keyframes FadeOut {
   0% {
     opacity: 1;
@@ -314,14 +317,11 @@ footer p {
   width: 80%;
   max-width: 800px;
   margin: 30px auto;
-  margin-left: 500px;
-  margin-right: 250px;
-  margin-top: 100px;
+  margin-left: 30%;
+  margin-top: 5%;
   padding: 20px;
-  background: transparent;
   border-radius: 20px;
   box-shadow: none;
-  backdrop-filter: none;
 }
 
 .arrow-button {
@@ -1964,7 +1964,7 @@ body.loaded #app {
 .balloon:nth-child(15) { background-color: #ff6b6b; left: 65%; }
 
 body.contact-page {
-  font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
+  font-family: 'Audiowide', sans-serif; /* Use Montserrat font */
   background-color: #f4f4f4; /* Light background color */
   margin: 0;
   padding: 0;
@@ -2039,12 +2039,14 @@ button:hover {
 }
 
 .contact-info h2 {
+  font-family: 'Roboto';
   justify-content: center;
   margin-bottom: 10px; /* Space below the heading */
   color: #333; /* Dark text color */
 }
 
 .contact-info p {
+  font-family: 'Roboto';
   margin: 5px 0; /* Space above and below paragraphs */
   color: #666; /* Lighter text color */
 }
