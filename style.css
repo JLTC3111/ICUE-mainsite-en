@@ -593,7 +593,6 @@ footer p {
   z-index: 3;
 }
 
-
 .slider-text {
   text-align: center;
   color: rgb(44, 44, 44);
@@ -1042,9 +1041,8 @@ body.loaded #app {
 
 
   .home-text-slider {
+    margin-top: 6rem;
     text-align: left;
-    margin-top: 2.25rem;
-    margin-bottom: 2.5rem;
     z-index: 3;
   }
 
@@ -1062,7 +1060,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: 1.75rem;
+    margin-top: 9.75rem;
     margin-left: -1.2rem;
     gap: 14px;
     z-index: 1;
@@ -1302,12 +1300,6 @@ body.loaded #app {
     }
   }
 
-  @media (max-width: 768px) {
-
-    body {
-      overflow-x: hidden;
-    }
-
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
@@ -1411,7 +1403,7 @@ body.loaded #app {
     }
   }
   
-}
+
 
 /* Sliding animations */
 .slide-exit-left {
