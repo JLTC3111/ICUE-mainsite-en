@@ -134,7 +134,6 @@ nav a {
   overflow: hidden;
   top: 0;
   left: 0;
-  z-index: -99; 
 }
 
 .video-bg {
@@ -144,6 +143,7 @@ nav a {
   object-fit: cover;
   top: 0;
   left: 0;
+  z-index: -99;
 }
 
 footer {
