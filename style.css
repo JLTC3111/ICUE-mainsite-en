@@ -1090,12 +1090,13 @@ body.loaded #app {
   .image-container {
     width: 250px;
     height: 350px;
-    margin-top: 25px;
+    margin-top: 15px;
     margin-left: 75px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
   .text-container {
+    position: relative;
     max-width: 768px;
     width: 100%;
     transform: translate(-30.5%, 9.5%);
@@ -2020,13 +2021,14 @@ button:hover {
 }
 
 /* Contact Info Styles */
-.contact-info {
-  margin-top: 30px; /* Space above contact info */
-  justify-content: left;
-  text-align: center; /* Center the text */
+.contact-info { 
+  text-align: center; 
+  margin-top: 10px; /* Space above contact info */
+  
 }
 
 .contact-info h2 {
+  justify-content: center;
   font-family: 'Roboto';
   margin-bottom: 10px; /* Space below the heading */
   color: #333; /* Dark text color */
