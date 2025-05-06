@@ -709,15 +709,14 @@ footer {
 
 
 .arrow-container {
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 100%;
-  top: 0;
+  top: 50%;
   left: 50%;
-  transform: translate(-5%, -42.5vh);
-  z-index: 4;
+  transform: translateY(5vh);
+  background-color: transparent;
+  z-index: 1;
 }
 
 .arrow-symbol {
@@ -1328,17 +1327,16 @@ body.loaded #app {
     }
 
     .arrow-container {
-      position: relative;
-      display: flex;
-      top: 0;
+      position: absolute;
+      top: 50%;
       left: 50%;
-      transform: translate(-20px, -55vh);
+      transform: translate(-1.5rem, -3rem);
+      z-index: 1;
     }
 
     .arrow-symbol {
-      position: absolute;
-      width: 42.5px;
-      height: 42.5px;
+      width: 43px;
+      height: 43px;
     }
     
     .arrow-symbol svg {
@@ -1346,27 +1344,37 @@ body.loaded #app {
       height: 95%;
       transform: none; /* Make sure SVG is not rotated/moved */
     }
-    
+
+    .left-arrow-symbol {
+      transform: translateX(-35vw); /* or smaller */
+    }
+  
+    .right-arrow-symbol {
+      transform: translateX(30vw); /* or smaller */
+    }
+  
     .deco-object-container {
       position: relative;
-      transform: translate(-8.5px, -10.5vh);
+      transform: translate(-8.5px, -57.5rem);
       width: 100%;
       height: auto;
-      z-index: 5;
+      z-index: 1;
       pointer-events: none; /* very good idea to let clicks pass through */
     }
     
     .deco-bg {
       display: none;
+      position: absolute;
       width: 200px;
       height: 114px;
+      gap: 10px;
     }
     
     /* Specific placements */
     .deco-bg4 {
       display: grid;
       top: 10vh;
-      left: -5vw;
+      left: -7.5vw;
       transform: translate(5vw, 0);
     }
     
