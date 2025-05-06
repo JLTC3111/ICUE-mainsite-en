@@ -37,30 +37,6 @@ h2:hover {
   transition: color 0.5s ease-in-out;
 }
 
-.sub-text {
-  justify-content: left;
-  font-family: 'Rubik';
-  font-style: normal;
-  color: whitesmoke;
-  font-size: 80px;
-  font-weight: 300;
-}
-
-
-.cursive-default {
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 60px;
-  color: rgb(250, 250, 127);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  letter-spacing:5px;
-  margin-left: -10.5px;
-  margin-right: 25rem;
-  margin-top: 5.5rem;
-  margin-bottom: 5rem;
-}
-
 p {
   font-family: cursive;
   font-size: 24px;
@@ -71,17 +47,6 @@ p {
   margin-top: 5rem;
   margin-left: 5rem;
   margin-right: 15rem;
-}
-
-.montserrat-aboutUs {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  color: black;
-  font-optical-sizing: auto;
-  font-weight: 100; /* Make sure this weight is imported */
-  text-shadow: none;
-  line-height: 1.5;
-  word-spacing: 2px;
 }
 
 nav {
@@ -99,6 +64,49 @@ nav a {
   color: rgb(0, 0, 0);
   margin-right: 50px;
   text-decoration: none; /* Remove default underline */
+}
+
+footer {
+  display: none;
+  background: #ece5e5;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 4.5rem;
+}
+
+
+.sub-text {
+  justify-content: left;
+  font-family: 'Rubik';
+  font-style: normal;
+  color: whitesmoke;
+  font-size: 80px;
+  font-weight: 300;
+}
+
+.cursive-default {
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 60px;
+  color: rgb(250, 250, 127);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  letter-spacing:5px;
+  margin-left: -10.5px;
+  margin-right: 25rem;
+  margin-top: 5.5rem;
+  margin-bottom: 5rem;
+}
+
+.montserrat-aboutUs {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  color: black;
+  font-optical-sizing: auto;
+  font-weight: 100; /* Make sure this weight is imported */
+  text-shadow: none;
+  line-height: 1.5;
+  word-spacing: 2px;
 }
 
 .menu-bar {
@@ -143,18 +151,6 @@ nav a {
   top: 0;
   left: 0;
   z-index: -99;
-}
-
-footer {
-  display: none;
-  background: #ece5e5;
-  padding: 1rem;
-  text-align: center;
-  margin-top: 4.5rem;
-}
-
-footer p {
-  margin: 0;
 }
 
 .logo-banner {
@@ -675,20 +671,34 @@ footer p {
   position: relative;
   width: 80%;
   max-width: 800px;
-  top: 40vh;
-  left: 12.5vw;
+  top: -15vh;
+  left: 13.5vw;
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
-  z-index: 2;
+  margin-right: 100px;
+  margin-bottom: 30px;
+  z-index: 3;
+}
+
+
+.core-team-text {
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  width: 100%;
+  max-width: 800px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0px;
+  text-align: left;
+  color: rgb(51, 51, 51);
 }
 
 .intro-core {
-  margin-right: 100px;
-  margin-bottom: 30px;
-  letter-spacing: 1.5px; 
   display: flex;
   justify-content: center;
+  letter-spacing: 1.5px; 
   font-size: 45px;
   font-weight: bold;
   background: linear-gradient(to left, #000000, #a09b0e, rgb(45, 73, 4), rgb(174, 15, 15));
@@ -697,40 +707,38 @@ footer p {
   color: transparent;
 }
 
-.core-team-text {
-  font-family: 'Montserrat', sans-serif;
-  position: absolute;
-  width: 100%;
-  max-width: 800px;
-  margin-top: 100px;
-  margin-left: 200px;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 26px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: rgb(51, 51, 51);
-  z-index: 1;
-}
 
 .arrow-container {
+  position: relative;
   display: flex;
-  flex-direction: row;}
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform: translate(-5%, -42.5vh);
+  z-index: 4;
+}
 
 .arrow-symbol {
-  position: relative;
+  position: absolute;
   display: flex;
   width: 75px;
   height: 75px;
-  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   border-radius: 50%;
-  top: 0.5vh;
   box-shadow: 0 4px 12px rgb(0, 0, 0);
   cursor: pointer;
   transition: all 0.3s ease;  
   color: darkgoldenrod;
   background-color: transparent;
-  z-index: 3;
+}
+
+.left-arrow-symbol {
+  transform: translateX(-38.5vw);
+}
+
+.right-arrow-symbol {
+  transform: translateX(40.5vw);
 }
 
 .arrow-symbol svg {
@@ -750,7 +758,6 @@ footer p {
 }
 
 .arrow-symbol:hover {
-  transform: translateY(-50%) scale(1.25);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
   background-color: rgb(109, 109, 109);
 }
@@ -766,18 +773,6 @@ footer p {
 .arrow-symbol:active .fill-orange,
 .arrow-symbol:active .fill-dark {
   fill: #0b3f10;
-}
-
-.left-arrow-symbol {
-  top: 50%;
-  left: 5%;
-  transform: translateY(-50%);
-}
-
-.right-arrow-symbol {
-  left: 82.5%;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .deco-bg {
