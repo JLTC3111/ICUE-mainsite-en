@@ -1128,7 +1128,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, 1.5vh);
+    transform: translate(92.5vw, 1vh);
     margin: 0;
     z-index: 20;
   }
@@ -1191,6 +1191,7 @@ body.loaded #app {
     background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
     flex-direction: column;
     padding: 15rem 0.5rem;
+    margin-bottom: -2rem;
     margin-left: -1rem;
     transform: translateX(-100%); /* Hide off-screen initially */
     transition: transform 0.4s ease-in-out;
@@ -1348,7 +1349,7 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-3.5px, -80.5rem);
+      transform: translate(-3.5px, -85rem);
       width: 100%;
       height: auto;
       z-index: 1;
