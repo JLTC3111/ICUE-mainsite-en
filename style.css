@@ -130,6 +130,7 @@ nav a {
   width: 100vw;
   height: 100vh;
   position: fixed;
+  box-sizing: border-box;
   overflow: hidden;
   top: 0;
   left: 0;
@@ -143,7 +144,6 @@ nav a {
   object-fit: cover;
   top: 0;
   left: 0;
-  z-index: -99;
 }
 
 footer {
@@ -961,7 +961,11 @@ body.loaded #app {
 }
 
 @media (max-width: 768px) {
-  /* Adjust main layout padding */
+  
+  * {
+    box-sizing: border-box;
+  }
+
   main {
     padding: 1rem;
   }
@@ -1039,7 +1043,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin-top: 3.5rem;
+    margin-top: 1.75rem;
     margin-bottom: 2.5rem;
     z-index: 3;
   }
@@ -1058,7 +1062,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     margin-left: -1.2rem;
     gap: 14px;
     z-index: 1;
