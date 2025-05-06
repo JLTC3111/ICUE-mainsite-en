@@ -1652,6 +1652,7 @@ body.loaded #app {
 }
 
 @media (max-width: 768px) {
+    
     .about-container {
         padding: 20px;
         margin: 0;
