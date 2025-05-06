@@ -296,8 +296,8 @@ footer p {
   position: relative;
   width: 90%;
   max-width: 850px;
-  margin-left: 28%;
-  margin-top: -26.5%;
+  margin-left: 29.5%;
+  margin-top: -27.5%;
   padding: 20px;
   border-radius: 20px;
   box-shadow: none;
@@ -1991,6 +1991,7 @@ h1 {
 .contact-form {
   display: flex; /* Use flexbox for layout */
   flex-direction: column; /* Stack elements vertically */
+  padding: 7.5px;
 }
 
 .form-group {
@@ -2035,18 +2036,19 @@ button:hover {
 /* Contact Info Styles */
 .contact-info {
   margin-top: 30px; /* Space above contact info */
+  justify-content: left;
   text-align: center; /* Center the text */
 }
 
 .contact-info h2 {
   font-family: 'Roboto';
-  justify-content: center;
   margin-bottom: 10px; /* Space below the heading */
   color: #333; /* Dark text color */
 }
 
 .contact-info p {
   font-family: 'Roboto';
+  letter-spacing: normal;
   margin: 5px 0; /* Space above and below paragraphs */
   color: #666; /* Lighter text color */
 }
