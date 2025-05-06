@@ -957,7 +957,6 @@ body.loaded #app {
   body, html {
     overflow-x: hidden;
     overflow-y: auto;
-   -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
   }
 
   main {
@@ -1092,7 +1091,7 @@ body.loaded #app {
     height: 350px;
     margin-top: 15px;
     margin-left: 75px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
   }
 
   .text-container {
