@@ -958,19 +958,55 @@ body.loaded #app {
 
 @media (max-width: 768px) {
   
-  * {
-    box-sizing: border-box;
-  }
-
   /* Prevent horizontal scroll globally */
   body, html {
-    margin: 0;
-    padding: 0;
     overflow-x: hidden;
   }
 
   main {
     padding: 1rem;
+  }
+
+  nav {
+    position: sticky;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -8.5%;
+    justify-content: center;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    margin: 0.3rem 0.8rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+   /* Shrink big headers */
+   h1 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    text-align: left;
+  }
+
+  h2 {
+    color: rgb(0, 0, 0);
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    left: 50%;
+    top: 50%;
+    display: flex;
+  }
+
+  p {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin: 2rem 1rem;
+    margin-right: 2rem;
+    justify-content: center;
+    line-height: 2;
+    letter-spacing: normal;
+  }
+
+  footer {
+    display: none;
   }
 
   .submenu {
@@ -1003,21 +1039,6 @@ body.loaded #app {
     z-index: 7;
   }
 
-  /* Shrink big headers */
-  h1 {
-    font-size: clamp(1.5rem, 6vw, 2.5rem);
-    text-align: left;
-  }
-
-  h2 {
-    color: rgb(0, 0, 0);
-    font-size: clamp(1.2rem, 5vw, 1.8rem);
-    left: 50%;
-    top: 50%;
-    display: flex;
-  }
-
-
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
     margin-left: -10rem;
@@ -1031,20 +1052,10 @@ body.loaded #app {
     margin-bottom: -1.5rem;
   }
 
-  p {
-    font-size: clamp(1rem, 4vw, 1.4rem);
-    margin: 2rem 1rem;
-    margin-right: 2rem;
-    justify-content: center;
-    line-height: 2;
-    letter-spacing: normal;
-  }
-
-
   .home-text-slider {
     max-width: 740px;
     width: 100%;
-    margin-top: 5rem;
+    transform: translate(-36px, -15px);
     text-align: center;
     z-index: 3;
   }
@@ -1063,7 +1074,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: 4.75rem;
+    margin-top: -1.25rem;
     margin-left: 0;
     gap: 14px;
     z-index: 1;
@@ -1077,21 +1088,6 @@ body.loaded #app {
     cursor: pointer;
     transition: background-color 0.3s ease;
     z-index: 1;
-  }
-
-  nav {
-    position: sticky;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: -8.5%;
-    justify-content: center;
-  }
-
-  nav a {
-    font-size: 0.85rem;
-    margin: 0.3rem 0.8rem;
-    justify-content: center;
-    text-align: center;
   }
 
   .image-container {
@@ -1196,12 +1192,12 @@ body.loaded #app {
 
   .drawer-menu {
     position: fixed;
+    display: flex;
     top: 0;
     left: 0;
     height: 100vh;
     width: 100vw;
     background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
-    display: flex;
     flex-direction: column;
     padding: 15rem 0.5rem;
     margin-left: -1rem;
@@ -1242,10 +1238,6 @@ body.loaded #app {
   
   .drawer-menu .submenu a::before {
     content: none;
-  }
-
-  footer {
-    display: none;
   }
 
   .menu-bar .contact-link:hover {
