@@ -137,7 +137,7 @@ footer {
 .video-background {
   position: relative;
   width: 100vw;
-  height: 200vh;
+  height: 150vh;
   z-index: -9; 
 }
 
@@ -645,11 +645,10 @@ footer {
 }
 
 .image-container-coreTeam {
-  position: relative;
   width: 325px;
   height: 433px;
   overflow: hidden;
-  transform: translate(70vw, -70vh);
+  transform: translate(70vw, -120vh);
   background: transparent;
   border-radius: 450px;
   z-index: 2;
@@ -668,7 +667,7 @@ footer {
   position: relative;
   width: 80%;
   max-width: 800px;
-  transform: translate(17.5vw, -117.5vh);
+  transform: translate(17.5vw, -165.5vh);
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
@@ -1289,7 +1288,7 @@ body.loaded #app {
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
-      transform: translate(25vw, -82.5vh);
+      transform: translate(25vw, -130vh);
     }
     
     .profile-photo-coreTeam {
@@ -1299,10 +1298,18 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-2.5vw, -82.5vh);
+      transform: translate(-2.5vw, -125vh);
       margin-left: 5%;
       margin-right: 5%;
       padding: 5px;
+    }
+
+    .core-team-text {
+      text-align: left;
+      margin-left: auto;
+      margin-top: 40px;
+      font-size: 14px;
+      line-height: 22px;
     }
   
     .intro-core {
@@ -1310,14 +1317,6 @@ body.loaded #app {
       margin: 0 auto;
       font-size: 28px;
       text-align: center;
-    }
-  
-    .core-team-text {
-      text-align: left;
-      margin-left: auto;
-      margin-top: 40px;
-      font-size: 14px;
-      line-height: 22px;
     }
 
     .arrow-container {
@@ -1349,7 +1348,7 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-8.5px, -56.5rem);
+      transform: translate(-3.5px, -80.5rem);
       width: 100%;
       height: auto;
       z-index: 1;
