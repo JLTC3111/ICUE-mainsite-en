@@ -130,7 +130,6 @@ nav a {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  box-sizing: border-box;
   overflow: hidden;
   top: 0;
   left: 0;
@@ -970,8 +969,9 @@ body.loaded #app {
     padding: 1rem;
   }
 
-  body {
-    overflow-x: hidden;
+  .video-bg {
+    width: 100vw;
+    height: 100vh;
   }
 
   .submenu {
@@ -1043,7 +1043,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin-top: 1.75rem;
+    margin-top: 2.25rem;
     margin-bottom: 2.5rem;
     z-index: 3;
   }
@@ -1062,7 +1062,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
     margin-left: -1.2rem;
     gap: 14px;
     z-index: 1;
