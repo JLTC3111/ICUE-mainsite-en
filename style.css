@@ -135,12 +135,10 @@ footer {
 }
 
 .video-background {
+  position: relative;
   width: 100vw;
   height: 100vh;
-  position: fixed;
-  overflow: hidden;
-  top: 0;
-  left: 0;
+  z-index: -9; 
 }
 
 .video-bg {
@@ -180,14 +178,14 @@ footer {
 }
 
 .image-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 0;
   width: 300px;
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
-  margin-top: 125px;
-  margin-left: 175px;
-  margin-bottom: 55px;
+  transform: translate(10vw, -25vh);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
@@ -288,11 +286,12 @@ footer {
 }
 
 .text-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 90%;
   max-width: 850px;
-  margin-left: 29.5%;
-  margin-top: -27.5%;
+  transform: translate(-37.5%, -55%);
   padding: 20px;
   border-radius: 20px;
   box-shadow: none;
@@ -650,9 +649,7 @@ footer {
   width: 325px;
   height: 433px;
   overflow: hidden;
-  top: -10vh;
-  left: 45%;
-  transform: translate(20vw, 40vh);
+  transform: translate(70vw, -70vh);
   background: transparent;
   border-radius: 450px;
   z-index: 2;
@@ -671,14 +668,11 @@ footer {
   position: relative;
   width: 80%;
   max-width: 800px;
-  top: -15vh;
-  left: 13.5vw;
+  transform: translate(17.5vw, -117.5vh);
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
-  margin-right: 100px;
-  margin-bottom: 30px;
-  z-index: 3;
+  z-index: 2;
 }
 
 
@@ -733,11 +727,11 @@ footer {
 }
 
 .left-arrow-symbol {
-  transform: translateX(-42.5vw);
+  transform: translateX(-39.5vw);
 }
 
 .right-arrow-symbol {
-  transform: translateX(35vw);
+  transform: translateX(41.5vw);
 }
 
 .arrow-symbol svg {
@@ -966,7 +960,7 @@ body.loaded #app {
     position: sticky;
     display: flex;
     flex-wrap: wrap;
-    margin-top: -8.5%;
+    margin-top: -10.5%;
     justify-content: center;
   }
 
@@ -1086,18 +1080,20 @@ body.loaded #app {
   }
 
   .image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 250px;
     height: 350px;
-    margin-top: 15px;
-    margin-left: 75px;
-    margin-bottom: 30px;
+    transform: translate(-50%, -75%);
   }
 
   .text-container {
-    position: relative;
-    max-width: 768px;
-    width: 100%;
-    transform: translate(-30.5%, 9.5%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    transform: translate(-50%, 12.5%);
     padding: 15px;
   }
 
@@ -1133,7 +1129,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, 2.5vh);
+    transform: translate(92.5vw, 1.5vh);
     margin: 0;
     z-index: 20;
   }
@@ -1293,11 +1289,9 @@ body.loaded #app {
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
-      transform: translate(25vw, 20vh);
-      top:0;
-      left: 0;
+      transform: translate(25vw, -82.5vh);
     }
-  
+    
     .profile-photo-coreTeam {
       width: 200px;
       transform: translateX(0);
@@ -1305,7 +1299,7 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-15vw, 35vh);
+      transform: translate(-2.5vw, -82.5vh);
       margin-left: 5%;
       margin-right: 5%;
       padding: 5px;
@@ -1355,10 +1349,10 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-4.5px, -5.5rem);
+      transform: translate(-8.5px, -57.5rem);
       width: 100%;
       height: auto;
-      z-index: 2;
+      z-index: 1;
       pointer-events: none; /* very good idea to let clicks pass through */
     }
     
