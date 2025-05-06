@@ -956,6 +956,8 @@ body.loaded #app {
   /* Prevent horizontal scroll globally */
   body, html {
     overflow-x: hidden;
+    overflow-y: auto;
+   -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
   }
 
   main {
@@ -1096,7 +1098,7 @@ body.loaded #app {
   .text-container {
     max-width: 768px;
     width: 100%;
-    transform: translate(-27.5%, 9.5%);
+    transform: translate(-30.5%, 9.5%);
     padding: 15px;
   }
 
@@ -1126,8 +1128,8 @@ body.loaded #app {
   .right-arrow {
     margin-top: -50px;
     right: 1.5rem;
-    transform: translateX(15px);
   }
+
   .language-switcher {
     position: relative;
     top: 0;
@@ -1304,7 +1306,7 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-15vw, -20vh);
+      transform: translate(-15vw, 35vh);
       margin-left: 5%;
       margin-right: 5%;
       padding: 5px;
@@ -1325,11 +1327,16 @@ body.loaded #app {
       line-height: 22px;
     }
 
+    .arrow-container {
+      position: relative;
+      display: flex;
+      top: 0;
+      left: 50%;
+      transform: translate(-20px, -55vh);
+    }
+
     .arrow-symbol {
       position: absolute;
-      display: flex;
-      top: 50%; /* Always center vertically */
-      transform: translateY(-50%); /* Pull up by 50% of its height */
       width: 42.5px;
       height: 42.5px;
     }
@@ -1339,19 +1346,10 @@ body.loaded #app {
       height: 95%;
       transform: none; /* Make sure SVG is not rotated/moved */
     }
-
-    .left-arrow-symbol {
-      left: 1.5rem;
-    }
-  
-    .right-arrow-symbol {
-      right: 1.5rem;
-    }
     
     .deco-object-container {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
+      transform: translate(-8.5px, -10.5vh);
       width: 100%;
       height: auto;
       z-index: 5;
@@ -1360,7 +1358,6 @@ body.loaded #app {
     
     .deco-bg {
       display: none;
-      position: absolute;
       width: 200px;
       height: 114px;
     }
