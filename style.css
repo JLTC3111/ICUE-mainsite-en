@@ -645,10 +645,11 @@ footer {
 }
 
 .image-container-coreTeam {
+  position: relative;
   width: 325px;
   height: 433px;
   overflow: hidden;
-  transform: translate(70vw, -120vh);
+  transform: translate(70vw, -70vh);
   background: transparent;
   border-radius: 450px;
   z-index: 2;
@@ -667,7 +668,7 @@ footer {
   position: relative;
   width: 80%;
   max-width: 800px;
-  transform: translate(17.5vw, -165.5vh);
+  transform: translate(17.5vw, -117.5vh);
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
@@ -1287,11 +1288,11 @@ body.loaded #app {
     }
   }
 
-    .image-container-coreTeam {
-      width: 185px;
-      height: 262.5px;
-      transform: translate(25vw, -130vh);
-    }
+  .image-container-coreTeam {
+    width: 185px;
+    height: 262.5px;
+    transform: translate(25vw, -72.5vh);
+  }
     
     .profile-photo-coreTeam {
       width: 200px;
@@ -1300,7 +1301,7 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-2.5vw, -125vh);
+      transform: translate(-2.5vw, -75vh);
       margin-left: 5%;
       margin-right: 5%;
       padding: 5px;
@@ -1350,7 +1351,7 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-3.5px, -162.5vh);
+      transform: translate(-4.5px, -54rem);
       width: 100%;
       height: auto;
       z-index: 1;
