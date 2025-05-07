@@ -137,7 +137,7 @@ footer {
 .video-background {
   position: relative;
   width: 100vw;
-  height: 150vh;
+  height: 100dvh;
   z-index: -9; 
 }
 
@@ -1187,7 +1187,7 @@ body.loaded #app {
     display: flex;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
     flex-direction: column;
