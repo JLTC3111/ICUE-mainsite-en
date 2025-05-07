@@ -1129,7 +1129,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, 1vh);
+    transform: translate(92.5vw, 1.25vh);
     margin: 0;
     z-index: 20;
   }
