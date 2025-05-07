@@ -388,7 +388,7 @@ footer {
   right: 45px;
   display: flex;
   gap: 9px;
-  margin-top: -6.0rem;
+  margin-top: -6.25rem;
   margin-right: 7.5rem;
   z-index: 12;
 }
@@ -657,10 +657,9 @@ footer {
 
 .profile-photo-coreTeam {
   position: absolute;
-  transform: translateX(30px);
+  transform: translateX(15px);
   width: 335px;
   height: auto;
-  transform: translateX(-15px);
   z-index: 3;
 }
 
