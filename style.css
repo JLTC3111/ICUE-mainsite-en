@@ -947,6 +947,7 @@ body.loaded #app {
   
   /* Prevent horizontal scroll globally */
   body, html {
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -1349,7 +1350,7 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-3.5px, -80rem);
+      transform: translate(-3.5px, -162.5vh);
       width: 100%;
       height: auto;
       z-index: 1;
