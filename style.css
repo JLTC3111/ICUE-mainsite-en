@@ -1016,11 +1016,11 @@ body.loaded #app {
   transition: color 0.3s ease;
 }
 
-
 .news-slider-wrapper {
   position: relative;
   display: flex;
   flex-direction: row;
+  z-index: 7;
 }
 
 .news-slider {
@@ -1105,22 +1105,39 @@ body.loaded #app {
   background-color: transparent;
   border-radius: 50px;
   cursor: pointer;
-  pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 3;
 }
 
 
+.slider-arrow svg {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: none;
+  rotate: none;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
 /* Show arrows on hover */
-.news-slider .logo-list:hover .slider-arrow {
+.news-slider-wrapper:hover .slider-arrow svg{
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6)) 
+          drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) 
+          drop-shadow(0 0 30px rgba(255, 0, 100, 0.4)); /* Customize colors */
+  animation: glowPulse 1.5s ease-in-out infinite;
 }
 
-.slider-arrow svg {
-  transform: none;
-  rotate: none;
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px #fff);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px #ff0077);
+  }
 }
 
 .left-slider-arrow {
