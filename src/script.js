@@ -632,7 +632,7 @@ window.initLogoSlider = () => {
   if (!logoList) return;
 
   let position = 0;
-  let speed = 1;
+  let speed = 0.2;
   let isPaused = false;
 
   const loop = () => {
