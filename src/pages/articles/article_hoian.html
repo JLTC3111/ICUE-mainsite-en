@@ -30,7 +30,7 @@
 
   .article-container {
     max-width: 800px;
-    margin: 40px auto;
+    margin: 10px auto;
     padding: 20px;
     color: #333;
     background: #fff;
@@ -106,26 +106,69 @@
   }
 
   nav {
-  background-color: #fff;
+  position: relative;
+  background-color: #333333;
   padding: 1rem 2rem;
   display: flex;
-  gap: 1.5rem;
+  gap: 2.5rem;
   justify-content: center;
   align-items: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  position: sticky;
   top: 0;
   z-index: 1;
 }
 
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
 nav a {
+  font-size: large;
   text-decoration: none;
-  color: #333;
+  color: #ffffff;
   font-weight: 500;
   transition: color 0.3s;
 }
 
 nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: 0.3s;
   color: #007acc;
 }
 
@@ -170,11 +213,11 @@ nav a:hover {
       <section class="article-body">
         <p>On May 15, 2025, the Institute of Construction and Urban Economics (ICUE), in collaboration with the Hoi An local government, will host a special event to mark the successful conclusion of the project titled Capacity Building and Finance for National and Local Action on Climate and Biodiversity (CBF). This initiative, launched under a grant agreement between ICUE, Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH, and the International Climate Initiative (IKI), has played a pivotal role in supporting climate action and biodiversity protection efforts in Vietnam.
 
-            The event will serve as both a celebration and a reflection on the progress made through the joint commitment of the three partners. The presence of local stakeholders, experts, and project contributors will further highlight the collaborative nature of the initiative and its impact on sustainable urban development in the Hoi An region. Over the past months, the project has not only strengthened technical and institutional capacity but also deepened cooperation between national and local authorities on climate-related issues.
+        The event will serve as both a celebration and a reflection on the progress made through the joint commitment of the three partners. The presence of local stakeholders, experts, and project contributors will further highlight the collaborative nature of the initiative and its impact on sustainable urban development in the Hoi An region. Over the past months, the project has not only strengthened technical and institutional capacity but also deepened cooperation between national and local authorities on climate-related issues.
 
-            The ICUE and the Hoi An local government are honored to have contributed to this meaningful endeavor, which reflects a shared vision for a more climate-resilient and environmentally responsible future. None of this would have been possible without the generous support of GIZ and IKI. Their trust and funding enabled the project to become a reality and to deliver tangible benefits to local communities.
+        Both ICUE and Hoi An local government are honored to have contributed to this meaningful endeavor, which reflects a shared vision for a more climate-resilient and environmentally responsible future. None of this would have been possible without the generous support of GIZ and IKI. Their trust and funding enabled the project to become a reality and to deliver tangible benefits to local communities.
 
-            We extend our heartfelt gratitude to GIZ and IKI for their continued support and belief in our mission. This closing event is not the end but a new beginning for future collaborations aimed at creating greener, more sustainable urban environments in Vietnam and beyond.
+        We extend our heartfelt gratitude to GIZ and IKI for their continued support and belief in our mission. This closing event is not the end but a new beginning for future collaborations aimed at creating greener, more sustainable urban environments in Vietnam and beyond.
         </p>
         <h2>Thank You So Much! 🤝 </h2>
         <p></p>
