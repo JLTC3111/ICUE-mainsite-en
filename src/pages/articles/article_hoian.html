@@ -17,7 +17,7 @@
       <!-- Logo & Navigation Links -->
       <a href="/">Home</a>
       <a href="/#/News">News</a>
-      <a href="/#/About">About</a>
+      <a href="/#/aboutUs">About</a>
       <a href="/#/Contact">Contact</a>
     </nav>
   </header>
@@ -40,6 +40,7 @@
 
   .article-title {
     font-size: 2rem;
+    text-align: center;
     margin-bottom: 0.5rem;
     color: #1a202c;
   }
@@ -60,6 +61,7 @@
     width: 100%;
     height: auto;
     border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     margin-bottom: 0.5rem;
   }
 
@@ -70,19 +72,27 @@
   }
 
   .article-body {
+    letter-spacing: 0.25px;
+    
     line-height: 1.7;
     font-size: 1.05rem;
   }
 
   .article-body h2 {
+    text-align: center;
     margin-top: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+  }
+
+  .article-body p {
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   blockquote {
-    margin: 1.5rem 0;
+    margin: 0 auto;
     padding: 1rem;
-    background: #f1f1f1;
+    background: #ffffff;
     border-left: 4px solid #ccc;
     font-style: italic;
     color: #555;
@@ -105,7 +115,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1;
 }
 
 nav a {
@@ -118,21 +128,43 @@ nav a {
 nav a:hover {
   color: #007acc;
 }
+
+.download-btn {
+  position: relative;
+  left: 35%;
+  bottom: 10%;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #f89393, #553aff);
+  border: none;
+  border-radius: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.3);
+  background: linear-gradient(to right, #460000, #388E3C);
+}
 </style>
 
 
   <main id="content" class="article-container">
     <article>
-      <h1 class="article-title">Hoi An Ceremony</h1>
-      <p class="lead">Province's leader attending</p>
+      <h1 class="article-title">IKI-GIZ-ICUE & City of Hoi An Completion Ceremony</h1>
+      <p class="lead">Province's Leader attending</p>
       <div class="meta">
-        <span>By ICUE & Giz & Hoi An City</span>
-        <time datetime="2025-05-18">May 18, 2025</time>
+        <span>By ICUE, IKI & GIZ with Hoi An City</span>
+        <time datetime="2025-05-18">May 16, 2025</time>
       </div>
 
       <figure class="featured-image">
         <img src="images/articles/article1/all_together.jpg" alt="Relevant description">
-        <figcaption>Optional caption under the image</figcaption>
+        <figcaption>All Participants</figcaption>
       </figure>
 
       <section class="article-body">
@@ -144,9 +176,9 @@ nav a:hover {
 
             We extend our heartfelt gratitude to GIZ and IKI for their continued support and belief in our mission. This closing event is not the end but a new beginning for future collaborations aimed at creating greener, more sustainable urban environments in Vietnam and beyond.
         </p>
-        <h2>Subheading</h2>
-        <p>More text...</p>
-        <blockquote>Relevant quote or insight</blockquote>
+        <h2>Thank You So Much! 🤝 </h2>
+        <p></p>
+        <blockquote></blockquote>
         <!-- More content, lists, images, etc. -->
       </section>
     </article>
@@ -155,6 +187,9 @@ nav a:hover {
     <aside class="sidebar">
       <!-- Related articles, social links, etc. -->
     </aside>
+    <a href="public/files/speech.pdf" download class="download-btn">
+            Download Speech ⇲
+    </a>
   </main>
 
   <footer>
