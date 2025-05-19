@@ -1,0 +1,42 @@
+.article-container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 20px;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: #222;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.article-title {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  font-size: 0.875rem;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+blockquote {
+  font-style: italic;
+  padding: 1rem;
+  background: #f2f9f2;
+  border-left: 4px solid #a0cfa9;
+  margin: 2rem 0;
+  color: #444;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}

@@ -330,12 +330,17 @@ window.initHomeTextSlider = () => {
   console.log("✅ Slider initialized with enhanced features");  
 }
 
-// 👇 Auto-load Home by default
-window.onload = () => {
-  loadPage('Home');
-};
+let currentPage = ''; // default
+window.addEventListener('DOMContentLoaded', router);
+window.addEventListener('hashchange', router);
 
-let currentPage = 'Home'; // default
+function router() {
+  const hash = window.location.hash || '#/News';
+  const page = hash.replace('#/', '') || 'News';
+
+  window.loadPage(page);
+}
+
 
 window.toggleDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
@@ -454,10 +459,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Auto-highlight on initial load
-window.onload = () => {
+/*window.onload = () => {
   loadPage('Home');
   highlightActiveLink('Home');
-};
+};*/
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
