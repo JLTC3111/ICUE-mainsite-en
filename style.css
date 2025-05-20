@@ -952,6 +952,10 @@ body.loaded #app {
   visibility: hidden;
 }
 
+.news-arrow svg {
+  transform: none;
+}
+
 .newsPageContainer {
   overflow: hidden;
   position: relative;
@@ -1061,18 +1065,19 @@ body.loaded #app {
 }
 
 .news-slider {
-  position: relative;
-  margin: 3rem auto;
+  margin: 1rem auto;
   background-color: transparent;
-  width: 75vw;
+  width: 50vw;
   justify-content: center;
   height: calc(var(--height) + 20px);
   z-index: 1;
+  overflow: hidden;
+  mask-image: linear-gradient( to right,transparent, #000 10% 90%,transparent)
 }
 
 .news-slider .logo-list {
   display: flex;
-  gap: 80px;
+  gap: 7.5vw;
   padding: 1rem;
   scroll-behavior: smooth;
   white-space: nowrap;
@@ -1639,8 +1644,13 @@ body.loaded #app {
       margin: 0 auto;
     }
 
+    .news-slider .logo-list .item {
+      width: 150px;
+      height: 75px;
+    }
+
     .newsPageContainer {
-      position: relative;
+      position: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1660,44 +1670,54 @@ body.loaded #app {
       position: absolute;
       top: 0;
       left: 0;
+      transform: translate(-12.5vw, -15vh);
       width: 100%;
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
-      pointer-events: none;
+      pointer-events: auto;
+      z-index: 0;
     }
 
     .news-container.active {
       opacity: 1;
-      position: relative;
       pointer-events: auto;
+      z-index: 1;
     }
 
     /* Arrows */
     .news-arrow {
+      position: absolute;
+      top:15%;
+      left:50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      visibility: visible;
       cursor: pointer;
       z-index: 5;
-      padding: 0.5rem;
-      background: white;
+      padding: .25rem;
+      background: rgb(223, 223, 223);
       border-radius: 50%;
       box-shadow: 0 0 5px rgba(0,0,0,0.2);
       opacity: 1;
     }
 
     .left-news-arrow {
-      margin-right: 1rem;
+      left: 5.5vw;
     }
 
     .right-news-arrow {
-      margin-left: 1rem;
+      margin-left: 35vw;
     }
 
     /* Maintain your news-card styling */
     .news-card {
+      margin: -1rem auto;
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-      width: 100%;
+      overflow:hidden;
+      width: 93.5vw;
+      height:85vh;
     }
 
     .news-date {
@@ -1708,11 +1728,12 @@ body.loaded #app {
       padding: 8px;
       font-weight: bold;
       border-radius: 4px;
+      z-index: 9;
     }
 
     .news-image {
-      width: 100%;
-      height: 200px;
+      width: 90%;
+      height: 350px;
       object-fit: cover;
     }
 
@@ -1731,6 +1752,7 @@ body.loaded #app {
       font-size: 0.95rem;
       color: #555;
       line-height: 1.6;
+      margin-left: 2.5vw;
     }
 
     .news-item-link {
@@ -1742,6 +1764,7 @@ body.loaded #app {
       text-decoration: none;
       border-radius: 4px;
       transition: 0.3s;
+      z-index: 12;
     }
 
     .news-item-link:hover {

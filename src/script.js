@@ -171,6 +171,7 @@ window.loadPage = (page) => {
               }
               if (page === 'News') {
                 initLogoSlider();
+                initMobileNewsSlider();
               }
             });
 
@@ -669,46 +670,41 @@ window.initLogoSlider = () => {
   if (arrowRight) arrowRight.addEventListener('click', () => { speed = -1; isPaused = false; });
 };
 
-const containers = document.querySelectorAll('.news-container');
-  const leftArrow = document.getElementById('arrowNewsLeft');
-  const rightArrow = document.getElementById('arrowNewsRight');
-  let current = 0;
+// ===================
+// News Slider (Mobile Only)
+// ===================
+window.initMobileNewsSlider = () => {
+  if (window.innerWidth > 768) return; // Only run on small screens
 
-  function updateSlide(index) {
-    containers.forEach((c, i) => {
-      c.classList.toggle('active', i === index);
+  const containers = document.querySelectorAll(".news-container");
+  const leftArrow = document.getElementById("arrowNewsLeft");
+  const rightArrow = document.getElementById("arrowNewsRight");
+
+  if (!containers.length || !leftArrow || !rightArrow) return;
+
+  let currentIndex = 0;
+
+  function updateSlider() {
+    containers.forEach((container, index) => {
+      container.style.display = index === currentIndex ? "block" : "none";
     });
   }
 
-  leftArrow.addEventListener('click', () => {
-    current = (current - 1 + containers.length) % containers.length;
-    updateSlide(current);
+  leftArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + containers.length) % containers.length;
+    updateSlider();
   });
 
-  rightArrow.addEventListener('click', () => {
-    current = (current + 1) % containers.length;
-    updateSlide(current);
+  rightArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % containers.length;
+    updateSlider();
   });
 
-  // Optional: swipe support for mobile
-  let startX = 0;
-  const carousel = document.querySelector('.news-carousel');
+  updateSlider();
+}
 
-  carousel.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-  });
-
-  carousel.addEventListener('touchend', (e) => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) {
-      rightArrow.click();
-    } else if (endX - startX > 50) {
-      leftArrow.click();
-    }
-  });
-
-  // Initialize
-  updateSlide(current);
+// Call when DOM is ready
+document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
 
 
