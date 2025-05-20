@@ -669,6 +669,46 @@ window.initLogoSlider = () => {
   if (arrowRight) arrowRight.addEventListener('click', () => { speed = -1; isPaused = false; });
 };
 
+const containers = document.querySelectorAll('.news-container');
+  const leftArrow = document.getElementById('arrowNewsLeft');
+  const rightArrow = document.getElementById('arrowNewsRight');
+  let current = 0;
+
+  function updateSlide(index) {
+    containers.forEach((c, i) => {
+      c.classList.toggle('active', i === index);
+    });
+  }
+
+  leftArrow.addEventListener('click', () => {
+    current = (current - 1 + containers.length) % containers.length;
+    updateSlide(current);
+  });
+
+  rightArrow.addEventListener('click', () => {
+    current = (current + 1) % containers.length;
+    updateSlide(current);
+  });
+
+  // Optional: swipe support for mobile
+  let startX = 0;
+  const carousel = document.querySelector('.news-carousel');
+
+  carousel.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  carousel.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) {
+      rightArrow.click();
+    } else if (endX - startX > 50) {
+      leftArrow.click();
+    }
+  });
+
+  // Initialize
+  updateSlide(current);
 
 
 
