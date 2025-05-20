@@ -1013,8 +1013,9 @@ body.loaded #app {
   font-size: 0.9rem;
   color: #555;
   margin: 2rem 2.5rem;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   word-break: break-word;
+  line-height: 1.6;
 }
 
 .news-item-link {
