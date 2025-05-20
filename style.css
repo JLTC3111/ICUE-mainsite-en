@@ -1043,7 +1043,7 @@ body.loaded #app {
 
 .news-slider {
   position: relative;
-  margin: 0 auto;
+  margin: 3rem auto;
   background-color: transparent;
   width: 75vw;
   justify-content: center;
@@ -1053,6 +1053,7 @@ body.loaded #app {
 
 .news-slider .logo-list {
   display: flex;
+  gap: 80px;
   padding: 1rem;
   scroll-behavior: smooth;
   white-space: nowrap;
@@ -1071,11 +1072,17 @@ body.loaded #app {
   animation-delay: calc( (10s / var(--quantity)) * (var(--position) -1) ) !important;*/
 }
 
+.news-slider .logo-list .item a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
 .news-slider .logo-list .item img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: grayscale(0.9);
+  filter: grayscale(1);
 }
 
 
@@ -1085,25 +1092,17 @@ body.loaded #app {
   object-fit: cover !important;
 }
 
-.news-slider .logo-list .item:nth-child(3),
 .news-slider .logo-list .item:nth-child(5) {
-  width: 175px;
-}
-
-.news-slider .logo-list .item:nth-child(6) {
-  width: 275px;
-}
-.news-slider .logo-list .item:nth-child(7) {
   width: 375px;
 }
 
-@keyframes scrollLogos {
+/*@keyframes scrollLogos {
   from {
     left: 65%;
   } to {
     left: calc(var(--width) * -15);
   }
-}
+}*/
 
 .news-slider:hover .logo-list .item {
   animation-play-state: paused;
