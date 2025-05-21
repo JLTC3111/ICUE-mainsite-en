@@ -1065,7 +1065,7 @@ body.loaded #app {
 }
 
 .news-slider {
-  margin: -.5rem auto;
+  margin: -1.5rem auto;
   background-color: transparent;
   width: 50vw;
   justify-content: center;
@@ -1685,7 +1685,7 @@ body.loaded #app {
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:15%;
+      top:25%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
