@@ -173,6 +173,9 @@ window.loadPage = (page) => {
                 initLogoSlider();
                 initMobileNewsSlider();
               }
+              if (page === 'aboutUs') {
+                createBalloons();
+              }
             });
 
           }, 400); // After fade-out
