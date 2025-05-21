@@ -954,6 +954,7 @@ body.loaded #app {
 #thankYouMessage {
   text-align: center;
   font-size: 1.2rem;
+  font-style: italic;
   margin: 1.5rem auto;
   color: green; /* Optional for emphasis */
 }
