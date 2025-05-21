@@ -1008,6 +1008,22 @@ body.loaded #app {
   transform: scale(1.03);
 }
 
+/* Gradient background layer */
+.news-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 180deg at 50% 50%, #9d7d90, #7873f5, #4ade80, #9d7d90);
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: -1;
+}
+
+/* Activate gradient on hover */
+.news-card:hover::before {
+  opacity: 0.2;
+}
+
 .news-date {
   position: absolute;
   top: 10px;
@@ -1061,6 +1077,7 @@ body.loaded #app {
   font-weight: bold;
   transition: background 0.3s;
   margin: 1rem auto;
+  z-index: 1;
 }
 
 .news-item-link:hover {
