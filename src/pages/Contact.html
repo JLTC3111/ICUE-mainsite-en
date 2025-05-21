@@ -33,8 +33,8 @@
     </form>
 
     <!-- Thank You Message -->
-    <div id="thankYouMessage" style="display: none; margin-top: 20px; color: green; font-weight: bold;">
-      ✅ Thank you! Your message has been sent.
+    <div class="thank-you-wrapper" id="thankYouMessage">
+      <p id="thankYouMessage">🎉 Thank you! Your message has been sent.</p>
     </div>
 
     <div class="contact-info">
@@ -45,27 +45,6 @@
     </div>
   </div>
 
-  <script>
-    // Intercept Netlify form submission and show message
-    const form = document.getElementById("contactForm");
-    const thankYou = document.getElementById("thankYouMessage");
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault(); // Stop regular submission
-      const formData = new FormData(form);
-
-      fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData).toString()
-      })
-      .then(() => {
-        form.style.display = "none";
-        thankYou.style.display = "block";
-      })
-      .catch((error) => alert("Something went wrong. Please try again."));
-    });
-  </script>
 </body>
 </html>
 

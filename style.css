@@ -951,6 +951,20 @@ body.loaded #app {
   cursor: url('public/cursors/pencil.cur'), auto;
 }
 
+#thankYouMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1.5rem auto;
+  color: green; /* Optional for emphasis */
+}
+
+.thank-you-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Adjust height as needed */
+}
+
 .news-arrow {
   visibility: hidden;
 }
