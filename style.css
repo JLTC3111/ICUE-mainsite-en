@@ -1065,7 +1065,7 @@ body.loaded #app {
 }
 
 .news-slider {
-  margin: 1rem auto;
+  margin: -.5rem auto;
   background-color: transparent;
   width: 50vw;
   justify-content: center;
