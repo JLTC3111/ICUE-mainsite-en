@@ -176,6 +176,9 @@ window.loadPage = (page) => {
               if (page === 'aboutUs') {
                 createBalloons();
               }
+              if (page === 'Contact') {
+                initPostMethod();
+              }
             });
 
           }, 400); // After fade-out
@@ -709,6 +712,24 @@ window.initMobileNewsSlider = () => {
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
+window.initPostMethod = () => {
+const form = document.getElementById("contactForm");
+    const thankYou = document.getElementById("thankYouMessage");
 
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); // Stop regular submission
+      const formData = new FormData(form);
 
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString()
+      })
+      .then(() => {
+        form.style.display = "none";
+        thankYou.style.display = "block";
+      })
+      .catch((error) => alert("Something went wrong. Please try again."));
+    });
+  }
   
