@@ -1077,7 +1077,7 @@ body.loaded #app {
   font-weight: bold;
   transition: background 0.3s;
   margin: 1rem auto;
-  z-index: 1;
+  z-index: 2;
 }
 
 .news-item-link:hover {
