@@ -2381,7 +2381,7 @@ body.contact-page {
 /* Contact Container */
 .contact-container {
   max-width: 600px; /* Limit the width of the contact form */
-  margin: 50px auto; /* Center the container */
+  margin: 150px auto; /* Center the container */
   padding: 20px; /* Add padding */
   background: white; /* White background for the form */
   border-radius: 8px; /* Rounded corners */
