@@ -504,9 +504,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
-    {name: '<span class="intro-core">Core Team</span> Our team consists of 5-6 dedicated professionals who manage the day-to-day operations and essential tasks, ensuring everything runs smoothly. With expertise in project management, technical development, client relations, marketing and finance, each member plays a vital role in driving the success of the organization. Through close collaboration and open communication, they work together to solve challenges and seize opportunities. From customer interactions to internal processes, the collective efforts of the team ensure top-notch service and operational efficiency. Their commitment and hard work are vital to the continued growth and success of our organization.',
-      img: "public/profilePhotos/coreTeam.jpg"
-    },
     {name: 
       `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, sustainable urban development, infrastructure management and public space design. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize sustainable and environmentally friendly solutions.`, 
       img: "public/profilePhotos/lyly.png"
