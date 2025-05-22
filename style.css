@@ -1324,7 +1324,7 @@ body.loaded #app {
     position: fixed;
     top:12.65%;
     left:50%;
-    transform: translate(38vw, .05vh);
+    transform: translate(38vw, 2.55vh);
     z-index: 12;
   }
   
