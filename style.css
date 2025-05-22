@@ -664,12 +664,17 @@ footer {
   background-color: #ffcc00; /* Highlight active dot */
 }
 
-.image-container-coreTeam {
+.corePageContainer {
   position: relative;
+}
+
+.image-container-coreTeam {
+  position: absolute;
+  top:30%;
+  right:12.5%;
   width: 325px;
   height: 433px;
   overflow: hidden;
-  transform: translate(70vw, -70vh);
   background: transparent;
   border-radius: 450px;
   z-index: 2;
@@ -684,10 +689,11 @@ footer {
 }
 
 .text-container-coreTeam {
-  position: relative;
+  position: absolute;
+  top:35%;
+  left:17.5%;
   width: 80%;
   max-width: 800px;
-  transform: translate(17.5vw, -117.5vh);
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
@@ -725,7 +731,7 @@ footer {
   position: absolute;
   display: flex;
   flex-direction: row;
-  top: 40%;
+  top: 45%;
   left: 50%;
   transform: translateY(5vh);
   background-color: transparent;
@@ -786,25 +792,6 @@ footer {
 .arrow-symbol:active .fill-dark {
   fill: #0b3f10;
 }
-
-.deco-bg {
-  display: flex;
-  position: absolute;
-  width: 15vw; /* instead of fixed 220px */
-  height: 125px; /* maintain aspect ratio */
-  top: 7.5%;
-  left: 20%;
- 
-  margin: 2vw; /* relative margin */
-  z-index: 2;
-}
-
-/* Individual positions relative to center */
-.deco-bg1 { transform: translate(-12vw, 0vh); }
-.deco-bg2 { transform: translate(4vw, 0vh); }
-.deco-bg3 { transform: translate(20vw, 0vh); }
-.deco-bg4 { transform: translate(36vw, 0vh); }
-.deco-bg5 { transform: translate(52vw, 0vh); }
 
 .download-btn {
   display: inline-block;
@@ -1578,11 +1565,12 @@ body.loaded #app {
     }
   }
 
-  .image-container-coreTeam {
-    width: 185px;
-    height: 262.5px;
-    transform: translate(25vw, -78.5vh);
-  }
+    .image-container-coreTeam {
+      top:15%;
+      left:27.5%;
+      width: 185px;
+      height: 262.5px;
+    }
     
     .profile-photo-coreTeam {
       width: 200px;
@@ -1591,17 +1579,14 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-2.5vw, -80vh);
-      margin-left: 5%;
-      margin-right: 5%;
+      top:45%;
+      left: 15px;
       padding: 5px;
     }
 
     .core-team-text {
       text-align: left;
-      margin-left: auto;
-      margin-top: 40px;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 22px;
     }
   
@@ -1614,7 +1599,7 @@ body.loaded #app {
 
     .arrow-container {
       position: absolute;
-      top: 40%;
+      top: 35%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
       z-index: 1;
@@ -1636,40 +1621,7 @@ body.loaded #app {
     }
   
     .right-arrow-symbol {
-      transform: translateX(35vw); /* or smaller */
-    }
-  
-    .deco-object-container {
-      position: relative;
-      transform: translate(-4.5px, -60rem);
-      margin: 1rem auto;
-      width: 100%;
-      height: auto;
-      z-index: 3;
-      pointer-events: none; /* very good idea to let clicks pass through */
-    }
-    
-    .deco-bg {
-      display: none;
-      position: absolute;
-      width: 200px;
-      height: 114px;
-      gap: 10px;
-    }
-    
-    /* Specific placements */
-    .deco-bg4 {
-      display: grid;
-      top: 10vh;
-      left: -7.5vw;
-      transform: translate(5vw, 0);
-    }
-    
-    .deco-bg5 {
-      display: grid;
-      top: 10vh;
-      right: 15vw;
-      transform: translate(27.5vw, 0);
+      transform: translateX(40vw); /* or smaller */
     }
 
     .download-btn {
@@ -2064,13 +2016,15 @@ body.loaded #app {
     pointer-events: none;
 }
 
-@media (min-width: 768px) and (max-width: 1118px) {
+@media only screen and (min-width: 769px) and (max-width: 1338px) {
+  
   .image-container-coreTeam {
-    position: relative;
+    position: absolute;
+    top:35%;
+    right:10%;
     width: 225px;
     height: 300px;
     overflow: hidden;
-    transform: translate(70vw, -65vh);
     background: transparent;
     border-radius: 450px;
     z-index: 2;
@@ -2085,10 +2039,11 @@ body.loaded #app {
   }
 
   .text-container-coreTeam {
-    position: relative;
-    width: 80%;
+    position: absolute;
+    top:30%;
+    left:15%;
+    width: 90%;
     max-width: 500px;
-    transform: translate(17.5vw, -95vh);
     padding: 10px;
     background: transparent;
     backdrop-filter: none;
