@@ -1098,13 +1098,13 @@ body.loaded #app {
 
 .news-slider-wrapper {
   position: relative;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  place-items: center;
   z-index: 7;
 }
 
 .news-slider {
-  margin: 3.5rem auto;
+  margin: 5rem auto 0; /* Top = 5rem, auto centers horizontally, bottom = 0 */
   background-color: transparent;
   width: 50vw;
   justify-content: center;
@@ -1180,7 +1180,7 @@ body.loaded #app {
 .slider-arrow {
   display: flex;
   position: absolute;
-  top:50%;
+  top:70%;
   transform: translateY(-50%);
   background-color: transparent;
   border-radius: 50px;
