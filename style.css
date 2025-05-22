@@ -725,7 +725,7 @@ footer {
   position: absolute;
   display: flex;
   flex-direction: row;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translateY(5vh);
   background-color: transparent;
@@ -1237,6 +1237,7 @@ body.loaded #app {
   
   /* Prevent horizontal scroll globally */
   body, html {
+    position: relative;
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -1324,7 +1325,7 @@ body.loaded #app {
     position: fixed;
     top:12.65%;
     left:50%;
-    transform: translate(38vw, 2.65vh);
+    transform: translate(38vw, 2.75vh);
     z-index: 12;
   }
   
@@ -1613,7 +1614,7 @@ body.loaded #app {
 
     .arrow-container {
       position: absolute;
-      top: 50%;
+      top: 40%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
       z-index: 1;
@@ -1640,7 +1641,8 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-4.5px, -52.5rem);
+      transform: translate(-4.5px, -60rem);
+      margin: 1rem auto;
       width: 100%;
       height: auto;
       z-index: 1;
