@@ -1569,7 +1569,6 @@ body.loaded #app {
       left:27.5%;
       width: 185px;
       height: 262.5px;
-      margin: 1rem auto;
     }
     
     .profile-photo-coreTeam {
@@ -1579,7 +1578,7 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width:90%;
-      top:45%;
+      top:50%;
       left: 15px;
       padding: 5px;
     }
