@@ -705,7 +705,6 @@ footer {
   font-family: 'Montserrat', sans-serif;
   position: absolute;
   width: 100%;
-  max-width: 800px;
   font-size: 18px;
   font-weight: 400;
   line-height: 1.6;
@@ -1578,20 +1577,18 @@ body.loaded #app {
     }
   
     .text-container-coreTeam {
-      width: 90%;
+      width:90%;
       top:45%;
       left: 15px;
       padding: 5px;
     }
 
     .core-team-text {
-      text-align: left;
       font-size: 12px;
       line-height: 22px;
     }
   
     .intro-core {
-      text-align: left;
       margin: 0 auto;
       font-size: 28px;
       text-align: center;
@@ -2040,25 +2037,23 @@ body.loaded #app {
 
   .text-container-coreTeam {
     position: absolute;
-    top:30%;
+    top:27.5%;
     left:15%;
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
+    min-width: 300px;      /* Always has room for decent content */
+    max-width: 45vw;       /* Responsive limit based on screen width */
+    width: 100%;   
     padding: 10px;
     background: transparent;
-    backdrop-filter: none;
     z-index: 2;
   }
 
   .core-team-text {
     font-family: 'Montserrat', sans-serif;
-    position: absolute;
-    width: 100%;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: 0px;
-    text-align: left;
     color: rgb(51, 51, 51);
   }
 
@@ -2066,7 +2061,7 @@ body.loaded #app {
     display: flex;
     justify-content: center;
     letter-spacing: 1.5px; 
-    font-size: 45px;
+    font-size: 32px;
     font-weight: bold;
     background: linear-gradient(to left, #000000, #a09b0e, rgb(45, 73, 4), rgb(174, 15, 15));
     -webkit-background-clip: text;
@@ -2099,11 +2094,11 @@ body.loaded #app {
   }
 
   .left-arrow-symbol {
-    transform: translateX(-39.5vw);
+    transform: translateX(-45vw);
   }
 
   .right-arrow-symbol {
-    transform: translateX(42.5vw);
+    transform: translateX(40.5vw);
   }
  
 }
