@@ -1324,7 +1324,7 @@ body.loaded #app {
     position: fixed;
     top:12.65%;
     left:50%;
-    transform: translateX(38vw);
+    transform: translate(38vw, .05vh);
     z-index: 12;
   }
   
@@ -1350,19 +1350,17 @@ body.loaded #app {
     border-radius: 50%; /* ✅ Makes it circular */
     transform: translateX(0px);
   }
-
-  .sub-text {
-    font-size: clamp(2rem, 6vw, 3rem);
-    margin-left: -10rem;
-  } 
   
-  .cursive-default {
-    font-size: clamp(1rem, 6vw, 1.5rem);
-    margin: 2.5rem;
-    margin-top: 9.5rem;
-    margin-left: 0.5rem;
-    margin-bottom: -1.5rem;
-  }
+.sub-text {
+  font-size: clamp(2rem, 6vw, 3rem);
+  margin: 14.5rem 0 -2rem 0; /* shifts text slightly left */
+}
+
+.cursive-default {
+  font-size: clamp(1rem, 6vw, 1.5rem);
+  line-height: 1.5;
+  margin: 8.5rem 2.5rem -1.75rem -0.25rem; /* top, right, bottom, left */
+}
 
   .home-text-slider {
     max-width: 740px;
