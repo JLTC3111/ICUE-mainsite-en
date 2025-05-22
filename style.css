@@ -1645,7 +1645,7 @@ body.loaded #app {
       margin: 1rem auto;
       width: 100%;
       height: auto;
-      z-index: 1;
+      z-index: 3;
       pointer-events: none; /* very good idea to let clicks pass through */
     }
     
@@ -2068,7 +2068,7 @@ body.loaded #app {
     
     .about-container {
         padding: 20px;
-        margin: 0;
+        margin: 3.5rem auto;
     }
 
     .section {
