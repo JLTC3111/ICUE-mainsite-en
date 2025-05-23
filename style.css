@@ -1695,7 +1695,7 @@ body.loaded #app {
 
     /* Maintain your news-card styling */
     .news-card {
-      margin: -4.5rem auto;
+      margin: -3rem 1rem auto auto;
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -1717,7 +1717,7 @@ body.loaded #app {
 
     .news-image {
       width: 100%;
-      height: 450px;
+      height: 350px;
       object-fit: cover;
     }
 
