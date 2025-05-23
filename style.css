@@ -324,7 +324,8 @@ footer {
 
 .intro-people {
   display: flex;
-  letter-spacing: 1.5px; 
+  letter-spacing: .5px; 
+  line-height: 1.2; 
   justify-content: center;
   font-size: 45px;
   font-weight: bold;
@@ -2012,8 +2013,43 @@ body.loaded #app {
     pointer-events: none;
 }
 
-@media only screen and (min-width: 769px) and (max-width: 1338px) {
-  
+@media only screen and (min-width: 769px) and (max-width: 1366px) {
+  .cursive-default {
+    font-size: 48px;
+    margin: 7.5rem auto auto auto;
+  }
+
+  .sub-text {
+    font-size: 48px;
+  }
+
+  .lets-talk {
+    margin: 1rem auto auto 2rem;
+  }
+
+  .home-text-slider {
+    margin: 7.5rem auto auto auto;
+  }
+
+  .slider-dots {
+    margin: 7rem auto auto auto;
+  }
+
+  .workPageContainer {
+    margin: 12.5% auto auto 2.5%;
+  }
+
+  .image-container {
+    top: 35%;
+    left: 25%;
+  }
+
+  .text-container {
+    top:58rem;
+    left:45%;
+    max-width: 60%;
+  }
+
   .image-container-coreTeam {
     position: absolute;
     top:35%;
@@ -2099,7 +2135,22 @@ body.loaded #app {
   .right-arrow-symbol {
     transform: translateX(40.5vw);
   }
- 
+  
+  .news-arrow {
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    visibility: visible;
+  }
+
+  .right-news-arrow {
+    margin-left: 27.5vw;
+  }
+
+  .left-news-arrow {
+    left: 20vw;
+  }
 }
 
 @media (max-width: 768px) {
