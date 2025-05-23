@@ -1001,10 +1001,6 @@ body.loaded #app {
   transition: transform 0.3s ease;
 }
 
-.news-card:hover {
-  transform: scale(1.03);
-}
-
 /* Gradient background layer */
 .news-card::before {
   content: "";
@@ -1219,7 +1215,7 @@ body.loaded #app {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   
   /* Prevent horizontal scroll globally */
   body, html {
@@ -2015,7 +2011,7 @@ body.loaded #app {
     pointer-events: none;
 }
 
-@media only screen and (min-width: 769px) and (max-width: 1366px) {
+@media only screen and (min-width: 768px) and (max-width: 1366px) {
   .cursive-default {
     font-size: 48px;
     margin: 7.5rem auto auto auto;
@@ -2155,7 +2151,7 @@ body.loaded #app {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     
     .about-container {
         padding: 20px;
@@ -2313,7 +2309,7 @@ body.loaded #app {
     transform: rotate(-10deg) scale(1.05);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .postcard-image {
         width: 250px !important;
     }
