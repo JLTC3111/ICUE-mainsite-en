@@ -1653,7 +1653,7 @@ body.loaded #app {
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(-11.5vw, -.5vh);
+      transform: translate(-11vw, -.5vh);
       width: 100%;
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
