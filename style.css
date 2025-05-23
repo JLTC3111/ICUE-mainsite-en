@@ -1696,7 +1696,7 @@ body.loaded #app {
 
     /* Maintain your news-card styling */
     .news-card {
-      margin: -1rem auto;
+      margin: -3rem auto;
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -1744,7 +1744,7 @@ body.loaded #app {
 
     .news-item-link {
       display: inline-block;
-      margin-top: -1.5rem;
+      margin-top: -2rem;
       padding: 0.5rem 1rem;
       border: 1px solid #244b2c;
       color: #244b2c;
