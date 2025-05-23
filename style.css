@@ -2011,6 +2011,12 @@ body.loaded #app {
     pointer-events: none;
 }
 
+@media (min-width: 1367px) {
+  .news-card:hover {
+    transform: scale(1.03);
+  }
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1366px) {
   .cursive-default {
     font-size: 48px;
