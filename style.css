@@ -1647,6 +1647,7 @@ body.loaded #app {
       width: 100%;
       height: auto;
       min-height: 550px; /* Adjust based on content */
+      overflow-y: auto;
     }
 
     .news-container {
@@ -1670,7 +1671,7 @@ body.loaded #app {
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:35%;
+      top:15%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
