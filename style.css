@@ -1008,6 +1008,7 @@ body.loaded #app {
   inset: 0;
   background: conic-gradient(from 180deg at 50% 50%, #9d7d90, #7873f5, #4ade80, #9d7d90);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.5s;
 }
 
@@ -1698,7 +1699,6 @@ body.loaded #app {
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      overflow:hidden;
       width: 93.5vw;
       height: 95vh;
     }
