@@ -1637,7 +1637,6 @@ body.loaded #app {
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
       width: 100vw;
       margin: 2rem auto;
     }
@@ -1653,7 +1652,7 @@ body.loaded #app {
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(-14.5vw, -15vh);
+      transform: translate(-9.5vw, -.5vh);
       width: 100%;
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
@@ -1670,7 +1669,7 @@ body.loaded #app {
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:25%;
+      top:35%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
@@ -1686,11 +1685,11 @@ body.loaded #app {
     }
 
     .left-news-arrow {
-      left: 4.5vw;
+      left: -.5vw;
     }
 
     .right-news-arrow {
-      margin-left: 35vw;
+      margin-left: 38vw;
     }
 
     /* Maintain your news-card styling */
