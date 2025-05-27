@@ -1221,7 +1221,6 @@ body.loaded #app {
 /* work-carousel */
 .work-carousel{
     height: 100vh;
-    margin-top: -50px;
     width: 100vw;
     overflow: hidden;
     position: relative;
@@ -1287,7 +1286,7 @@ body.loaded #app {
     bottom: 50px;
     left: 50%;
     width: max-content;
-    z-index: 100;
+    z-index: 3;
     display: flex;
     gap: 20px;
 }
@@ -1321,7 +1320,7 @@ body.loaded #app {
     position: absolute;
     top: 80%;
     right: 52%;
-    z-index: 100;
+    z-index: 2;
     width: 300px;
     max-width: 30%;
     display: flex;
@@ -1428,12 +1427,12 @@ body.loaded #app {
 
 .work-carousel .work-time{
     position: absolute;
-    z-index: 1000;
+    z-index: 10;
     width: 0%;
-    height: 3px;
+    height: 2.5px;
     background-color: #f1683a;
     left: 0;
-    top: 0;
+    top: 8.25%;
 }
 
 .work-carousel.work-next .work-time,
@@ -1493,6 +1492,8 @@ body.loaded #app {
         opacity: 0;
     }
 }
+
+
 @media (max-width: 767px) {
   
   /* Prevent horizontal scroll globally */
