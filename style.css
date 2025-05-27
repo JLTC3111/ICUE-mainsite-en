@@ -1432,7 +1432,9 @@ body.loaded #app {
     height: 2.5px;
     background-color: #f1683a;
     left: 0;
-    top: 8.25%;
+    top: 0;
+    visibility: hidden;
+    
 }
 
 .work-carousel.work-next .work-time,
