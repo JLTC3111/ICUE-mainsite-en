@@ -1,4 +1,5 @@
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
   body{
     margin: 0;
     background-color: #000;
@@ -9,20 +10,21 @@
 a{
     text-decoration: none;
 }
-header{
-    width: 1140px;
-    max-width: 80%;
-    margin: auto;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    z-index: 100;
+@media (max-width: 767px) {
+  body{
+    margin: 2rem -2rem 0 -2rem;
+  }
+  .work-carousel .work-list .work-item .work-content{
+        padding: 0;
+    }
+  .work-carousel .work-list .work-item .work-content .work-title{
+        font-size: 30px;
+    }
+  .work-carousel .work-list .work-item .work-content .work-topic{
+        font-size: 35px;
+    }
 }
-header a{
-    color: #eee;
-    margin-right: 40px;
-}
+  
 </style>
 
 <main id="content">
@@ -43,7 +45,7 @@ header a{
                     </div>
                     <div class="work-buttons">
                         <button>SEE MORE</button>
-                        <button>CONTACT</button>
+                        
                     </div>
                 </div>
             </div>
@@ -59,7 +61,7 @@ header a{
                     </div>
                     <div class="work-buttons">
                         <button>SEE MORE</button>
-                        <button>CONTACT</button>
+                      
                     </div>
                 </div>
             </div>
@@ -75,7 +77,7 @@ header a{
                     </div>
                     <div class="work-buttons"> 
                         <button>SEE MORE</button>
-                        <button>CONTACT</button>
+                        
                     </div>
                 </div>
             </div>
@@ -90,7 +92,7 @@ header a{
                     </div>
                     <div class="work-buttons">
                         <button>SEE MORE</button>
-                        <button>CONTACT</button>
+                        
                     </div>
                 </div>
             </div>

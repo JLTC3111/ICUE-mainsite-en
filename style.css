@@ -1246,12 +1246,12 @@ body.loaded #app {
     transform: translateX(-50%);
     padding-right: 30%;
     box-sizing: border-box;
-    color: #fff;
+    color: #000000;
     text-shadow: 0 5px 10px #0004;
 }
 .work-carousel .work-list .work-item .work-author{
     font-weight: bold;
-    letter-spacing: 10px;
+    letter-spacing: 2.5px;
 }
 .work-carousel .work-list .work-item .work-title,
 .work-carousel .work-list .work-item .work-topic{
@@ -1271,7 +1271,7 @@ body.loaded #app {
 }
 .work-carousel .work-list .work-item .work-buttons button{
     border: none;
-    background-color: #eee;
+    background-color: #000000;
     letter-spacing: 3px;
     font-family: Poppins;
     font-weight: 500;
@@ -2034,9 +2034,8 @@ body.loaded #app {
       background: #244b2c;
       color: white;
     }
-  }
-  
 
+}
 
 /* Sliding animations */
 .slide-exit-left {
