@@ -309,8 +309,8 @@ footer {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 60%;
-  max-width: 750px;
+  width: 50%;
+  max-width: 700px;
   transform: translate(-37.5%, -55%);
   padding: 10px;
   border-radius: 150px;
@@ -698,7 +698,7 @@ footer {
   top:35%;
   left:17.5%;
   width: 50%;
-  max-width: 725px;
+  max-width: 675px;
   padding: 10px;
   background: transparent;
   backdrop-filter: none;
