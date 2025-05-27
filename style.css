@@ -83,7 +83,7 @@ nav a {
   justify-content: space-between;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #014d08, rgb(35, 40, 35));
-  z-index: 9;
+  z-index: 19;
 }
 
 .menu-bar a:hover {
@@ -411,7 +411,7 @@ footer {
   gap: 9px;
   margin-top: -6.25rem;
   margin-right: 7.5rem;
-  z-index: 12;
+  z-index: 22;
 }
 
 .flag-link {
@@ -1425,7 +1425,7 @@ body.loaded #app {
     animation: showThumbnail .5s linear 1 forwards;
 }
 .work-carousel.work-prev .work-list .work-item img{
-    z-index: 100;
+    z-index: 4;
 }
 @keyframes showThumbnail{
     from{
@@ -1446,7 +1446,7 @@ body.loaded #app {
 /* running time */
 .work-carousel .work-time{
     position: fixed;
-    z-index: 10;
+    z-index: 5;
     width: 0%;
     height: 2.5px;
     background-color: #f1683a;
