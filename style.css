@@ -1606,7 +1606,7 @@ body.loaded #app {
     top:12.65%;
     left:50%;
     transform: translate(38vw, 3.25vh);
-    z-index: 12;
+    z-index: 22;
   }
   
   .flag-link {
