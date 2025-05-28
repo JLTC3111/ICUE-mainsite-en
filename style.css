@@ -219,7 +219,7 @@ footer {
 }
 
 .profile-photo:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .fade-Out {
@@ -1862,7 +1862,7 @@ body.loaded #app {
 
     .image-container-coreTeam {
       top:15%;
-      left:27.5%;
+      left:30%;
       width: 185px;
       height: 262.5px;
     }
@@ -1914,7 +1914,7 @@ body.loaded #app {
     }
   
     .right-arrow-symbol {
-      transform: translateX(40vw); /* or smaller */
+      transform: translateX(25vw); /* or smaller */
     }
 
     .download-btn {
@@ -2396,10 +2396,17 @@ body.loaded #app {
     z-index: 3;
   }
 
+  .profile-photo-coreTeam img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   .text-container-coreTeam {
     position: absolute;
-    top:27.5%;
-    left:15%;
+    top:30%;
+    left:17.5%;
     width: 100%;
     min-width: 300px;      /* Always has room for decent content */
     max-width: 45vw;       /* Responsive limit based on screen width */
