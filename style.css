@@ -308,9 +308,9 @@ footer {
   top: 50%;
   left: 50%;
   width: 50%;
-  max-width: 700px;
+  max-width: 725px;
   transform: translate(-37.5%, -55%);
-  padding: 10px;
+  padding: 20px;
   border-radius: 150px;
   box-shadow: none;
 }
@@ -329,7 +329,7 @@ footer {
   letter-spacing: .5px; 
   line-height: 1.2; 
   justify-content: center;
-  font-size: 45px;
+  font-size: clamp(24px, 2.5vw, 40px);
   font-weight: bold;
   background: linear-gradient(45deg, #000000, #a09b0e);
   -webkit-background-clip: text;
@@ -2340,15 +2340,40 @@ body.loaded #app {
     margin: 12.5% auto auto 2.5%;
   }
 
+  .moe-container .text-container + .profile-photo {
+    margin-left: clamp(-7.5rem, -2.5vw, -0.25rem); /* ✅ valid negative spacing */
+  }
+
   .image-container {
+    width: 250px;
+    height: 333px;
     top: 35%;
-    left: 25%;
+    left: 27.5%;
   }
 
   .text-container {
-    top:58rem;
+    top:80%;
     left:45%;
-    max-width: 58%;
+    max-width: 50%;
+    margin-top: clamp(-1.5rem, -.75vw, -3.5rem)
+  }
+
+  .montserrat-pepple{
+    font-size: clamp(14px, 1.25vw, 18px);
+  }
+
+  .arrow-button{
+    top: 30%;
+    width: 50px;
+    height: 50px;
+  }
+
+  .left-arrow {
+    left: 30%;
+  }
+
+  .right-arrow {
+    right: 26%;
   }
 
   .image-container-coreTeam {
