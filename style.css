@@ -105,8 +105,9 @@ footer {
   font-family: 'Rubik';
   font-style: normal;
   color: whitesmoke;
-  font-size: 80px;
+  font-size: 72px;
   font-weight: 300;
+  margin-bottom: -5rem;
 }
 
 .cursive-default {
@@ -117,10 +118,7 @@ footer {
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
-  margin-left: -10.5px;
-  margin-right: 25rem;
-  margin-top: 5.5rem;
-  margin-bottom: 5rem;
+  margin: 7.5rem 25rem 5rem -10.5px;
 }
 
 .montserrat-aboutUs {
@@ -821,8 +819,8 @@ footer {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 5rem;
-  right: -16.5rem;
+  top: 7.5rem;
+  right: -5rem;
 }
 
 .model-crane{
@@ -1833,8 +1831,8 @@ body.loaded #app {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
-    top: -5.5rem;
-    right: 2.5rem;
+    top: -.5rem;
+    right: 9.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
