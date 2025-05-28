@@ -697,7 +697,7 @@ footer {
   left:17.5%;
   width: 50%;
   max-width: 675px;
-  padding: 10px;
+  padding: 25px;
   background: transparent;
   backdrop-filter: none;
   z-index: 2;
@@ -1876,11 +1876,11 @@ body.loaded #app {
       width:90%;
       top:50%;
       left: 15px;
-      padding: 5px;
+      padding: 10px;
     }
 
     .core-team-text {
-      font-size: 12px;
+      font-size: clamp(12px, 1.5vw, 16px);
       line-height: 22px;
     }
   
@@ -2407,18 +2407,17 @@ body.loaded #app {
     position: absolute;
     top:30%;
     left:17.5%;
-    width: 100%;
     min-width: 300px;      /* Always has room for decent content */
-    max-width: 45vw;       /* Responsive limit based on screen width */
-    width: 100%;   
-    padding: 10px;
+    max-width: 42.5vw;       /* Responsive limit based on screen width */
+    width: 60%;   
+    padding: 20px;
     background: transparent;
     z-index: 2;
   }
 
   .core-team-text {
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: clamp(14px, 1.75vw, 18px);
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: 0px;
@@ -2429,7 +2428,7 @@ body.loaded #app {
     display: flex;
     justify-content: center;
     letter-spacing: 1.5px; 
-    font-size: 32px;
+    font-size: clamp(28px, 2.5vw, 34px);
     font-weight: bold;
     background: linear-gradient(to left, #000000, #a09b0e, rgb(45, 73, 4), rgb(174, 15, 15));
     -webkit-background-clip: text;
@@ -2450,9 +2449,8 @@ body.loaded #app {
 
   .arrow-symbol {
     position: absolute;
-    display: flex;
-    width: 75px;
-    height: 75px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     box-shadow: 0 4px 12px rgb(0, 0, 0);
     cursor: pointer;
@@ -2462,7 +2460,7 @@ body.loaded #app {
   }
 
   .left-arrow-symbol {
-    transform: translateX(-45vw);
+    transform: translateX(-40vw);
   }
 
   .right-arrow-symbol {
