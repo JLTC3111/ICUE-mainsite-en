@@ -1910,11 +1910,11 @@ body.loaded #app {
     }
 
     .left-arrow-symbol {
-      transform: translateX(-35vw); /* or smaller */
+      transform: translateX(-30vw); /* or smaller */
     }
   
     .right-arrow-symbol {
-      transform: translateX(25vw); /* or smaller */
+      transform: translateX(30vw); /* or smaller */
     }
 
     .download-btn {
