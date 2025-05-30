@@ -20,11 +20,8 @@ h1 {
 
 h2 {
   color: rgb(0, 0, 0);
-  margin-left: 1.5rem;
-  margin-top: 3rem;
   font-size: 28px;
-  text-decoration: underline;
-  animation: slideUp 2.5s ease-in-out forwards;
+  text-decoration: none;
 }
 
 @keyframes slideUp {
@@ -82,7 +79,7 @@ nav a {
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: linear-gradient(30deg, #eeedf1, #014d08, rgb(35, 40, 35));
+  background: transparent;
   z-index: 19;
 }
 
@@ -101,24 +98,35 @@ footer {
 }
 
 .sub-text {
-  justify-content: left;
   font-family: 'Rubik';
   font-style: normal;
   color: whitesmoke;
   font-size: 72px;
   font-weight: 300;
-  margin-bottom: -5rem;
+  margin-bottom: -2.5rem;
+  margin-left: -50%;
 }
 
 .cursive-default {
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 900;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
   font-style: italic;
   font-size: 60px;
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
   margin: 7.5rem 25rem 5rem -10.5px;
+}
+
+.lets-talk{
+  margin-left: 1.5rem;
+  margin-top: 3rem;
+}
+
+.lets-talk a {
+  color: #75e1ff; /* white */
+  text-decoration: underline;
+
 }
 
 .montserrat-aboutUs {
@@ -403,26 +411,23 @@ footer {
 
 .language-switcher {
   position: fixed;
-  top: 110px;
-  right: 45px;
+  top: 12px;
+  right: 75px;
   display: flex;
   gap: 9px;
-  margin-top: -6.25rem;
-  margin-right: 7.5rem;
   z-index: 22;
 }
 
 .flag-link {
   position: relative;
   display: flex;
-  width: 52px;
-  height: 52px;
-  background-color: #10c13c; 
+  width: 50px;
+  height: 50px;
+  background-color: #ffffff; 
   justify-content: center;
   align-items: center;
   border-radius: 25px;
   transition: transform 0.3s, background-color 0.3s;
-  font-size: 24px; 
   cursor: pointer;
   box-shadow: 0 2px 6px rgb(155, 255, 34);
   animation: slideInFromRight 4.5s ease-in-out forwards;
@@ -430,13 +435,10 @@ footer {
 
 .flag-link:hover {
   transform: scale(1.5);
-  background-color: #acd606;
 }
 
 .flag-icon {
   display: inline-block;
-  width: 100%;
-  height: 100%;
   background-size: cover;
   width: 48px;
   height: 48px;
@@ -449,6 +451,11 @@ footer {
   cursor: pointer;
   z-index: 7;
   animation: dropDown 4.5s ease-in-out forwards;
+}
+
+.menu-toggle svg{
+  transform: none;
+  rotate:none;
 }
 
 #menuIcon {
@@ -509,7 +516,21 @@ footer {
 }
 
 .contact-link {
-  color: white;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #333 0deg,
+    #666 45deg,
+    #111 90deg,
+    #000 135deg,
+    #222 180deg,
+    #444 225deg,
+    #111 270deg,
+    #000 315deg,
+    #333 360deg
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-size: 28px;
   margin-left: auto;
   margin-right: 15rem;
@@ -517,7 +538,7 @@ footer {
   font-weight: bold;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
-  z-index: 1000;
+  z-index: 25;
 }
 
 @keyframes slideInFromRight {
@@ -533,7 +554,6 @@ footer {
 
 .menu-bar .contact-link:hover {
   transform: scale(1.25);
-  color: white;
 }
 
 .has-submenu {
@@ -819,7 +839,7 @@ footer {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 7.5rem;
+  top: 9.5rem;
   right: -5rem;
 }
 
@@ -1601,9 +1621,9 @@ body.loaded #app {
 
   .language-switcher {
     position: fixed;
-    top:12.65%;
+    top:0;
     left:50%;
-    transform: translate(38vw, 2.75vh);
+    transform: translate(38vw, 1.75vh);
     z-index: 22;
   }
   
@@ -1746,10 +1766,16 @@ body.loaded #app {
 
   .menu-toggle {
     position: absolute;
-    left: 47.5%;
+    left: 45%;
     cursor: pointer;
     z-index: 7;
   }
+
+  .menu-toggle svg{
+    width: 48px;
+    height:48px;
+  }
+
 
   .drawer-menu {
     position: fixed;
@@ -1831,8 +1857,8 @@ body.loaded #app {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
-    top: -.5rem;
-    right: 9.5rem;
+    top: -1.5rem;
+    right: 10.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
@@ -2334,6 +2360,15 @@ body.loaded #app {
 
   .slider-dots {
     margin: 7rem auto auto auto;
+  }
+
+  .contact-link{
+    font-size: clamp(20px, 22.5px, 24px);
+    margin-right: 20%;
+  }
+
+  .language-switcher{
+    margin-right:5%;
   }
 
   .workPageContainer {
