@@ -61,16 +61,16 @@ window.attachProfileEvents = () => {
   
       tl.fromTo(photo, 
         { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 7.5, ease: "power2.out" }
+        { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" }
       );
   
       tl.fromTo(textBox, 
         { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 7.5, ease: "power2.out" },
+        { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" },
         "-=0.5" // Start slightly overlapping with photo animation
       );
   
-    }, 500); // ← match exit animation duration (0.3s)
+    }, 300); // ← match exit animation duration (0.3s)
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
@@ -585,10 +585,16 @@ window.attachProfileEvents_coreTeam = () => {
       } else {
         // 👉 Normal sliding between profiles
         tl.fromTo(photo, 
-          { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+          { y: 100, scale: 0.8, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
-  
+        // 👇 Then shift slightly left
+        tl.to(photo, {
+          y: 10,
+          duration: 0.3,
+          ease: "power2.out"
+        }, "-=0.4"); // slight overlap with entry
+        tl.set(photo, { y: 10 }); // ⬅ final hard-set to lock it
         tl.fromTo(textBox, 
           { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
           { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
