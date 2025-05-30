@@ -1,3 +1,4 @@
+import { gsap } from "gsap";
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -350,7 +351,6 @@ function router() {
 
   window.loadPage(page);
 }
-
 
 window.toggleDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
