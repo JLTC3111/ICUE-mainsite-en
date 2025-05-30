@@ -2313,6 +2313,11 @@ body.loaded #app {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1366px) {
+  .menu-toggle svg{
+    width: 58px;
+    height: 58px;
+  }
+  
   .cursive-default {
     font-size: 48px;
     margin: 7.5rem auto auto auto;
