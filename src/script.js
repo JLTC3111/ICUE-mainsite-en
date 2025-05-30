@@ -216,11 +216,11 @@ window.initHomeTextSlider = () => {
   }
 
   const messages = [
-    "⏳ 10+ years of urban excellence. With two decades of experience, our team of 10 dedicated professionals are passionate about urban planning, construction, and climate change. We design cities that thrive in a rapidly evolving world—balancing function, resilience, and community needs.",
-    "🤝 Built on Unity, Driven by Values ​​We believe in giving back, practicing unity, working hard and constantly striving for self-improvement. These core values ​​shape our approach and inspire our partnerships with local professionals, government agencies and legal professionals.",
-    "💡 Smart Cities, Smarter Solutions. From smart city integration to climate resilience strategies, we use technology and data-driven insights to improve urban efficiency, connectivity, and sustainability—building future-ready cities.",
-    "🏆 Our greatest achievement. We led the Da Nang citywide planning initiative for both tier 1 and tier 2 cities — a transformational project that continues to impact the daily lives of thousands of people. It reflects our commitment to big-picture strategy and real results.",
-    "🌱 Shaping cities, improving lives. Every solution we deliver is rooted in a mission: to create a better urban future. From the ground up, we help shape spaces that are inclusive, sustainable and people-centered.",
+    "10+ years of urban excellence. Dedicated professionals who are passionate about urban planning, construction, and climate change. ⏳ ",
+    "Built on Unity, Driven by Values! ​​We believe in giving back, and constantly striving for self-improvement. These core values ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 ",
+    "Smart Cities, Smarter Solutions. We use technology and data-driven insights to improve efficiency, connectivity, and future-ready cities. 💡 ",
+    "Led the Đà Nẵng citywide planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to big-picture strategy and real results. 🏆 ",
+    "Shaping cities, improving lives. Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, sustainable and people-centered. 🌱  ",
     "💥 Create experiences that last forever."
   ];
 
