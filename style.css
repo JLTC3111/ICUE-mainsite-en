@@ -1537,7 +1537,7 @@ body.loaded #app {
 
 @media (min-aspect-ratio: 2/1) and (max-aspect-ratio: 2.4/1) {
   .newsPageContainer{
-    overflow-y: auto;
+    overflow: auto;
   }
 }
 
