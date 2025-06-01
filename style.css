@@ -479,6 +479,7 @@ footer {
   left: 0;
   height: 100vh;
   width: 280px;
+  overflow-y: auto;
   background: linear-gradient(to bottom left, #ffffff, #757575);
   display: flex;
   flex-direction: column;
@@ -2919,10 +2920,10 @@ button:hover {
     height:100vh;
     overflow: auto;
   }
+  .news-card{
+    width: 95%;
+  }
   .image-container{
     margin-top:1rem;
-  }
-  .drawer-menu{
-    overflow-y: auto;
   }
 }
