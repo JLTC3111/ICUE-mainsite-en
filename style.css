@@ -2343,11 +2343,11 @@ body.loaded #app {
   }
 
   .home-text-slider {
-    margin: 7.5rem auto auto auto;
+    margin: 4.5rem auto auto auto;
   }
 
   .slider-dots {
-    margin: 1.5rem auto auto auto;
+    margin: -1.5rem auto auto auto;
   }
 
   .contact-link{
