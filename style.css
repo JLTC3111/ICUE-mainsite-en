@@ -2911,15 +2911,18 @@ button:hover {
 }
 
 @media (max-width: 975px) and (min-aspect-ratio: 1.8/1) {
-  .news-card{
-    width: 95%;
-    height:100vh;
-    overflow-y: auto;
-  }
   .image-container{
     margin-top: 17.5%;
   }
   .text-container{
     margin-top: 18.5%;
+  }
+  .text-container-coreTeam{
+    margin-top: 3.5rem;
+  }
+  .news-card{
+    width: 95%;
+    height:100vh;
+    overflow-y: auto;
   }
 }
