@@ -1797,7 +1797,7 @@ body.loaded #app {
     text-decoration: none;
     border-left: 5px solid transparent;
     transition: background 0.3s, border-color 0.3s;
-    margin-left:-5rem;
+    margin-left:-3.5rem;
   }
 
   .drawer-menu a:hover {
