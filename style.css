@@ -1535,6 +1535,11 @@ body.loaded #app {
     }
 }
 
+@media (aspect-ratio: 2/1) {
+  .text-container-coreTeam{
+    margin-top: clamp(12.5%, 10vh, 15%);
+  }
+}
 
 @media (max-width: 1024px) {
   
@@ -1894,7 +1899,6 @@ body.loaded #app {
       top:50%;
       left: 12.5%;
       padding: 10px;
-      margin-top: clamp(12.5%, 10vh, 15%);
     }
 
     .core-team-text {
