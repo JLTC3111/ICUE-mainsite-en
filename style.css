@@ -1849,11 +1849,6 @@ body.loaded #app {
   }
 
   .model-building {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; /* Optional: stack on small screens */
     top: -1.5rem;
     right: 10.5rem;
     animation: slideDownFromTop 3s ease-in-out;
