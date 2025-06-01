@@ -174,7 +174,7 @@ footer {
   top: 0;
   left: 0;
   z-index: -9;
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .logo-banner {
@@ -203,19 +203,24 @@ footer {
   object-fit: contain;
 }
 
+.moe-card{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
 .image-container {
   position: absolute;
   top: 50%;
   left: 0;
+  transform: translate(10vw, -25vh);
   width: 300px;
   height: 400px;
-  overflow: hidden;
   border-radius: 50px;
-  transform: translate(10vw, -25vh);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  transition: transform 0.3s ease-out;
 }
 
 .profile-photo {
@@ -316,11 +321,12 @@ footer {
   top: 50%;
   left: 50%;
   width: 50%;
-  max-width: 725px;
+  max-width: 675px;
   transform: translate(-37.5%, -55%);
   padding: 20px;
-  border-radius: 150px;
+  border-radius: 350px;
   box-shadow: none;
+  margin-left: clamp(.5rem, 1vw, 1.5rem)
 }
 
 
@@ -1516,7 +1522,7 @@ body.loaded #app {
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   
   /* Prevent horizontal scroll globally */
   body, html {
@@ -1691,7 +1697,7 @@ body.loaded #app {
     top: 50%;
     left: 50%;
     width: 90%;
-    transform: translate(-50%, 12.5%);
+    transform: translate(-50%, 22.5%);
     padding: 15px;
   }
 
@@ -2311,7 +2317,7 @@ body.loaded #app {
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1366px) {
+@media only screen and (min-width: 1025px) and (max-width: 1366px) {
   .menu-toggle svg{
     width: 58px;
     height: 58px;
@@ -2351,22 +2357,18 @@ body.loaded #app {
     margin: 12.5% auto auto 2.5%;
   }
 
-  .moe-container .text-container + .profile-photo {
-    margin-left: clamp(-7.5rem, -2.5vw, -0.25rem); /* ✅ valid negative spacing */
-  }
-
   .image-container {
     width: 250px;
     height: 333px;
-    top: 35%;
-    left: 27.5%;
+    top: 55%;
+    left: 2.5%;
   }
 
   .text-container {
-    top:80%;
-    left:45%;
-    max-width: 50%;
-    margin-top: clamp(-1.5rem, -.75vw, -3.5rem)
+    top:50%;
+    left:50%;
+    max-width: 40vw;
+    margin-left: clamp(2.5rem, 1.75vw, 4.5rem)
   }
 
   .montserrat-pepple{
@@ -2374,17 +2376,17 @@ body.loaded #app {
   }
 
   .arrow-button{
-    top: 30%;
+    top: 42.5%;
     width: 50px;
     height: 50px;
   }
 
   .left-arrow {
-    left: 30%;
+    left: 5%;
   }
 
   .right-arrow {
-    right: 26%;
+    right: 10%;
   }
 
   .image-container-coreTeam {
@@ -2488,7 +2490,7 @@ body.loaded #app {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     
     .about-container {
         padding: 20px;
@@ -2646,7 +2648,7 @@ body.loaded #app {
     transform: rotate(-10deg) scale(1.05);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .postcard-image {
         width: 250px !important;
     }

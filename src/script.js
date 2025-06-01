@@ -1,7 +1,11 @@
 window.attachProfileEvents = () => {
   const profileData = [
     {
-      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on green urban development, climate resilience and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
+      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span> 
+       <ol>Director of the Institute for Urban and Construction Research under the Vietnam Construction Association.</ol> 
+       <ol>Deputy Director at ICUE: 2013–2018 & Urban Development Agency under the Ministry of Construction 2008–2013</ol>
+       <ol> Expert at legal frameworks, urban planning and architectural design, with a strong focus on sustainable and well-managed cities.</ol>
+       <ol> Led major initiatives on green urban development, climate resilience and policy advice for national and regional planning, with support from international partners like the World Bank and ADB.</ol>`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
