@@ -892,7 +892,7 @@ footer {
   color: whitesmoke;
   justify-content: center;
   align-items: center;
-  margin-top: 2.5rem;
+  margin-top: clamp(2.5rem, 2.5vw, 3.75rem);
   margin-left: 6.5rem;
   text-shadow: 0 0 8px #00ffcc;
   animation: pulse 1.5s ease-in-out infinite;
