@@ -1879,8 +1879,9 @@ body.loaded #app {
 
     .image-container-coreTeam {
       top:15%;
-      left:30%;
+      left:50%;
       width: 185px;
+      transform: translateX(-50%);
       height: 262.5px;
     }
     
