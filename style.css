@@ -2915,7 +2915,7 @@ button:hover {
   }
 }
 
-@media (min-aspect-ratio: 2/1) and (max-aspect-ratio: 2.4/1) {
+@media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.4/1) {
   .newsPageContainer{
     height:100vh;
     overflow: auto;
@@ -2924,6 +2924,9 @@ button:hover {
     width: 95%;
   }
   .image-container{
-    margin-top:1rem;
+    margin-top: 7.5%;
+  }
+  .text-container{
+    margin-top: 2.5%;
   }
 }
