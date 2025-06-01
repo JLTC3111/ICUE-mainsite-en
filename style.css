@@ -925,7 +925,7 @@ body.loading .video-bg {
   position: relative;
   width: 200px;
   height: 200px;
-  margin-top: clamp(-30rem, -27.5rem, -27rem);
+  margin-top: clamp(-27rem, -27.5rem, -30rem);
   margin-left: 7.5rem;
 }
 
@@ -1879,7 +1879,7 @@ body.loaded #app {
 
     .image-container-coreTeam {
       top:15%;
-      left:30%;
+      left:40%;
       width: 185px;
       height: 262.5px;
     }
@@ -1908,7 +1908,7 @@ body.loaded #app {
 
     .arrow-container {
       position: absolute;
-      top: 35%;
+      top: 30%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
       z-index: 1;
