@@ -2922,4 +2922,7 @@ button:hover {
   .image-container{
     margin-top:1rem;
   }
+  .drawer-menu{
+    overflow-y: auto;
+  }
 }
