@@ -1535,15 +1535,6 @@ body.loaded #app {
     }
 }
 
-@media (min-aspect-ratio: 2/1) and (max-aspect-ratio: 2.4/1) {
-  .newsPageContainer{
-    overflow: auto;
-  }
-  .image-container{
-    margin-top:1rem;
-  }
-}
-
 @media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
@@ -2920,5 +2911,15 @@ button:hover {
   
   .news-container {
     transform: translate(-6.5vw, -2.5vh);
+  }
+}
+
+@media (min-aspect-ratio: 2/1) and (max-aspect-ratio: 2.4/1) {
+  .newsPageContainer{
+    height:100vh;
+    overflow: auto;
+  }
+  .image-container{
+    margin-top:1rem;
   }
 }
