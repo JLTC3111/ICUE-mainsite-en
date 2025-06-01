@@ -1535,6 +1535,12 @@ body.loaded #app {
     }
 }
 
+@media (min-aspect-ratio: 2/1) and (max-aspect-ratio: 2.4/1) {
+  .newsPageContainer{
+    overflow-y: auto;
+  }
+}
+
 @media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
