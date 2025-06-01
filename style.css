@@ -2915,13 +2915,11 @@ button:hover {
   }
 }
 
-@media (max-width: 975px) and (max-aspect-ratio: 2.7/1) {
-  .newsPageContainer{
-    height:100vh;
-    overflow: auto;
-  }
+@media (max-width: 975px) and (max-aspect-ratio: 2.5/1) {
   .news-card{
     width: 95%;
+    height:100vh;
+    overflow: auto;
   }
   .image-container{
     margin-top: 7.5%;
