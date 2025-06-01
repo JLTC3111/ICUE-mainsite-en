@@ -317,6 +317,10 @@ footer {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+.moe-title{
+  text-align: center;
+}
+
 .text-container {
   position: absolute;
   top: 50%;
@@ -1590,6 +1594,7 @@ body.loaded #app {
     width: 300px;
     height: auto;
     transform: translateX(35px);
+    margin-bottom: clamp(1.5rem, 1.75rem, 2rem);
   }
 
   .progress-container {
@@ -2342,7 +2347,7 @@ body.loaded #app {
   }
 
   .slider-dots {
-    margin: 7rem auto auto auto;
+    margin: 1.5rem auto auto auto;
   }
 
   .contact-link{
