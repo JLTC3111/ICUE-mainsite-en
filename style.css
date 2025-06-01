@@ -1969,7 +1969,7 @@ body.loaded #app {
       position: relative;
       width: 100%;
       height: auto;
-      min-height: 550px; /* Adjust based on content */
+      min-height: 75px; /* Adjust based on content */
     }
 
     .news-container {
