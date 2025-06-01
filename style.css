@@ -1539,6 +1539,9 @@ body.loaded #app {
   .newsPageContainer{
     overflow: auto;
   }
+  .image-container{
+    margin-top:1rem;
+  }
 }
 
 @media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
