@@ -479,8 +479,8 @@ footer {
   left: 0;
   height: 100vh;
   width: 280px;
+  background: transparent;
   overflow-y: auto;
-  background: linear-gradient(to bottom left, #ffffff, #757575);
   display: flex;
   flex-direction: column;
   padding: 10rem 2.5rem;
@@ -489,10 +489,18 @@ footer {
   z-index: 5;
 }
 
+.drawer-blur-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 10%, rgba(255,255,255,0.08), #000 60%);
+  backdrop-filter: blur(25px);
+  pointer-events: none; /* let clicks pass through */
+  z-index: -2;
+}
 
 .drawer-menu a {
   animation: none !important;
-  color: #000000;
+  color: #ffffff;
   padding: 1.2rem 0;
   font-size: 1.4rem;
   text-decoration: none;
@@ -502,19 +510,83 @@ footer {
 
 .drawer-menu a:hover {
   transform: translateX(45px);
-  background-color: #faff00;
-  border-left: 2.5px solid #000000;
+  background-color: #e1e1e1;
+  border-left: 2.5px solid #ffffff;
 }
 
 .drawer-menu a.active {
   font-weight: bold;
-  background-color: #faff00;
-  border-left: 2.5px solid rgb(0, 0, 0);
+  background-color: #dfdfdf;
+  border-left: 2.5px solid rgb(255, 255, 255);
 }
 
 .drawer-menu.open {
   transform: translateX(0); 
 }
+
+.has-submenu {
+  cursor: pointer;
+  padding: 1rem 0;
+  color: #ffffff;
+  display: block;
+}
+
+.has-submenu::after {
+  
+  margin-left: 0.5rem;
+  transition: transform 1.5s ease;
+}
+
+.submenu {
+  transform: translateX(-100%) translateY(0);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.5rem;
+  pointer-events: none; /* prevent clicking when hidden */
+}
+
+.submenu.open {
+  transform: translateX(0) translateY(0); /* Slide in */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Optional: animate out vertically when closing */
+.submenu.closing {
+  transform: translateX(0) translateY(50px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.submenu.open ~ .has-submenu::after {
+  transform: rotate(180deg);
+}
+
+.drawer-menu .submenu a {
+  font-size: 1.2rem;
+  color: #ffffff;
+  padding-top: 1.5rem;
+  padding-left: 0.75rem;
+  position: relative;
+  transition: all 1.5s ease;
+}
+
+.drawer-menu .submenu a::before {
+  content: "↳";
+  color: #ffffff; 
+  font-size: 1.25rem;
+  position: inline-block;
+  vertical-align: middle;
+}
+
+.drawer-menu .submenu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-style: bold;
+}
+
 
 .contact-link {
   background: conic-gradient(
@@ -556,70 +628,6 @@ footer {
 .menu-bar .contact-link:hover {
   transform: scale(1.25);
 }
-
-.has-submenu {
-  cursor: pointer;
-  padding: 1rem 0;
-  color: #fff;
-  display: block;
-}
-
-.has-submenu::after {
-  
-  margin-left: 0.5rem;
-  transition: transform 1.5s ease;
-}
-
-.submenu {
-  transform: translateX(-100%) translateY(0);
-  opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-left: 1.5rem;
-  pointer-events: none; /* prevent clicking when hidden */
-}
-
-.submenu.open {
-  transform: translateX(0) translateY(0); /* Slide in */
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Optional: animate out vertically when closing */
-.submenu.closing {
-  transform: translateX(0) translateY(50px);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.submenu.open ~ .has-submenu::after {
-  transform: rotate(180deg);
-}
-
-.drawer-menu .submenu a {
-  font-size: 1.2rem;
-  color: #000000;
-  padding-top: 1.5rem;
-  padding-left: 0.75rem;
-  position: relative;
-  transition: all 1.5s ease;
-}
-
-.drawer-menu .submenu a::before {
-  content: "↳";
-  color: #170000; 
-  font-size: 1.3rem;
-  position: inline-block;
-  vertical-align: middle;
-}
-
-.drawer-menu .submenu a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #000000;
-}
-
 
 #homeSliderText {
   background: rgba(236, 236, 236, 0.2); /* Semi-transparent */
@@ -1782,8 +1790,6 @@ body.loaded #app {
     height: 100vh;
     width: 100vw;
     overflow: auto;
-    background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
-    flex-direction: column;
     padding: 7.5rem .75rem;
     transform: translateX(-100%); /* Hide off-screen initially */
     transition: transform 0.4s ease-in-out;
@@ -1791,24 +1797,12 @@ body.loaded #app {
   }
 
   .drawer-menu a {
-    color: #000000;
     padding: .75rem 0;
     font-size: 1.5rem;
     text-decoration: none;
     border-left: 5px solid transparent;
     transition: background 0.3s, border-color 0.3s;
     margin-left:-3rem;
-  }
-
-  .drawer-menu a:hover {
-    background-color: #faff00;
-    border-left: 2.5px solid #000000;
-  }
-
-  .drawer-menu a.active {
-    font-weight: bold;
-    background-color: #faff00;
-    border-left: 2.5px solid rgb(0, 0, 0);
   }
 
   .sub-menu {
@@ -1818,7 +1812,6 @@ body.loaded #app {
 
   .drawer-menu .submenu a {
     font-size: 1.1rem;
-    color: #000000;
     padding-top: 0.5rem;
     left: 0rem;
     text-decoration: underline;
