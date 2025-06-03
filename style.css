@@ -685,11 +685,11 @@ footer {
 }
 
 .dot:hover {
-  background-color: green;
+  background-color: yellow;
 }
 
 .dot.active {
-  background-color: #ffcc00; /* Highlight active dot */
+  background-color: yellowgreen; /* Highlight active dot */
 }
 
 .corePageContainer {
