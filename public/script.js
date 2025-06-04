@@ -131,225 +131,64 @@ window.loadPage = (page) => {
 
   landing.style.display = 'grid';
   landing.style.opacity = 1;
-  landing.style.pointerEvents = 'All';
+  landing.style.pointerEvents = 'all';
 
   let fakeProgress = setInterval(() => {
     progress += Math.random() * 1.5;
     if (progress > 90) progress = 90;
     setProgress(progress);
   }, 80);
-  
+
   fetch(`/src/pages/${page}.html`)
-  .then(response => response.text())
-  .then(data => {
-    content.innerHTML = data;
-    clearInterval(fakeProgress); // ensure we clear progress interval
+    .then(response => response.text())
+    .then(data => {
+      content.innerHTML = data;
 
-    // Finalize progress bar to 100%
-    let finalize = setInterval(() => {
-      progress += 2;
-      setProgress(progress);
-      if (progress >= 100) {
-        clearInterval(finalize);
+      clearInterval(fakeProgress);
 
-        // Hide loading overlay
-        landing.style.opacity = 0;
-        landing.style.pointerEvents = 'none';
+      let finalize = setInterval(() => {
+        progress += 2;
+        setProgress(progress);
+        if (progress >= 100) {
+          clearInterval(finalize);
+          landing.style.opacity = 0;
+          landing.style.pointerEvents = 'none';
 
-        setTimeout(() => {
-          landing.style.display = 'none';
+          setTimeout(() => {
+            landing.style.display = 'none';
 
+            // ✅ Delay script activation *after* loader is gone
             requestAnimationFrame(() => {
-              retriggerMenuAnimations();
-
-              switch (page) {
-                case 'meetOurExperts':
-                  attachProfileEvents();
-                  break;
-                case 'coreTeam':
-                  attachProfileEvents_coreTeam();
-                  break;
-                case 'Home':
-                  initHomeTextSlider();
-                  attachHomeButtonEvents();
-                  break;
-                case 'News':
-                  initLogoSlider();
-                  initMobileNewsSlider();
-                  break;
-                case 'aboutUs':
-                  createBalloons();
-                  break;
-                case 'Contact':
-                  initPostMethod();
-                  break;
-                case 'ourWork':
-                  initializeCarousel();
-                  break;
+              if (page === 'meetOurExperts') {
+                attachProfileEvents();
+              }
+              if (page === 'coreTeam') {
+                attachProfileEvents_coreTeam();
+              }
+              if (page === 'Home') {
+                initHomeTextSlider();
+                attachHomeButtonEvents();
+              }
+              if (page === 'News') {
+                initLogoSlider();
+                initMobileNewsSlider();
+              }
+              if (page === 'aboutUs') {
+                createBalloons();
+              }
+              if (page === 'Contact') {
+                initPostMethod();
+              }
+              if (page === 'ourWork') {
+                initializeCarousel();
               }
             });
 
-          }, 10);
+          }, 400); // After fade-out
         }
-      }, 0);
-    });
-};
-
-window.retriggerMenuAnimations = (isFirstLoad = true) => {
-  const animatedSelectors = [
-    { selector: '.menu-toggle', delay: 0 },
-    { selector: '.logo-banner', delay: -0.3 },
-    { selector: '.flag-link', delay: -0.3 },
-    { selector: '.contact-link', delay: 1 },
-  ];
-
-  const timeline = gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.out' } });
-
-  // Utility: set hidden state before animation
-  const preHide = (el) => {
-    el.classList.add('pre-hidden');
-    el.style.opacity = '0';
-    el.style.visibility = 'hidden';
-  };
-
-  // Utility: unhide on animation start
-  const unhide = (el) => {
-    el.classList.remove('pre-hidden');
-    el.style.opacity = '';
-    el.style.visibility = '';
-  };
-
-  // Animate standard menu elements
-  animatedSelectors.forEach(({ selector, delay }) => {
-    const el = document.querySelector(selector);
-    if (!el) return;
-
-    const newEl = el.cloneNode(true);
-    preHide(newEl);
-    el.parentNode.replaceChild(newEl, el);
-
-    timeline.fromTo(
-      newEl,
-      isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        onStart: () => unhide(newEl)
-      },
-      delay
-    );
-  });
-  
-  // 🔁 Language Switcher
-const langSwitcher = document.getElementById('langSwitcher');
-if (langSwitcher) {
-  const newLangSwitcher = langSwitcher.cloneNode(true);
-  preHide(newLangSwitcher);
-  langSwitcher.parentNode.replaceChild(newLangSwitcher, langSwitcher);
-
-  timeline.fromTo(
-    newLangSwitcher,
-    isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
-    {
-      y: 0,
-      opacity: 1,
-      onStart: () => unhide(newLangSwitcher)
-    },
-    '-=0.3'
-  );
-
-  // ✅ Hover animation
-  newLangSwitcher.addEventListener('mouseenter', () => {
-    gsap.killTweensOf(newLangSwitcher);
-    gsap.to(newLangSwitcher, {
-      scale: 1.25,
-      duration: 0.3,
-      ease: 'power2.out'
-    });
-  });
-
-  newLangSwitcher.addEventListener('mouseleave', () => {
-    gsap.to(newLangSwitcher, {
-      scale: 1,
-      duration: 0.3,
-      ease: 'power2.inOut'
-    });
-  });
-}
-
-  // 🔁 CONTACT LINK
-  const contactUs = document.getElementById('contactLink');
-  if (contactUs) {
-    const newContact = contactUs.cloneNode(true);
-    preHide(newContact);
-    contactUs.parentNode.replaceChild(newContact, contactUs);
-
-    timeline.fromTo(
-      newContact,
-      isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        onStart: () => unhide(newContact)
-      },
-      '-=0.3'
-    );
-    
-    // ✅ Attach hover animation directly to the new clone
-  newContact.addEventListener('mouseenter', () => {
-    gsap.killTweensOf(newContact);
-    gsap.to(newContact, {
-      scale: 1.25,
-        duration: .05,
-        ease: 'power2.out'
-      });
-    });
-    
-  newContact.addEventListener('mouseleave', () => {
-    gsap.to(newContact, {
-      scale: 1,
-        duration: .05,
-        ease: 'power2.inOut'
-      });
+      },);
     });
 }
-
-// 🔁 MENU ICON
-const menuToggle = document.getElementById('menuIcon');
-  if (menuToggle) {
-    const newToggle = menuToggle.cloneNode(true);
-    preHide(newToggle);
-    menuToggle.parentNode.replaceChild(newToggle, menuToggle);
-
-    timeline.fromTo(
-      newToggle,
-      isFirstLoad ? { y: -60, opacity: 0 } : { scale: 0.5, opacity: 0 },
-      {
-        y: 0,
-        scale: 1,
-        opacity: 1,
-        onStart: () => unhide(newToggle)
-      },
-      '-=0.4'
-    );
-    
-    newToggle.addEventListener('mouseenter', () => {
-      gsap.to(newToggle, {
-        scale: 1.25,
-        duration: .05,
-        ease: 'power2.out'
-      });
-    });
-
-    newToggle.addEventListener('mouseleave', () => {
-      gsap.to(newToggle, {
-        scale: 1,
-        duration: .05,
-        ease: 'power2.inOut'
-      });
-    });
-  }
-};
 
 window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
@@ -508,6 +347,7 @@ window.addEventListener('hashchange', router);
 function router() {
   const hash = window.location.hash || '#/Home';
   const page = hash.replace('#/', '') || 'Home';
+
   window.loadPage(page);
 }
 
@@ -580,6 +420,14 @@ window.removeOverlayListener = () => {
   document.removeEventListener('keydown', handleEscKey);
 }
 
+// Navigation handler + page loader
+window.navigateToPage = (page) => {
+  currentPage = page;
+  loadPage(page); // Your existing page loader
+  highlightActiveLink(page);
+  closeDrawerMenu();
+}
+
 // Highlight active link
 window.highlightActiveLink = (page) => {
   const links = document.querySelectorAll('#drawerMenu a');
@@ -618,6 +466,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Auto-highlight on initial load
+/*window.onload = () => {
+  loadPage('Home');
+  highlightActiveLink('Home');
+};*/
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
@@ -795,7 +649,7 @@ window.initLogoSlider = () => {
   if (!logoList) return;
 
   let position = 0;
-  let speed = 1.75;
+  let speed = 1;
   let isPaused = false;
 
   const loop = () => {

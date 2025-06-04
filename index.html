@@ -31,7 +31,7 @@
 
   <div class="language-switcher">
     <a href="https://icue.vn" class="flag-link">
-        <span class="flag-icon flag-icon-vn" id="langSwitcher"></span>    
+        <span id="langSwitcher" class="flag-icon flag-icon-vn"></span>    
     </a>
   </div>
 
@@ -59,7 +59,7 @@
       <a href="#/ourWork" onclick="closeDrawerMenu();" data-page="ourWork">⇲ Our Work</a>
       <a href="#/News" onclick="closeDrawerMenu();" data-page="News">🗞️ News</a>
       <a href="#/aboutUs" onclick="closeDrawerMenu();" data-page="aboutUs">〶 About Us</a>
-      <a href="#" class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourPeople">📉 Our People</a>
+      <a href="#" id="ourPeopleSubMenu" class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourPeople">📉 Our People</a>
         <div class="submenu">
           <a href="#/meetOurExperts" onclick="closeDrawerMenu();"  data-page="meetOurExperts">Meet Our Experts</a>
           <a href="#/coreTeam" onclick="closeDrawerMenu();" data-page="coreTeam">Core Team</a>
@@ -71,6 +71,8 @@
 
   <main id="content">
   </main>
+<!-- App's logic -->
+<script type="module" src="src/script.js"></script>
  <!-- Load model-viewer once -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -80,8 +82,7 @@
     document.body.classList.add("loaded");
   });
 </script>
-<!-- App's logic -->
-<script type="module" src="src/script.js"></script>
+
   
 </body>
 <footer>Designed, Coded, and Maintained by LD⭐️</footer>
