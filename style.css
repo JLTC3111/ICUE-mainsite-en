@@ -721,9 +721,9 @@ footer {
 .text-container-coreTeam {
   position: absolute;
   top:32.5%;
-  left:17.5%;
+  left:1.5%;
   width: 50%;
-  max-width: 675px;
+  max-width: 625px;
   padding: 25px;
   background: transparent;
   backdrop-filter: none;
@@ -780,7 +780,7 @@ footer {
 }
 
 .left-arrow-symbol {
-  transform: translateX(-39.5vw);
+  transform: translateX(-41.5vw);
 }
 
 .right-arrow-symbol {
