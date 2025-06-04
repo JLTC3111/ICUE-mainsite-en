@@ -719,7 +719,7 @@ footer {
 
 .text-container-coreTeam {
   position: absolute;
-  top:35%;
+  top:32.5%;
   left:17.5%;
   width: 50%;
   max-width: 675px;
@@ -1541,7 +1541,7 @@ body.loaded #app {
     }
 }
 
-@media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
+@media (max-width: 450px) and (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
   }
@@ -2421,7 +2421,7 @@ body.loaded #app {
 
   .text-container-coreTeam {
     position: absolute;
-    top:30%;
+    top:30.5%;
     left:17.5%;
     min-width: 300px;      /* Always has room for decent content */
     max-width: 42.5vw;       /* Responsive limit based on screen width */
