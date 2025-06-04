@@ -705,29 +705,6 @@ window.attachProfileEvents_coreTeam = () => {
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.querySelector('.image-container');
 
-
-function updateTransform() {
-  if (window.innerWidth < 1336) return; // ✅ Only apply transform on wide screens
-
-  const vw = window.innerWidth / 100;
-  const vh = window.innerHeight / 100;
-  const aspectRatio = window.innerWidth / window.innerHeight;
-
-  // Use a base translateY value and scale it depending on aspect ratio
-  // Taller screens = higher ratio → increase upward movement
-  const baseTranslateY = -117.5;
-  const baseTranslateX = 15; // Base value for "standard" screen
-  const scaleFactor = (aspectRatio / 16 * 9); // 1.78 = reference 16:9 ratio
-
-  const translateX = baseTranslateX * scaleFactor * vw;
-  const translateY = baseTranslateY * scaleFactor * vh;
-
-  textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
-}
-
-window.addEventListener('resize', updateTransform);
-updateTransform(); // Initial run
-
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
 
@@ -780,9 +757,6 @@ updateTransform(); // Initial run
           "-=0.5"
         );
       }
-
-      // 🔧 Adjust transform after update
-      updateTransform();
 
     }, isFirstLoad ? 0 : 800);
   };
