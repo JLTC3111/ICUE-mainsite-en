@@ -1,3 +1,4 @@
+console.log('[script.js] Loaded ✅');
 window.attachProfileEvents = () => {
   const profileData = [
     {
