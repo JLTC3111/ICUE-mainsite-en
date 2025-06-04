@@ -701,6 +701,7 @@ footer {
   position: absolute;
   top:30%;
   right:12.5%;
+  margin-left:2rem;
   width: 325px;
   height: 433px;
   overflow: hidden;
@@ -1541,7 +1542,7 @@ body.loaded #app {
     }
 }
 
-@media (max-width: 450px) and (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
+@media (max-width: 450px) and (min-aspect-ratio: 1.96/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
   }
