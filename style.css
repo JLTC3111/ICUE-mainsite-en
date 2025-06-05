@@ -2940,7 +2940,10 @@ button:hover {
 
 @media (max-width: 720px) and (min-aspect-ratio: .73/1) {
   .home-text-slider{
-    margin-top: -5rem;
+    margin-top: -4.5rem;
+  }
+  .slider-dots{
+    margin-top: -3.5rem;
   }
   .image-container{
     left:50%;
@@ -2948,21 +2951,28 @@ button:hover {
     height:168px;
   }
   .text-container{
-    margin-top: -2rem;
+    margin-top: -3rem;
+    margin-left: 2rem;
     width: 70%;
   }
   .intro-people{
     font-size: 24px;
   }
   .montserrat-pepple{
-    font-size: 12px;
+    font-size: 14px;
   }
   .image-container-coreTeam{
     left:45%;
   }
   .text-container-coreTeam{
-    top:45.5%;
+    top:47.5%;
     left: 12.5%;
+  }
+  .arrow-button{
+    top:50%;
+  }
+  .arrow-container{
+    top:45%;
   }
 }
 
