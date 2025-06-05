@@ -721,7 +721,7 @@ footer {
 .text-container-coreTeam {
   position: absolute;
   top:32.5%;
-  left:1.5%;
+  left:15%;
   width: 50%;
   max-width: 625px;
   padding: 25px;
@@ -2900,13 +2900,12 @@ button:hover {
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  
   .news-container {
     transform: translate(-6.5vw, -2.5vh);
   }
 }
 
-@media (max-width: 975px) and (min-aspect-ratio: 1.8/1) {
+@media (max-width: 1024px) and (min-aspect-ratio: 1.8/1) {
   .image-container{
     margin-top: 17.5%;
   }
@@ -2920,5 +2919,11 @@ button:hover {
     width: 95%;
     height:100vh;
     overflow-y: auto;
+  }
+}
+
+@media (max-width: 1024px) and (min-aspect-ratio: .9/1) {
+  .text-container-coreTeam{
+    left: 18%;
   }
 }
