@@ -1658,33 +1658,34 @@ body.loaded #app {
   margin: 8.5rem 2.5rem -1.75rem -0.25rem; /* top, right, bottom, left */
 }
 
-  .home-text-slider {
-    max-width: 740px;
-    width: 100%;
-    transform: translate(-36px, -15px);
-    text-align: center;
-    z-index: 3;
-  }
+.home-text-slider {
+  max-width: 1200px;
+  width: 100%;
+  margin: 1.5% auto -7.5% auto;
+  transform: translate(-36px, -15px);
+  text-align: center;
+  z-index: 3;
+}
 
-  .highlight-text {
-    color:rgb(44, 44, 44);
-    font-family: 'Roboto', cursive ;
-    font-size: 13.5px;
-    font-weight: 400;
-    visibility: visible; /* Ensure it's visible */
-    opacity: 1;          /* Ensure it's not transparent */
-    transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
-  }
+.highlight-text {
+  color:rgb(44, 44, 44);
+  font-family: 'Roboto', cursive ;
+  font-size: 13.5px;
+  font-weight: 400;
+  visibility: visible; /* Ensure it's visible */
+  opacity: 1;          /* Ensure it's not transparent */
+  transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+}
 
-  .slider-dots {
-    display: flex;
-    position: relative;
-    justify-content: center;
-    margin-top: -1.25rem;
-    margin-left: 0;
-    gap: 14px;
-    z-index: 1;
-  }
+.slider-dots {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  margin-top: -1.25rem;
+  margin-left: 0;
+  gap: 14px;
+  z-index: 1;
+}
 
   .dot {
     width: 12px;
@@ -2931,6 +2932,11 @@ button:hover {
 }
 
 @media (max-width: 1024px) and (min-aspect-ratio: 1.65) {
+  .home-text-slider {
+    max-width: 1000px;
+    margin: -7.5% auto -8.5% auto;
+  }
+
   .image-container{
     transform: translate(-50%, -45%);
   }
