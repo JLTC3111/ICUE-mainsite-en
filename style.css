@@ -726,20 +726,7 @@ footer {
   max-width: 625px;
   padding: 25px;
   background: transparent;
-  backdrop-filter: none;
   z-index: 2;
-}
-
-
-.core-team-text {
-  font-family: 'Montserrat', sans-serif;
-  width: 100%;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 0px;
-  text-align: left;
-  color: rgb(51, 51, 51);
 }
 
 .intro-core {
@@ -753,7 +740,6 @@ footer {
   background-clip: text;
   color: transparent;
 }
-
 
 .arrow-container {
   position: absolute;
@@ -1892,11 +1878,6 @@ body.loaded #app {
       left: 12.5%;
       padding: 10px;
     }
-
-    .core-team-text {
-      font-size: clamp(12px, 1.5vw, 16px);
-      line-height: 22px;
-    }
   
     .intro-core {
       margin: 0 auto;
@@ -2430,15 +2411,6 @@ body.loaded #app {
     padding: 20px;
     background: transparent;
     z-index: 2;
-  }
-
-  .core-team-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: clamp(14px, 1.75vw, 18px);
-    font-weight: 400;
-    line-height: 1.6;
-    letter-spacing: 0px;
-    color: rgb(51, 51, 51);
   }
 
   .intro-core {
