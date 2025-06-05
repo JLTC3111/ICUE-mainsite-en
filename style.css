@@ -2928,9 +2928,9 @@ button:hover {
   }
 }
 
-@media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
+@media (min-width: 1025px) and (min-aspect-ratio: 1.9) {
   #text-slider {
-    transform: translate(-40.5%, -20.5%); /* adjust as needed */
+    transform: translate(-40.5%, -10.5%); /* adjust as needed */
     margin-left: 1rem;
   }
   .arrow-button{
