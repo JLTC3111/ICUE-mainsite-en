@@ -2927,3 +2927,44 @@ button:hover {
     left: 18%;
   }
 }
+
+@media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
+  #text-slider {
+    transform: translate(-40.5%, -20.5%); /* adjust as needed */
+    margin-left: 1rem;
+  }
+  .arrow-button{
+    top:60%;
+  }
+}
+
+@media (min-width: 1025px) and (min-aspect-ratio: 2.5) {
+  #text-slider {
+    transform: translate(-37.5%, -30.5%); /* adjust as needed */
+  }
+  .arrow-button{
+    top:60%;
+  }
+}
+
+@media (min-width: 1025px) and (min-aspect-ratio: 3.5) {
+  #text-slider {
+    transform: translate(-37.5%, -15%); /* adjust as needed */
+  }
+  .arrow-button{
+    top:60%;
+  }
+}
+
+@media (max-width: 1024px) and (min-aspect-ratio: 1.65) {
+  .image-container{
+    transform: translate(-50%, -45%);
+  }
+  #text-slider {
+    transform: translate(-45%, 32.5%); /* adjust as needed */
+    margin-left: 1rem;
+  }
+  .arrow-button{
+    top:50%;
+  }
+}
