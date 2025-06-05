@@ -1866,20 +1866,20 @@ body.loaded #app {
     .image-container-coreTeam {
       top:15%;
       left:50%;
-      width: 185px;
-      transform: translateX(-50%);
-      height: 262.5px;
+      width: 140px;
+      height: 198.5px;
+      transform: translateX(-60%);
     }
     
     .profile-photo-coreTeam {
-      width: 200px;
+      width: 150px;
     }
   
     .text-container-coreTeam {
       width:75%;
       top:50%;
-      left: 12.5%;
-      padding: 10px;
+      left:12.5%;
+      padding:15px;
     }
   
     .intro-core {
@@ -2897,9 +2897,37 @@ button:hover {
   }
 }
 
-@media (max-width: 1024px) and (min-aspect-ratio: .9/1) {
+@media (max-width: 1024px) and (min-aspect-ratio: .73/1) {
+  .image-container-coreTeam{
+    left:45%;
+  }
   .text-container-coreTeam{
-    left: 18%;
+    max-width:550px;
+    width:65%;
+    top:37.5%;
+    left:15%;
+  }
+}
+
+@media (max-width: 1024px) and (max-aspect-ratio: .7299/1) {
+  .image-container-coreTeam{
+    left:47.5%;
+  }
+  .text-container-coreTeam{
+    max-width:550px;
+    width:65%;
+    top:30.5%;
+    left:17.5%;
+  }
+}
+
+@media (max-width: 720px) and (min-aspect-ratio: .73/1) {
+  .image-container-coreTeam{
+    left:45%;
+  }
+  .text-container-coreTeam{
+    top:45.5%;
+    left: 12.5%;
   }
 }
 
@@ -2936,7 +2964,6 @@ button:hover {
     max-width: 1000px;
     margin: -7.5% auto -8.5% auto;
   }
-
   .image-container{
     transform: translate(-50%, -45%);
   }
@@ -2946,5 +2973,11 @@ button:hover {
   }
   .arrow-button{
     top:50%;
+  }
+  .image-container-coreTeam{
+   left:45%; 
+  }
+  .text-container-coreTeam{
+   top:55%;
   }
 }
