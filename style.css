@@ -2940,10 +2940,10 @@ button:hover {
 
 @media (max-width: 720px) and (min-aspect-ratio: .73/1) {
   .home-text-slider{
-    margin-top: -4.5rem;
+    margin-top: -4.75rem;
   }
   .slider-dots{
-    margin-top: -3.5rem;
+    margin-top: -4.75rem;
   }
   .image-container{
     left:50%;
