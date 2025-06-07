@@ -1973,7 +1973,7 @@ body.loaded #app {
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:15%;
+      top:75%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
@@ -1985,7 +1985,6 @@ body.loaded #app {
       border-radius: 50%;
       box-shadow: 0 0 5px rgba(0,0,0,0.2);
       opacity: 1;
-  
     }
 
     .left-news-arrow {
