@@ -2182,6 +2182,10 @@ body.loaded #app {
     opacity: 0;
     transform: translateX(-100%);
   }
+  50% {
+    opacity: .25;
+    transform: translateX(25%);
+  }
   100% {
     opacity: 1;
     transform: translateX(0%);
