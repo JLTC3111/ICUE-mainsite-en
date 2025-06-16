@@ -869,6 +869,7 @@ footer {
   top: 1.5%;
   right: -5rem;
   margin-left:3.5rem;
+  animation: slideInFromRight 3.5s ease-in-out;
 }
 
 .model-crane{
