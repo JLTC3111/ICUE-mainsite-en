@@ -102,18 +102,13 @@ footer {
 .sub-text {
   font-family: 'Rubik';
   font-style: normal;
-  color: whitesmoke;
-  font-size: 72px;
+  font-size: clamp(60px, 7.5vw, 64px);
   font-weight: 400;
   margin-bottom: -2.5rem;
   margin-left: -50%;
-  background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   /* Add text shadow for 3D depth */
   text-shadow:
-    1px 1px #000000,       /* hard shadow base */
+    1px 1px yellow,       /* hard shadow base */
     2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
 
