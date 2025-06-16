@@ -2377,9 +2377,10 @@ body.loaded #app {
   }
 }
 
-@media only screen and (min-width: 1025px) and (max-width: 1366px) {
+@media (min-width: 1025px) and (max-width: 1366px) {
   .model-building{
-    top:15%
+    top:15%;
+    animation: slideInFromRight 3.5s ease-in-out; 
   }
   .menu-toggle svg{
     width: 58px;
