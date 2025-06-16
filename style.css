@@ -866,8 +866,9 @@ footer {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 9.5rem;
+  top: 1.5%;
   right: -5rem;
+  margin-left:3.5rem;
 }
 
 .model-crane{
@@ -2376,6 +2377,9 @@ body.loaded #app {
 }
 
 @media only screen and (min-width: 1025px) and (max-width: 1366px) {
+  .model-building{
+    top:15%
+  }
   .menu-toggle svg{
     width: 58px;
     height: 58px;
