@@ -1415,15 +1415,13 @@ body.loaded #app {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #eee4;
-    border: none;
-    color: #fff;
-    font-family: monospace;
-    font-weight: bold;
-    transition: .5s;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 2px 4px 8px rgb(115, 115, 115);
+    transition: .3s;
 }
 .work-arrows button:hover{
-    background-color: #fff;
+    transform: scale(1.1);
+    background-color: #b9ff80;
     color: #000;
 }
 
