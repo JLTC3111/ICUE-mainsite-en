@@ -1837,7 +1837,7 @@ body.loaded #app {
   }
   
 .sub-text {
-  font-size: clamp(2rem, 6vw, 3rem);
+  font-size: clamp(2rem, 5vw, 2.5rem);
   margin: 14.5rem 0 -2rem 0; /* shifts text slightly left */
 }
 
@@ -1847,8 +1847,11 @@ body.loaded #app {
   margin: 8.5rem 2.5rem -1.75rem -0.25rem; /* top, right, bottom, left */
 }
 
+.lets-talk {
+  margin-bottom: -3rem;
+}
+
 .home-text-slider {
-  max-width: 1200px;
   width: 100%;
   margin: 1.5% auto -7.5% auto;
   transform: translate(-36px, -15px);
@@ -1859,7 +1862,7 @@ body.loaded #app {
 .highlight-text {
   color:rgb(44, 44, 44);
   font-family: 'Roboto', cursive ;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 400;
   visibility: visible; /* Ensure it's visible */
   opacity: 1;          /* Ensure it's not transparent */
@@ -1870,7 +1873,7 @@ body.loaded #app {
   display: flex;
   position: relative;
   justify-content: center;
-  margin-top: -1.25rem;
+  margin-top: -3.25rem;
   margin-left: 0;
   gap: 14px;
   z-index: 1;
