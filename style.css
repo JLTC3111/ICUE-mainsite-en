@@ -103,6 +103,7 @@ footer {
     border-radius: 12px;
     padding: 0;
     width: fit-content;
+    animation: fadeIn 4.5s ease-in-out;
 }
 
 .contact-sidebar .contact-item {
@@ -121,7 +122,6 @@ footer {
 
 /* Hover effects for a better user experience */
 .contact-item:hover {
-    
     transform: scale(1.25); /* Slightly enlarge on hover */
     transition: all 0.5s ease-in-out; /* Smooth transition */
 }
@@ -376,6 +376,9 @@ footer {
   0% {
     opacity: 0;
     visibility: visible;
+  }
+  50% {
+    opacity: .25;
   }
   100% {
     opacity: 1;
@@ -1684,8 +1687,8 @@ body.loaded #app {
   }
 
   .contact-sidebar {
-    top:35%;
-    right:3.75%;
+    top:50%;
+    right:2.75%;
   }
 
   .contact-sidebar .contact-item {
@@ -2483,7 +2486,7 @@ body.loaded #app {
     width:44px;
     height:44px;
   }
-  
+
   .contact-sidebar .contact-item svg{
     width:60%;
     height:60%;
