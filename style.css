@@ -1699,6 +1699,20 @@ body.loaded #app {
       width:75%;
   }
 
+  .submit-button {
+    display: block;
+    margin: 0 auto;
+    font-size: 16px;
+  }
+
+  .contact-info h2 {
+    font-size: 18px;
+  }
+
+  .contact-info p {
+    font-size: 14px;
+  }
+
   .contact-sidebar {
     top:25%;
     right:1%;
@@ -2488,12 +2502,26 @@ body.loaded #app {
 }
 
 @media (min-width: 1367px) {
+  .contact-info h2{
+    font-size: 24px;
+  }
+  .contact-info p {
+    font-size: 20px;
+  }
   .news-card:hover {
     transform: scale(1.03);
   }
 }
 
 @media (min-width: 1025px) and (max-width: 1366px) {
+  .contact-info h2{
+    font-size: 20px;
+  }
+
+  .contact-info p {
+    font-size: 16px;
+  }
+
   .contact-sidebar .contact-item {
     width:44px;
     height:44px;
@@ -3047,21 +3075,29 @@ button:hover {
 .contact-info { 
   text-align: center; 
   margin-top: 10px; /* Space above contact info */
-  
+}
+
+.contact-info h1 {
+  font-size: x-large;
 }
 
 .contact-info h2 {
   justify-content: center;
   font-family: 'Roboto';
-  margin-bottom: 10px; /* Space below the heading */
+  margin: 15px auto; /* Space below the heading */
   color: #333; /* Dark text color */
 }
 
 .contact-info p {
   font-family: 'Roboto';
   letter-spacing: normal;
-  margin: 5px 0; /* Space above and below paragraphs */
+  margin: 2.5px 0; /* Space above and below paragraphs */
   color: #666; /* Lighter text color */
+}
+
+.submit-button {
+    display: block;
+    margin: 0 auto;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
