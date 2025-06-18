@@ -849,14 +849,18 @@ footer {
 .arrow-symbol {
   position: absolute;
   display: flex;
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   box-shadow: 0 4px 12px rgb(0, 0, 0);
   cursor: pointer;
   transition: all 0.3s ease;  
-  color: darkgoldenrod;
   background-color: transparent;
+}
+
+.arrow-symbol svg {
+  width:100%;
+  height:100%;
 }
 
 .left-arrow-symbol {
@@ -864,7 +868,7 @@ footer {
 }
 
 .right-arrow-symbol {
-  transform: translateX(41.5vw);
+  transform: translateX(38.5vw);
 }
 
 /* Base fills */
@@ -2647,7 +2651,7 @@ body.loaded #app {
   .image-container-coreTeam {
     position: absolute;
     top:35%;
-    right:10%;
+    right:15%;
     width: 225px;
     height: 300px;
     overflow: hidden;
@@ -2701,14 +2705,18 @@ body.loaded #app {
 
   .arrow-symbol {
     position: absolute;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     box-shadow: 0 4px 12px rgb(0, 0, 0);
     cursor: pointer;
     transition: all 0.3s ease;  
-    color: darkgoldenrod;
     background-color: transparent;
+  }
+
+  .arrow-symbol svg {
+    width:100%;
+    height:100%;
   }
 
   .left-arrow-symbol {
@@ -2716,7 +2724,7 @@ body.loaded #app {
   }
 
   .right-arrow-symbol {
-    transform: translateX(40.5vw);
+    transform: translateX(38.5vw);
   }
   
   .news-arrow {
