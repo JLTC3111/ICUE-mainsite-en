@@ -1389,6 +1389,14 @@ body.loaded #app {
 .work-carousel .work-list .work-item .work-topic{
     color: #f1683a;
 }
+/* Container for the buttons (Grid setup) */
+.work-carousel .work-list .work-item .work-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 130px);
+    grid-template-rows: 40px;
+    gap: 5px;
+    margin-top: 20px;
+}
 /* Styles for the individual buttons */
 .work-carousel .work-list .work-item .work-buttons button {
     border: none;
