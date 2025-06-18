@@ -3069,8 +3069,15 @@ button {
   transition: background-color 0.3s; /* Smooth background transition */
 }
 
-button:hover {
-  background-color: #4cae4c; /* Darker green on hover */
+button {
+  padding: 10px; /* Padding inside button */
+  background: linear-gradient(to bottom, #5d82c6, #0a1a3a);
+  color: rgb(255, 255, 255); /* White text */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  transition: background-color 0.3s; /* Smooth background transition */
 }
 
 /* Contact Info Styles */
