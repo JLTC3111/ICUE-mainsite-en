@@ -1389,6 +1389,11 @@ body.loaded #app {
 .work-carousel .work-list .work-item .work-topic{
     color: #f1683a;
 }
+.work-item .work-content .work-des {
+    color: black; /* Default black */
+    transition: color 0.5s ease-in-out; /* Smooth transition for each */
+}
+
 /* Container for the buttons (Grid setup) */
 .work-carousel .work-list .work-item .work-buttons {
     display: grid;
