@@ -2531,10 +2531,10 @@ body.loaded #app {
 
 @media (min-width: 1367px) {
   .contact-info h2{
-    font-size: 24px;
+    font-size: 20px;
   }
   .contact-info p {
-    font-size: 20px;
+    font-size: 18px;
   }
   .news-card:hover {
     transform: scale(1.03);
