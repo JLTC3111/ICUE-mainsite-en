@@ -103,6 +103,7 @@ footer {
     border-radius: 12px;
     padding: 0;
     width: fit-content;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     animation: fadeIn 4.5s ease-in-out;
 }
 
