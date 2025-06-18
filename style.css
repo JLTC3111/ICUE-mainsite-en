@@ -1693,9 +1693,14 @@ body.loaded #app {
     display: none;
   }
 
+  .contact-container {
+      max-width:325px;
+      width:75%;
+  }
+
   .contact-sidebar {
     top:25%;
-    right:2.75%;
+    right:1%;
   }
 
   .contact-sidebar .contact-item {
@@ -2186,7 +2191,6 @@ body.loaded #app {
       background: #244b2c;
       color: white;
     }
-
 }
 
 /* Sliding animations */
@@ -2667,7 +2671,7 @@ body.loaded #app {
 }
 
 @media (max-width: 1024px) {
-    
+
     .about-container {
         padding: 20px;
         margin: 3.5rem auto;
@@ -2822,12 +2826,6 @@ body.loaded #app {
 
 .postcard-image:hover {
     transform: rotate(-10deg) scale(1.05);
-}
-
-@media (max-width: 1024px) {
-    .postcard-image {
-        width: 250px !important;
-    }
 }
 
 .phone-text {
@@ -2987,7 +2985,7 @@ body.contact-page {
   padding: 20px; /* Add padding */
   background: white; /* White background for the form */
   border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.11); /* Subtle shadow */
 }
 
 /* Headings */
@@ -3006,6 +3004,7 @@ h1 {
 
 .form-group {
   margin-bottom: 15px; /* Space between form groups */
+  margin-right:12px;
 }
 
 label {
