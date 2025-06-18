@@ -93,7 +93,7 @@ footer {
 .contact-sidebar {
     position: fixed; /* Stays in place as the user scrolls */
     right: 1.5%; /* Adjust as needed for desired distance from the right edge */
-    top: 50%; /* Center vertically */
+    top: 30%; /* Center vertically */
     transform: translateY(-70%); /* Adjust for perfect vertical centering */
     display: flex;
     flex-direction: column; /* Stack items vertically */
@@ -1687,7 +1687,7 @@ body.loaded #app {
   }
 
   .contact-sidebar {
-    top:50%;
+    top:25%;
     right:2.75%;
   }
 
