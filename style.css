@@ -92,74 +92,47 @@ footer {
 
 .contact-sidebar {
     position: fixed; /* Stays in place as the user scrolls */
-    right: 20px; /* Adjust as needed for desired distance from the right edge */
-    top: 40%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust for perfect vertical centering */
+    right: 1.5%; /* Adjust as needed for desired distance from the right edge */
+    top: 50%; /* Center vertically */
+    transform: translateY(-70%); /* Adjust for perfect vertical centering */
     display: flex;
     flex-direction: column; /* Stack items vertically */
-    gap: 10px; /* Space between icons */
+    gap: 12.5px; /* Space between icons */
     z-index: 14; /* Ensure it stays on top of other content */
-    background: transparent;
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0;
+    width: fit-content;
 }
 
 .contact-sidebar .contact-item {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 35px; /* Adjust size of each icon container */
-    height: 35px; /* Adjust size of each icon container */
+    width:50px;
+    height:50px;
     background-color: transparent; /* Or the specific color from the image */
-    border-radius: 50%; /* Makes it a circle */
-    box-shadow: 0 2px 5px rgba(255, 255, 255, .75); /* Subtle shadow */
-    text-decoration: none; /* Remove underline from links */
-    color: inherit; /* Inherit text color */
 }
 
 .contact-sidebar .contact-item svg {
-    width: 60%; /* Adjust icon size within the circle */
-    height: 60%;
-    object-fit: contain; /* Ensure the image scales properly */
-}
-
-/* Specific styling for each icon if needed (e.g., background color changes) */
-.call-icon {
-    background-color: transparent;
-}
-
-.calendar-icon {
-    background-color: transparent;
-}
-
-.zalo-icon {
-    background-color: transparent;
-}
-
-.messenger-icon {
-    background-color: transparent;
+    width: 70%; /* Adjust icon size within the circle */
+    height: 70%; /* Adjust icon size within the circle */
 }
 
 /* Hover effects for a better user experience */
 .contact-item:hover {
-    background-color: #e0e0e0; /* Lighter background on hover */
-    transform: scale(1.15); /* Slightly enlarge on hover */
+    
+    transform: scale(1.25); /* Slightly enlarge on hover */
     transition: all 0.5s ease-in-out; /* Smooth transition */
 }
 
-/* The arrow at the top - this might be a separate element or part of the first icon */
-.contact-sidebar::before {
-    content: '';
-    position: absolute;
-    top: -25px; /* Adjust to position above the first icon */
-    right: 5px; /* Align with the icons */
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 15px solid #f0f0f0; /* Match the background color of the sidebar items */
-    /* If the arrow is dark green, you'd use that color here */
-    opacity: 0.1;
-    transform: rotate(90deg); /* Rotate to point upwards */
+.icon-bar {
+  width: 15px;            /* Or any thickness you want */
+  height: 1px;          /* Set a visible height */
+  background-color:rgba(0, 0, 0, 0.25);
+  margin: -7.5px auto;     /* Space around the bar */
+  border-left: .5px dotted black; /* Creates a vertical dotted line */
+  border-right: .5px dotted black;
 }
 
 .sub-text {
@@ -1712,11 +1685,17 @@ body.loaded #app {
 
   .contact-sidebar {
     top:35%;
+    right:3.75%;
+  }
+
+  .contact-sidebar .contact-item {
+    width:38px;
+    height:38px;
   }
 
   .contact-sidebar .contact-item svg{
-    width:50%;
-    height:50%;
+    width:55%;
+    height:55%;
   }
 
   .submenu {
@@ -1870,18 +1849,25 @@ body.loaded #app {
   }
 
   .arrow-button {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    box-shadow: 2px 4px 8px;
   }  
 
+  .arrow-button svg {
+    width:24px;
+    height:24px;
+  }
+
   .left-arrow {
-    margin-top: -50px;
-    left: 1.5rem;
+    margin-top: -30px;
+    left: 15%;
   }
 
   .right-arrow {
-    margin-top: -50px;
-    right: 1.5rem;
+    margin-top: -30px;
+    right: 25%;
   }
 
   .contact-link {
@@ -2493,6 +2479,16 @@ body.loaded #app {
 }
 
 @media (min-width: 1025px) and (max-width: 1366px) {
+  .contact-sidebar .contact-item {
+    width:44px;
+    height:44px;
+  }
+  
+  .contact-sidebar .contact-item svg{
+    width:60%;
+    height:60%;
+  }
+
   .model-building{
     top:15%;
     animation: slideInFromRight 3.5s ease-in-out; 
@@ -3152,7 +3148,7 @@ button:hover {
     left: 12.5%;
   }
   .arrow-button{
-    top:50%;
+    top:42.5%;
   }
   .arrow-container{
     top:45%;
