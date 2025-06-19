@@ -1690,7 +1690,7 @@ body.loaded #app {
   }
 
   main {
-    padding: 1rem;
+    padding: 0;
   }
 
   nav {
@@ -1705,7 +1705,7 @@ body.loaded #app {
 
   nav a {
     font-size: 0.85rem;
-    margin: 0.3rem 0.8rem;
+    margin: .3rem .8rem;
     justify-content: center;
     text-align: center;
   }
@@ -1902,7 +1902,7 @@ body.loaded #app {
   .text-container {
     position: absolute;
     top: 42.5%;
-    left: 50%;
+    left: 48%;
     width: 90%;
     max-width: 90vw;
     transform: translate(-50%, 22.5%);
