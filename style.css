@@ -1113,7 +1113,7 @@ body.loaded #app {
   position: relative;
   width: 350px;
   background: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
   border-radius: 8px;
   justify-content: center;
   text-align: center;
@@ -1125,15 +1125,15 @@ body.loaded #app {
   content: "";
   position: absolute;
   inset: 0;
-  background: conic-gradient(from 180deg at 50% 50%, #9d7d90, #7873f5, #4ade80, #9d7d90);
+  background: conic-gradient(from 180deg at 50% 50%, #9d7d90,  #9d7d90);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s;
+  transition: opacity 0.25s;
 }
 
 /* Activate gradient on hover */
 .news-card:hover::before {
-  opacity: 0.2;
+  opacity: 0.1;
 }
 
 .news-date {
@@ -2134,12 +2134,12 @@ body.loaded #app {
       align-items: center;
       justify-content: center;
       width: 100vw;
-      margin: 2rem auto;
+      margin: 2.5rem auto;
     }
 
     /* Maintain your news-card styling */
     .news-card {
-      margin: -3rem 2rem auto auto;
+      margin: auto;
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -2168,14 +2168,14 @@ body.loaded #app {
 
     .news-container.active {
       opacity: 1;
-      pointer-events: auto;
       z-index: 1;
+      pointer-events: auto;
     }
 
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:75%;
+      top:95%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
@@ -2190,11 +2190,11 @@ body.loaded #app {
     }
 
     .left-news-arrow {
-      left: -.5vw;
+      left: 6.5vw;
     }
 
     .right-news-arrow {
-      margin-left: 38vw;
+      margin-left: 42vw;
     }
 
     .news-date {
@@ -3200,10 +3200,14 @@ button {
 .submit-button:hover {
   color: #fff; /* Darker text color on hover */
 }
-
+@media (min-width: 430px) and (max-width: 768px) {
+  .news-container {
+    transform: translate(-5vw, 1.5vh);
+  }
+}
 @media (min-width: 768px) and (max-width: 1024px) {
   .news-container {
-    transform: translate(-6.5vw, -2.5vh);
+    transform: translate(-3.25vw, 1.5vh);
   }
 }
 
@@ -3218,7 +3222,7 @@ button {
     margin-top: 5.5rem;
   }
   .news-card{
-    width: 95%;
+    width:95%;
     height:100vh;
     overflow-y: auto;
   }
