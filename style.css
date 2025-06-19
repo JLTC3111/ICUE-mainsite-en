@@ -9,6 +9,10 @@ main {
   padding: 0;
 }
 
+canvas {
+      display: block;
+}
+
 h1 {
   align-items: center;
   animation: slideInFromLeft 3.5s ease-in-out forwards; 
