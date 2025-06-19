@@ -3202,7 +3202,7 @@ button {
 }
 @media (min-width: 430px) and (max-width: 768px) {
   .news-container {
-    transform: translate(-5vw, 1.5vh);
+    transform: translate(-7.5vw, 1.5vh);
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
