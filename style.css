@@ -76,7 +76,7 @@ nav a {
   overflow: hidden;
   box-shadow: 2px 4px 8px rgba(255, 255, 255, 0.8);
 }
-.music-bar{
+.music-bar {
   height:35px;
   width:35px;
   border-radius: 20px;
@@ -152,6 +152,12 @@ footer {
     width: 70%; /* Adjust icon size within the circle */
     height: 70%; /* Adjust icon size within the circle */
 }
+
+.contact-sidebar .music-bars {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 .contact-sidebar .music-bars svg {
   transform: rotate(90deg);
 }
@@ -1995,7 +2001,7 @@ body.loaded #app {
 
   .menu-toggle {
     position: absolute;
-    left: 45%;
+    left: 48.5%;
     cursor: pointer;
     z-index: 7;
   }
