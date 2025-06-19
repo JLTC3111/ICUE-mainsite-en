@@ -5,7 +5,8 @@
     "gsap": "^3.12.7",
     "normalize.css": "^8.0.1",
     "react-router-dom": "^7.6.0",
-    "swiper": "^11.2.8"
+    "swiper": "^11.2.8",
+    "wavesurfer.js": "^7.9.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",

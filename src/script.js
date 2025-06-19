@@ -163,7 +163,8 @@ window.loadPage = (page) => {
             requestAnimationFrame(() => {
               retriggerMenuAnimations();
               updateCalendarSvgTime();
-
+              initWaveformVisualizer();
+              
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents();
@@ -1104,4 +1105,43 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     }, 250);
   };
 
-  
+  function initWaveformVisualizer(audioSrc = '/public/music/royalty_free.mp3', containerSelector = '#waveform') {
+    if (!window.WaveSurfer) {
+      console.error('WaveSurfer.js is not loaded. Make sure the script is included.');
+      return;
+    }
+
+    const wavesurfer = WaveSurfer.create({
+      container: containerSelector,
+      waveColor: '#ccc',
+      progressColor: '#00ffcc',
+      height: 16,
+      responsive: true,
+      barWidth: 2,
+      barGap: 1.5,
+      cursorColor: '#fff',
+    });
+
+    wavesurfer.load(audioSrc);
+
+    wavesurfer.on('ready', () => {
+      const canvas = document.querySelector('#waveform canvas');
+      const headphones = document.getElementById('headphonesMusic');
+    
+      if (canvas) {
+        canvas.addEventListener('click', () => {
+          wavesurfer.playPause();
+        });
+      }
+    
+      if (headphones) {
+        headphones.addEventListener('click', (e) => {
+          e.stopPropagation();
+          wavesurfer.playPause();
+        });
+      }
+    });
+    
+
+    return wavesurfer; // Optional: return instance if you want control later
+  }

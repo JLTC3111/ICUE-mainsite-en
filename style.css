@@ -64,6 +64,39 @@ nav a {
   text-decoration: none; /* Remove default underline */
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two columns */
+  align-items: center;
+  z-index: 23;
+}
+#waveform {
+  position: relative;
+  overflow: visible;
+  display:grid;
+  margin: 1rem auto;
+  padding:0;
+  cursor: pointer;
+}
+#waveform canvas {
+  pointer-events: auto;
+  display: block;
+  width: 100%;
+  height: 100% !important; /* Make sure it's not collapsing */
+}
+.music-bar {
+  grid-column: 1 / 2; /* place in the first column */
+  width: 100%;
+  max-width: 25px;
+  position: relative;
+  top:0;
+}
+
+.music-headphones {
+  position: absolute;
+  left:22%;
+  z-index: 25;
+}
 
 .menu-bar {
   display: flex;
