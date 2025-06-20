@@ -65,32 +65,10 @@ nav a {
 }
 
 #visualizer {
-  top:22.5%;
-  right:1.5%;
-  display: flex;
-  gap: 6px;
+  
   pointer-events: auto;
   cursor: pointer;
-  position: fixed;
-  z-index: 20;
-  overflow: hidden;
-  box-shadow: 2px 4px 8px rgba(255, 255, 255, 0.8);
-}
-.music-bar {
-  height:35px;
-  width:35px;
-  border-radius: 20px;
-  justify-content: center;
-  align-items: center;
-}
-.bar {
-  width: 2px;
-  height: 30px;
-  background: #ffffff;
-  transform: scaleY(0.2);
-  transform-origin: bottom;
-  transition: transform 0.1s linear;
-  z-index: 28;
+  
 }
 
 .menu-bar {

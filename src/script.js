@@ -1105,7 +1105,8 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     }, 250);
   };
 
-  function initAudioVisualizer(audioSrc = 'public/music/royalty_free.mp3',    barSelector = '.bar', clickTargetSelector = '#visualizer') {
+  function initAudioVisualizer(audioSrc = 'public/music/royalty_free.mp3', barSelector = '.music-bars', clickTargetSelector = '#visualizer') {
+    
     const audio = new Audio(audioSrc);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const source = ctx.createMediaElementSource(audio);
@@ -1144,10 +1145,6 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       });
     }
   
-    // Start playback initially (can be removed for manual control)
-    audio.play();
-    isPlaying = true;
-  
     // Animate frequency bars
     function animate() {
       requestAnimationFrame(animate);
@@ -1163,81 +1160,7 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     animate();
   }
 
-  function initAudioVisualizerWithSVG({
-    audioSrc = 'public/music/royalty_free.mp3',
-    svgSelector = '.music-bars svg path',
-    clickTargetSelector = '.music-bars',
-  }) {
-    const audio = new Audio(audioSrc);
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const source = ctx.createMediaElementSource(audio);
-    const analyser = ctx.createAnalyser();
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
   
-    const path = document.querySelector(svgSelector);
-    const clickTarget = document.querySelector(clickTargetSelector);
-    const freqData = new Uint8Array(analyser.frequencyBinCount);
-  
-    let isPlaying = false;
-  
-    function resumeContext() {
-      if (ctx.state === 'suspended') ctx.resume();
-    }
-  
-    function toggleAudio() {
-      resumeContext();
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-      isPlaying = !isPlaying;
-    }
-  
-    // Make SVG clickable
-    if (clickTarget) {
-      clickTarget.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleAudio();
-      });
-    }
-  
-    // Optional: auto play on load
-    // audio.play();
-    // isPlaying = true;
-  
-    function animate() {
-      requestAnimationFrame(animate);
-      analyser.getByteFrequencyData(freqData);
-  
-      const avg = freqData.slice(0, 64).reduce((a, b) => a + b, 0) / 64;
-  
-      // Scale bar positions dynamically based on avg energy
-      const scale = Math.max(1, avg / 50); // tune 50 for sensitivity
-  
-      const y1 = 3;
-      const y2 = 7;
-      const y3 = 11;
-  
-      // Random vertical wiggle for each bar to simulate visual activity
-      const dy = (n) => Math.round((Math.random() - 0.5) * scale + n);
-  
-      path.setAttribute(
-        'd',
-        `M2 ${dy(y1)}h12 M2 ${dy(y2)}h12 M2 ${dy(y3)}h12`
-      );
-    }
-  
-    animate();
-  }
-  window.addEventListener('DOMContentLoaded', () => {
-    initAudioVisualizerWithSVG({
-      audioSrc: 'public/music/royalty_free.mp3', // correct relative path?
-      svgSelector: '.music-bars svg path',
-      clickTargetSelector: '.music-bars'
-    });
-  });
   
 
 
