@@ -64,13 +64,6 @@ nav a {
   text-decoration: none; /* Remove default underline */
 }
 
-#visualizer {
-  
-  pointer-events: auto;
-  cursor: pointer;
-  
-}
-
 .menu-bar {
   display: flex;
   align-items: center;
@@ -1087,8 +1080,30 @@ body.loaded #app {
   }
 }
 
+/*
 .cursor-symbol {
-  cursor: url('public/cursors/pencil.cur'), auto;
+  cursor: url('public/cursors/sushi.cur'), auto;
+}*/
+
+
+.cursor-trail {
+  position: fixed;
+  width: 25px;
+  height: 1.5px;
+  pointer-events: none;
+  border-radius: 0%;
+  background: radial-gradient(circle, rgb(255, 255, 0), transparent 70%);
+  opacity: 0.9;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.3);
+  }
 }
 
 #thankYouMessage {

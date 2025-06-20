@@ -1214,6 +1214,29 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     });
   }
 
+  function enableCursorGradientTrail(color = 'yellow') {
+    document.addEventListener('mousemove', (e) => {
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+  
+      // Optional: customize color dynamically
+      trail.style.background = `radial-gradient(circle, ${color}, transparent 60%)`;
+  
+      // Position at mouse location
+      trail.style.left = `${e.clientX}px`;
+      trail.style.top = `${e.clientY}px`;
+  
+      document.body.appendChild(trail);
+  
+      // Remove after animation completes
+      setTimeout(() => {
+        trail.remove();
+      }, 500); // match animation duration
+    });
+  }
+  
+  // ✅ Enable it
+  enableCursorGradientTrail(); // Default: yellow
   
   
 
