@@ -1105,8 +1105,38 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     }, 250);
   };
 
-  function initAudioVisualizer(audioSrc = 'public/music/royalty_free.mp3', barSelector = '.music-bars', clickTargetSelector = '#visualizer') {
-    
+  function initAudioVisualizer(
+    audioSrc = '/music/royalty_free.mp3',
+    barSelector = '.music-bars',
+    clickTargetSelector = '#visualizer'
+  ) {
+    const bars = document.querySelectorAll(barSelector);
+    const clickTarget = document.querySelector(clickTargetSelector);
+  
+    // ✅ If audio already exists, reuse it (don’t create a new one)
+    if (window.__audioVisualizer) {
+      const { audio, ctx } = window.__audioVisualizer;
+  
+      // Add click listener to toggle state
+      if (clickTarget) {
+        clickTarget.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+  
+          if (ctx.state === 'suspended') ctx.resume();
+  
+          if (audio.paused) {
+            audio.play();
+          } else {
+            audio.pause();
+          }
+        });
+      }
+  
+      return; // ✅ Skip reinitialization
+    }
+  
+    // ❌ First time setup
     const audio = new Audio(audioSrc);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const source = ctx.createMediaElementSource(audio);
@@ -1115,37 +1145,26 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     source.connect(analyser);
     analyser.connect(ctx.destination);
   
-    const bars = document.querySelectorAll(barSelector);
     const freqData = new Uint8Array(analyser.frequencyBinCount);
-    const clickTarget = document.querySelector(clickTargetSelector);
   
-    let isPlaying = false;
-  
-    // Ensure context resumes on user interaction
-    function resumeContext() {
-      if (ctx.state === 'suspended') ctx.resume();
-    }
-  
-    // Toggle audio playback
     function toggleAudio() {
-      resumeContext();
-      if (isPlaying) {
-        audio.pause();
-      } else {
+      if (ctx.state === 'suspended') ctx.resume();
+  
+      if (audio.paused) {
         audio.play();
+      } else {
+        audio.pause();
       }
-      isPlaying = !isPlaying;
     }
   
-    // Click to toggle audio
     if (clickTarget) {
       clickTarget.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         toggleAudio();
       });
     }
   
-    // Animate frequency bars
     function animate() {
       requestAnimationFrame(animate);
       analyser.getByteFrequencyData(freqData);
@@ -1158,6 +1177,12 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     }
   
     animate();
+  
+    // ✅ Store once, globally
+    window.__audioVisualizer = {
+      audio,
+      ctx
+    };
   }
 
   
