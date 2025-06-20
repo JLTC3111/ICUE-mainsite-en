@@ -420,14 +420,9 @@ window.initHomeTextSlider = () => {
       return;
     }
   
-    textElement.classList.add("fadeOut");
-    textElement.classList.remove("fadeIn");
     
     setTimeout(() => {
       textElement.textContent = messages[index];
-      textElement.classList.remove("fadeOut");
-      textElement.classList.add("fadeIn");
-      
       // Update dot states
       dots.forEach((dot, i) => {
         if (i === index) {
