@@ -1108,41 +1108,32 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
 
   function initAudioVisualizer(
     audioSrc = 'public/music/royalty_free.mp3',
-    barSelector = '.music-bars',
+    barSelector = 'contact-sidebar .music-bars',
     clickTargetSelector = '#visualizer'
   ) {
-    const bars = document.querySelectorAll(barSelector);
     const clickTarget = document.querySelector(clickTargetSelector);
   
-    // ✅ If audio already exists, reuse it (don’t create a new one)
+    // ✅ Reuse existing audio if already created
     if (window.__audioVisualizer) {
       const { audio, ctx } = window.__audioVisualizer;
   
-      // Add click listener to toggle state
       if (clickTarget) {
         clickTarget.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-  
           if (ctx.state === 'suspended') ctx.resume();
-  
-          if (audio.paused) {
-            audio.play();
-          } else {
-            audio.pause();
-          }
+          audio.paused ? audio.play() : audio.pause();
         });
       }
   
-      return; // ✅ Skip reinitialization
+      return;
     }
   
-    // ❌ First time setup
+    // ❌ First-time setup
     const audio = new Audio(audioSrc);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const source = ctx.createMediaElementSource(audio);
     const analyser = ctx.createAnalyser();
-  
     source.connect(analyser);
     analyser.connect(ctx.destination);
   
@@ -1150,12 +1141,7 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
   
     function toggleAudio() {
       if (ctx.state === 'suspended') ctx.resume();
-  
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
+      audio.paused ? audio.play() : audio.pause();
     }
   
     if (clickTarget) {
@@ -1166,8 +1152,28 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       });
     }
   
-    function animate() {
-      requestAnimationFrame(animate);
+    // ✅ Save audio setup globally
+    window.__audioVisualizer = {
+      audio,
+      ctx,
+      analyser,
+      freqData
+    };
+  }
+  
+  // ✅ Global animation loop — only runs once
+  function startAudioVisualizerLoop(barSelector = '.music-bars') {
+    function loop() {
+      requestAnimationFrame(loop);
+  
+      const av = window.__audioVisualizer;
+      if (!av) return;
+  
+      const { analyser, freqData } = av;
+      const bars = document.querySelectorAll(barSelector);
+  
+      if (!analyser || bars.length === 0) return;
+  
       analyser.getByteFrequencyData(freqData);
   
       bars.forEach((bar, i) => {
@@ -1177,14 +1183,13 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       });
     }
   
-    animate();
-  
-    // ✅ Store once, globally
-    window.__audioVisualizer = {
-      audio,
-      ctx
-    };
+    loop();
   }
+  
+  // ✅ Call this once globally on startup (e.g. inside DOMContentLoaded)
+  window.addEventListener('DOMContentLoaded', () => {
+    startAudioVisualizerLoop(); // Start global animation once
+  });
 
   function updateMusicBarColor(page) {
     const paths = document.querySelectorAll('.music-bars svg path');
