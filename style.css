@@ -334,6 +334,9 @@ footer {
   0% {
     opacity: 1;
   }
+  50% {
+    opacity: .25;
+  }
   100% {
     opacity: 0;
   }
@@ -762,7 +765,7 @@ footer {
 
 .highlight-text {
   font-family: 'Roboto', cursive ;
-  font-size: 24px;
+  font-size: 21px;
   font-style: normal;
   font-weight: 250;
   visibility: visible; 
@@ -774,6 +777,7 @@ footer {
 .slider-dots {
   display: flex;
   position: relative;
+  align-items: center;
   justify-content: center;
   margin-top: -2.5rem;
   margin-left: -1.5rem;
@@ -796,7 +800,23 @@ footer {
 }
 
 .dot.active {
+  width: 36px;
+  height: 12px;
+  border-radius: 12px;
   background-color: yellowgreen; /* Highlight active dot */
+}
+
+.dot.active {
+  animation: slide-progress .5s linear forwards; /* duration = slide time */
+}
+
+@keyframes slide-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 2.5%;
+  }
 }
 
 .corePageContainer {
@@ -2639,6 +2659,10 @@ body.loaded #app {
 
   .home-text-slider {
     margin: 4.5rem auto auto auto;
+  }
+
+  .highlight-text {
+    font-size: 18px;
   }
 
   .slider-dots {

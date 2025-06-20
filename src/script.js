@@ -420,13 +420,13 @@ window.initHomeTextSlider = () => {
       return;
     }
   
-    textElement.classList.add("transitioning");
-    textElement.classList.remove("fade-In");
+    textElement.classList.add("fadeOut");
+    textElement.classList.remove("fadeIn");
     
     setTimeout(() => {
       textElement.textContent = messages[index];
-      textElement.classList.remove("transitioning");
-      textElement.classList.add("fade-In");
+      textElement.classList.remove("fadeOut");
+      textElement.classList.add("fadeIn");
       
       // Update dot states
       dots.forEach((dot, i) => {
@@ -456,13 +456,13 @@ window.initHomeTextSlider = () => {
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 4000);
+      window.homeSliderIntervalId = setInterval(nextText, 8000);
     }
   }
 
   // Initialize the slider
   updateText(index);
-  window.homeSliderIntervalId = setInterval(nextText, 4000);
+  window.homeSliderIntervalId = setInterval(nextText, 8000);
 
   // Add event listeners to dots
   dots.forEach((dot, i) => {
