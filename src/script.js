@@ -164,6 +164,7 @@ window.loadPage = (page) => {
               retriggerMenuAnimations();
               updateCalendarSvgTime();
               initAudioVisualizer();
+              updateMusicBarColor(page);
               
               switch (page) {
                 case 'meetOurExperts':
@@ -1183,6 +1184,29 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       audio,
       ctx
     };
+  }
+
+  function updateMusicBarColor(page) {
+    const paths = document.querySelectorAll('.music-bars svg path');
+  
+    let color = '#ffffff'; // default
+  
+    switch (page) {
+      case 'ourWork':
+        color = '#ffcc00';
+        break;
+      case 'Contact':
+        color = '#000000';
+        break;
+        case 'coreTeam':
+        color = '#000000';
+        break;
+    }
+  
+    paths.forEach(path => {
+      path.setAttribute('stroke', color);
+      path.setAttribute('fill', color); // Only needed if your SVG uses `fill`
+    });
   }
 
   
