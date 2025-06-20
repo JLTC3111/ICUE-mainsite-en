@@ -807,7 +807,7 @@ footer {
 }
 
 .dot.active {
-  animation: slide-progress .5s linear forwards; /* duration = slide time */
+  animation: slide-progress 1s linear forwards; /* duration = slide time */
 }
 
 @keyframes slide-progress {
