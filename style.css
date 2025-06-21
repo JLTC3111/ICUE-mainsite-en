@@ -478,11 +478,11 @@ footer {
   position: fixed;
   display: flex;
   top: 40%;
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
   justify-content: center;
   align-items: center;
-  background-color: linear-gradient(to bottom right, #ffffff, #585858); /* Transparent background */
+  background: transparent;
   border-radius: 50%;               /* Removes the circular shape */
   box-shadow: none;              /* Removes the shadow */
   cursor: pointer;
@@ -496,14 +496,8 @@ footer {
 .fill-white {fill: #FFFFFF;}
 .fill-dark {fill: #111;}
 
-.arrow-icon {
-  width: 75px;
-  height: 75px;
-  z-index: 10;
-}
-
 .arrow-button:hover {
-  transform: scale(1.2);
+  transform: scale(1.3);
 }
 
 .arrow-button:hover .fill-bright-blue,
@@ -524,12 +518,17 @@ footer {
   fill: #41ff51;
 }
 
+.arrow-button svg {
+  width:90%;
+  height:90%;
+}
+
 .left-arrow {
   left: 2.5rem;
 }
 
 .right-arrow {
-  right: 11.5rem;
+  right: 9.5rem;
 }
 
 
