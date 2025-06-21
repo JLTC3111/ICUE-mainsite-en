@@ -893,7 +893,6 @@ footer {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   transform-origin: center center; /* 💡 Key addition */
   font-size: 1.25rem;
   font-weight: 500;

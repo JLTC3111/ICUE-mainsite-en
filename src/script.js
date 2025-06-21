@@ -936,8 +936,14 @@ window.attachProfileEvents_coreTeam = () => {
       swipeFeedback.textContent = direction === 'left' ? '🔛' : '🔛';
       
       gsap.killTweensOf(swipeFeedback); // prevent overlap
-      gsap.fromTo(swipeFeedback,
-        { opacity: 0, scale: 0 },
+      gsap.fromTo(
+        swipeFeedback,
+        {
+          opacity: 0,
+          scale: 0.8,
+          xPercent: -50,
+          yPercent: -50
+        },
         {
           opacity: 1,
           scale: 1,
@@ -946,7 +952,7 @@ window.attachProfileEvents_coreTeam = () => {
           onComplete: () => {
             gsap.to(swipeFeedback, {
               opacity: 0,
-              scale: 0,
+              scale: 0.95,
               delay: 0.8,
               duration: 0.3,
               ease: "power1.in"
