@@ -960,7 +960,7 @@ window.attachProfileEvents_coreTeam = () => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
 
-      iif (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
           showSwipeFeedback('left');
           document.getElementById('prev-btn')?.click();
