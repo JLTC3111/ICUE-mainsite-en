@@ -928,50 +928,16 @@ window.attachProfileEvents_coreTeam = () => {
       touchStartX = e.changedTouches[0].screenX;
     });
 
-    const swipeFeedback = document.getElementById('feedbackSwipe');
-
-    function showSwipeFeedback(direction) {
-      if (!swipeFeedback) return;
-      
-      swipeFeedback.textContent = direction === 'left' ? '🔛' : '🔛';
-      
-      gsap.killTweensOf(swipeFeedback); // prevent overlap
-      gsap.fromTo(
-        swipeFeedback,
-        {
-          opacity: 0,
-          scale: 0.8,
-          xPercent: -50,
-          yPercent: -50
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          ease: "power2.out",
-          onComplete: () => {
-            gsap.to(swipeFeedback, {
-              opacity: 0,
-              scale: 0.95,
-              delay: 0.8,
-              duration: 0.3,
-              ease: "power1.in"
-            });
-          }
-        }
-      );
-    }
-
     container.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
 
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
-          showSwipeFeedback('left');
+          // Swipe right → go to previous profile
           document.getElementById('prev-btn')?.click();
         } else {
-          showSwipeFeedback('right');
+          // Swipe left → go to next profile
           document.getElementById('next-btn')?.click();
         }
       }
