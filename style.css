@@ -452,17 +452,17 @@ footer {
   margin-left: clamp(.5rem, 1vw, 1.5rem)
 }
 
-
 .montserrat-pepple {
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
-  line-height: 1.8;
+  line-height: 2;
   color: #000000;
-  text-align: justify;
+  justify-content: center;
+  text-align: center;
 }
 
 .intro-people {
-  display: flex;
+  display: inline;
   letter-spacing: .5px; 
   line-height: 1.2; 
   justify-content: center;
@@ -1913,7 +1913,7 @@ body.loaded #app {
     width: 28px;
     height: 28px;
   }
-  
+
 .sub-text {
   font-size: clamp(2rem, 5vw, 2.5rem);
   margin: 14.5rem 0 -2rem 0; /* shifts text slightly left */
