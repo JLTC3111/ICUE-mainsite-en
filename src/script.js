@@ -928,7 +928,7 @@ window.attachProfileEvents_coreTeam = () => {
       touchStartX = e.changedTouches[0].screenX;
     });
 
-    const swipeFeedback = document.getElementById('swipe-feedback');
+    const swipeFeedback = document.getElementById('feedbackSwipe');
 
     function showSwipeFeedback(direction) {
       if (!swipeFeedback) return;
@@ -960,13 +960,13 @@ window.attachProfileEvents_coreTeam = () => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
 
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+      iif (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
+          showSwipeFeedback('left');
+          document.getElementById('prev-btn')?.click();
         } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
+          showSwipeFeedback('right');
+          document.getElementById('next-btn')?.click();
         }
       }
     });
