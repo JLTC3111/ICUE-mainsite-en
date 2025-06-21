@@ -173,8 +173,8 @@ footer {
   font-style: normal;
   font-size: clamp(60px, 7.5vw, 64px);
   font-weight: 400;
-  margin-bottom: -2.5rem;
-  margin-left: -50%;
+  margin-bottom: -3.5rem;
+  margin-left: -30%;
   /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px yellow,       /* hard shadow base */
@@ -186,14 +186,14 @@ footer {
 }
 
 .cursive-default {
-  font-family: 'IBM Plex Serif', serif;
+  font-family: 'Playfair Display', serif;
   font-weight: 600;
   font-style: italic;
   font-size: clamp(40px, 42.5px, 45px);
   background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
   -webkit-background-clip: text;
   background-clip: text;
-  letter-spacing:5px;
+  letter-spacing:1vw;
   margin:7.5% 25% -4.5% 3%;
   /* Add text shadow for 3D depth */
   text-shadow:
@@ -207,7 +207,7 @@ footer {
 
 .lets-talk{
   margin-left: 1.5rem;
-  margin-top: 3rem;
+  margin-top: 5.5%;
   /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px 1px #000000,       /* hard shadow base */
@@ -477,7 +477,7 @@ footer {
 .arrow-button {
   position: fixed;
   display: flex;
-  top: 40%;
+  top: 45%;
   width: 65px;
   height: 65px;
   justify-content: center;
@@ -1924,17 +1924,18 @@ body.loaded #app {
 
 .sub-text {
   font-size: clamp(2rem, 5vw, 2.5rem);
-  margin: 14.5rem 0 -2rem 0; /* shifts text slightly left */
+  margin: 14.5rem 0 -1.5rem 0; /* shifts text slightly left */
 }
 
 .cursive-default {
-  font-size: clamp(1rem, 6vw, 1.5rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
   line-height: 1.5;
-  margin: 8.5rem 2.5rem -1.75rem -0.25rem; /* top, right, bottom, left */
+  margin: 8.5rem 2.5rem .75rem -0.25rem; /* top, right, bottom, left */
 }
 
 .lets-talk {
-  margin-bottom: -3rem;
+  font-size: large;
+  margin-bottom: -2.5rem;
 }
 
 .home-text-slider {
@@ -2677,7 +2678,7 @@ body.loaded #app {
   }
 
   .model-building{
-    top:15%;
+    top:17.5%;
     animation: slideInFromRight 3.5s ease-in-out; 
   }
   .menu-toggle svg{
@@ -2686,11 +2687,12 @@ body.loaded #app {
   }
   
   .cursive-default {
-    font-size: 48px;
+    font-size: 42px;
     margin: 7.5rem auto auto auto;
   }
 
   .sub-text {
+    margin-left: -20%;
     font-size: 48px;
   }
 
