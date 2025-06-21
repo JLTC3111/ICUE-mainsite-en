@@ -1,24 +1,85 @@
 console.log('[script.js] Loaded ✅');
+function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null) {
+  targetElement.innerHTML = "";
+
+  const tempContainer = document.createElement("div");
+  tempContainer.innerHTML = htmlString;
+
+  const nodes = Array.from(tempContainer.childNodes);
+  let nodeIndex = 0;
+
+  // Create and append cursor initially
+  const cursor = document.createElement("span");
+  cursor.className = "svg-blinking-cursor";
+  targetElement.appendChild(cursor);
+  // Create your custom SVG
+  const svgCursor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgCursor.setAttribute("width", "24");
+  svgCursor.setAttribute("height", "24");
+  svgCursor.setAttribute("viewBox", "0 0 24 24");
+  svgCursor.setAttribute("class", "svg-blinking-cursor"); // custom class
+
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("fill", "black"); // or darkblue, your choice
+  path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
+
+  svgCursor.appendChild(path);
+  targetElement.appendChild(svgCursor);
+  function typeNextNode() {
+    if (nodeIndex >= nodes.length) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+
+    const node = nodes[nodeIndex];
+    nodeIndex++;
+
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent;
+      const span = document.createElement("span");
+      targetElement.insertBefore(span, cursor); // always before cursor
+
+      let charIndex = 0;
+      function typeChar() {
+        if (charIndex < text.length) {
+          span.textContent += text.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeChar, speed);
+        } else {
+          typeNextNode();
+        }
+      }
+      typeChar();
+    } else {
+      const clone = node.cloneNode(true);
+      targetElement.insertBefore(clone, cursor);
+      typeNextNode();
+    }
+  }
+
+  typeNextNode();
+}
+
 window.attachProfileEvents = () => {
   const profileData = [
     {
-      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on green urban development, climate resilience and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
+      name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và phó cục trưởng Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố bền vững. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về phát triển đô thị xanh, khả năng phục hồi khí hậu và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in accounting software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
+      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Chuyên gia kế toán giàu kinh nghiệm trong quản lý tài chính, báo cáo và tuân thủ. Có bằng Cử nhân Kế toán và đã lãnh đạo thành công các phòng kế toán, quản lý các khoản thanh toán tài chính, tiến hành kiểm toán và lập báo cáo tài chính chính xác. Có kỹ năng giám sát các giao dịch tài chính, đảm bảo tuân thủ pháp luật và quy định, và hỗ trợ các hoạt động tài chính theo dự án. Thành thạo phần mềm kế toán và được biết đến với đạo đức nghề nghiệp mạnh mẽ, khả năng thích ứng và chú ý đến từng chi tiết. Mang đến các kỹ năng lãnh đạo và tổ chức mạnh mẽ, tập trung vào việc cung cấp những hiểu biết tài chính chính xác.`,
       img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Lan Anh</span>Urban planning and development expert with over 20 years of experience in strategic urban design, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in climate change adaptation, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on resilience and urban planning to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages ​​and passionate about shaping a sustainable, livable urban future.`,
+      name: `<span class="intro-people">Ms. Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị với hơn 10 năm kinh nghiệm trong thiết kế đô thị chiến lược, hoạch định chính sách và phát triển bền vững. Có bằng Tiến sĩ và Thạc sĩ từ Đại học Tokyo, nền tảng vững chắc về thích ứng với biến đổi khí hậu, luật phân loại đô thị và chiến lược phát triển quốc gia. Cựu Phó Tổng giám đốc Cơ quan Phát triển Đô thị Việt Nam, lãnh đạo các chương trình lớn về khả năng phục hồi và quy hoạch đô thị đến năm 2050. Một nhà nghiên cứu, nhà giáo dục đã xuất bản và là thành viên tích cực của các hiệp hội chuyên nghiệp. Có kỹ năng điều phối các dự án quy mô lớn, khuôn khổ pháp lý và hợp tác liên ngành. Thông thạo nhiều ngôn ngữ và đam mê định hình tương lai đô thị bền vững, đáng sống.`,
       img: "public/profilePhotos/tranthilananh.jpg"
     },
     {
-      name: `<span class="intro-people">Mr. Trần Quốc Toản </span> Urban Planning and Climate Change with over 25 years of experience in sustainable infrastructure, transport planning and climate resilience. Degree in Bridge and Tunnel Engineering and has held key leadership roles in the Vietnamese Ministry of Transport and civil engineering associations. Skilled in policy consulting, smart city planning and green growth strategy development. Led major national projects focused on urban mobility, environmental sustainability and regulatory reform. A respected lecturer and trainer for organizations such as the World Bank and ADB, known for his extensive expertise, strategic thinking and commitment to building a climate resilient urban future.`,
+      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> Quy hoạch đô thị và biến đổi khí hậu với hơn 15 năm kinh nghiệm trong lĩnh vực cơ sở hạ tầng bền vững, quy hoạch giao thông và khả năng phục hồi khí hậu. Có bằng Kỹ sư cầu đường và hầm và đã đảm nhiệm các vai trò lãnh đạo chủ chốt trong Bộ Giao thông vận tải Việt Nam và các hiệp hội kỹ thuật dân dụng. Có kỹ năng tư vấn chính sách, quy hoạch thành phố thông minh và phát triển chiến lược tăng trưởng xanh. Dẫn dắt các dự án quốc gia lớn tập trung vào tính di động của đô thị, tính bền vững của môi trường và cải cách pháp luật. Một giảng viên và chuyên gia đào tạo được kính trọng cho các tổ chức như Ngân hàng Thế giới và ADB, được biết đến với chuyên môn sâu rộng, tư duy chiến lược và cam kết xây dựng tương lai đô thị có khả năng phục hồi khí hậu.`,
       img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people"> Long Đỗ - Project Manager </span> A dedicated Project Officer with a Masters in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in design and creative problem solving. 🔧💬
+      name: `<span class="intro-people"> Long Đỗ - Quản Lý Dự Án </span><br> Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, quản lý hợp đồng (thông minh) và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan. Có khả năng thích nghi cao và chú ý đến chi tiết, với niềm đam mê với phần cứng máy tính, mã hóa và trò chơi. Có kinh nghiệm thiết kế và giải quyết vấn đề sáng tạo. 🔧💬
       https://dobaolongicueltd.netlify.app/`,
       img: "public/profilePhotos/longdo.jpg"
     }
@@ -45,8 +106,19 @@ window.attachProfileEvents = () => {
     photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
   
     setTimeout(() => {
-      // Step 2: Update the content
-      textBox.innerHTML = `<div>${profileData[index].name}</div>`;
+      // Step 2: Update content with typewriter
+      
+      textBox.innerHTML = ""; // clear previous
+      const message = profileData[index].name;
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+
+      typeHTMLString(container, message, 12, () => {
+        gsap.fromTo(container, 
+          { opacity: 0, y: 10, scale: 0.98 }, 
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
+        );
+      });
       photo.src = profileData[index].img;
   
       // Step 3: Remove exit animation classes

@@ -64,6 +64,26 @@ nav a {
   text-decoration: none; /* Remove default underline */
 }
 
+
+.svg-blinking-cursor {
+  display: inline-block;
+  margin-left: -1.5px;
+  vertical-align:-4px;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: .25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .menu-bar {
   display: flex;
   align-items: center;
@@ -2616,6 +2636,11 @@ body.loaded #app {
 }
 
 @media (min-width: 1025px) and (max-width: 1366px) {
+  .svg-blinking-cursor {
+    height: 1.35em; /* optional scaling */
+    width: auto;
+  }
+
   .submit-button {
       font-size: 22px;
   }
@@ -2814,6 +2839,10 @@ body.loaded #app {
 }
 
 @media (max-width: 1024px) {
+    .svg-blinking-cursor {
+      height: 1.35em; /* optional scaling */
+      width: auto;
+    }
 
     .about-container {
         padding: 20px;
