@@ -933,18 +933,22 @@ window.attachProfileEvents_coreTeam = () => {
     function showSwipeFeedback(direction) {
       if (!swipeFeedback) return;
       
-      swipeFeedback.textContent = direction === 'left' ? 'Previous' : 'Next';
+      swipeFeedback.textContent = direction === 'left' ? '' : '';
       
       gsap.killTweensOf(swipeFeedback); // prevent overlap
       gsap.fromTo(swipeFeedback,
-        { opacity: 0},
+        { opacity: 0, scale: 0 },
         {
           opacity: 1,
+          scale: 1,
           duration: 0.4,
           ease: "power2.out",
           onComplete: () => {
             gsap.to(swipeFeedback, {
               opacity: 0,
+              scale: 0,
+              delay: 0.8,
+              duration: 0.3,
               ease: "power1.in"
             });
           }
