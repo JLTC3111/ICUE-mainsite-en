@@ -1996,7 +1996,6 @@ body.loaded #app {
   .intro-people {
     font-size: 22px;
     margin-right: 20px;
-    margin-bottom: 20px;
   }
 
   .arrow-button {
@@ -2120,13 +2119,8 @@ body.loaded #app {
   }
 
   .model-butterfly {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; /* Optional: stack on small screens */
-    top: 17.5rem;
-    right: 2.5rem;
+    top: .5rem;
+    right: 1.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
