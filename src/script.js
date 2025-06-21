@@ -940,7 +940,7 @@ window.attachProfileEvents_coreTeam = () => {
         swipeFeedback,
         {
           opacity: 0,
-          scale: 0,
+          scale: 0.8,
           xPercent: -50,
           yPercent: -50
         },
@@ -952,9 +952,9 @@ window.attachProfileEvents_coreTeam = () => {
           onComplete: () => {
             gsap.to(swipeFeedback, {
               opacity: 0,
-              scale: 0,
-              delay: 0,
-              duration: 0.1,
+              scale: 0.95,
+              delay: 0.8,
+              duration: 0.3,
               ease: "power1.in"
             });
           }
