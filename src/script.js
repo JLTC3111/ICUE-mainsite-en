@@ -946,9 +946,6 @@ window.attachProfileEvents_coreTeam = () => {
           onComplete: () => {
             gsap.to(swipeFeedback, {
               opacity: 0,
-              scale: 0.95,
-              delay: 0.8,
-              duration: 0.3,
               ease: "power1.in"
             });
           }
