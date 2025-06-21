@@ -2178,6 +2178,8 @@ body.loaded #app {
     .arrow-symbol {
       width: 43px;
       height: 43px;
+      display: none;
+      pointer-events: none;
     }
     
     .arrow-symbol svg {
@@ -2823,6 +2825,8 @@ body.loaded #app {
     cursor: pointer;
     transition: all 0.3s ease;  
     background-color: transparent;
+    display: none;
+    pointer-events: none;
   }
 
   .arrow-symbol svg {
