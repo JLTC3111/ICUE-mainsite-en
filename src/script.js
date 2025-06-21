@@ -928,6 +928,18 @@ window.attachProfileEvents_coreTeam = () => {
       touchStartX = e.changedTouches[0].screenX;
     });
 
+    const swipeFeedback = document.getElementById('swipe-feedback');
+
+    function showSwipeFeedback(direction) {
+      if (!swipeFeedback) return;
+      swipeFeedback.textContent = direction === 'left' ? '← Previous' : 'Next →';
+      swipeFeedback.style.opacity = 1;
+      
+      setTimeout(() => {
+        swipeFeedback.style.opacity = 0;
+      }, 800);
+    }
+
     container.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
