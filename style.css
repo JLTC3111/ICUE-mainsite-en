@@ -1814,6 +1814,15 @@ body.loaded #app {
     display: none;
   }
 
+  @keyframes slide-progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 5.5%;
+    }
+  }
+
   .contact-container {
       max-width:325px;
       width:75%;
@@ -2635,6 +2644,15 @@ body.loaded #app {
   .svg-blinking-cursor {
     height: 1.35em; /* optional scaling */
     width: auto;
+  }
+
+  @keyframes slide-progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 3.5%;
+    }
   }
 
   .submit-button {
