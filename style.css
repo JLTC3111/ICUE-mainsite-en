@@ -2173,6 +2173,8 @@ body.loaded #app {
       left: 50%;
       transform: translate(-1.5rem, -2rem);
       z-index: 1;
+      display: none;
+      pointer-events: none;
     }
 
     .arrow-symbol {
@@ -2814,6 +2816,8 @@ body.loaded #app {
     transform: translateY(5vh);
     background-color: transparent;
     z-index: 1;
+    display: none;
+    pointer-events: none;
   }
 
   .arrow-symbol {
@@ -3384,9 +3388,9 @@ button {
   }
   .text-container-coreTeam{
     max-width:550px;
-    width:65%;
+    width:70%;
     top:41.5%;
-    left:17.5%;
+    left:14.5%;
   }
 }
 
