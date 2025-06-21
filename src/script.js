@@ -155,25 +155,36 @@ window.attachProfileEvents = () => {
     updateProfile(currentIndex, 'left');
   });
 
-  // Add touch support for mobile
-  if (container) {
-    container.addEventListener('touchstart', (e) => {
+  const swipeElements = [container, textBox];
+
+  let swipeLocked = false;
+  
+  swipeElements.forEach(el => {
+    el.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
-
-    container.addEventListener('touchend', (e) => {
+  
+    el.addEventListener('touchend', (e) => {
+      if (swipeLocked) return;
+  
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-      
+  
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        swipeLocked = true;
+  
         if (swipeDistance > 0) {
-          document.getElementById('prev-btn')?.click();
+          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+          updateProfile(currentIndex, 'left');
         } else {
-          document.getElementById('next-btn')?.click();
+          currentIndex = (currentIndex + 1) % profileData.length;
+          updateProfile(currentIndex, 'right');
         }
+  
+        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
       }
     });
-  }
+  });
 
   // Preload all profile images
 profileData.forEach(profile => {
