@@ -894,16 +894,15 @@ footer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #444;
-  pointer-events: none;
+  color: white;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10;
+  pointer-events: none;
+  z-index: 999;
 }
 
 .arrow-container {

@@ -932,12 +932,28 @@ window.attachProfileEvents_coreTeam = () => {
 
     function showSwipeFeedback(direction) {
       if (!swipeFeedback) return;
-      swipeFeedback.textContent = direction === 'left' ? '← Previous' : 'Next →';
-      swipeFeedback.style.opacity = 1;
       
-      setTimeout(() => {
-        swipeFeedback.style.opacity = 0;
-      }, 800);
+      swipeFeedback.textContent = direction === 'left' ? '👈 Previous' : 'Next 👉';
+      
+      gsap.killTweensOf(swipeFeedback); // prevent overlap
+      gsap.fromTo(swipeFeedback,
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: "power2.out",
+          onComplete: () => {
+            gsap.to(swipeFeedback, {
+              opacity: 0,
+              scale: 0.95,
+              delay: 0.8,
+              duration: 0.3,
+              ease: "power1.in"
+            });
+          }
+        }
+      );
     }
 
     container.addEventListener('touchend', (e) => {
