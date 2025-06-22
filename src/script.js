@@ -492,61 +492,79 @@ window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
-window.realSlamnorSlam = function() {
+window.realSlamnorSlam = function () {
   const text = document.querySelector('#textSlam .slam-text');
   const dust = document.querySelector('#textSlam .slam-dust');
 
+  if (!text || !dust) {
+    console.warn("Missing .slam-text or .slam-dust");
+    return;
+  }
+
+  // Reset state
   gsap.set(text, {
     x: 0,
-    y: -300,
+    y: 0,
     rotationX: 0,
-    rotationY: 0,
-    rotationZ: 0,
-    scale: 1.5,
+    scale: 1.05,
     opacity: 0,
-    transformOrigin: "50% 50%"
+    transformOrigin: "50% 50%",
+    perspective: 1000
   });
-  gsap.set(dust, { scale: 0.5, opacity: 0 });
+
+  gsap.set(dust, {
+    scale: 0.5,
+    opacity: 0,
+    filter: "brightness(1)"
+  });
 
   const tl = gsap.timeline();
 
-  // 🌀 Spin+Drop Slam
+  // 🌀 Spin + Drop Slam
   tl.to(text, {
     opacity: 1,
     y: 0,
-    rotationX: 720, // 2 full flips
-    duration: 2.8,
-    ease: "power4.out",
-    transformPerspective: 800
+    rotationX: 0,
+    rotationY: 360,
+    rotationZ: 360,
+    scale: 1.5,
+    duration: 1.1,
+    ease: "back.out(1.7)",
+    transformPerspective: 1200
   })
-  // 💥 Slam Impact Squash
+
+  // 💥 Slam Impact
   .to(text, {
-    scaleY: 0.7,
-    scaleX: 1.3,
-    duration: 1,
-    ease: "power2.inOut"
+    scaleY: 2.5,
+    scaleX: 2.5,
+    duration: 0.6,
+    ease: "power4.inOut"
   })
-  // 👊 Bounce back
+
+  // 👊 Bounce Back
   .to(text, {
     scaleY: 1,
     scaleX: 1,
-    duration: 3,
-    ease: "elastic.out(1, 0.4)"
-  });
+    duration: 0.7,
+    ease: "elastic.out(1, 0.5)"
+  })
 
   // 💨 Dust Puff
-  tl.to(dust, {
+  .to(dust, {
     opacity: 1,
     scale: 1.4,
-    duration: 0.25,
+    filter: "brightness(1.5)",
+    duration: 0.75,
     ease: "power2.out"
-  }, "-=0.35")
+  }, "-=1") // overlap dust with squash
+
   .to(dust, {
     opacity: 0,
     scale: 2.2,
-    duration: 0.6,
+    filter: "brightness(.75)",
+    duration: 1.2,
     ease: "power2.in"
-  }, "-=0.1");
+  }, "-=0.6"); // overlap exit
 };
 
 window.addEventListener("DOMContentLoaded", () => {
