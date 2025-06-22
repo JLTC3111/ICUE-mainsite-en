@@ -1944,8 +1944,8 @@ body.loaded #app {
 
   .language-switcher {
     position: fixed;
-    top:2.5%;
-    left:87.5%;
+    top:1.5%;
+    right:3.5%;
     z-index: 22;
   }
   
@@ -2080,7 +2080,8 @@ body.loaded #app {
   #contactLink {
     position: fixed;
     right:2.5%;
-    margin:auto 5%;
+    margin:auto 7.5%;
+    z-index: 11;
   }
   
   .contact-link {
@@ -2091,8 +2092,7 @@ body.loaded #app {
     color: rgb(0, 0, 0);
     background: transparent;
     text-decoration: none;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    z-index: 11;
+    transition: transform 0.3s ease, background-color 0.3s ease;  
   }
 
   .menu-toggle {
@@ -3433,6 +3433,10 @@ button {
 }
 
 @media (max-width: 1024px) and (max-aspect-ratio: .7299/1) {
+  .language-switcher {
+    top: 2.75%;
+    right: 6.5%;
+  }
   .image-container-coreTeam{
     left:47.5%;
   }
