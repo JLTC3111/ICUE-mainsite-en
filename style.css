@@ -49,13 +49,14 @@ nav {
   display: flex;
   justify-content: space-between; /* space between logo and hamburger */
   align-items: center;
-  padding: 1rem;
+  padding: .5rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   position: fixed;
   top: 0;
   left:0;
   right:0;
   z-index: 1;
+  border: 1px solid red;
 }
 
 nav a {
@@ -560,7 +561,8 @@ footer {
 .language-switcher {
   position: fixed;
   top: 1.5%;
-  right: 5.5%;
+  right: 3.5%;
+  margin: auto;
   display: flex;
   gap: 9px;
   z-index: 22;
@@ -1866,9 +1868,14 @@ body.loaded #app {
     }
   }
 
+  .language-switcher {
+    display: inline-block;
+    align-items: center;
+  }
+
   .contact-container {
-      max-width:325px;
-      width:75%;
+    max-width:325px;
+    width:75%;
   }
 
   .submit-button {
@@ -1941,18 +1948,11 @@ body.loaded #app {
     width: auto;
     height: 25px;
   }
-
-  .language-switcher {
-    position: fixed;
-    top:1.5%;
-    right:3.5%;
-    z-index: 22;
-  }
   
   .flag-link {
     display: flex;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     background-color: #ffffff; 
     justify-content: center;
     align-items: center;
@@ -1961,8 +1961,8 @@ body.loaded #app {
   }
   
   .flag-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
   }
 
 .sub-text {
@@ -3432,11 +3432,7 @@ button {
   }
 }
 
-@media (max-width: 1024px) and (max-aspect-ratio: .7299/1) {
-  .language-switcher {
-    top: 2.75%;
-    right: 6.5%;
-  }
+@media (max-width: 540px) and (max-aspect-ratio: .7299/1) {
   .image-container-coreTeam{
     left:47.5%;
   }
@@ -3448,9 +3444,15 @@ button {
   }
 }
 
+@media (max-width: 1024px) and (min-aspect-ratio: .65/1) {
+  .language-switcher{
+    top:1.05%;
+  }
+}
+
 @media (max-width: 720px) and (min-aspect-ratio: .73/1) {
   .home-text-slider{
-    margin-top: -4.75rem;
+    margin-top: -1.75rem;
   }
   .slider-dots{
     margin-top: -4.75rem;
