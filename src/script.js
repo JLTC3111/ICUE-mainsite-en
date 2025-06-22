@@ -515,7 +515,7 @@ window.realSlamnorSlam = function () {
   gsap.set(dust, {
     scale: 0.5,
     opacity: 0,
-    filter: "brightness(1)"
+    filter: "brightness(0.25)"
   });
 
   const tl = gsap.timeline();
