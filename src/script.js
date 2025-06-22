@@ -112,7 +112,7 @@ window.attachProfileEvents = () => {
       const container = document.createElement("div");
       textBox.appendChild(container);
 
-      typeHTMLString(container, message, 12, () => {
+      typeHTMLString(container, message, 8, () => {
         gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
@@ -907,7 +907,7 @@ window.attachProfileEvents_coreTeam = () => {
       const container = document.createElement("div");
       textBox.appendChild(container);
 
-      typeHTMLString(container, message, 14, () => {
+      typeHTMLString(container, message, 10, () => {
         gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
