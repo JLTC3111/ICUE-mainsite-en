@@ -256,6 +256,7 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
+                  realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   makeItRainText("#rainText"); // <-- THIS is now safe to call!
@@ -458,7 +459,6 @@ window.attachHomeButtonEvents = () => {
   });
 }
 
-
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
   if (!el) return;
@@ -492,6 +492,66 @@ window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
+window.realSlamnorSlam = function() {
+  const text = document.querySelector('#textSlam .slam-text');
+  const dust = document.querySelector('#textSlam .slam-dust');
+
+  gsap.set(text, {
+    x: 0,
+    y: -300,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    scale: 1.5,
+    opacity: 0,
+    transformOrigin: "50% 50%"
+  });
+  gsap.set(dust, { scale: 0.5, opacity: 0 });
+
+  const tl = gsap.timeline();
+
+  // 🌀 Spin+Drop Slam
+  tl.to(text, {
+    opacity: 1,
+    y: 0,
+    rotationX: 720, // 2 full flips
+    duration: 2.8,
+    ease: "power4.out",
+    transformPerspective: 800
+  })
+  // 💥 Slam Impact Squash
+  .to(text, {
+    scaleY: 0.7,
+    scaleX: 1.3,
+    duration: 1,
+    ease: "power2.inOut"
+  })
+  // 👊 Bounce back
+  .to(text, {
+    scaleY: 1,
+    scaleX: 1,
+    duration: 3,
+    ease: "elastic.out(1, 0.4)"
+  });
+
+  // 💨 Dust Puff
+  tl.to(dust, {
+    opacity: 1,
+    scale: 1.4,
+    duration: 0.25,
+    ease: "power2.out"
+  }, "-=0.35")
+  .to(dust, {
+    opacity: 0,
+    scale: 2.2,
+    duration: 0.6,
+    ease: "power2.in"
+  }, "-=0.1");
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  realSlamnorSlam();
+});
 
 window.initHomeTextSlider = () => {
   // Clean up existing event listeners and intervals
