@@ -766,6 +766,13 @@ footer {
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.37);
   border: 1px solid rgba(255, 255, 255, 0.18);
   animation: slideUp 4.5s ease-in-out; 
+  cursor: pointer;
+  pointer-events: all;
+  }
+
+#homeTextSlider:active {
+  transform: scale(0.8);
+  transition: transform 0.5s ease;
 }
 
 .home-text-slider {
@@ -779,12 +786,14 @@ footer {
   margin-top:-2.5%;
   margin-bottom: 1%;
   z-index: 3;
-  transition: all 0.5s ease;
+  pointer-events: all;
+  user-select: none;
 }
 
 .home-slider-text {
   color: rgb(44, 44, 44);
   max-width: 80%;
+  transition: all 0.5s ease;
 }
 
 .home-slider-text:hover {
@@ -800,6 +809,7 @@ footer {
   line-height: 2;
   opacity: 1;          
   /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+  pointer-events: none;
 }
 
 .slider-dots {
