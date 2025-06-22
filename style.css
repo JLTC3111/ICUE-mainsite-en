@@ -535,10 +535,11 @@ footer {
 .language-switcher {
   position: fixed;
   top: 1.5%;
-  right: 2.5%;
+  right: 5.5%;
   display: flex;
   gap: 9px;
   z-index: 22;
+  animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
 .flag-link {
@@ -551,8 +552,11 @@ footer {
   align-items: center;
   border-radius: 25px;
   cursor: pointer;
-  transition: transform 0.3s;
-  animation: slideInFromRight 4.5s ease-in-out forwards;
+  transition: all 0.75s;
+}
+
+.flag-link:hover {
+  transform: scale(1.05);
 }
 
 .flag-icon {
@@ -564,8 +568,8 @@ footer {
   box-shadow: 2px 4px 8px #fff;
 }
 
-.flag-icon:hover {
-  transform: scale(1.1);
+.flag-icon:hover{
+  animation: wiggle .25s ease-in-out;
 }
 
 .menu-toggle {
@@ -772,7 +776,7 @@ footer {
 
 #homeTextSlider:active {
   transform: scale(0.8);
-  transition: transform 0.5s ease;
+  transition: transform 1.5s ease;
 }
 
 .home-text-slider {
@@ -1917,7 +1921,7 @@ body.loaded #app {
     position: fixed;
     top:0;
     left:50%;
-    transform: translate(34vw, 1.25vh);
+    transform: translate(36vw, 2vh);
     z-index: 22;
   }
   
