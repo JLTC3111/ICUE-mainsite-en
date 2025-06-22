@@ -261,7 +261,6 @@ footer {
   word-spacing: 2px;
 }
 
-
 @keyframes wiggle {
   0%   { transform: rotate(0deg); }
   25%  { transform: rotate(5deg); }
@@ -1945,15 +1944,15 @@ body.loaded #app {
 
   .language-switcher {
     position: fixed;
-    top:1.75%;
+    top:2.5%;
     left:87.5%;
     z-index: 22;
   }
   
   .flag-link {
     display: flex;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     background-color: #ffffff; 
     justify-content: center;
     align-items: center;
@@ -1962,8 +1961,8 @@ body.loaded #app {
   }
   
   .flag-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
 .sub-text {
@@ -2078,14 +2077,19 @@ body.loaded #app {
     right: 25%;
   }
 
+  #contactLink {
+    position: fixed;
+    right:2.5%;
+    margin:auto 5%;
+  }
+  
   .contact-link {
-    margin:auto 12.5%;
     font-size: 12px;
     font-weight: bold;
     padding: 0.5rem 1.5rem;
     border-radius: 18px;
     color: rgb(0, 0, 0);
-    background-color: #fffb00;
+    background: transparent;
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
     z-index: 11;
