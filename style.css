@@ -534,8 +534,8 @@ footer {
 
 .language-switcher {
   position: fixed;
-  top: 12px;
-  right: 75px;
+  top: 1.5%;
+  right: 2.5%;
   display: flex;
   gap: 9px;
   z-index: 22;
@@ -551,6 +551,7 @@ footer {
   align-items: center;
   border-radius: 25px;
   cursor: pointer;
+  transition: transform 0.3s;
   animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
@@ -560,7 +561,7 @@ footer {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* ✅ Makes it circular */
-  transition: transform 0.3s;
+  box-shadow: 2px 4px 8px #fff;
 }
 
 .flag-icon:hover {
@@ -778,11 +779,16 @@ footer {
   margin-top:-2.5%;
   margin-bottom: 1%;
   z-index: 3;
+  transition: all 0.5s ease;
 }
 
 .home-slider-text {
   color: rgb(44, 44, 44);
   max-width: 80%;
+}
+
+.home-slider-text:hover {
+  transform: scale(1.05);
 }
 
 .highlight-text {
@@ -1901,7 +1907,7 @@ body.loaded #app {
     position: fixed;
     top:0;
     left:50%;
-    transform: translate(38vw, 2.25vh);
+    transform: translate(34vw, 1.25vh);
     z-index: 22;
   }
   
@@ -2031,8 +2037,7 @@ body.loaded #app {
   }
 
   .contact-link {
-    margin-top: 0;
-    margin-right: 10.5%;
+    margin:auto 12.5%;
     font-size: 12px;
     font-weight: bold;
     padding: 0.5rem 1.5rem;
@@ -2721,7 +2726,7 @@ body.loaded #app {
   }
 
   .language-switcher{
-    margin-right:5%;
+    margin-right:.5%;
   }
 
   .workPageContainer {
