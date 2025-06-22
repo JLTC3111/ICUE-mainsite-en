@@ -231,10 +231,10 @@ footer {
 .slam-dust {
   position: absolute;
   bottom: 0;
-  left: 5%;
-  width: 120px;
-  height: 20px;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, transparent 80%);
+  left: 50%;
+  width: 150px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.45) 0%, transparent 80%);
   border-radius: 50%;
   transform: translateX(-50%);
   opacity: 0;
