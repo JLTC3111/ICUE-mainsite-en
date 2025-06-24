@@ -635,7 +635,7 @@ window.initHomeTextSlider = () => {
   }
 
   const messages = [
-    '10+ years of urban excellence. <strong class="highlight-orange">Dedicated professionals</strong> who are passionate about urban planning, construction, and climate change. ⏳ ',
+    '10+ years of urban excellence. <strong class="highlight-orange">Dedicated Professionals</strong> who are passionate about urban planning, construction, and climate change. ⏳ ',
     `Built on Unity, Driven by Values! ​​We believe in giving back, and constantly striving for self-improvement. These core values ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 `,
     `Smart Cities, Smarter Solutions. We use technology and data-driven insights to improve efficiency, connectivity, and future-ready cities. 💡 `,
     `Led the Đà Nẵng citywide planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to big-picture strategy and real results. 🏆 `,
@@ -660,7 +660,7 @@ window.initHomeTextSlider = () => {
     const thisSession = typingSessionId;
   
     const message = messages[index];
-    const typingSpeed = 25;
+    const typingSpeed = 50;
   
     isTyping = true;
     textElement.innerHTML = "";
