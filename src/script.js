@@ -635,12 +635,12 @@ window.initHomeTextSlider = () => {
   }
 
   const messages = [
-    '10+ years of urban excellence. <strong class="highlight-orange">Dedicated Professionals</strong> who are passionate about urban planning, construction, and climate change. ⏳ ',
-    `Built on Unity, Driven by Values! ​​We believe in giving back, and constantly striving for self-improvement. These core values ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 `,
-    `Smart Cities, Smarter Solutions. We use technology and data-driven insights to improve efficiency, connectivity, and future-ready cities. 💡 `,
-    `Led the Đà Nẵng citywide planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to big-picture strategy and real results. 🏆 `,
-    `Shaping cities, improving lives. Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, sustainable and people-centered. 🌱  `,
-    `💥 Create experiences that last forever.`
+    '10+ years of urban excellence. Dedicated Professionals who are passionate about <strong class="highlight-text-phrase"> urban planning </strong>, construction, and <strong class="highlight-text-phrase"> climate change. </strong> ⏳ ',
+    `Built on Unity, <strong class="highlight-text-phrase"> Driven by Values! </strong> ​​We believe in <strong class="highlight-text-phrase"> giving back </strong>, and constantly striving for self-improvement. These <strong class="highlight-text-phrase"> core values </strong> ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 `,
+    `Smart Cities, Smarter Solutions. We use technology and <strong class="highlight-text-phrase"> data-driven insights </strong> to improve <strong class="highlight-text-phrase"> efficiency </strong>, connectivity, and future-ready cities. 💡 `,
+    `Led <strong class="highlight-text-phrase"> Đà Nẵng citywide </strong> planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to <strong class="highlight-text-phrase"> big-picture </strong> strategy and real results. 🏆 `,
+    `<strong class="highlight-text-phrase"> Shaping cities, improving lives </strong>. Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, sustainable and people-centered. 🌱  `,
+    `💥 Create <strong class="highlight-text-phrase">beautiful experiences </strong> that last forever.`
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
