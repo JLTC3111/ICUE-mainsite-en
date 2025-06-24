@@ -2013,24 +2013,20 @@ body.loaded #app {
 }
 
 .slider-dots {
-  display: flex;
-  position: relative;
-  justify-content: center;
   margin-top: -3.25rem;
   margin-left: 0;
-  gap: 14px;
-  z-index: 1;
+  gap: 10px;
 }
 
-  .dot {
-    width: 12px;
-    height: 12px;
-    background-color: #ccc;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 1;
-  }
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+}
 
   .image-container {
     position: absolute;
