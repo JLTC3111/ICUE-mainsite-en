@@ -676,8 +676,6 @@ window.initHomeTextSlider = () => {
         y: 0,
         ease: "power2.out",
         onComplete: () => {
-          let i = 0;
-  
           typeHTMLString(textElement, message, typingSpeed, () => {
           isTyping = false;
           gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
