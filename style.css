@@ -84,6 +84,12 @@ nav a {
   }
 }
 
+.highlight-orange {
+  color: rgb(254, 234, 197);
+  font-style: italic;
+  text-shadow: 0 4px 12px #ffbb33, 0 0 8px orange;
+}
+
 .menu-bar {
   display: flex;
   align-items: center;

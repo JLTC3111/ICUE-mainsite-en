@@ -26,38 +26,82 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null)
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
   function typeNextNode() {
-    if (nodeIndex >= nodes.length) {
-      if (typeof onComplete === "function") onComplete();
-      return;
-    }
-
-    const node = nodes[nodeIndex];
-    nodeIndex++;
-
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent;
-      const span = document.createElement("span");
-      targetElement.insertBefore(span, cursor); // always before cursor
-
-      let charIndex = 0;
-      function typeChar() {
-        if (charIndex < text.length) {
-          span.textContent += text.charAt(charIndex);
-          charIndex++;
-          setTimeout(typeChar, speed);
-        } else {
-          typeNextNode();
-        }
-      }
-      typeChar();
-    } else {
-      const clone = node.cloneNode(true);
-      targetElement.insertBefore(clone, cursor);
-      typeNextNode();
-    }
+  if (nodeIndex >= nodes.length) {
+    if (typeof onComplete === "function") onComplete();
+    return;
   }
 
-  typeNextNode();
+  const node = nodes[nodeIndex];
+  nodeIndex++;
+
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent;
+    const span = document.createElement("span");
+    targetElement.insertBefore(span, cursor); // always before cursor
+
+    let charIndex = 0;
+    function typeChar() {
+      if (charIndex < text.length) {
+        span.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, speed);
+      } else {
+        typeNextNode();
+      }
+    }
+    typeChar();
+
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    const wrapper = node.cloneNode(false); // Clone just the tag, not children
+    targetElement.insertBefore(wrapper, cursor);
+
+    const childNodes = Array.from(node.childNodes);
+    let childIndex = 0;
+
+    function typeChildNode() {
+      if (childIndex >= childNodes.length) {
+        typeNextNode();
+        return;
+      }
+
+      const child = childNodes[childIndex];
+      childIndex++;
+
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent;
+        const span = document.createElement("span");
+        wrapper.appendChild(span);
+
+        let charIndex = 0;
+        function typeChar() {
+          if (charIndex < text.length) {
+            span.textContent += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, speed);
+          } else {
+            typeChildNode();
+          }
+        }
+        typeChar();
+
+      } else {
+        // If it's an element inside another (nested), just append it and continue
+        wrapper.appendChild(child.cloneNode(true));
+        typeChildNode();
+      }
+    }
+
+    typeChildNode();
+
+  } else {
+    // Fallback: just clone and insert if it's a comment or unsupported node
+    const clone = node.cloneNode(true);
+    targetElement.insertBefore(clone, cursor);
+    typeNextNode();
+  }
+  }
+
+typeNextNode();
 }
 
 window.attachProfileEvents = () => {
@@ -591,12 +635,12 @@ window.initHomeTextSlider = () => {
   }
 
   const messages = [
-    "10+ years of urban excellence. Dedicated professionals who are passionate about urban planning, construction, and climate change. ⏳ ",
-    "Built on Unity, Driven by Values! ​​We believe in giving back, and constantly striving for self-improvement. These core values ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 ",
-    "Smart Cities, Smarter Solutions. We use technology and data-driven insights to improve efficiency, connectivity, and future-ready cities. 💡 ",
-    "Led the Đà Nẵng citywide planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to big-picture strategy and real results. 🏆 ",
-    "Shaping cities, improving lives. Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, sustainable and people-centered. 🌱  ",
-    "💥 Create experiences that last forever."
+    '10+ years of urban excellence. <strong class="highlight-orange">Dedicated professionals</strong> who are passionate about urban planning, construction, and climate change. ⏳ ',
+    `Built on Unity, Driven by Values! ​​We believe in giving back, and constantly striving for self-improvement. These core values ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 `,
+    `Smart Cities, Smarter Solutions. We use technology and data-driven insights to improve efficiency, connectivity, and future-ready cities. 💡 `,
+    `Led the Đà Nẵng citywide planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to big-picture strategy and real results. 🏆 `,
+    `Shaping cities, improving lives. Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, sustainable and people-centered. 🌱  `,
+    `💥 Create experiences that last forever.`
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
@@ -616,10 +660,10 @@ window.initHomeTextSlider = () => {
     const thisSession = typingSessionId;
   
     const message = messages[index];
-    const typingSpeed = 12;
+    const typingSpeed = 25;
   
     isTyping = true;
-    textElement.textContent = "";
+    textElement.innerHTML = "";
     gsap.killTweensOf(textElement);
   
     gsap.fromTo(
@@ -634,23 +678,10 @@ window.initHomeTextSlider = () => {
         onComplete: () => {
           let i = 0;
   
-          const typeNextChar = () => {
-            // ❌ Skip if this is not the current session
-            if (typingSessionId !== thisSession) return;
-  
-            if (i < message.length) {
-              textElement.textContent += message.charAt(i);
-              i++;
-              setTimeout(typeNextChar, typingSpeed);
-            } else {
-              isTyping = false; // ✅ Done typing
-              gsap.fromTo(
-                textElement,
-                { scale: 0.98 },
-                { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }
-              );
-            }
-          };
+          typeHTMLString(textElement, message, typingSpeed, () => {
+          isTyping = false;
+          gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
+        });
   
           typeNextChar();
         }
@@ -749,7 +780,8 @@ window.initHomeTextSlider = () => {
 
   sliderContainer.addEventListener("mouseleave", () => {
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 4000);
+      clearInterval(window.homeSliderIntervalId);
+      window.homeSliderIntervalId = setInterval(nextText, 15000);
     }
   });
 
@@ -766,7 +798,8 @@ window.initHomeTextSlider = () => {
     if (isTyping) {
       typingSessionId++; // 🔥 Cancel current typing
       isTyping = false;
-      textElement.textContent = messages[index]; // 🧾 Show full message
+      textElement.innerHTML = messages[index];
+      // 🧾 Show full message
       gsap.to(textElement, { scale: 1, duration: 0.2, ease: "power1.out" });
       return;
     }
