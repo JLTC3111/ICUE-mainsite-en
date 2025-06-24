@@ -1995,8 +1995,8 @@ body.loaded #app {
 }
 
 .home-text-slider {
-  width: 100%;
-  margin: .25% auto -15.5% auto;
+  width: 90%;
+  margin: .25% auto -15.5% 5%;
   transform: translate(-36px, -45px);
   text-align: center;
   z-index: 3;
