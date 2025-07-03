@@ -639,8 +639,8 @@ window.initHomeTextSlider = () => {
     `Built on Unity, <strong class="highlight-text-phrase"> Driven by Values! </strong> ​​We believe in <strong class="highlight-text-phrase"> giving back </strong>, and constantly striving for self-improvement. These <strong class="highlight-text-phrase"> core values </strong> ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 `,
     `Smart Cities, Smarter Solutions. We use technology and <strong class="highlight-text-phrase"> data-driven insights </strong> to improve <strong class="highlight-text-phrase"> efficiency </strong>, connectivity, and future-ready cities. 💡 `,
     `Led <strong class="highlight-text-phrase"> Đà Nẵng citywide </strong> planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to <strong class="highlight-text-phrase"> big-picture </strong> strategy and real results. 🏆 `,
-    `<strong class="highlight-text-phrase"> Shaping cities, improving lives </strong>. Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, sustainable and people-centered. 🌱  `,
-    `💥 Create <strong class="highlight-text-phrase">beautiful experiences </strong> that last forever.`
+    `<strong class="highlight-text-phrase"> Shaping cities </strong>, improving lives . Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, <strong class="highlight-text-phrase"> sustainable </strong> and <strong class="highlight-text-phrase"> people-centered. </strong> 🌱  `,
+    `💥 Create beautiful <strong class="highlight-text-phrase"> experiences </strong> that last forever.`
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
