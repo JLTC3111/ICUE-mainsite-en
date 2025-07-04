@@ -1,5 +1,5 @@
 console.log('[script.js] Loaded ✅');
-function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null) {
+function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
   targetElement.innerHTML = "";
 
   const tempContainer = document.createElement("div");
@@ -25,83 +25,112 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null)
 
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
+
+  // Typing skip logic
+  let skipTyping = false;
+  if (typingSessionObj) typingSessionObj.skip = false;
+
   function typeNextNode() {
-  if (nodeIndex >= nodes.length) {
-    if (typeof onComplete === "function") onComplete();
-    return;
-  }
-
-  const node = nodes[nodeIndex];
-  nodeIndex++;
-
-  if (node.nodeType === Node.TEXT_NODE) {
-    const text = node.textContent;
-    const span = document.createElement("span");
-    targetElement.insertBefore(span, cursor); // always before cursor
-
-    let charIndex = 0;
-    function typeChar() {
-      if (charIndex < text.length) {
-        span.textContent += text.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeChar, speed);
-      } else {
-        typeNextNode();
-      }
-    }
-    typeChar();
-
-  } else if (node.nodeType === Node.ELEMENT_NODE) {
-    const wrapper = node.cloneNode(false); // Clone just the tag, not children
-    targetElement.insertBefore(wrapper, cursor);
-
-    const childNodes = Array.from(node.childNodes);
-    let childIndex = 0;
-
-    function typeChildNode() {
-      if (childIndex >= childNodes.length) {
-        typeNextNode();
-        return;
-      }
-
-      const child = childNodes[childIndex];
-      childIndex++;
-
-      if (child.nodeType === Node.TEXT_NODE) {
-        const text = child.textContent;
-        const span = document.createElement("span");
-        wrapper.appendChild(span);
-
-        let charIndex = 0;
-        function typeChar() {
-          if (charIndex < text.length) {
-            span.textContent += text.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeChar, speed);
-          } else {
-            typeChildNode();
-          }
+    if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
+      // Instantly show all remaining nodes
+      for (; nodeIndex < nodes.length; nodeIndex++) {
+        const node = nodes[nodeIndex];
+        if (node.nodeType === Node.TEXT_NODE) {
+          const span = document.createElement("span");
+          span.textContent = node.textContent;
+          targetElement.insertBefore(span, cursor);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const wrapper = node.cloneNode(false);
+          targetElement.insertBefore(wrapper, cursor);
+          wrapper.innerHTML = node.innerHTML;
+        } else {
+          const clone = node.cloneNode(true);
+          targetElement.insertBefore(clone, cursor);
         }
-        typeChar();
-
-      } else {
-        // If it's an element inside another (nested), just append it and continue
-        wrapper.appendChild(child.cloneNode(true));
-        typeChildNode();
       }
+      if (typeof onComplete === "function") onComplete();
+      return;
     }
-
-    typeChildNode();
-
-  } else {
-    // Fallback: just clone and insert if it's a comment or unsupported node
-    const clone = node.cloneNode(true);
-    targetElement.insertBefore(clone, cursor);
-    typeNextNode();
+    if (nodeIndex >= nodes.length) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+    const node = nodes[nodeIndex];
+    nodeIndex++;
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent;
+      const span = document.createElement("span");
+      targetElement.insertBefore(span, cursor); // always before cursor
+      let charIndex = 0;
+      function typeChar() {
+        if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
+          span.textContent = text;
+          typeNextNode();
+          return;
+        }
+        if (charIndex < text.length) {
+          span.textContent += text.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeChar, speed);
+        } else {
+          typeNextNode();
+        }
+      }
+      typeChar();
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const wrapper = node.cloneNode(false); // Clone just the tag, not children
+      targetElement.insertBefore(wrapper, cursor);
+      const childNodes = Array.from(node.childNodes);
+      let childIndex = 0;
+      function typeChildNode() {
+        if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
+          wrapper.innerHTML = node.innerHTML;
+          typeNextNode();
+          return;
+        }
+        if (childIndex >= childNodes.length) {
+          typeNextNode();
+          return;
+        }
+        const child = childNodes[childIndex];
+        childIndex++;
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.textContent;
+          const span = document.createElement("span");
+          wrapper.appendChild(span);
+          let charIndex = 0;
+          function typeChar() {
+            if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
+              span.textContent = text;
+              typeChildNode();
+              return;
+            }
+            if (charIndex < text.length) {
+              span.textContent += text.charAt(charIndex);
+              charIndex++;
+              setTimeout(typeChar, speed);
+            } else {
+              typeChildNode();
+            }
+          }
+          typeChar();
+        } else {
+          // If it's an element inside another (nested), just append it and continue
+          wrapper.appendChild(child.cloneNode(true));
+          typeChildNode();
+        }
+      }
+      typeChildNode();
+    } else {
+      // Fallback: just clone and insert if it's a comment or unsupported node
+      const clone = node.cloneNode(true);
+      targetElement.insertBefore(clone, cursor);
+      typeNextNode();
+    }
   }
-  }
-
-typeNextNode();
+  typeNextNode();
+  // Expose skip function
+  return () => { skipTyping = true; if (typingSessionObj) typingSessionObj.skip = true; };
 }
 
 window.attachProfileEvents = () => {
@@ -138,7 +167,42 @@ window.attachProfileEvents = () => {
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
 
-  
+  // Visual cues: add left/right overlays
+  if (textBox && !document.getElementById('profile-cue-left')) {
+    const leftCue = document.createElement('div');
+    leftCue.id = 'profile-cue-left';
+    leftCue.style.position = 'absolute';
+    leftCue.style.left = 0;
+    leftCue.style.top = 0;
+    leftCue.style.width = '40%';
+    leftCue.style.height = '100%';
+    leftCue.style.pointerEvents = 'none';
+    leftCue.style.display = 'flex';
+    leftCue.style.alignItems = 'center';
+    leftCue.style.justifyContent = 'flex-start';
+    leftCue.style.zIndex = 2;
+    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
+    textBox.style.position = 'relative';
+    textBox.appendChild(leftCue);
+    const rightCue = document.createElement('div');
+    rightCue.id = 'profile-cue-right';
+    rightCue.style.position = 'absolute';
+    rightCue.style.right = 0;
+    rightCue.style.top = 0;
+    rightCue.style.width = '40%';
+    rightCue.style.height = '100%';
+    rightCue.style.pointerEvents = 'none';
+    rightCue.style.display = 'flex';
+    rightCue.style.alignItems = 'center';
+    rightCue.style.justifyContent = 'flex-end';
+    rightCue.style.zIndex = 2;
+    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
+    textBox.appendChild(rightCue);
+  }
+
+  let typingSessionObj = { skip: false };
+  let isTyping = false;
+  let skipOnNextClick = false;
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo) return;
   
@@ -156,12 +220,17 @@ window.attachProfileEvents = () => {
       const container = document.createElement("div");
       textBox.appendChild(container);
 
-      typeHTMLString(container, message, 8, () => {
+      typingSessionObj = { skip: false };
+      isTyping = true;
+      skipOnNextClick = false;
+      const skipTypingFn = typeHTMLString(container, message, 25, () => {
         gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
-      });
+        isTyping = false;
+        skipOnNextClick = false;
+      }, typingSessionObj);
       photo.src = profileData[index].img;
   
       // Step 3: Remove exit animation classes
@@ -237,6 +306,49 @@ profileData.forEach(profile => {
 });
   // Start first profile
   updateProfile(0);
+
+  // Add click/tap navigation on textBox
+  if (textBox) {
+    textBox.addEventListener('click', (e) => {
+      const rect = textBox.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (isTyping) {
+        if (!skipOnNextClick) {
+          typingSessionObj.skip = true;
+          skipOnNextClick = true;
+          return;
+        }
+      }
+      if (x < rect.width / 2) {
+        currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+        updateProfile(currentIndex, 'left');
+      } else {
+        currentIndex = (currentIndex + 1) % profileData.length;
+        updateProfile(currentIndex, 'right');
+      }
+    });
+    // Touch support
+    textBox.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const rect = textBox.getBoundingClientRect();
+        const x = e.changedTouches[0].clientX - rect.left;
+        if (isTyping) {
+          if (!skipOnNextClick) {
+            typingSessionObj.skip = true;
+            skipOnNextClick = true;
+            return;
+          }
+        }
+        if (x < rect.width / 2) {
+          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+          updateProfile(currentIndex, 'left');
+        } else {
+          currentIndex = (currentIndex + 1) % profileData.length;
+          updateProfile(currentIndex, 'right');
+        }
+      }
+    });
+  }
 }
 
 window.loadPage = (page) => {
@@ -1036,43 +1148,76 @@ window.attachProfileEvents_coreTeam = () => {
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.getElementById('profile-text-coreTeam')?.parentElement;
 
+  // Visual cues: add left/right overlays
+  if (textBox && !document.getElementById('profile-cue-left-core')) {
+    const leftCue = document.createElement('div');
+    leftCue.id = 'profile-cue-left-core';
+    leftCue.style.position = 'absolute';
+    leftCue.style.left = 0;
+    leftCue.style.top = 0;
+    leftCue.style.width = '40%';
+    leftCue.style.height = '100%';
+    leftCue.style.pointerEvents = 'none';
+    leftCue.style.display = 'flex';
+    leftCue.style.alignItems = 'center';
+    leftCue.style.justifyContent = 'flex-start';
+    leftCue.style.zIndex = 2;
+    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
+    textBox.style.position = 'relative';
+    textBox.appendChild(leftCue);
+    const rightCue = document.createElement('div');
+    rightCue.id = 'profile-cue-right-core';
+    rightCue.style.position = 'absolute';
+    rightCue.style.right = 0;
+    rightCue.style.top = 0;
+    rightCue.style.width = '40%';
+    rightCue.style.height = '100%';
+    rightCue.style.pointerEvents = 'none';
+    rightCue.style.display = 'flex';
+    rightCue.style.alignItems = 'center';
+    rightCue.style.justifyContent = 'flex-end';
+    rightCue.style.zIndex = 2;
+    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
+    textBox.appendChild(rightCue);
+  }
+
+  let typingSessionObj = { skip: false };
+  let isTyping = false;
+  let skipOnNextClick = false;
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
-
     const isFirstLoad = (currentIndex === 0 && index === 0);
-
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
-
     setTimeout(() => {
       textBox.innerHTML = "";
       const message = profileData_coreTeam[index].name;
       const container = document.createElement("div");
       textBox.appendChild(container);
-
-      typeHTMLString(container, message, 10, () => {
+      typingSessionObj = { skip: false };
+      isTyping = true;
+      skipOnNextClick = false;
+      const skipTypingFn = typeHTMLString(container, message, 30, () => {
         gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
-      });
+        isTyping = false;
+        skipOnNextClick = false;
+      }, typingSessionObj);
       photo.src = profileData_coreTeam[index].img;
-
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
-
       const tl = gsap.timeline();
-
       if (isFirstLoad) {
         tl.fromTo(photo,
           { y: 100, scale: 0.25, opacity: 0 },
           { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
-
         tl.fromTo(textBox,
           { y: -50, opacity: 0 },
           { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
@@ -1083,22 +1228,18 @@ window.attachProfileEvents_coreTeam = () => {
           { y: 100, scale: 0.25, opacity: 0 },
           { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
-
         tl.to(photo, {
           y: 10,
           duration: 0.3,
           ease: "power2.out"
         }, "-=0.4");
-
         tl.set(photo, { y: 10 });
-
         tl.fromTo(textBox,
           { x: direction === 'right' ? 100 : -100, opacity: 0 },
           { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
           "-=0.5"
         );
       }
-
     }, isFirstLoad ? 0 : 800);
   };
 
@@ -1141,6 +1282,49 @@ window.attachProfileEvents_coreTeam = () => {
 
   // Initialize first profile
   updateProfile_coreTeam(0);
+
+  // Add click/tap navigation on textBox for core team
+  if (textBox) {
+    textBox.addEventListener('click', (e) => {
+      const rect = textBox.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (isTyping) {
+        if (!skipOnNextClick) {
+          typingSessionObj.skip = true;
+          skipOnNextClick = true;
+          return;
+        }
+      }
+      if (x < rect.width / 2) {
+        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+        updateProfile_coreTeam(currentIndex, 'left');
+      } else {
+        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+        updateProfile_coreTeam(currentIndex, 'right');
+      }
+    });
+    // Touch support
+    textBox.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const rect = textBox.getBoundingClientRect();
+        const x = e.changedTouches[0].clientX - rect.left;
+        if (isTyping) {
+          if (!skipOnNextClick) {
+            typingSessionObj.skip = true;
+            skipOnNextClick = true;
+            return;
+          }
+        }
+        if (x < rect.width / 2) {
+          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'left');
+        } else {
+          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'right');
+        }
+      }
+    });
+  }
 };
 
 window.initLogoSlider = () => {
@@ -1547,6 +1731,45 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
   
   // ✅ Enable it
   enableCursorGradientTrail(); // Default: yellow
+  
+  
+
+
+
+  
+  
+
+  
+  
+
+// === Preload all profile images for meetourexperts.html and coreTeam.html on DOMContentLoaded ===
+window.preloadProfileImages = () => {
+  // Images for meetourexperts.html
+  const expertImages = [
+    "public/profilePhotos/nguyenhonghanh.jpg",
+    "public/profilePhotos/hoangthuha.jpg",
+    "public/profilePhotos/tranthilananh.jpg",
+    "public/profilePhotos/tranquoctoan.jpg",
+    "public/profilePhotos/longdo.jpg"
+  ];
+  // Images for coreTeam.html
+  const coreTeamImages = [
+    "public/profilePhotos/lyly.png",
+    "public/profilePhotos/duong.png",
+    "public/profilePhotos/tam.png",
+    "public/profilePhotos/tinh.png",
+    "public/profilePhotos/lyicue.png",
+    "public/profilePhotos/hien.png"
+  ];
+  [...expertImages, ...coreTeamImages].forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  window.preloadProfileImages();
+});
   
   
 
