@@ -1,9 +1,15 @@
 console.log('[script.js] Loaded ✅');
-function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
+function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
 
+  // Always replace <strong> tags with highlight span
+  let processedHtmlString = htmlString;
+  if (highlightClass) {
+    processedHtmlString = processedHtmlString.replace(/<strong>(.*?)<\/strong>/g, `<span class=\"${highlightClass}\">$1<\/span>`);
+  }
+
   const tempContainer = document.createElement("div");
-  tempContainer.innerHTML = htmlString;
+  tempContainer.innerHTML = processedHtmlString;
 
   const nodes = Array.from(tempContainer.childNodes);
   let nodeIndex = 0;
@@ -136,24 +142,23 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
 window.attachProfileEvents = () => {
   const profileData = [
     {
-      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on green urban development, climate resilience and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
+      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, <strong>urban planning</strong> and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on <strong>green urban development</strong>, <strong>climate resilience</strong> and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in accounting software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
+      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in <strong> accounting </strong> software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
       img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in strategic urban design, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in climate change adaptation, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on resilience and urban planning to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages ​​and passionate about shaping a sustainable, livable urban future.`,
+      name: `<span class="intro-people">Ms. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in <strong>strategic urban design</strong>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <strong>climate change adaptation</strong>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <strong>resilience</strong> and <strong>urban planning</strong> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages ​​and passionate about shaping a sustainable, livable urban future.`,
       img: "public/profilePhotos/tranthilananh.jpg"
     },
     {
-      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> Urban Planning and Climate Change with over 25 years of experience in sustainable infrastructure, transport planning and climate resilience. Degree in Bridge and Tunnel Engineering and has held key leadership roles in the Vietnamese Ministry of Transport and civil engineering associations. Skilled in policy consulting, smart city planning and green growth strategy development. Led major national projects focused on urban mobility, environmental sustainability and regulatory reform. A respected lecturer and trainer for organizations such as the World Bank and ADB, known for his extensive expertise, strategic thinking and commitment to building a climate resilient urban future.`,
+      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> <strong>Urban Planning</strong> and <strong>Climate Change</strong> with over 25 years of experience in sustainable infrastructure, transport planning and <strong>climate resilience</strong>. Degree in Bridge and Tunnel Engineering and has held key leadership roles in the Vietnamese Ministry of Transport and civil engineering associations. Skilled in policy consulting, <strong>smart city planning</strong> and <strong>green growth strategy development</strong>. Led major national projects focused on urban mobility, environmental sustainability and regulatory reform. A respected lecturer and trainer for organizations such as the World Bank and ADB, known for his extensive expertise, strategic thinking and commitment to building a <strong>climate resilient urban future</strong>.`,
       img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people"> Long Đỗ - Project Manager </span><br> A dedicated Project Officer with a Masters in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in design and creative problem solving. 🔧💬
-      https://dobaolongicueltd.netlify.app/`,
+      name: `<span class="intro-people"> Long Đỗ - Project Manager </span><br> A dedicated Project Officer with a Masters in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <strong>design</strong> and <strong>creative problem solving</strong>. 🔧💬\nhttps://dobaolongicueltd.netlify.app/`,
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
@@ -230,7 +235,7 @@ window.attachProfileEvents = () => {
         );
         isTyping = false;
         skipOnNextClick = false;
-      }, typingSessionObj);
+      }, typingSessionObj, 'highlight-text-phrase-moe');
       photo.src = profileData[index].img;
   
       // Step 3: Remove exit animation classes
@@ -1112,15 +1117,15 @@ document.addEventListener('DOMContentLoaded', function() {
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
     {name: 
-      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, sustainable urban development, infrastructure management and public space design. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize sustainable and environmentally friendly solutions.`, 
+      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`, 
       img: "public/profilePhotos/lyly.png"
     },
     {
-      name: `<span class="intro-core">Đinh Tùng Dương</span> I hold a degree in Urban Management from Hanoi Architectural University, where I was honored to be named Hanoi's Valedictorian in 2023. Over the past two years, I have been actively contributing to urban development projects focusing on spatial planning, landscape improvement, and sustainable urban living. I have strong analytical and organizational skills, along with proficiency in both office and technical software. I am committed to continuous professional development and aim to contribute effectively to a progressive, reputable organization. `,
+      name: `<span class="intro-core">Đinh Tùng Dương</span> I hold a degree in Urban Management from Hanoi Architectural University, where I was honored to be named Hanoi's Valedictorian in 2023. Over the past two years, I have been actively contributing to urban development projects focusing on <strong>spatial planning</strong>, <strong>landscape improvement</strong>, and <strong>sustainable urban living</strong>. I have strong analytical and organizational skills, along with proficiency in both office and technical software. I am committed to continuous professional development and aim to contribute effectively to a progressive, reputable organization. `,
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in quantity surveying, detailed planning and technical drawing. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in <strong>quantity surveying</strong>, <strong>detailed planning</strong> and <strong>technical drawing</strong>. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,  
       img: "public/profilePhotos/tam.png"
     },
     {
@@ -1128,11 +1133,11 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/tinh.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, have a thorough training and a high sense of responsibility in my work. I have experience in bidding for machinery and equipment projects, as well as projects related to urban planning. In addition, I am capable of handling various administrative tasks. These roles have helped me build strong technical and teamwork skills. I wish to work in a professional environment where I can apply my abilities and contribute to the development of the organization.`,
+      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, have a thorough training and a high sense of responsibility in my work. I have experience in <strong>bidding for machinery and equipment projects</strong>, as well as projects related to <strong>urban planning</strong>. In addition, I am capable of handling various administrative tasks. These roles have helped me build strong technical and teamwork skills. I wish to work in a professional environment where I can apply my abilities and contribute to the development of the organization.`,
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, financial reporting and data analysis. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
+      name: `<span class="intro-core">Phan Thị Hiến </span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, <strong>financial reporting</strong> and <strong>data analysis</strong>. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
       img: "public/profilePhotos/hien.png"
     },
     
@@ -1206,7 +1211,7 @@ window.attachProfileEvents_coreTeam = () => {
         );
         isTyping = false;
         skipOnNextClick = false;
-      }, typingSessionObj);
+      }, typingSessionObj, 'highlight-text-phrase-core');
       photo.src = profileData_coreTeam[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
