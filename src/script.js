@@ -314,13 +314,21 @@ profileData.forEach(profile => {
 
   // Add click/tap navigation on textBox
   if (textBox) {
+    let skipJustHappened = false;
+    let lastTouchTime = 0;
     textBox.addEventListener('click', (e) => {
+      if (Date.now() - lastTouchTime < 500) return;
+      if (skipJustHappened) {
+        skipJustHappened = false;
+        return;
+      }
       const rect = textBox.getBoundingClientRect();
       const x = e.clientX - rect.left;
       if (isTyping) {
         if (!skipOnNextClick) {
           typingSessionObj.skip = true;
           skipOnNextClick = true;
+          skipJustHappened = true;
           return;
         }
       }
@@ -334,6 +342,11 @@ profileData.forEach(profile => {
     });
     // Touch support
     textBox.addEventListener('touchend', (e) => {
+      lastTouchTime = Date.now();
+      if (skipJustHappened) {
+        skipJustHappened = false;
+        return;
+      }
       if (e.changedTouches && e.changedTouches.length > 0) {
         const rect = textBox.getBoundingClientRect();
         const x = e.changedTouches[0].clientX - rect.left;
@@ -341,6 +354,7 @@ profileData.forEach(profile => {
           if (!skipOnNextClick) {
             typingSessionObj.skip = true;
             skipOnNextClick = true;
+            skipJustHappened = true;
             return;
           }
         }
@@ -798,7 +812,7 @@ window.initHomeTextSlider = () => {
           gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
         });
   
-          typeNextChar();
+         
         }
       }
     );
@@ -1290,13 +1304,21 @@ window.attachProfileEvents_coreTeam = () => {
 
   // Add click/tap navigation on textBox for core team
   if (textBox) {
+    let skipJustHappened = false;
+    let lastTouchTime = 0;
     textBox.addEventListener('click', (e) => {
+      if (Date.now() - lastTouchTime < 500) return;
+      if (skipJustHappened) {
+        skipJustHappened = false;
+        return;
+      }
       const rect = textBox.getBoundingClientRect();
       const x = e.clientX - rect.left;
       if (isTyping) {
         if (!skipOnNextClick) {
           typingSessionObj.skip = true;
           skipOnNextClick = true;
+          skipJustHappened = true;
           return;
         }
       }
@@ -1310,6 +1332,11 @@ window.attachProfileEvents_coreTeam = () => {
     });
     // Touch support
     textBox.addEventListener('touchend', (e) => {
+      lastTouchTime = Date.now();
+      if (skipJustHappened) {
+        skipJustHappened = false;
+        return;
+      }
       if (e.changedTouches && e.changedTouches.length > 0) {
         const rect = textBox.getBoundingClientRect();
         const x = e.changedTouches[0].clientX - rect.left;
@@ -1317,6 +1344,7 @@ window.attachProfileEvents_coreTeam = () => {
           if (!skipOnNextClick) {
             typingSessionObj.skip = true;
             skipOnNextClick = true;
+            skipJustHappened = true;
             return;
           }
         }
@@ -1565,12 +1593,6 @@ updateCalendarSvgTime();
 
 // Update the time every minute (60,000 milliseconds)
 setInterval(updateCalendarSvgTime, 60 * 1000);
-
-// Preload the sound (optional)
-  const fanfareAudio = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_b91cc18f4b.mp3'); // Royalty-free fanfare
-
-  // Make sure the audio is allowed to autoplay (you might need to trigger it from user interaction)
-  fanfareAudio.load();
 
   window.triggerFanfare = function () {
     // Play sound
