@@ -158,7 +158,7 @@ window.attachProfileEvents = () => {
       img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people"> Long Đỗ - Project Manager </span><br> A dedicated Project Officer with a Masters in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <strong>design</strong> and <strong>creative problem solving</strong>. 🔧💬https://en.longd.tech`,
+      name: `<span class="intro-people"> Long Đỗ - Project Manager </span><br> A dedicated Project Officer with a Masters in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <strong>design</strong> and <strong>creative problem solving</strong>. <a href="https://en.longd.tech" target="_blank">🔧💬</a>`,
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
@@ -1755,20 +1755,9 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       }, 500); // match animation duration
     });
   }
-  
-  // ✅ Enable it
+  // 🛠️ Enable cursor gradient trail
   enableCursorGradientTrail(); // Default: yellow
   
-  
-
-
-
-  
-  
-
-  
-  
-
 // === Preload all profile images for meetourexperts.html and coreTeam.html on DOMContentLoaded ===
 window.preloadProfileImages = () => {
   // Images for meetourexperts.html
@@ -1797,13 +1786,4 @@ window.preloadProfileImages = () => {
 window.addEventListener('DOMContentLoaded', () => {
   window.preloadProfileImages();
 });
-  
-  
-
-
-
-  
-  
-
-  
   
