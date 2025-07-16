@@ -161,8 +161,10 @@
     document.body.classList.add("loaded");
   });
 </script>
-
-  
+<script>
+  if (navigator.userAgent.includes('Headless')) {
+    document.body.innerHTML = '<img src="public/preview.png" style="width:100vw;height:100vh;object-fit:cover;" />';
+  }</script>
 </body>
 <footer>Designed, Coded, and Maintained by LD⭐️</footer>
 </html>
