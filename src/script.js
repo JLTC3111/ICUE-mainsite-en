@@ -1084,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Wait for animation to finish, then clean up
       setTimeout(() => {
         submenu.classList.remove('closing');
-      }, 400); // match the CSS transition duration
+      }, 300); // match the CSS transition duration
     } else {
       submenu.classList.add('open');
     }
