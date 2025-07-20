@@ -16,20 +16,56 @@ function playProfileChangeSound() {
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
-  const oscillator = audioCtx.createOscillator();
+
+  // Create swoosh sound with multiple components
+  const duration = 0.4;
+  const now = audioCtx.currentTime;
+
+  // Create noise buffer for the swoosh texture
+  const bufferSize = audioCtx.sampleRate * duration;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = noiseBuffer.getChannelData(0);
+  
+  // Generate pink noise for more natural swoosh
+  let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    b0 = 0.99886 * b0 + white * 0.0555179;
+    b1 = 0.99332 * b1 + white * 0.0750759;
+    b2 = 0.96900 * b2 + white * 0.1538520;
+    b3 = 0.86650 * b3 + white * 0.3104856;
+    b4 = 0.55000 * b4 + white * 0.5329522;
+    b5 = -0.7616 * b5 - white * 0.0168980;
+    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+    output[i] *= 0.11; // Scale down
+    b6 = white * 0.115926;
+  }
+
+  // Create noise source
+  const noiseSource = audioCtx.createBufferSource();
+  noiseSource.buffer = noiseBuffer;
+
+  // Create filter for swoosh character
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.setValueAtTime(2000, now);
+  filter.frequency.exponentialRampToValueAtTime(200, now + duration);
+  filter.Q.setValueAtTime(2, now);
+
+  // Create gain for envelope
   const gainNode = audioCtx.createGain();
-  oscillator.connect(gainNode);
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+  // Connect the audio graph
+  noiseSource.connect(filter);
+  filter.connect(gainNode);
   gainNode.connect(audioCtx.destination);
 
-  oscillator.type = 'triangle';
-  oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
-  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-
-  oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-
-  oscillator.start(audioCtx.currentTime);
-  oscillator.stop(audioCtx.currentTime + 0.1);
+  // Start and stop
+  noiseSource.start(now);
+  noiseSource.stop(now + duration);
 }
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
@@ -172,6 +208,9 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
 }
 
 window.attachProfileEvents = () => {
+  // Prevent duplicate event listener attachments
+  if (window.profileEventsAttached) return;
+  window.profileEventsAttached = true;
   const profileData = [
     {
       name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, <strong>urban planning</strong> and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on <strong>green urban development</strong>, <strong>climate resilience</strong> and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
@@ -296,14 +335,22 @@ window.attachProfileEvents = () => {
     }, 300); // ← match exit animation duration (0.3s)
   }
 
+  let buttonLocked = false;
+  
   document.getElementById('next-btn')?.addEventListener('click', () => {
+    if (buttonLocked) return;
+    buttonLocked = true;
     currentIndex = (currentIndex + 1) % profileData.length;
     updateProfile(currentIndex, 'right');
+    setTimeout(() => buttonLocked = false, 300);
   });
 
   document.getElementById('prev-btn')?.addEventListener('click', () => {
+    if (buttonLocked) return;
+    buttonLocked = true;
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
     updateProfile(currentIndex, 'left');
+    setTimeout(() => buttonLocked = false, 300);
   });
 
   const swipeElements = [container, textBox];
@@ -1146,6 +1193,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.attachProfileEvents_coreTeam = () => {
+  // Prevent duplicate event listener attachments
+  if (window.coreTeamEventsAttached) return;
+  window.coreTeamEventsAttached = true;
   const profileData_coreTeam = [
     {name:
       `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`,
@@ -1179,6 +1229,7 @@ window.attachProfileEvents_coreTeam = () => {
   let touchStartX = 0;
   let touchEndX = 0;
   const MIN_SWIPE_DISTANCE = 15;
+  let swipeLocked = false;
 
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
@@ -1280,14 +1331,22 @@ window.attachProfileEvents_coreTeam = () => {
     }, isFirstLoad ? 0 : 800);
   };
 
+  let buttonLocked = false;
+  
   document.getElementById('next-btn')?.addEventListener('click', () => {
+    if (buttonLocked) return;
+    buttonLocked = true;
     currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'right');
+    setTimeout(() => buttonLocked = false, 300);
   });
 
   document.getElementById('prev-btn')?.addEventListener('click', () => {
+    if (buttonLocked) return;
+    buttonLocked = true;
     currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'left');
+    setTimeout(() => buttonLocked = false, 300);
   });
 
   if (container) {
@@ -1296,17 +1355,25 @@ window.attachProfileEvents_coreTeam = () => {
     });
 
     container.addEventListener('touchend', (e) => {
+      if (swipeLocked) return;
+      
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
 
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        swipeLocked = true;
+        
         if (swipeDistance > 0) {
           // Swipe right → go to previous profile
-          document.getElementById('prev-btn')?.click();
+          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'left');
         } else {
           // Swipe left → go to next profile
-          document.getElementById('next-btn')?.click();
+          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'right');
         }
+        
+        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
       }
     });
   }
