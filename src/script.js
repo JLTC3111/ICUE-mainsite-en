@@ -1,5 +1,12 @@
 console.log('[script.js] Loaded ✅');
 
+// Touch device detection
+const isTouchDevice = (
+  'ontouchstart' in window ||
+  navigator.maxTouchPoints > 0 ||
+  navigator.msMaxTouchPoints > 0
+);
+
 let profileChangeAudioCtx;
 function playProfileChangeSound() {
   if (!profileChangeAudioCtx) {
@@ -338,12 +345,9 @@ window.attachProfileEvents = () => {
   // Start first profile
   updateProfile(0);
 
-  // Add click/tap navigation on textBox
-  if (textBox) {
-    let lastTouchTime = 0;
-    const handleTap = (e) => {
-      if (window.innerWidth <= 1368) return;
-
+  // Add click navigation on textBox (desktop only, no touch devices)
+  if (textBox && !isTouchDevice) {
+    const handleClick = (e) => {
       // If any animation is running, the only action is to skip the typewriter.
       if (isAnimating) {
         typingSessionObj.skip = true;
@@ -352,7 +356,7 @@ window.attachProfileEvents = () => {
 
       // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
-      const clickX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+      const clickX = e.clientX;
       if (clickX === undefined) return;
       
       const x = clickX - rect.left;
@@ -366,15 +370,7 @@ window.attachProfileEvents = () => {
       }
     };
 
-    textBox.addEventListener('click', (e) => {
-      if (Date.now() - lastTouchTime < 300) return;
-      handleTap(e);
-    });
-
-    textBox.addEventListener('touchend', (e) => {
-      lastTouchTime = Date.now();
-      handleTap(e);
-    });
+    textBox.addEventListener('click', handleClick);
   }
 }
 
@@ -1311,12 +1307,9 @@ window.attachProfileEvents_coreTeam = () => {
   // Initialize first profile
   updateProfile_coreTeam(0);
 
-  // Add click/tap navigation on textBox for core team
-  if (textBox) {
-    let lastTouchTime = 0;
-    const handleTap = (e) => {
-      if (window.innerWidth <= 1368) return;
-
+  // Add click navigation on textBox for core team (desktop only, no touch devices)
+  if (textBox && !isTouchDevice) {
+    const handleClick = (e) => {
       // If any animation is running, the only action is to skip the typewriter.
       if (isAnimating) {
         typingSessionObj.skip = true;
@@ -1325,7 +1318,7 @@ window.attachProfileEvents_coreTeam = () => {
 
       // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
-      const clickX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+      const clickX = e.clientX;
       if (clickX === undefined) return;
 
       const x = clickX - rect.left;
@@ -1339,15 +1332,7 @@ window.attachProfileEvents_coreTeam = () => {
       }
     };
 
-    textBox.addEventListener('click', (e) => {
-      if (Date.now() - lastTouchTime < 300) return;
-      handleTap(e);
-    });
-
-    textBox.addEventListener('touchend', (e) => {
-      lastTouchTime = Date.now();
-      handleTap(e);
-    });
+    textBox.addEventListener('click', handleClick);
   }
 };
 
