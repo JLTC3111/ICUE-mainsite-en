@@ -372,6 +372,19 @@ window.attachProfileEvents = () => {
 
     textBox.addEventListener('click', handleClick);
   }
+
+  // Add touch skip functionality for touch devices (skip typing only, no navigation)
+  if (textBox && isTouchDevice) {
+    const handleTouchSkip = (e) => {
+      // If any animation is running, skip the typewriter
+      if (isAnimating) {
+        typingSessionObj.skip = true;
+      }
+      // Note: No navigation for touch devices, only skip functionality
+    };
+
+    textBox.addEventListener('touchend', handleTouchSkip);
+  }
 }
 
 window.loadPage = (page) => {
@@ -1333,6 +1346,19 @@ window.attachProfileEvents_coreTeam = () => {
     };
 
     textBox.addEventListener('click', handleClick);
+  }
+
+  // Add touch skip functionality for touch devices (skip typing only, no navigation)
+  if (textBox && isTouchDevice) {
+    const handleTouchSkip = (e) => {
+      // If any animation is running, skip the typewriter
+      if (isAnimating) {
+        typingSessionObj.skip = true;
+      }
+      // Note: No navigation for touch devices, only skip functionality
+    };
+
+    textBox.addEventListener('touchend', handleTouchSkip);
   }
 };
 
