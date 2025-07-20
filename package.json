@@ -2,17 +2,9 @@
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
     "aos": "^2.3.4",
-    "gsap": "^3.12.7",
-    "normalize.css": "^8.0.1",
-    "react-router-dom": "^7.6.0",
-    "swiper": "^11.2.8",
-    "wavesurfer.js": "^7.9.5"
+    "gsap": "^3.12.7"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "cpy": "^11.1.0",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.7",
     "vite": "^6.3.2"
   },
   "scripts": {
