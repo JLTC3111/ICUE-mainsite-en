@@ -1,4 +1,29 @@
 console.log('[script.js] Loaded ✅');
+
+let profileChangeAudioCtx;
+function playProfileChangeSound() {
+  if (!profileChangeAudioCtx) {
+    profileChangeAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  const audioCtx = profileChangeAudioCtx;
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  oscillator.type = 'triangle';
+  oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+
+  oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+  oscillator.start(audioCtx.currentTime);
+  oscillator.stop(audioCtx.currentTime + 0.1);
+}
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
 
@@ -207,9 +232,11 @@ window.attachProfileEvents = () => {
 
   let typingSessionObj = { skip: false };
   let isTyping = false;
-  let skipOnNextClick = false;
+  let isAnimating = false;
   window.updateProfile = (index, direction = 'right') => {
-    if (!textBox || !photo) return;
+    if (!textBox || !photo || isAnimating) return;
+    isAnimating = true;
+    playProfileChangeSound();
   
     // Step 1: Add exit animation classes
     const isFirstLoad = (currentIndex === 0 && index === 0);
@@ -227,14 +254,13 @@ window.attachProfileEvents = () => {
 
       typingSessionObj = { skip: false };
       isTyping = true;
-      skipOnNextClick = false;
       const skipTypingFn = typeHTMLString(container, message, 25, () => {
-        gsap.fromTo(container, 
-          { opacity: 0, y: 10, scale: 0.98 }, 
+        gsap.fromTo(container,
+          { opacity: 0, y: 10, scale: 0.98 },
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
         isTyping = false;
-        skipOnNextClick = false;
+        isAnimating = false;
       }, typingSessionObj, 'highlight-text-phrase-moe');
       photo.src = profileData[index].img;
   
@@ -249,13 +275,13 @@ window.attachProfileEvents = () => {
       // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
   
-      tl.fromTo(photo, 
-        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
+      tl.fromTo(photo,
+        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 },
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
   
-      tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
+      tl.fromTo(textBox,
+        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 },
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
         "-=0.5" // Start slightly overlapping with photo animation
       );
@@ -305,33 +331,32 @@ window.attachProfileEvents = () => {
   });
 
   // Preload all profile images
-profileData.forEach(profile => {
-  const img = new Image();
-  img.src = profile.img;
-});
+  profileData.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
+  });
   // Start first profile
   updateProfile(0);
 
   // Add click/tap navigation on textBox
   if (textBox) {
-    let skipJustHappened = false;
     let lastTouchTime = 0;
-    textBox.addEventListener('click', (e) => {
-      if (Date.now() - lastTouchTime < 500) return;
-      if (skipJustHappened) {
-        skipJustHappened = false;
+    const handleTap = (e) => {
+      if (window.innerWidth <= 1368) return;
+
+      // If any animation is running, the only action is to skip the typewriter.
+      if (isAnimating) {
+        typingSessionObj.skip = true;
         return;
       }
+
+      // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (isTyping) {
-        if (!skipOnNextClick) {
-          typingSessionObj.skip = true;
-          skipOnNextClick = true;
-          skipJustHappened = true;
-          return;
-        }
-      }
+      const clickX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+      if (clickX === undefined) return;
+      
+      const x = clickX - rect.left;
+
       if (x < rect.width / 2) {
         currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
         updateProfile(currentIndex, 'left');
@@ -339,33 +364,16 @@ profileData.forEach(profile => {
         currentIndex = (currentIndex + 1) % profileData.length;
         updateProfile(currentIndex, 'right');
       }
+    };
+
+    textBox.addEventListener('click', (e) => {
+      if (Date.now() - lastTouchTime < 300) return;
+      handleTap(e);
     });
-    // Touch support
+
     textBox.addEventListener('touchend', (e) => {
       lastTouchTime = Date.now();
-      if (skipJustHappened) {
-        skipJustHappened = false;
-        return;
-      }
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (isTyping) {
-          if (!skipOnNextClick) {
-            typingSessionObj.skip = true;
-            skipOnNextClick = true;
-            skipJustHappened = true;
-            return;
-          }
-        }
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
-        }
-      }
+      handleTap(e);
     });
   }
 }
@@ -1130,8 +1138,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
-    {name: 
-      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`, 
+    {name:
+      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`,
       img: "public/profilePhotos/lyly.png"
     },
     {
@@ -1139,7 +1147,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in <strong>quantity surveying</strong>, <strong>detailed planning</strong> and <strong>technical drawing</strong>. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in <strong>quantity surveying</strong>, <strong>detailed planning</strong> and <strong>technical drawing</strong>. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,
       img: "public/profilePhotos/tam.png"
     },
     {
@@ -1202,9 +1210,11 @@ window.attachProfileEvents_coreTeam = () => {
 
   let typingSessionObj = { skip: false };
   let isTyping = false;
-  let skipOnNextClick = false;
+  let isAnimating = false;
   window.updateProfile_coreTeam = (index, direction = 'right') => {
-    if (!textBox || !photo) return;
+    if (!textBox || !photo || isAnimating) return;
+    isAnimating = true;
+    playProfileChangeSound();
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
@@ -1217,14 +1227,13 @@ window.attachProfileEvents_coreTeam = () => {
       textBox.appendChild(container);
       typingSessionObj = { skip: false };
       isTyping = true;
-      skipOnNextClick = false;
       const skipTypingFn = typeHTMLString(container, message, 30, () => {
-        gsap.fromTo(container, 
-          { opacity: 0, y: 10, scale: 0.98 }, 
+        gsap.fromTo(container,
+          { opacity: 0, y: 10, scale: 0.98 },
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
         isTyping = false;
-        skipOnNextClick = false;
+        isAnimating = false;
       }, typingSessionObj, 'highlight-text-phrase-core');
       photo.src = profileData_coreTeam[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
@@ -1304,24 +1313,23 @@ window.attachProfileEvents_coreTeam = () => {
 
   // Add click/tap navigation on textBox for core team
   if (textBox) {
-    let skipJustHappened = false;
     let lastTouchTime = 0;
-    textBox.addEventListener('click', (e) => {
-      if (Date.now() - lastTouchTime < 500) return;
-      if (skipJustHappened) {
-        skipJustHappened = false;
+    const handleTap = (e) => {
+      if (window.innerWidth <= 1368) return;
+
+      // If any animation is running, the only action is to skip the typewriter.
+      if (isAnimating) {
+        typingSessionObj.skip = true;
         return;
       }
+
+      // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (isTyping) {
-        if (!skipOnNextClick) {
-          typingSessionObj.skip = true;
-          skipOnNextClick = true;
-          skipJustHappened = true;
-          return;
-        }
-      }
+      const clickX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+      if (clickX === undefined) return;
+
+      const x = clickX - rect.left;
+
       if (x < rect.width / 2) {
         currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
         updateProfile_coreTeam(currentIndex, 'left');
@@ -1329,33 +1337,16 @@ window.attachProfileEvents_coreTeam = () => {
         currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
         updateProfile_coreTeam(currentIndex, 'right');
       }
+    };
+
+    textBox.addEventListener('click', (e) => {
+      if (Date.now() - lastTouchTime < 300) return;
+      handleTap(e);
     });
-    // Touch support
+
     textBox.addEventListener('touchend', (e) => {
       lastTouchTime = Date.now();
-      if (skipJustHappened) {
-        skipJustHappened = false;
-        return;
-      }
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (isTyping) {
-          if (!skipOnNextClick) {
-            typingSessionObj.skip = true;
-            skipOnNextClick = true;
-            skipJustHappened = true;
-            return;
-          }
-        }
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
-        }
-      }
+      handleTap(e);
     });
   }
 };
