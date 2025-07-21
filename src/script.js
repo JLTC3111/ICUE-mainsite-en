@@ -1221,8 +1221,6 @@ window.attachProfileEvents_coreTeam = () => {
       name: `<span class="intro-core">Phan Thị Hiến </span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, <strong>financial reporting</strong> and <strong>data analysis</strong>. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
       img: "public/profilePhotos/hien.png"
     },
-    
-    
   ];
 
   let currentIndex = 0;
@@ -1252,20 +1250,6 @@ window.attachProfileEvents_coreTeam = () => {
     leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
     textBox.style.position = 'relative';
     textBox.appendChild(leftCue);
-    const rightCue = document.createElement('div');
-    rightCue.id = 'profile-cue-right-core';
-    rightCue.style.position = 'absolute';
-    rightCue.style.right = 0;
-    rightCue.style.top = 0;
-    rightCue.style.width = '40%';
-    rightCue.style.height = '100%';
-    rightCue.style.pointerEvents = 'none';
-    rightCue.style.display = 'flex';
-    rightCue.style.alignItems = 'center';
-    rightCue.style.justifyContent = 'flex-end';
-    rightCue.style.zIndex = 2;
-    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
-    textBox.appendChild(rightCue);
   }
 
   let typingSessionObj = { skip: false };
