@@ -1162,6 +1162,7 @@ window.attachProfileEvents_coreTeam = () => {
   // Prevent duplicate event listener attachments
   if (window.coreTeamEventsAttached) return;
   window.coreTeamEventsAttached = true;
+  
   const profileData_coreTeam = [
     {name:
       `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`,
@@ -1189,47 +1190,118 @@ window.attachProfileEvents_coreTeam = () => {
     },
   ];
 
+  // Cache DOM elements
+  const textBox = document.getElementById('profile-text-coreTeam');
+  const photo = document.getElementById('profile-photo-coreTeam');
+  const container = textBox?.parentElement;
+  
+  // Return early if required elements don't exist
+  if (!textBox || !photo) {
+    console.error('Required elements not found for core team profile');
+    return;
+  }
+
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
-  const MIN_SWIPE_DISTANCE = 15;
+  const MIN_SWIPE_DISTANCE = 50; // Increased minimum swipe distance for better UX
   let swipeLocked = false;
-  const textBox = document.getElementById('profile-text-coreTeam');
-  const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.getElementById('profile-text-coreTeam')?.parentElement;
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
-  window.updateProfile_coreTeam = (index, direction = 'right') => {
-    if (!textBox || !photo || isAnimating) return;
+  
+  // Preload all images when the component initializes
+  const preloadImages = () => {
+    profileData_coreTeam.forEach(profile => {
+      const img = new Image();
+      img.src = profile.img;
+      // Add error handling for images
+      img.onerror = () => console.error(`Failed to load image: ${profile.img}`);
+    });
+  };
+  
+  // Call preload immediately
+  preloadImages();
+  
+  const updateProfile_coreTeam = (index, direction = 'right') => {
+    if (isAnimating) return;
     isAnimating = true;
+    
+    // Validate index
+    if (index < 0 || index >= profileData_coreTeam.length) {
+      console.error('Invalid profile index');
+      isAnimating = false;
+      return;
+    }
+    
     playProfileChangeSound();
     const isFirstLoad = (currentIndex === 0 && index === 0);
+    
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
-    setTimeout(() => {
+    
+    // Set a timeout for the transition
+    const transitionEndHandler = () => {
+      // Clean up previous content
       textBox.innerHTML = "";
-      const message = profileData_coreTeam[index].name;
+      
+      // Create container for new content
       const container = document.createElement("div");
       textBox.appendChild(container);
+      
+      // Update profile data
+      const profile = profileData_coreTeam[index];
+      
+      // Preload the next image
+      const nextImg = new Image();
+      nextImg.src = profile.img;
+      nextImg.onload = () => {
+        // Only update the image source once it's loaded
+        photo.src = profile.img;
+        photo.alt = `Profile of ${profile.name}`; // Add alt text for accessibility
+      };
+      nextImg.onerror = () => {
+        console.error(`Failed to load image: ${profile.img}`);
+        photo.src = 'public/profilePhotos/placeholder.jpg'; // Fallback image
+      };
+      
+      // Reset typing state
       typingSessionObj = { skip: false };
       isTyping = true;
-      const skipTypingFn = typeHTMLString(container, message, 30, () => {
+      
+      // Type out the content
+      typeHTMLString(container, profile.name, 30, () => {
         gsap.fromTo(container,
           { opacity: 0, y: 10, scale: 0.98 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
+          { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 0.4, 
+            ease: "power1.out",
+            onComplete: () => {
+              isTyping = false;
+              isAnimating = false;
+            }
+          }
         );
-        isTyping = false;
-        isAnimating = false;
       }, typingSessionObj, 'highlight-text-phrase-core');
-      photo.src = profileData_coreTeam[index].img;
+      
+      // Remove exit animations
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
-      const tl = gsap.timeline();
+      
+      // Animation timeline
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (isAnimating) isAnimating = false;
+        }
+      });
+      
       if (isFirstLoad) {
         tl.fromTo(photo,
           { y: 100, scale: 0.25, opacity: 0 },
@@ -1257,31 +1329,17 @@ window.attachProfileEvents_coreTeam = () => {
           "-=0.5"
         );
       }
-    }, isFirstLoad ? 0 : 800);
+    };
+    
+    // Use a shorter timeout for first load, longer for subsequent loads
+    setTimeout(transitionEndHandler, isFirstLoad ? 100 : 300);
   };
-
-  let buttonLocked = false;
   
-  /*document.getElementById('next-btn')?.addEventListener('click', () => {
-    if (buttonLocked) return;
-    buttonLocked = true;
-    currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-    updateProfile_coreTeam(currentIndex, 'right');
-    setTimeout(() => buttonLocked = false, 300);
-  });
-
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
-    if (buttonLocked) return;
-    buttonLocked = true;
-    currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-    updateProfile_coreTeam(currentIndex, 'left');
-    setTimeout(() => buttonLocked = false, 300);
-  });*/
-
+  // Touch event handlers
   if (container) {
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
-    });
+    }, { passive: true });
 
     container.addEventListener('touchend', (e) => {
       if (swipeLocked) return;
@@ -1302,60 +1360,62 @@ window.attachProfileEvents_coreTeam = () => {
           updateProfile_coreTeam(currentIndex, 'right');
         }
         
-        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
+        setTimeout(() => swipeLocked = false, 800); // Reduced lock time for better UX
       }
-    });
+    }, { passive: true });
   }
 
-  // Preload images
-  profileData_coreTeam.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-
-  // Initialize first profile
-  updateProfile_coreTeam(0);
-
-  // Add click navigation on textBox for core team (desktop only, no touch devices)
-  if (textBox && !isTouchDevice) {
-    const handleClick = (e) => {
-      // If any animation is running, the only action is to skip the typewriter.
+  // Add click navigation for desktop
+  if (!isTouchDevice) {
+    textBox.addEventListener('click', (e) => {
+      // If clicking on the title (intro-core class)
+      if (e.target.closest('.intro-core')) {
+        // Skip typing animation and set isTyping to false
+        if (typingSessionObj) {
+          typingSessionObj.skip = true;
+          isTyping = false;
+        }
+        return;
+      }
+      
+      // Existing click handling for navigation
       if (isAnimating) {
-        typingSessionObj.skip = true;
+        if (typingSessionObj) typingSessionObj.skip = true;
+        isTyping = false;
         return;
       }
 
-      // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
       const clickX = e.clientX;
       if (clickX === undefined) return;
 
       const x = clickX - rect.left;
-
-      if (x < rect.width / 2) {
+      const isLeftClick = (x < rect.width / 2);
+      
+      // Debounce rapid clicks
+      if (isAnimating) return;
+      
+      if (isLeftClick) {
         currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
         updateProfile_coreTeam(currentIndex, 'left');
       } else {
         currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
         updateProfile_coreTeam(currentIndex, 'right');
       }
-    };
-
-    textBox.addEventListener('click', handleClick);
+    });
   }
 
-  // Add touch skip functionality for touch devices (skip typing only, no navigation)
-  if (textBox && isTouchDevice) {
-    const handleTouchSkip = (e) => {
-      // If any animation is running, skip the typewriter
+  // Add touch skip functionality for touch devices
+  if (isTouchDevice) {
+    textBox.addEventListener('touchend', () => {
       if (isAnimating) {
         typingSessionObj.skip = true;
       }
-      // Note: No navigation for touch devices, only skip functionality
-    };
-
-    textBox.addEventListener('touchend', handleTouchSkip);
+    }, { passive: true });
   }
+
+  // Initialize first profile
+  updateProfile_coreTeam(0);
 };
 
 window.initLogoSlider = () => {
