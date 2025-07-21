@@ -1194,30 +1194,9 @@ window.attachProfileEvents_coreTeam = () => {
   let touchEndX = 0;
   const MIN_SWIPE_DISTANCE = 15;
   let swipeLocked = false;
-
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.getElementById('profile-text-coreTeam')?.parentElement;
-
-  // Visual cues: add left/right overlays
-  if (textBox && !document.getElementById('profile-cue-left-core')) {
-    const leftCue = document.createElement('div');
-    leftCue.id = 'profile-cue-left-core';
-    leftCue.style.position = 'absolute';
-    leftCue.style.left = 0;
-    leftCue.style.top = 0;
-    leftCue.style.width = '40%';
-    leftCue.style.height = '100%';
-    leftCue.style.pointerEvents = 'none';
-    leftCue.style.display = 'flex';
-    leftCue.style.alignItems = 'center';
-    leftCue.style.justifyContent = 'flex-start';
-    leftCue.style.zIndex = 2;
-    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
-    textBox.style.position = 'relative';
-    textBox.appendChild(leftCue);
-  }
-
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
@@ -1283,7 +1262,7 @@ window.attachProfileEvents_coreTeam = () => {
 
   let buttonLocked = false;
   
-  document.getElementById('next-btn')?.addEventListener('click', () => {
+  /*document.getElementById('next-btn')?.addEventListener('click', () => {
     if (buttonLocked) return;
     buttonLocked = true;
     currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
@@ -1297,7 +1276,7 @@ window.attachProfileEvents_coreTeam = () => {
     currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'left');
     setTimeout(() => buttonLocked = false, 300);
-  });
+  });*/
 
   if (container) {
     container.addEventListener('touchstart', (e) => {
