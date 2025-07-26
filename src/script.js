@@ -336,13 +336,7 @@ window.attachProfileEvents = () => {
       }
     });
   });
-
-  // Preload all profile images
-  profileData.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-  // Start first profile
+  
   updateProfile(0);
 
   // Add click navigation on textBox (desktop only, no touch devices)
@@ -687,11 +681,6 @@ window.addEventListener("DOMContentLoaded", () => {
 window.realSlamnorSlam = function () {
   const text = document.querySelector('#textSlam .slam-text');
   const dust = document.querySelector('#textSlam .slam-dust');
-
-  if (!text || !dust) {
-    console.warn("Missing .slam-text or .slam-dust");
-    return;
-  }
 
   // Reset state
   gsap.set(text, {
@@ -1311,13 +1300,6 @@ window.attachProfileEvents_coreTeam = () => {
     });
   }
 
-  // Preload images
-  profileData_coreTeam.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-
-  // Initialize first profile
   updateProfile_coreTeam(0);
 
   // Add click navigation on textBox for core team (desktop only, no touch devices)
@@ -1759,33 +1741,4 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
   }
   // 🛠️ Enable cursor gradient trail
   enableCursorGradientTrail(); // Default: yellow
-  
-// === Preload all profile images for meetourexperts.html and coreTeam.html on DOMContentLoaded ===
-window.preloadProfileImages = () => {
-  // Images for meetourexperts.html
-  const expertImages = [
-    "public/profilePhotos/nguyenhonghanh.jpg",
-    "public/profilePhotos/hoangthuha.jpg",
-    "public/profilePhotos/tranthilananh.jpg",
-    "public/profilePhotos/tranquoctoan.jpg",
-    "public/profilePhotos/longdo.jpg"
-  ];
-  // Images for coreTeam.html
-  const coreTeamImages = [
-    "public/profilePhotos/lyly.png",
-    "public/profilePhotos/duong.png",
-    "public/profilePhotos/tam.png",
-    "public/profilePhotos/tinh.png",
-    "public/profilePhotos/lyicue.png",
-    "public/profilePhotos/hien.png"
-  ];
-  [...expertImages, ...coreTeamImages].forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-};
-
-window.addEventListener('DOMContentLoaded', () => {
-  window.preloadProfileImages();
-});
-  
+ 
