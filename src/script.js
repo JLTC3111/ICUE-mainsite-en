@@ -1,6 +1,4 @@
 console.log('[script.js] Loaded ✅');
-
-// Touch device detection
 const isTouchDevice = (
   'ontouchstart' in window ||
   navigator.maxTouchPoints > 0 ||
@@ -17,16 +15,13 @@ function playProfileChangeSound() {
     audioCtx.resume();
   }
 
-  // Create swoosh sound with multiple components
   const duration = 0.4;
   const now = audioCtx.currentTime;
 
-  // Create noise buffer for the swoosh texture
   const bufferSize = audioCtx.sampleRate * duration;
   const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
   const output = noiseBuffer.getChannelData(0);
-  
-  // Generate pink noise for more natural swoosh
+ 
   let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
   for (let i = 0; i < bufferSize; i++) {
     const white = Math.random() * 2 - 1;
@@ -37,40 +32,33 @@ function playProfileChangeSound() {
     b4 = 0.55000 * b4 + white * 0.5329522;
     b5 = -0.7616 * b5 - white * 0.0168980;
     output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-    output[i] *= 0.11; // Scale down
+    output[i] *= 0.11; 
     b6 = white * 0.115926;
   }
 
-  // Create noise source
   const noiseSource = audioCtx.createBufferSource();
   noiseSource.buffer = noiseBuffer;
 
-  // Create filter for swoosh character
   const filter = audioCtx.createBiquadFilter();
   filter.type = 'bandpass';
   filter.frequency.setValueAtTime(2000, now);
   filter.frequency.exponentialRampToValueAtTime(200, now + duration);
   filter.Q.setValueAtTime(2, now);
 
-  // Create gain for envelope
   const gainNode = audioCtx.createGain();
   gainNode.gain.setValueAtTime(0, now);
   gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
   gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-  // Connect the audio graph
   noiseSource.connect(filter);
   filter.connect(gainNode);
   gainNode.connect(audioCtx.destination);
 
-  // Start and stop
   noiseSource.start(now);
   noiseSource.stop(now + duration);
 }
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
-
-  // Always replace <strong> tags with highlight span
   let processedHtmlString = htmlString;
   if (highlightClass) {
     processedHtmlString = processedHtmlString.replace(/<strong>(.*?)<\/strong>/g, `<span class=\"${highlightClass}\">$1<\/span>`);
@@ -82,31 +70,28 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
   const nodes = Array.from(tempContainer.childNodes);
   let nodeIndex = 0;
 
-  // Create and append cursor initially
   const cursor = document.createElement("span");
   cursor.className = "svg-blinking-cursor";
   targetElement.appendChild(cursor);
-  // Create your custom SVG
+
   const svgCursor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svgCursor.setAttribute("width", "24");
   svgCursor.setAttribute("height", "24");
   svgCursor.setAttribute("viewBox", "0 0 24 24");
-  svgCursor.setAttribute("class", "svg-blinking-cursor"); // custom class
+  svgCursor.setAttribute("class", "svg-blinking-cursor");
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("fill", "black"); // or darkblue, your choice
+  path.setAttribute("fill", "black");
   path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
 
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
 
-  // Typing skip logic
   let skipTyping = false;
   if (typingSessionObj) typingSessionObj.skip = false;
 
   function typeNextNode() {
     if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
-      // Instantly show all remaining nodes
       for (; nodeIndex < nodes.length; nodeIndex++) {
         const node = nodes[nodeIndex];
         if (node.nodeType === Node.TEXT_NODE) {
@@ -134,7 +119,7 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
     if (node.nodeType === Node.TEXT_NODE) {
       const text = node.textContent;
       const span = document.createElement("span");
-      targetElement.insertBefore(span, cursor); // always before cursor
+      targetElement.insertBefore(span, cursor); 
       let charIndex = 0;
       function typeChar() {
         if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
@@ -152,7 +137,7 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
       }
       typeChar();
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const wrapper = node.cloneNode(false); // Clone just the tag, not children
+      const wrapper = node.cloneNode(false); 
       targetElement.insertBefore(wrapper, cursor);
       const childNodes = Array.from(node.childNodes);
       let childIndex = 0;
@@ -189,26 +174,22 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
           }
           typeChar();
         } else {
-          // If it's an element inside another (nested), just append it and continue
           wrapper.appendChild(child.cloneNode(true));
           typeChildNode();
         }
       }
       typeChildNode();
     } else {
-      // Fallback: just clone and insert if it's a comment or unsupported node
       const clone = node.cloneNode(true);
       targetElement.insertBefore(clone, cursor);
       typeNextNode();
     }
   }
   typeNextNode();
-  // Expose skip function
   return () => { skipTyping = true; if (typingSessionObj) typingSessionObj.skip = true; };
 }
 
 window.attachProfileEvents = () => {
-  // Prevent duplicate event listener attachments
   if (window.profileEventsAttached) return;
   window.profileEventsAttached = true;
   const profileData = [
@@ -242,15 +223,15 @@ window.attachProfileEvents = () => {
   const textBox = document.getElementById('profile-text');
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
+
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
-  window.updateProfile = (index, direction = 'right') => {
+
+  const updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
     playProfileChangeSound();
-  
-    // Step 1: Add exit animation classes
     const isFirstLoad = (currentIndex === 0 && index === 0);
 
     if (!isFirstLoad) {
@@ -258,15 +239,14 @@ window.attachProfileEvents = () => {
     photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
   
     setTimeout(() => {
-      // Step 2: Update content with typewriter
-      textBox.innerHTML = ""; // clear previous
+      textBox.innerHTML = "";
       const message = profileData[index].name;
       const container = document.createElement("div");
       textBox.appendChild(container);
 
       typingSessionObj = { skip: false };
       isTyping = true;
-      const skipTypingFn = typeHTMLString(container, message, 25, () => {
+      const skipTypingFn = typeHTMLString(container, message, 50, () => {
         gsap.fromTo(container,
           { opacity: 0, y: 10, scale: 0.98 },
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
@@ -276,15 +256,12 @@ window.attachProfileEvents = () => {
       }, typingSessionObj, 'highlight-text-phrase-moe');
       photo.src = profileData[index].img;
   
-      // Step 3: Remove exit animation classes
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
   
-      // (Optional) remove old enter classes in case
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
   
-      // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
   
       tl.fromTo(photo,
@@ -295,29 +272,11 @@ window.attachProfileEvents = () => {
       tl.fromTo(textBox,
         { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 },
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
-        "-=0.5" // Start slightly overlapping with photo animation
+        "-=0.5"
       );
   
-    }, 300); // ← match exit animation duration (0.3s)
+    }, 300); 
   }
-
-  let buttonLocked = false;
-  
-  /*document.getElementById('next-btn')?.addEventListener('click', () => {
-    if (buttonLocked) return;
-    buttonLocked = true;
-    currentIndex = (currentIndex + 1) % profileData.length;
-    updateProfile(currentIndex, 'right');
-    setTimeout(() => buttonLocked = false, 300);
-  });
-
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
-    if (buttonLocked) return;
-    buttonLocked = true;
-    currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-    updateProfile(currentIndex, 'left');
-    setTimeout(() => buttonLocked = false, 300);
-  });*/
 
   const swipeElements = [container, textBox];
 
@@ -349,25 +308,17 @@ window.attachProfileEvents = () => {
       }
     });
   });
-
-  // Preload all profile images
-  profileData.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-  // Start first profile
+  
   updateProfile(0);
 
-  // Add click navigation on textBox (desktop only, no touch devices)
   if (textBox && !isTouchDevice) {
     const handleClick = (e) => {
-      // If any animation is running, the only action is to skip the typewriter.
+     
       if (isAnimating) {
         typingSessionObj.skip = true;
         return;
       }
 
-      // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
       const clickX = e.clientX;
       if (clickX === undefined) return;
@@ -386,14 +337,11 @@ window.attachProfileEvents = () => {
     textBox.addEventListener('click', handleClick);
   }
 
-  // Add touch skip functionality for touch devices (skip typing only, no navigation)
   if (textBox && isTouchDevice) {
     const handleTouchSkip = (e) => {
-      // If any animation is running, skip the typewriter
       if (isAnimating) {
         typingSessionObj.skip = true;
       }
-      // Note: No navigation for touch devices, only skip functionality
     };
 
     textBox.addEventListener('touchend', handleTouchSkip);
@@ -1221,46 +1169,47 @@ window.attachProfileEvents_coreTeam = () => {
   // Cache DOM elements
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
-  const container = textBox?.parentElement;
+  const container = document.getElementById('profile-coreTeam-container');
   
   // Return early if required elements don't exist
   if (!textBox || !photo) {
     console.error('Required elements not found for core team profile');
     return;
-  }
-
+  } 
+  const MIN_SWIPE_DISTANCE = 50;
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
-  const MIN_SWIPE_DISTANCE = 50; // Increased minimum swipe distance for better UX
   let swipeLocked = false;
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
   
-  // Preload all images when the component initializes
-  const preloadImages = () => {
-    profileData_coreTeam.forEach(profile => {
-      const img = new Image();
-      img.src = profile.img;
-      // Add error handling for images
-      img.onerror = () => console.error(`Failed to load image: ${profile.img}`);
-    });
-  };
-  
-  // Call preload immediately
-  preloadImages();
+  // Initialize the first profile immediately
+  if (profileData_coreTeam.length > 0) {
+    textBox.innerHTML = ''; 
+    photo.src = profileData_coreTeam[0].img;
+    typeHTMLString(
+      textBox, 
+      profileData_coreTeam[0].name, 
+      1, 
+      null, 
+      typingSessionObj, 
+      'highlight'
+    );
+  }
   
   const updateProfile_coreTeam = (index, direction = 'right') => {
     if (isAnimating) return;
     isAnimating = true;
     
-    // Validate index
     if (index < 0 || index >= profileData_coreTeam.length) {
       console.error('Invalid profile index');
       isAnimating = false;
       return;
     }
+
+    currentIndex = index;
     
     playProfileChangeSound();
     const isFirstLoad = (currentIndex === 0 && index === 0);
@@ -1270,36 +1219,28 @@ window.attachProfileEvents_coreTeam = () => {
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
     
-    // Set a timeout for the transition
     const transitionEndHandler = () => {
-      // Clean up previous content
       textBox.innerHTML = "";
       
-      // Create container for new content
       const container = document.createElement("div");
       textBox.appendChild(container);
       
-      // Update profile data
       const profile = profileData_coreTeam[index];
       
-      // Preload the next image
       const nextImg = new Image();
       nextImg.src = profile.img;
       nextImg.onload = () => {
-        // Only update the image source once it's loaded
         photo.src = profile.img;
-        photo.alt = `Profile of ${profile.name}`; // Add alt text for accessibility
+        photo.alt = `Profile of ${profile.name}`;
       };
       nextImg.onerror = () => {
         console.error(`Failed to load image: ${profile.img}`);
-        photo.src = 'public/profilePhotos/placeholder.jpg'; // Fallback image
+        photo.src = 'public/profilePhotos/placeholder.jpg';
       };
       
-      // Reset typing state
       typingSessionObj = { skip: false };
       isTyping = true;
       
-      // Type out the content
       typeHTMLString(container, profile.name, 30, () => {
         gsap.fromTo(container,
           { opacity: 0, y: 10, scale: 0.98 },
@@ -1317,13 +1258,11 @@ window.attachProfileEvents_coreTeam = () => {
         );
       }, typingSessionObj, 'highlight-text-phrase-core');
       
-      // Remove exit animations
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
       
-      // Animation timeline
       const tl = gsap.timeline({
         onComplete: () => {
           if (isAnimating) isAnimating = false;
@@ -1359,11 +1298,29 @@ window.attachProfileEvents_coreTeam = () => {
       }
     };
     
-    // Use a shorter timeout for first load, longer for subsequent loads
-    setTimeout(transitionEndHandler, isFirstLoad ? 100 : 300);
+    setTimeout(transitionEndHandler, isFirstLoad ? 50 : 100);
   };
   
-  // Touch event handlers
+  // Function to handle profile navigation
+  const navigateProfile = (direction) => {
+    if (isAnimating) {
+      if (typingSessionObj) {
+        typingSessionObj.skip = true;
+      }
+      return;
+    }
+
+    let newIndex;
+    if (direction === 'left') {
+      newIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+      updateProfile_coreTeam(newIndex, 'left');
+    } else if (direction === 'right') {
+      newIndex = (currentIndex + 1) % profileData_coreTeam.length;
+      updateProfile_coreTeam(newIndex, 'right');
+    }
+  };
+
+  // Touch event handlers for swipe navigation
   if (container) {
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
@@ -1380,69 +1337,54 @@ window.attachProfileEvents_coreTeam = () => {
         
         if (swipeDistance > 0) {
           // Swipe right → go to previous profile
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
+          navigateProfile('left');
         } else {
           // Swipe left → go to next profile
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
+          navigateProfile('right');
         }
         
-        setTimeout(() => swipeLocked = false, 800); // Reduced lock time for better UX
+        setTimeout(() => swipeLocked = false, 800);
       }
     }, { passive: true });
   }
 
-  // Add click navigation for desktop
   if (!isTouchDevice) {
-    textBox.addEventListener('click', (e) => {
-      // If clicking on the title (intro-core class)
-      if (e.target.closest('.intro-core')) {
-        // Skip typing animation and set isTyping to false
-        if (typingSessionObj) {
-          typingSessionObj.skip = true;
-          isTyping = false;
-        }
-        return;
-      }
-      
-      // Existing click handling for navigation
-      if (isAnimating) {
-        if (typingSessionObj) typingSessionObj.skip = true;
-        isTyping = false;
-        return;
-      }
+  textBox.addEventListener('click', (e) => {
+    const clickedIntro = e.target.closest('.intro-core');
+    const clickedTextBox = e.target.closest('#profile-text-coreTeam');
 
+    // Step 1: Skip typing on first click if still typing
+    if ((clickedIntro || clickedTextBox) && isTyping) {
+      if (typingSessionObj) {
+        typingSessionObj.skip = true;
+        isTyping = false;
+      }
+      return; // ⛔ Don't navigate yet — wait for second click
+    }
+      
+      // Get click position
       const rect = textBox.getBoundingClientRect();
       const clickX = e.clientX;
       if (clickX === undefined) return;
 
+      // Determine if click was on left or right side
       const x = clickX - rect.left;
       const isLeftClick = (x < rect.width / 2);
       
-      // Debounce rapid clicks
-      if (isAnimating) return;
-      
-      if (isLeftClick) {
-        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'left');
-      } else {
-        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'right');
-      }
+      // Navigate based on click position
+      navigateProfile(isLeftClick ? 'left' : 'right');
     });
   }
 
-  // Add touch skip functionality for touch devices
   if (isTouchDevice) {
-    textBox.addEventListener('touchend', () => {
-      if (isAnimating) {
+    textBox.addEventListener('touchend', (e) => {
+      if (isAnimating && typingSessionObj) {
         typingSessionObj.skip = true;
+        isTyping = false;
       }
     }, { passive: true });
   }
 
-  // Initialize first profile
   updateProfile_coreTeam(0);
 };
 
