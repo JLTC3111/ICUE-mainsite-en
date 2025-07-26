@@ -1347,7 +1347,7 @@ window.attachProfileEvents_coreTeam = () => {
 
     textBox.addEventListener('click', handleClick);
   }
-
+  
   // Add touch skip functionality for touch devices (skip typing only, no navigation)
   if (textBox && isTouchDevice) {
     const handleTouchSkip = (e) => {
@@ -1360,6 +1360,24 @@ window.attachProfileEvents_coreTeam = () => {
 
     textBox.addEventListener('touchend', handleTouchSkip);
   }
+  // Touch support
+    textBox.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const rect = textBox.getBoundingClientRect();
+        const x = e.changedTouches[0].clientX - rect.left;
+        if (isTyping) {
+          typingSessionObj.skip = true;
+          return;
+        }
+        if (x < rect.width / 2) {
+          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'left');
+        } else {
+          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'right');
+        }
+      }
+    });
 };
 
 window.initLogoSlider = () => {
