@@ -5,59 +5,6 @@ const isTouchDevice = (
   navigator.msMaxTouchPoints > 0
 );
 
-let profileChangeAudioCtx;
-function playProfileChangeSound() {
-  if (!profileChangeAudioCtx) {
-    profileChangeAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  const audioCtx = profileChangeAudioCtx;
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-
-  const duration = 0.4;
-  const now = audioCtx.currentTime;
-
-  const bufferSize = audioCtx.sampleRate * duration;
-  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const output = noiseBuffer.getChannelData(0);
- 
-  let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-  for (let i = 0; i < bufferSize; i++) {
-    const white = Math.random() * 2 - 1;
-    b0 = 0.99886 * b0 + white * 0.0555179;
-    b1 = 0.99332 * b1 + white * 0.0750759;
-    b2 = 0.96900 * b2 + white * 0.1538520;
-    b3 = 0.86650 * b3 + white * 0.3104856;
-    b4 = 0.55000 * b4 + white * 0.5329522;
-    b5 = -0.7616 * b5 - white * 0.0168980;
-    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-    output[i] *= 0.11; 
-    b6 = white * 0.115926;
-  }
-
-  const noiseSource = audioCtx.createBufferSource();
-  noiseSource.buffer = noiseBuffer;
-
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = 'bandpass';
-  filter.frequency.setValueAtTime(2000, now);
-  filter.frequency.exponentialRampToValueAtTime(200, now + duration);
-  filter.Q.setValueAtTime(2, now);
-
-  const gainNode = audioCtx.createGain();
-  gainNode.gain.setValueAtTime(0, now);
-  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-  noiseSource.connect(filter);
-  filter.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-
-  noiseSource.start(now);
-  noiseSource.stop(now + duration);
-}
-
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
   let processedHtmlString = htmlString;
@@ -232,7 +179,7 @@ window.attachProfileEvents = () => {
   const updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
-    playProfileChangeSound();
+
     const isFirstLoad = (currentIndex === 0 && index === 0);
 
     if (!isFirstLoad) {
@@ -410,11 +357,9 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
-                  letstalk();
-                  showCalendarModal();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
-                  makeItRainText("#rainText"); // <-- THIS is now safe to call!
+                  makeItRainText("#rainText"); 
                   break;
                 case 'News':
                   initLogoSlider();
@@ -1212,7 +1157,6 @@ window.attachProfileEvents_coreTeam = () => {
 
     currentIndex = index;
     
-    playProfileChangeSound();
     const isFirstLoad = (currentIndex === 0 && index === 0);
     
     if (!isFirstLoad) {
