@@ -194,7 +194,7 @@ window.attachProfileEvents = () => {
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
-
+  
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
