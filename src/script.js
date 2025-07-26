@@ -194,7 +194,7 @@ window.attachProfileEvents = () => {
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
-  
+
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -337,6 +337,12 @@ window.attachProfileEvents = () => {
     });
   });
 
+  // Preload all profile images
+  profileData.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
+  });
+  // Start first profile
   updateProfile(0);
 
   // Add click navigation on textBox (desktop only, no touch devices)
@@ -681,6 +687,11 @@ window.addEventListener("DOMContentLoaded", () => {
 window.realSlamnorSlam = function () {
   const text = document.querySelector('#textSlam .slam-text');
   const dust = document.querySelector('#textSlam .slam-dust');
+
+  if (!text || !dust) {
+    console.warn("Missing .slam-text or .slam-dust");
+    return;
+  }
 
   // Reset state
   gsap.set(text, {
@@ -1300,9 +1311,16 @@ window.attachProfileEvents_coreTeam = () => {
     });
   }
 
+  // Preload images
+  profileData_coreTeam.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
+  });
+
+  // Initialize first profile
   updateProfile_coreTeam(0);
 
-  // Add click navigation on textBox (desktop only, no touch devices)
+  // Add click navigation on textBox for core team (desktop only, no touch devices)
   if (textBox && !isTouchDevice) {
     const handleClick = (e) => {
       // If any animation is running, the only action is to skip the typewriter.
@@ -1315,39 +1333,20 @@ window.attachProfileEvents_coreTeam = () => {
       const rect = textBox.getBoundingClientRect();
       const clickX = e.clientX;
       if (clickX === undefined) return;
-      
+
       const x = clickX - rect.left;
 
       if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
         updateProfile_coreTeam(currentIndex, 'left');
       } else {
-        currentIndex = (currentIndex + 1) % profileData.length;
+        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
         updateProfile_coreTeam(currentIndex, 'right');
       }
     };
 
     textBox.addEventListener('click', handleClick);
   }
-
-  // Touch support
-    textBox.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (isTyping) {
-          typingSessionObj.skip = true;
-          return;
-        }
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
-        }
-      }
-    });
 
   // Add touch skip functionality for touch devices (skip typing only, no navigation)
   if (textBox && isTouchDevice) {
@@ -1361,7 +1360,7 @@ window.attachProfileEvents_coreTeam = () => {
 
     textBox.addEventListener('touchend', handleTouchSkip);
   }
-}
+};
 
 window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
@@ -1760,4 +1759,33 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
   }
   // 🛠️ Enable cursor gradient trail
   enableCursorGradientTrail(); // Default: yellow
- 
+  
+// === Preload all profile images for meetourexperts.html and coreTeam.html on DOMContentLoaded ===
+window.preloadProfileImages = () => {
+  // Images for meetourexperts.html
+  const expertImages = [
+    "public/profilePhotos/nguyenhonghanh.jpg",
+    "public/profilePhotos/hoangthuha.jpg",
+    "public/profilePhotos/tranthilananh.jpg",
+    "public/profilePhotos/tranquoctoan.jpg",
+    "public/profilePhotos/longdo.jpg"
+  ];
+  // Images for coreTeam.html
+  const coreTeamImages = [
+    "public/profilePhotos/lyly.png",
+    "public/profilePhotos/duong.png",
+    "public/profilePhotos/tam.png",
+    "public/profilePhotos/tinh.png",
+    "public/profilePhotos/lyicue.png",
+    "public/profilePhotos/hien.png"
+  ];
+  [...expertImages, ...coreTeamImages].forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  window.preloadProfileImages();
+});
+  
