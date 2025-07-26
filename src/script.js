@@ -1,12 +1,40 @@
 console.log('[script.js] Loaded ✅');
+
+// Touch device detection
 const isTouchDevice = (
   'ontouchstart' in window ||
   navigator.maxTouchPoints > 0 ||
   navigator.msMaxTouchPoints > 0
 );
 
+let profileChangeAudioCtx;
+function playProfileChangeSound() {
+  if (!profileChangeAudioCtx) {
+    profileChangeAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  const audioCtx = profileChangeAudioCtx;
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  oscillator.type = 'triangle';
+  oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+
+  oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+  oscillator.start(audioCtx.currentTime);
+  oscillator.stop(audioCtx.currentTime + 0.1);
+}
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
+
+  // Always replace <strong> tags with highlight span
   let processedHtmlString = htmlString;
   if (highlightClass) {
     processedHtmlString = processedHtmlString.replace(/<strong>(.*?)<\/strong>/g, `<span class=\"${highlightClass}\">$1<\/span>`);
@@ -18,28 +46,31 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
   const nodes = Array.from(tempContainer.childNodes);
   let nodeIndex = 0;
 
+  // Create and append cursor initially
   const cursor = document.createElement("span");
   cursor.className = "svg-blinking-cursor";
   targetElement.appendChild(cursor);
-
+  // Create your custom SVG
   const svgCursor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svgCursor.setAttribute("width", "24");
   svgCursor.setAttribute("height", "24");
   svgCursor.setAttribute("viewBox", "0 0 24 24");
-  svgCursor.setAttribute("class", "svg-blinking-cursor");
+  svgCursor.setAttribute("class", "svg-blinking-cursor"); // custom class
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("fill", "black");
+  path.setAttribute("fill", "black"); // or darkblue, your choice
   path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
 
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
 
+  // Typing skip logic
   let skipTyping = false;
   if (typingSessionObj) typingSessionObj.skip = false;
 
   function typeNextNode() {
     if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
+      // Instantly show all remaining nodes
       for (; nodeIndex < nodes.length; nodeIndex++) {
         const node = nodes[nodeIndex];
         if (node.nodeType === Node.TEXT_NODE) {
@@ -67,7 +98,7 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
     if (node.nodeType === Node.TEXT_NODE) {
       const text = node.textContent;
       const span = document.createElement("span");
-      targetElement.insertBefore(span, cursor); 
+      targetElement.insertBefore(span, cursor); // always before cursor
       let charIndex = 0;
       function typeChar() {
         if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
@@ -85,7 +116,7 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
       }
       typeChar();
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const wrapper = node.cloneNode(false); 
+      const wrapper = node.cloneNode(false); // Clone just the tag, not children
       targetElement.insertBefore(wrapper, cursor);
       const childNodes = Array.from(node.childNodes);
       let childIndex = 0;
@@ -122,49 +153,44 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
           }
           typeChar();
         } else {
+          // If it's an element inside another (nested), just append it and continue
           wrapper.appendChild(child.cloneNode(true));
           typeChildNode();
         }
       }
       typeChildNode();
     } else {
+      // Fallback: just clone and insert if it's a comment or unsupported node
       const clone = node.cloneNode(true);
       targetElement.insertBefore(clone, cursor);
       typeNextNode();
     }
   }
   typeNextNode();
+  // Expose skip function
   return () => { skipTyping = true; if (typingSessionObj) typingSessionObj.skip = true; };
 }
 
-
 window.attachProfileEvents = () => {
-  
-  if (window.profileEventsAttached) {
-    return;
-  }
-  window.profileEventsAttached = true;
-  
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   const profileData = [
     {
-      name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và phó cục trưởng Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố <span class="highlight-text-phrase-moe">bền vững</span>. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về <span class="highlight-text-phrase-moe">phát triển đô thị xanh</span>, <span class="highlight-text-phrase-moe">khả năng phục hồi khí hậu</span> và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
+      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, <strong>urban planning</strong> and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on <strong>green urban development</strong>, <strong>climate resilience</strong> and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Chuyên gia kế toán giàu kinh nghiệm trong <span class="highlight-text-phrase-moe">quản lý tài chính</span>, <span class="highlight-text-phrase-moe">báo cáo</span> và <span class="highlight-text-phrase-moe">tuân thủ</span>. Có bằng Cử nhân Kế toán và đã lãnh đạo thành công các phòng kế toán, quản lý các khoản thanh toán tài chính, tiến hành kiểm toán và lập báo cáo tài chính chính xác. Có kỹ năng giám sát các giao dịch tài chính, đảm bảo tuân thủ pháp luật và quy định, và hỗ trợ các hoạt động tài chính theo dự án. Thành thạo phần mềm kế toán và được biết đến với đạo đức nghề nghiệp mạnh mẽ, khả năng thích ứng và chú ý đến từng chi tiết. Mang đến các kỹ năng lãnh đạo và tổ chức mạnh mẽ, tập trung vào việc cung cấp những hiểu biết tài chính chính xác.`,
+      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in <strong> accounting </strong> software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
       img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị với hơn 10 năm kinh nghiệm trong <span class="highlight-text-phrase-moe">thiết kế đô thị chiến lược</span>, hoạch định chính sách và <span class="highlight-text-phrase-moe">phát triển bền vững</span>. Có bằng Tiến sĩ và Thạc sĩ từ Đại học Tokyo, nền tảng vững chắc về <span class="highlight-text-phrase-moe">thích ứng với biến đổi khí hậu</span>, luật phân loại đô thị và chiến lược phát triển quốc gia. Cựu Phó Tổng giám đốc Cơ quan Phát triển Đô thị Việt Nam, lãnh đạo các chương trình lớn về <span class="highlight-text-phrase-moe">khả năng phục hồi</span> và quy hoạch đô thị đến năm 2050. Một nhà nghiên cứu, nhà giáo dục đã xuất bản và là thành viên tích cực của các hiệp hội chuyên nghiệp. Có kỹ năng điều phối các dự án quy mô lớn, khuôn khổ pháp lý và hợp tác liên ngành. Thông thạo nhiều ngôn ngữ và đam mê định hình tương lai đô thị <span class="highlight-text-phrase-moe">bền vững</span>, đáng sống.`,
+      name: `<span class="intro-people">Ms. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in <strong>strategic urban design</strong>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <strong>climate change adaptation</strong>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <strong>resilience</strong> and <strong>urban planning</strong> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages ​​and passionate about shaping a sustainable, livable urban future.`,
       img: "public/profilePhotos/tranthilananh.jpg"
     },
     {
-      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> Quy hoạch đô thị và biến đổi khí hậu với hơn 15 năm kinh nghiệm trong lĩnh vực <span class="highlight-text-phrase-moe">cơ sở hạ tầng bền vững</span>, <span class="highlight-text-phrase-moe">quy hoạch giao thông</span> và <span class="highlight-text-phrase-moe">khả năng phục hồi khí hậu</span>. Có bằng Kỹ sư cầu đường và hầm và đã đảm nhiệm các vai trò lãnh đạo chủ chốt trong Bộ Giao thông vận tải Việt Nam và các hiệp hội kỹ thuật dân dụng. Có kỹ năng tư vấn chính sách, quy hoạch thành phố thông minh và phát triển chiến lược tăng trưởng xanh. Dẫn dắt các dự án quốc gia lớn tập trung vào <span class="highlight-text-phrase-moe">tính di động của đô thị</span>, <span class="highlight-text-phrase-moe">tính bền vững của môi trường</span> và cải cách pháp luật. Một giảng viên và chuyên gia đào tạo được kính trọng cho các tổ chức như Ngân hàng Thế giới và ADB, được biết đến với chuyên môn sâu rộng, tư duy chiến lược và cam kết xây dựng tương lai đô thị có khả năng phục hồi khí hậu.`,
+      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> <strong>Urban Planning</strong> and <strong>Climate Change</strong> with over 25 years of experience in sustainable infrastructure, transport planning and <strong>climate resilience</strong>. Degree in Bridge and Tunnel Engineering and has held key leadership roles in the Vietnamese Ministry of Transport and civil engineering associations. Skilled in policy consulting, <strong>smart city planning</strong> and <strong>green growth strategy development</strong>. Led major national projects focused on urban mobility, environmental sustainability and regulatory reform. A respected lecturer and trainer for organizations such as the World Bank and ADB, known for his extensive expertise, strategic thinking and commitment to building a <strong>climate resilient urban future</strong>.`,
       img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people"> Long Đỗ - Quản Lý Dự Án </span><br> Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, <span class="highlight-text-phrase-moe">quản lý hợp đồng (thông minh)</span> và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan. Có khả năng thích nghi cao và chú ý đến chi tiết, với niềm đam mê với phần cứng máy tính, mã hóa và trò chơi. Có kinh nghiệm <span class="highlight-text-phrase-moe">thiết kế</span> và <span class="highlight-text-phrase-moe">giải quyết vấn đề sáng tạo</span>. 🔧💬 <a href="https://longd.tech/" target="_blank">Trang cá nhân</a>`,
+      name: `<span class="intro-people"> Long Đỗ - Project Manager </span><br> A dedicated Project Officer with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <strong>design</strong> and <strong>creative problem solving</strong>. <a href="https://en.longd.tech" target="_blank">🔧💬 View Profile</a>`,
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
@@ -173,74 +199,131 @@ window.attachProfileEvents = () => {
   let touchStartX = 0;
   let touchEndX = 0;
   const MIN_SWIPE_DISTANCE = 15;
+  
   const textBox = document.getElementById('profile-text');
   const photo = document.getElementById('profile-photo');
   const container = document.querySelector('.image-container');
+
+  // Visual cues: add left/right overlays
+  if (textBox && !document.getElementById('profile-cue-left')) {
+    const leftCue = document.createElement('div');
+    leftCue.id = 'profile-cue-left';
+    leftCue.style.position = 'absolute';
+    leftCue.style.left = 0;
+    leftCue.style.top = 0;
+    leftCue.style.width = '40%';
+    leftCue.style.height = '100%';
+    leftCue.style.pointerEvents = 'none';
+    leftCue.style.display = 'flex';
+    leftCue.style.alignItems = 'center';
+    leftCue.style.justifyContent = 'flex-start';
+    leftCue.style.zIndex = 2;
+    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
+    textBox.style.position = 'relative';
+    textBox.appendChild(leftCue);
+    const rightCue = document.createElement('div');
+    rightCue.id = 'profile-cue-right';
+    rightCue.style.position = 'absolute';
+    rightCue.style.right = 0;
+    rightCue.style.top = 0;
+    rightCue.style.width = '40%';
+    rightCue.style.height = '100%';
+    rightCue.style.pointerEvents = 'none';
+    rightCue.style.display = 'flex';
+    rightCue.style.alignItems = 'center';
+    rightCue.style.justifyContent = 'flex-end';
+    rightCue.style.zIndex = 2;
+    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
+    textBox.appendChild(rightCue);
+  }
+
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
+    playProfileChangeSound();
+  
+    // Step 1: Add exit animation classes
     const isFirstLoad = (currentIndex === 0 && index === 0);
+
     if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    }
+    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
+  
     setTimeout(() => {
-      textBox.innerHTML = "";
+      // Step 2: Update content with typewriter
+      textBox.innerHTML = ""; // clear previous
       const message = profileData[index].name;
-      const containerDiv = document.createElement("div");
-      textBox.appendChild(containerDiv);
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+
       typingSessionObj = { skip: false };
       isTyping = true;
-      typeHTMLString(containerDiv, message, 50, () => {
-        gsap.fromTo(containerDiv, 
-          { opacity: 0, y: 10, scale: 0.98 }, 
+      const skipTypingFn = typeHTMLString(container, message, 25, () => {
+        gsap.fromTo(container,
+          { opacity: 0, y: 10, scale: 0.98 },
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
         isTyping = false;
         isAnimating = false;
-      }, typingSessionObj);
+      }, typingSessionObj, 'highlight-text-phrase-moe');
       photo.src = profileData[index].img;
+  
+      // Step 3: Remove exit animation classes
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
+  
+      // (Optional) remove old enter classes in case
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
+  
+      // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
-      tl.fromTo(photo, 
-        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
+  
+      tl.fromTo(photo,
+        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 },
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
-      tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
+  
+      tl.fromTo(textBox,
+        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 },
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
-        "-=0.5"
+        "-=0.5" // Start slightly overlapping with photo animation
       );
-    }, 300);
-  };
+  
+    }, 300); // ← match exit animation duration (0.3s)
+  }
 
-  /*document.getElementById('next-btn')?.addEventListener('click', () => {
+  document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
     updateProfile(currentIndex, 'right');
   });
+
   document.getElementById('prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
     updateProfile(currentIndex, 'left');
-  });*/
+  });
 
   const swipeElements = [container, textBox];
+
   let swipeLocked = false;
+  
   swipeElements.forEach(el => {
     el.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
+  
     el.addEventListener('touchend', (e) => {
       if (swipeLocked) return;
+  
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
+  
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         swipeLocked = true;
+  
         if (swipeDistance > 0) {
           currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
           updateProfile(currentIndex, 'left');
@@ -248,17 +331,23 @@ window.attachProfileEvents = () => {
           currentIndex = (currentIndex + 1) % profileData.length;
           updateProfile(currentIndex, 'right');
         }
-        setTimeout(() => swipeLocked = false, 1000);
+  
+        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
       }
     });
   });
 
-  // Add click/tap navigation on textBox (disabled for touch devices to prevent duplication)
+  // Preload all profile images
+  profileData.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
+  });
+  // Start first profile
+  updateProfile(0);
+
+  // Add click navigation on textBox (desktop only, no touch devices)
   if (textBox && !isTouchDevice) {
-    textBox.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
+    const handleClick = (e) => {
       // If any animation is running, the only action is to skip the typewriter.
       if (isAnimating) {
         typingSessionObj.skip = true;
@@ -267,7 +356,11 @@ window.attachProfileEvents = () => {
 
       // Otherwise, navigate.
       const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
+      const clickX = e.clientX;
+      if (clickX === undefined) return;
+      
+      const x = clickX - rect.left;
+
       if (x < rect.width / 2) {
         currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
         updateProfile(currentIndex, 'left');
@@ -275,297 +368,24 @@ window.attachProfileEvents = () => {
         currentIndex = (currentIndex + 1) % profileData.length;
         updateProfile(currentIndex, 'right');
       }
-    });
-    // Touch support
-    textBox.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // If any animation is running, the only action is to skip the typewriter.
-        if (isAnimating) {
-          typingSessionObj.skip = true;
-          return;
-        }
+    };
 
-        // Otherwise, navigate.
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
-        }
-      }
-    });
+    textBox.addEventListener('click', handleClick);
   }
-  
-  // Touch device skip typing - simple tap to skip typing animation
+
+  // Add touch skip functionality for touch devices (skip typing only, no navigation)
   if (textBox && isTouchDevice) {
-    textBox.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // On touch devices, tapping during typing skips the animation
+    const handleTouchSkip = (e) => {
+      // If any animation is running, skip the typewriter
       if (isAnimating) {
         typingSessionObj.skip = true;
       }
-    });
-  } 
-  updateProfile(0);
-}
-
-window.attachProfileEvents_coreTeam = () => {
-  // Prevent duplicate event listener attachments
-  if (window.coreTeamEventsAttached) return;
-  window.coreTeamEventsAttached = true;
-  
-  const profileData_coreTeam = [
-    {name:
-      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`,
-      img: "public/profilePhotos/lyly.png"
-    },
-    {
-      name: `<span class="intro-core">Đinh Tùng Dương</span> I hold a degree in Urban Management from Hanoi Architectural University, where I was honored to be named Hanoi's Valedictorian in 2023. Over the past two years, I have been actively contributing to urban development projects focusing on <strong>spatial planning</strong>, <strong>landscape improvement</strong>, and <strong>sustainable urban living</strong>. I have strong analytical and organizational skills, along with proficiency in both office and technical software. I am committed to continuous professional development and aim to contribute effectively to a progressive, reputable organization. `,
-      img: "public/profilePhotos/duong.png"
-    },
-    {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in <strong>quantity surveying</strong>, <strong>detailed planning</strong> and <strong>technical drawing</strong>. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,
-      img: "public/profilePhotos/tam.png"
-    },
-    {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated from Hanoi College of Tourism with a major in Business Administration. In addition to managing office administrative tasks, I also contribute and support various scientific research projects. I am a dynamic and responsible individual, always eager to learn and develop. With a high sense of detail and responsibility, I value teamwork and apply the accumulated experience to bring about quality results. I wish to further develop my career in a professional environment where I can actively contribute to the success of the organization.`,
-      img: "public/profilePhotos/tinh.png"
-    },
-    {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, have a thorough training and a high sense of responsibility in my work. I have experience in <strong>bidding for machinery and equipment projects</strong>, as well as projects related to <strong>urban planning</strong>. In addition, I am capable of handling various administrative tasks. These roles have helped me build strong technical and teamwork skills. I wish to work in a professional environment where I can apply my abilities and contribute to the development of the organization.`,
-      img: "public/profilePhotos/lyicue.png"
-    },
-    {
-      name: `<span class="intro-core">Phan Thị Hiến </span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, <strong>financial reporting</strong> and <strong>data analysis</strong>. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
-      img: "public/profilePhotos/hien.png"
-    },
-  ];
-
-  const textBox = document.getElementById('profile-text-coreTeam');
-  const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.getElementById('profile-coreTeam-container');
-  
-  if (!textBox || !photo) {
-    console.error('Required elements not found for core team profile');
-    return;
-  } 
-  const MIN_SWIPE_DISTANCE = 50;
-  let currentIndex = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let swipeLocked = false;
-  let typingSessionObj = { skip: false };
-  let isTyping = false;
-  let isAnimating = false;
-  
-  if (profileData_coreTeam.length > 0) {
-    textBox.innerHTML = ''; 
-    photo.src = profileData_coreTeam[0].img;
-    typeHTMLString(
-      textBox, 
-      profileData_coreTeam[0].name, 
-      1, 
-      null, 
-      typingSessionObj, 
-      'highlight'
-    );
-  }
-  
-  const updateProfile_coreTeam = (index, direction = 'right') => {
-    if (isAnimating) return;
-    isAnimating = true;
-    
-    if (index < 0 || index >= profileData_coreTeam.length) {
-      console.error('Invalid profile index');
-      isAnimating = false;
-      return;
-    }
-
-    currentIndex = index;
-    
-    const isFirstLoad = (currentIndex === 0 && index === 0);
-    
-    if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    }
-    
-    const transitionEndHandler = () => {
-      textBox.innerHTML = "";
-      
-      const container = document.createElement("div");
-      textBox.appendChild(container);
-      
-      const profile = profileData_coreTeam[index];
-      
-      const nextImg = new Image();
-      nextImg.src = profile.img;
-      nextImg.onload = () => {
-        photo.src = profile.img;
-        photo.alt = `Profile of ${profile.name}`;
-      };
-      nextImg.onerror = () => {
-        console.error(`Failed to load image: ${profile.img}`);
-        photo.src = 'public/profilePhotos/placeholder.jpg';
-      };
-      
-      typingSessionObj = { skip: false };
-      isTyping = true;
-      
-      typeHTMLString(container, profile.name, 30, () => {
-        gsap.fromTo(container,
-          { opacity: 0, y: 10, scale: 0.98 },
-          { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            duration: 0.4, 
-            ease: "power1.out",
-            onComplete: () => {
-              isTyping = false;
-              isAnimating = false;
-            }
-          }
-        );
-      }, typingSessionObj, 'highlight-text-phrase-core');
-      
-      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
-      photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
-      photo.classList.remove('slide-enter-left', 'slide-enter-right');
-      
-      const tl = gsap.timeline({
-        onComplete: () => {
-          if (isAnimating) isAnimating = false;
-        }
-      });
-      
-      if (isFirstLoad) {
-        tl.fromTo(photo,
-          { y: 100, scale: 0.25, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
-        );
-        tl.fromTo(textBox,
-          { y: -50, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
-          "-=0.8"
-        );
-      } else {
-        tl.fromTo(photo,
-          { y: 100, scale: 0.25, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
-        );
-        tl.to(photo, {
-          y: 10,
-          duration: 0.3,
-          ease: "power2.out"
-        }, "-=0.4");
-        tl.set(photo, { y: 10 });
-        tl.fromTo(textBox,
-          { x: direction === 'right' ? 100 : -100, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-          "-=0.5"
-        );
-      }
+      // Note: No navigation for touch devices, only skip functionality
     };
-    
-    setTimeout(transitionEndHandler, isFirstLoad ? 50 : 100);
-  };
-  
-  // Function to handle profile navigation
-  const navigateProfile = (direction) => {
-    if (isAnimating) {
-      if (typingSessionObj) {
-        typingSessionObj.skip = true;
-      }
-      return;
-    }
 
-    let newIndex;
-    if (direction === 'left') {
-      newIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-      updateProfile_coreTeam(newIndex, 'left');
-    } else if (direction === 'right') {
-      newIndex = (currentIndex + 1) % profileData_coreTeam.length;
-      updateProfile_coreTeam(newIndex, 'right');
-    }
-  };
-
-  // Touch event handlers for swipe navigation
-  if (container) {
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    container.addEventListener('touchend', (e) => {
-      if (swipeLocked) return;
-      
-      touchEndX = e.changedTouches[0].screenX;
-      const swipeDistance = touchEndX - touchStartX;
-
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        swipeLocked = true;
-        
-        if (swipeDistance > 0) {
-          // Swipe right → go to previous profile
-          navigateProfile('left');
-        } else {
-          // Swipe left → go to next profile
-          navigateProfile('right');
-        }
-        
-        setTimeout(() => swipeLocked = false, 800);
-      }
-    }, { passive: true });
+    textBox.addEventListener('touchend', handleTouchSkip);
   }
-
-  if (!isTouchDevice) {
-  textBox.addEventListener('click', (e) => {
-    const clickedIntro = e.target.closest('.intro-core');
-    const clickedTextBox = e.target.closest('#profile-text-coreTeam');
-
-    // Step 1: Skip typing on first click if still typing
-    if ((clickedIntro || clickedTextBox) && isTyping) {
-      if (typingSessionObj) {
-        typingSessionObj.skip = true;
-        isTyping = false;
-      }
-      return; // ⛔ Don't navigate yet — wait for second click
-    }
-      
-      // Get click position
-      const rect = textBox.getBoundingClientRect();
-      const clickX = e.clientX;
-      if (clickX === undefined) return;
-
-      // Determine if click was on left or right side
-      const x = clickX - rect.left;
-      const isLeftClick = (x < rect.width / 2);
-      
-      // Navigate based on click position
-      navigateProfile(isLeftClick ? 'left' : 'right');
-    });
-  }
-
-  if (isTouchDevice) {
-    textBox.addEventListener('touchend', (e) => {
-      if (isAnimating && typingSessionObj) {
-        typingSessionObj.skip = true;
-        isTyping = false;
-      }
-    }, { passive: true });
-  }
-
-  updateProfile_coreTeam(0);
-};
+}
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
@@ -628,9 +448,10 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
+                  realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
-                  makeItRainText("#rainText"); 
+                  makeItRainText("#rainText"); // <-- THIS is now safe to call!
                   break;
                 case 'News':
                   initLogoSlider();
@@ -825,6 +646,7 @@ window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
     button.addEventListener('click', () => {
       console.log('Button clicked:', button.textContent);
+      // Add your button logic here
     });
   });
 }
@@ -860,6 +682,85 @@ window.makeItRainText = () => {
 // Call when DOM is ready
 window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
+});
+
+window.realSlamnorSlam = function () {
+  const text = document.querySelector('#textSlam .slam-text');
+  const dust = document.querySelector('#textSlam .slam-dust');
+
+  if (!text || !dust) {
+    console.warn("Missing .slam-text or .slam-dust");
+    return;
+  }
+
+  // Reset state
+  gsap.set(text, {
+    x: 0,
+    y: 0,
+    rotationX: 0,
+    scale: 1.05,
+    opacity: 0,
+    transformOrigin: "50% 50%",
+    perspective: 1000
+  });
+
+  gsap.set(dust, {
+    scale: 0.5,
+    opacity: 0,
+    filter: "brightness(0.25)"
+  });
+
+  const tl = gsap.timeline();
+
+  // 🌀 Spin + Drop Slam
+  tl.to(text, {
+    opacity: 1,
+    y: 0,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    scale: 1.5,
+    duration: 1.1,
+    ease: "back.out(1.7)",
+    transformPerspective: 1200
+  })
+
+  // 💥 Slam Impact
+  .to(text, {
+    scaleY: 1.25,
+    scaleX: 1.25,
+    duration: 0.1,
+    ease: "power4.inOut"
+  })
+
+  // 👊 Bounce Back
+  .to(text, {
+    scaleY: 1,
+    scaleX: 1,
+    duration: 0.7,
+    ease: "elastic.out(1, 0.5)"
+  })
+
+  // 💨 Dust Puff
+  .to(dust, {
+    opacity: 1,
+    scale: 1.4,
+    filter: "brightness(1.5)",
+    duration: 0.75,
+    ease: "power2.out"
+  }, "-=1") // overlap dust with squash
+
+  .to(dust, {
+    opacity: 0,
+    scale: 2.2,
+    filter: "brightness(.75)",
+    duration: 1.2,
+    ease: "power2.in"
+  }, "-=0.6"); // overlap exit
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  realSlamnorSlam();
 });
 
 window.initHomeTextSlider = () => {
@@ -1212,38 +1113,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPage('Home');
   highlightActiveLink('Home');
 };*/
-window.showCalendarModal = () => {
-    // Calendar modal logic
-    const calendarIcon = document.querySelector('.calendar-icon svg');
-    const calendarLink = document.querySelector('.calendar-icon');
-    const calendarModal = document.getElementById('calendar-modal');
-    const calendarModalContent = document.getElementById('calendar-modal-content');
-    const calendarModalSvg = document.getElementById('calendar-modal-svg');
-    const calendarModalClose = document.getElementById('calendar-modal-close');
-
-    if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calendarModalClose) {
-        calendarLink.addEventListener('click', function(e) {
-            // Clone the calendar SVG
-            const clone = calendarIcon.cloneNode(true);
-            // Clear previous
-            calendarModalSvg.innerHTML = '';
-            calendarModalSvg.appendChild(clone);
-            // Style the SVG
-            clone.style.width = '340px';
-            clone.style.height = '340px';
-            clone.style.display = 'block';
-            calendarModal.style.display = 'flex';
-        });
-        calendarModalClose.addEventListener('click', function() {
-            calendarModal.style.display = 'none';
-        })
-        // Close modal when clicking outside modal content
-        calendarModal.addEventListener('click', function(e) {
-            if (e.target === calendarModal) {
-                calendarModal.style.display = 'none';
-            }
-        });
-  }};
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
@@ -1275,6 +1144,223 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+window.attachProfileEvents_coreTeam = () => {
+  const profileData_coreTeam = [
+    {name:
+      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, <strong>sustainable urban development</strong>, <strong>infrastructure management</strong> and <strong>public space design</strong>. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize <strong>sustainable</strong> and <strong>environmentally friendly solutions</strong>.`,
+      img: "public/profilePhotos/lyly.png"
+    },
+    {
+      name: `<span class="intro-core">Đinh Tùng Dương</span> I hold a degree in Urban Management from Hanoi Architectural University, where I was honored to be named Hanoi's Valedictorian in 2023. Over the past two years, I have been actively contributing to urban development projects focusing on <strong>spatial planning</strong>, <strong>landscape improvement</strong>, and <strong>sustainable urban living</strong>. I have strong analytical and organizational skills, along with proficiency in both office and technical software. I am committed to continuous professional development and aim to contribute effectively to a progressive, reputable organization. `,
+      img: "public/profilePhotos/duong.png"
+    },
+    {
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in <strong>quantity surveying</strong>, <strong>detailed planning</strong> and <strong>technical drawing</strong>. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,
+      img: "public/profilePhotos/tam.png"
+    },
+    {
+      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated from Hanoi College of Tourism with a major in Business Administration. In addition to managing office administrative tasks, I also contribute and support various scientific research projects. I am a dynamic and responsible individual, always eager to learn and develop. With a high sense of detail and responsibility, I value teamwork and apply the accumulated experience to bring about quality results. I wish to further develop my career in a professional environment where I can actively contribute to the success of the organization.`,
+      img: "public/profilePhotos/tinh.png"
+    },
+    {
+      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, have a thorough training and a high sense of responsibility in my work. I have experience in <strong>bidding for machinery and equipment projects</strong>, as well as projects related to <strong>urban planning</strong>. In addition, I am capable of handling various administrative tasks. These roles have helped me build strong technical and teamwork skills. I wish to work in a professional environment where I can apply my abilities and contribute to the development of the organization.`,
+      img: "public/profilePhotos/lyicue.png"
+    },
+    {
+      name: `<span class="intro-core">Phan Thị Hiến </span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, <strong>financial reporting</strong> and <strong>data analysis</strong>. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
+      img: "public/profilePhotos/hien.png"
+    },
+    
+    
+  ];
+
+  let currentIndex = 0;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const MIN_SWIPE_DISTANCE = 15;
+
+  const textBox = document.getElementById('profile-text-coreTeam');
+  const photo = document.getElementById('profile-photo-coreTeam');
+  const container = document.getElementById('profile-text-coreTeam')?.parentElement;
+
+  // Visual cues: add left/right overlays
+  if (textBox && !document.getElementById('profile-cue-left-core')) {
+    const leftCue = document.createElement('div');
+    leftCue.id = 'profile-cue-left-core';
+    leftCue.style.position = 'absolute';
+    leftCue.style.left = 0;
+    leftCue.style.top = 0;
+    leftCue.style.width = '40%';
+    leftCue.style.height = '100%';
+    leftCue.style.pointerEvents = 'none';
+    leftCue.style.display = 'flex';
+    leftCue.style.alignItems = 'center';
+    leftCue.style.justifyContent = 'flex-start';
+    leftCue.style.zIndex = 2;
+    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
+    textBox.style.position = 'relative';
+    textBox.appendChild(leftCue);
+    const rightCue = document.createElement('div');
+    rightCue.id = 'profile-cue-right-core';
+    rightCue.style.position = 'absolute';
+    rightCue.style.right = 0;
+    rightCue.style.top = 0;
+    rightCue.style.width = '40%';
+    rightCue.style.height = '100%';
+    rightCue.style.pointerEvents = 'none';
+    rightCue.style.display = 'flex';
+    rightCue.style.alignItems = 'center';
+    rightCue.style.justifyContent = 'flex-end';
+    rightCue.style.zIndex = 2;
+    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
+    textBox.appendChild(rightCue);
+  }
+
+  let typingSessionObj = { skip: false };
+  let isTyping = false;
+  let isAnimating = false;
+  window.updateProfile_coreTeam = (index, direction = 'right') => {
+    if (!textBox || !photo || isAnimating) return;
+    isAnimating = true;
+    playProfileChangeSound();
+    const isFirstLoad = (currentIndex === 0 && index === 0);
+    if (!isFirstLoad) {
+      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    }
+    setTimeout(() => {
+      textBox.innerHTML = "";
+      const message = profileData_coreTeam[index].name;
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+      typingSessionObj = { skip: false };
+      isTyping = true;
+      const skipTypingFn = typeHTMLString(container, message, 30, () => {
+        gsap.fromTo(container,
+          { opacity: 0, y: 10, scale: 0.98 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
+        );
+        isTyping = false;
+        isAnimating = false;
+      }, typingSessionObj, 'highlight-text-phrase-core');
+      photo.src = profileData_coreTeam[index].img;
+      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
+      photo.classList.remove('slide-exit-left', 'slide-exit-right');
+      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
+      photo.classList.remove('slide-enter-left', 'slide-enter-right');
+      const tl = gsap.timeline();
+      if (isFirstLoad) {
+        tl.fromTo(photo,
+          { y: 100, scale: 0.25, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
+        );
+        tl.fromTo(textBox,
+          { y: -50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
+          "-=0.8"
+        );
+      } else {
+        tl.fromTo(photo,
+          { y: 100, scale: 0.25, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
+        );
+        tl.to(photo, {
+          y: 10,
+          duration: 0.3,
+          ease: "power2.out"
+        }, "-=0.4");
+        tl.set(photo, { y: 10 });
+        tl.fromTo(textBox,
+          { x: direction === 'right' ? 100 : -100, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+          "-=0.5"
+        );
+      }
+    }, isFirstLoad ? 0 : 800);
+  };
+
+  document.getElementById('next-btn')?.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+    updateProfile_coreTeam(currentIndex, 'right');
+  });
+
+  document.getElementById('prev-btn')?.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+    updateProfile_coreTeam(currentIndex, 'left');
+  });
+
+  if (container) {
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        if (swipeDistance > 0) {
+          // Swipe right → go to previous profile
+          document.getElementById('prev-btn')?.click();
+        } else {
+          // Swipe left → go to next profile
+          document.getElementById('next-btn')?.click();
+        }
+      }
+    });
+  }
+
+  // Preload images
+  profileData_coreTeam.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
+  });
+
+  // Initialize first profile
+  updateProfile_coreTeam(0);
+
+  // Add click navigation on textBox for core team (desktop only, no touch devices)
+  if (textBox && !isTouchDevice) {
+    const handleClick = (e) => {
+      // If any animation is running, the only action is to skip the typewriter.
+      if (isAnimating) {
+        typingSessionObj.skip = true;
+        return;
+      }
+
+      // Otherwise, navigate.
+      const rect = textBox.getBoundingClientRect();
+      const clickX = e.clientX;
+      if (clickX === undefined) return;
+
+      const x = clickX - rect.left;
+
+      if (x < rect.width / 2) {
+        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+        updateProfile_coreTeam(currentIndex, 'left');
+      } else {
+        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+        updateProfile_coreTeam(currentIndex, 'right');
+      }
+    };
+
+    textBox.addEventListener('click', handleClick);
+  }
+
+  // Add touch skip functionality for touch devices (skip typing only, no navigation)
+  if (textBox && isTouchDevice) {
+    const handleTouchSkip = (e) => {
+      // If any animation is running, skip the typewriter
+      if (isAnimating) {
+        typingSessionObj.skip = true;
+      }
+      // Note: No navigation for touch devices, only skip functionality
+    };
+
+    textBox.addEventListener('touchend', handleTouchSkip);
+  }
+};
 
 window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
