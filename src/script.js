@@ -336,7 +336,7 @@ window.attachProfileEvents = () => {
       }
     });
   });
-  
+
   updateProfile(0);
 
   // Add click navigation on textBox (desktop only, no touch devices)
@@ -1302,7 +1302,7 @@ window.attachProfileEvents_coreTeam = () => {
 
   updateProfile_coreTeam(0);
 
-  // Add click navigation on textBox for core team (desktop only, no touch devices)
+  // Add click navigation on textBox (desktop only, no touch devices)
   if (textBox && !isTouchDevice) {
     const handleClick = (e) => {
       // If any animation is running, the only action is to skip the typewriter.
@@ -1315,20 +1315,39 @@ window.attachProfileEvents_coreTeam = () => {
       const rect = textBox.getBoundingClientRect();
       const clickX = e.clientX;
       if (clickX === undefined) return;
-
+      
       const x = clickX - rect.left;
 
       if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+        currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
         updateProfile_coreTeam(currentIndex, 'left');
       } else {
-        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+        currentIndex = (currentIndex + 1) % profileData.length;
         updateProfile_coreTeam(currentIndex, 'right');
       }
     };
 
     textBox.addEventListener('click', handleClick);
   }
+
+  // Touch support
+    textBox.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const rect = textBox.getBoundingClientRect();
+        const x = e.changedTouches[0].clientX - rect.left;
+        if (isTyping) {
+          typingSessionObj.skip = true;
+          return;
+        }
+        if (x < rect.width / 2) {
+          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'left');
+        } else {
+          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'right');
+        }
+      }
+    });
 
   // Add touch skip functionality for touch devices (skip typing only, no navigation)
   if (textBox && isTouchDevice) {
@@ -1342,7 +1361,7 @@ window.attachProfileEvents_coreTeam = () => {
 
     textBox.addEventListener('touchend', handleTouchSkip);
   }
-};
+}
 
 window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
