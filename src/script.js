@@ -57,6 +57,7 @@ function playProfileChangeSound() {
   noiseSource.start(now);
   noiseSource.stop(now + duration);
 }
+
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
   let processedHtmlString = htmlString;
