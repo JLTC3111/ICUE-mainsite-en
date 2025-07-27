@@ -182,7 +182,7 @@ window.attachProfileEvents_moe = () => {
     img: "public/profilePhotos/hoangthuha.jpg"
   },
   {
-    name: `<span class="intro-people">Ms. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in <span class="highlight-text-phrase-moe">strategic urban design</span>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <span class="highlight-text-phrase-moe">climate change adaptation</span>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <span class="highlight-text-phrase-moe">resilience</span> and <span class="highlight-text-phrase-moe">urban planning</span> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages and passionate about shaping a sustainable, livable urban future.`,
+    name: `<span class="intro-people">Dr. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in <span class="highlight-text-phrase-moe">strategic urban design</span>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <span class="highlight-text-phrase-moe">climate change adaptation</span>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <span class="highlight-text-phrase-moe">resilience</span> and <span class="highlight-text-phrase-moe">urban planning</span> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages and passionate about shaping a sustainable, livable urban future.`,
     img: "public/profilePhotos/tranthilananh.jpg"
   },
   {
@@ -276,7 +276,7 @@ window.attachProfileEvents_moe = () => {
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
-        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
+        { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 },
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
       tl.fromTo(textBox, 
