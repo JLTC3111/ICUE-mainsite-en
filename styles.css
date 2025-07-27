@@ -89,9 +89,12 @@ nav a {
 }
 
 .highlight-text-phrase-moe {
-  font-weight: bold;
-  color: rgb(32, 32, 32);
-  text-shadow: 0 .5px 1px #fffca3, 0 0 2px rgb(253, 252, 252);
+  font-weight: 300;
+  font-style: italic;
+  background: linear-gradient(45deg, #ffffff, #e2d7ff, #00f7ff, #ffe5e5, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .highlight-text-phrase-core {
@@ -377,7 +380,7 @@ footer {
   height: 400px;
   border-radius: 350px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 12px rgba(255, 255, 255, 1);
 }
 
 .profile-photo {
@@ -496,7 +499,8 @@ footer {
   padding: 20px;
   border-radius: 350px;
   box-shadow: none;
-  margin-left: clamp(.5rem, 1vw, 1.5rem)
+  margin-left: clamp(.5rem, 1vw, 1.5rem);
+  box-shadow: 0px 4px 12px rgba(255, 255, 255, 1);
 }
 
 .montserrat-pepple {
@@ -515,7 +519,7 @@ footer {
   justify-content: center;
   font-size: clamp(24px, 2.5vw, 40px);
   font-weight: bold;
-  background: linear-gradient(45deg, #000000, #a09b0e);
+  background: linear-gradient(-90deg, #d3c6c6, #767e38, #55bac0, #767e38);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -921,6 +925,7 @@ footer {
   height: 433px;
   overflow: hidden;
   background: transparent;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 1);
   border-radius: 450px;
   z-index: 2;
 }
@@ -941,6 +946,8 @@ footer {
   max-width: 625px;
   padding: 25px;
   background: transparent;
+  box-shadow: 2px 4px 12px #6d6d6d;
+  border-radius: 24px;
   z-index: 2;
 }
 
@@ -950,7 +957,7 @@ footer {
   letter-spacing: 1.5px; 
   font-size: 45px;
   font-weight: bold;
-  background: linear-gradient(to left, #000000, #a09b0e, rgb(45, 73, 4), rgb(174, 15, 15));
+  background: linear-gradient(to left, #000000, #742222, #a09b0e, rgb(148, 246, 1));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -2049,6 +2056,7 @@ body.loaded #app {
     max-width: 90vw;
     transform: translate(-50%, 22.5%);
     padding: 15px;
+    box-shadow: none;
   }
 
   .montserrat-pepple {
