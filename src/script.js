@@ -171,8 +171,8 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
   return () => { skipTyping = true; if (typingSessionObj) typingSessionObj.skip = true; };
 }
 
-window.attachProfileEvents = () => {
-  const profileData = [
+window.attachProfileEvents_moe = () => {
+  const profileData_moe = [
     {
       name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, <strong>urban planning</strong> and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on <strong>green urban development</strong>, <strong>climate resilience</strong> and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
@@ -197,7 +197,9 @@ window.attachProfileEvents = () => {
 
   let currentIndex = 0;
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
+  let touchEndY = 0;
   const MIN_SWIPE_DISTANCE = 15;
   
   const textBox = document.getElementById('profile-text');
@@ -239,153 +241,118 @@ window.attachProfileEvents = () => {
 
   let typingSessionObj = { skip: false };
   let isTyping = false;
-  let isAnimating = false;
-  window.updateProfile = (index, direction = 'right') => {
-    if (!textBox || !photo || isAnimating) return;
-    isAnimating = true;
-    playProfileChangeSound();
-  
-    // Step 1: Add exit animation classes
+  let skipOnNextClick = false;
+
+  function updateProfile_moe (index, direction = 'right') {
+    if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
-
     if (!isFirstLoad) {
-    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
-  
+      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    }
+    
     setTimeout(() => {
-      // Step 2: Update content with typewriter
-      textBox.innerHTML = ""; // clear previous
-      const message = profileData[index].name;
-      const container = document.createElement("div");
-      textBox.appendChild(container);
-
+      textBox.innerHTML = "";
+      const message = profileData_moe[index].name;
+      const containerDiv = document.createElement("div");
+      textBox.appendChild(containerDiv);
       typingSessionObj = { skip: false };
       isTyping = true;
-      const skipTypingFn = typeHTMLString(container, message, 25, () => {
-        gsap.fromTo(container,
-          { opacity: 0, y: 10, scale: 0.98 },
+      skipOnNextClick = false;
+      typeHTMLString(containerDiv, message, 25, () => {
+        gsap.fromTo(containerDiv, 
+          { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
         isTyping = false;
-        isAnimating = false;
-      }, typingSessionObj, 'highlight-text-phrase-moe');
-      photo.src = profileData[index].img;
-  
-      // Step 3: Remove exit animation classes
+        skipOnNextClick = false;
+      }, typingSessionObj);
+      
+      photo.src = profileData_moe[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-  
-      // (Optional) remove old enter classes in case
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
-  
-      // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
-  
-      tl.fromTo(photo,
-        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 },
+      tl.fromTo(photo, 
+        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
-  
-      tl.fromTo(textBox,
-        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 },
+      tl.fromTo(textBox, 
+        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
-        "-=0.5" // Start slightly overlapping with photo animation
+        "-=0.5"
       );
+    }, 300);
+  };
+
+  document.getElementById('moe-next-btn')?.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % profileData_moe.length;
+    updateProfile_moe(currentIndex, 'right');
+  });
+  document.getElementById('moe-prev-btn')?.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
+    updateProfile_moe(currentIndex, 'left');
+  });
+
   
-    }, 300); // ← match exit animation duration (0.3s)
-  }
+  updateProfile_moe(0);
 
-  document.getElementById('next-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % profileData.length;
-    updateProfile(currentIndex, 'right');
-  });
+  if (textBox) {
+      const handleClick = (e) => {
+        if (isTyping) {
+          typingSessionObj.skip = true;
+          return;
+        }
+      };
+      textBox.addEventListener('click', handleClick);
+    }
 
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-    updateProfile(currentIndex, 'left');
-  });
-
+  if (textBox && isTouchDevice) {
   const swipeElements = [container, textBox];
-
   let swipeLocked = false;
-  
+
   swipeElements.forEach(el => {
     el.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;  // Track vertical position
     });
-  
+
     el.addEventListener('touchend', (e) => {
       if (swipeLocked) return;
-  
+
       touchEndX = e.changedTouches[0].screenX;
-      const swipeDistance = touchEndX - touchStartX;
-  
+      touchEndY = e.changedTouches[0].screenY;  // Track vertical position
+
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      // Ignore diagonal or mostly vertical swipes
+      if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaY) > Math.abs(deltaX)) {
+        return;  // Vertical or diagonal swipe
+      }
+
+      const swipeDistance = deltaX;
+
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         swipeLocked = true;
-  
-        if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
-        }
-  
-        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
+          // Right swipe (next)
+            if (swipeDistance > 0) {
+                currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
+                updateProfile_moe(currentIndex, 'left');
+              }
+              // Left swipe (previous)
+              else {
+                currentIndex = (currentIndex + 1) % profileData_moe.length;
+                updateProfile_moe(currentIndex, 'right');
+              }
+
+              setTimeout(() => swipeLocked = false, 500); // Debounce
+            }
+          });
+        });
       }
-    });
-  });
-
-  // Preload all profile images
-  profileData.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-  // Start first profile
-  updateProfile(0);
-
-  // Add click navigation on textBox (desktop only, no touch devices)
-  if (textBox && !isTouchDevice) {
-    const handleClick = (e) => {
-      // If any animation is running, the only action is to skip the typewriter.
-      if (isAnimating) {
-        typingSessionObj.skip = true;
-        return;
-      }
-
-      // Otherwise, navigate.
-      const rect = textBox.getBoundingClientRect();
-      const clickX = e.clientX;
-      if (clickX === undefined) return;
-      
-      const x = clickX - rect.left;
-
-      if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-        updateProfile(currentIndex, 'left');
-      } else {
-        currentIndex = (currentIndex + 1) % profileData.length;
-        updateProfile(currentIndex, 'right');
-      }
-    };
-
-    textBox.addEventListener('click', handleClick);
   }
-
-  // Add touch skip functionality for touch devices (skip typing only, no navigation)
-  if (textBox && isTouchDevice) {
-    const handleTouchSkip = (e) => {
-      // If any animation is running, skip the typewriter
-      if (isAnimating) {
-        typingSessionObj.skip = true;
-      }
-      // Note: No navigation for touch devices, only skip functionality
-    };
-
-    textBox.addEventListener('touchend', handleTouchSkip);
-  }
-}
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
@@ -442,7 +409,7 @@ window.loadPage = (page) => {
               
               switch (page) {
                 case 'meetOurExperts':
-                  attachProfileEvents();
+                  attachProfileEvents_moe();
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
@@ -1176,9 +1143,6 @@ window.attachProfileEvents_coreTeam = () => {
   ];
 
   let currentIndex = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  const MIN_SWIPE_DISTANCE = 15;
 
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
@@ -1219,11 +1183,10 @@ window.attachProfileEvents_coreTeam = () => {
 
   let typingSessionObj = { skip: false };
   let isTyping = false;
-  let isAnimating = false;
+  let skipOnNextClick = false;
+
   window.updateProfile_coreTeam = (index, direction = 'right') => {
-    if (!textBox || !photo || isAnimating) return;
-    isAnimating = true;
-    playProfileChangeSound();
+    if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
@@ -1232,18 +1195,19 @@ window.attachProfileEvents_coreTeam = () => {
     setTimeout(() => {
       textBox.innerHTML = "";
       const message = profileData_coreTeam[index].name;
-      const container = document.createElement("div");
-      textBox.appendChild(container);
+      const containerDiv = document.createElement("div");
+      textBox.appendChild(containerDiv);
       typingSessionObj = { skip: false };
       isTyping = true;
-      const skipTypingFn = typeHTMLString(container, message, 30, () => {
-        gsap.fromTo(container,
-          { opacity: 0, y: 10, scale: 0.98 },
+      skipOnNextClick = false;
+      typeHTMLString(containerDiv, message, 30, () => {
+        gsap.fromTo(containerDiv, 
+          { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
         isTyping = false;
-        isAnimating = false;
-      }, typingSessionObj, 'highlight-text-phrase-core');
+        skipOnNextClick = false;
+      }, typingSessionObj);
       photo.src = profileData_coreTeam[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
@@ -1280,105 +1244,69 @@ window.attachProfileEvents_coreTeam = () => {
     }, isFirstLoad ? 0 : 800);
   };
 
-  document.getElementById('next-btn')?.addEventListener('click', () => {
+  document.getElementById('core-next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'right');
   });
 
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
+  document.getElementById('core-prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'left');
   });
 
-  if (container) {
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    container.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const swipeDistance = touchEndX - touchStartX;
-
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        if (swipeDistance > 0) {
-          // Swipe right → go to previous profile
-          document.getElementById('prev-btn')?.click();
-        } else {
-          // Swipe left → go to next profile
-          document.getElementById('next-btn')?.click();
-        }
-      }
-    });
-  }
-
-  // Preload images
-  profileData_coreTeam.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-
-  // Initialize first profile
   updateProfile_coreTeam(0);
 
-  // Add click navigation on textBox for core team (desktop only, no touch devices)
-  if (textBox && !isTouchDevice) {
-    const handleClick = (e) => {
-      // If any animation is running, the only action is to skip the typewriter.
-      if (isAnimating) {
-        typingSessionObj.skip = true;
-        return;
-      }
-
-      // Otherwise, navigate.
-      const rect = textBox.getBoundingClientRect();
-      const clickX = e.clientX;
-      if (clickX === undefined) return;
-
-      const x = clickX - rect.left;
-
-      if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'left');
-      } else {
-        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'right');
-      }
-    };
-
-    textBox.addEventListener('click', handleClick);
-  }
-  
-  // Add touch skip functionality for touch devices (skip typing only, no navigation)
-  if (textBox && isTouchDevice) {
-    const handleTouchSkip = (e) => {
-      // If any animation is running, skip the typewriter
-      if (isAnimating) {
-        typingSessionObj.skip = true;
-      }
-      // Note: No navigation for touch devices, only skip functionality
-    };
-
-    textBox.addEventListener('touchend', handleTouchSkip);
-  }
-  // Touch support
-    textBox.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
+  if (textBox) {
+      const handleClick = (e) => {
         if (isTyping) {
           typingSessionObj.skip = true;
           return;
         }
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+      };
+      textBox.addEventListener('click', handleClick);
+    }
+
+    if (textBox && isTouchDevice) {
+      const swipeTarget = container || textBox; // fallback if container is null
+      let swipeLocked = false;
+      const MIN_SWIPE_DISTANCE = 25;
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      swipeTarget.addEventListener('touchstart', (e) => {
+        const touch = e.changedTouches[0];
+        touchStartX = touch.screenX;
+        touchStartY = touch.screenY;
+      });
+
+      swipeTarget.addEventListener('touchend', (e) => {
+        if (swipeLocked) return;
+
+        const touch = e.changedTouches[0];
+        const touchEndX = touch.screenX;
+        const touchEndY = touch.screenY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        // Ignore diagonal or mostly vertical swipes
+        if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+        swipeLocked = true;
+
+        if (deltaX > 0 && currentIndex > 0) {
+          currentIndex--;
           updateProfile_coreTeam(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+        } else if (deltaX < 0 && currentIndex < profileData_coreTeam.length - 1) {
+          currentIndex++;
           updateProfile_coreTeam(currentIndex, 'right');
         }
-      }
-    });
-};
+
+        setTimeout(() => swipeLocked = false, 500); // debounce faster for UX
+      });
+    }
+  }
 
 window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
