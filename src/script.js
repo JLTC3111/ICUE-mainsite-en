@@ -1281,7 +1281,6 @@ window.attachProfileEvents_coreTeam = () => {
 
       if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaX) < Math.abs(deltaY)) return;
         swipeLocked = true;
-
         if (deltaX > 0) {
           // Swipe right = previous profile
           currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
@@ -1291,9 +1290,8 @@ window.attachProfileEvents_coreTeam = () => {
           currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
           updateProfile_coreTeam(currentIndex, 'right');
         }
-
         setTimeout(() => swipeLocked = false, 500);
-
+    }}
 
 window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
