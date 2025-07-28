@@ -1165,7 +1165,7 @@ window.attachProfileEvents_coreTeam = () => {
     img: "public/profilePhotos/tam.png"
   },
   {
-    name: `<span class="intro-core">Trịnh Thị Tình</span> Graduated from Hanoi College of Tourism with a major in Business Administration. In addition to managing office administrative tasks, I also contribute and support various scientific research projects. I am a dynamic and responsible individual, always eager to learn and develop. With a high sense of detail and responsibility, I value teamwork and apply the accumulated experience to bring about quality results. I wish to further develop my career in a professional environment where I can actively contribute to the success of the organization.`,
+    name: `<span class="intro-core">Trịnh Thị Tình</span> Graduated from Hanoi College of Tourism with a major in Business Administration. In addition to managing office administrative tasks, I also contribute and support various <span class="highlight-text-phrase-core">scientific research projects</span>. I am a dynamic and responsible individual, always <span class="highlight-text-phrase-core">eager to learn</span> and develop. With a high sense of detail and responsibility, I value teamwork and apply the accumulated experience to bring about quality results. I wish to further develop my career in a professional environment where I can actively contribute to the success of the organization.`,
     img: "public/profilePhotos/tinh.png"
   },
   {
@@ -1247,8 +1247,7 @@ window.attachProfileEvents_coreTeam = () => {
       photo.src = profileData_coreTeam[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
-      photo.classList.remove('slide-enter-left', 'slide-enter-right');
+      
       const tl = gsap.timeline();
       if (isFirstLoad) {
         tl.fromTo(photo,
@@ -1291,7 +1290,7 @@ window.attachProfileEvents_coreTeam = () => {
   });
 
   updateProfile_coreTeam(0);
-
+  
   if (textBox) {
       const handleClick = (e) => {
         if (isTyping) {
