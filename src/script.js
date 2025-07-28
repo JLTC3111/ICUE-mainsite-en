@@ -248,7 +248,7 @@ window.attachProfileEvents_moe = () => {
     if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      textBox.classList.add(direction === 'right' ? 'slide-exit-right' : 'slide-exit-left');
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
     
@@ -270,10 +270,8 @@ window.attachProfileEvents_moe = () => {
       }, typingSessionObj);
       
       photo.src = profileData_moe[index].img;
-      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
+      textBox.classList.remove('slide-exit-right', 'slide-exit-left');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
-      photo.classList.remove('slide-enter-left', 'slide-enter-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
         { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 },
@@ -353,7 +351,7 @@ window.attachProfileEvents_moe = () => {
           });
         });
       }
-  }
+}
 
 window.calendarModal = () => {
     const calendarIcon = document.querySelector('.calendar-icon svg');
@@ -455,6 +453,7 @@ window.loadPage = (page) => {
                   attachHomeButtonEvents();
                   makeItRainText("#rainText");
                   calendarModal();
+                  triggerFanfare();
                   break;
                 case 'News':
                   initLogoSlider();
@@ -1227,7 +1226,7 @@ window.attachProfileEvents_coreTeam = () => {
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      photo.classList.add(direction === 'right' ? 'slide-exit-right' : 'slide-exit-left');
     }
     setTimeout(() => {
       textBox.innerHTML = "";
@@ -1603,8 +1602,6 @@ window.triggerFanfare = () => {
       }));
     }, 250);
   };
-
-  window.triggerFanfare();
 
 function initAudioVisualizer(
     audioSrc = 'public/music/royalty_free.mp3',
