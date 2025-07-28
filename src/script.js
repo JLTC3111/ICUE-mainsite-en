@@ -1547,13 +1547,10 @@ window.updateCalendarSvgTime = () => {
 
     const now = new Date();
 
-    // Get Month (e.g., "June")
     const month = now.toLocaleString('en-US', { month: 'long' });
 
-    // Get Day (e.g., "18")
     const day = now.getDate();
 
-    // Get Time (e.g., "03:04 PM" for 3:04 PM)
     let hours = now.getHours();
     const minutes = now.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -1561,7 +1558,7 @@ window.updateCalendarSvgTime = () => {
     hours = hours ? hours : 12; // The hour '0' (midnight) should be '12'
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    const timeString = `${hours}:${formattedMinutes} ${ampm}`;
+    const timeString = `${hours}:${formattedMinutes}${ampm}`;
 
     // Update the SVG text elements
     calendarMonthElement.textContent = month;
