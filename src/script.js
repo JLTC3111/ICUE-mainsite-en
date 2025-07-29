@@ -1697,10 +1697,13 @@ function initAudioVisualizer(
         color = '#ffcc00';
         break;
       case 'Contact':
+        color = '#210000ff';
+        break;
+      case 'coreTeam':
         color = '#000000';
         break;
-        case 'coreTeam':
-        color = '#000000';
+      case 'pastProjects':
+        color = '#a1c900ff';
         break;
     }
   
