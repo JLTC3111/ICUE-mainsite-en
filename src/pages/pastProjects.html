@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Past Projects</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin-top: 5%;
+  font-family: sans-serif;
+  background: #f0f0f0;
+  padding: 40px;
+}
+
+.grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+}
+
+/* Responsive stacking layout for small screens */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .tall {
+    grid-row: auto;
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 20px;
+  text-align: center;
+}
+
+.dark {
+  background: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dark a {
+  color: #ccc;
+  text-decoration: underline;
+  margin-top: 1rem;
+}
+
+.image-card:hover {
+  transform: scale(1.05);
+  transition: all 0.5s ease-in-out;
+  transform: will-change; 
+}
+
+.image-card img {
+  width: 100%;
+  height: 250px; 
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+}
+
+/* Tall card spans 2 rows on desktop */
+.tall {
+  grid-row: span 2;
+}
+
+.card-info {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.card-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.card-info p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 3px 0;
+  line-height: 1.4;
+  word-break: normal;
+  white-space: normal;
+}
+
+.card-info .location,
+.card-info .year {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 4px;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  white-space: normal;
+}
+
+.card-info .description {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+  letter-spacing: normal;
+  word-spacing: normal;
+  font-weight: 400;
+  text-transform: none;
+  white-space: normal;
+}
+
+</style>
+<body>
+  <main class="grid">
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/1.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>ĐIỀU CHỈNH QH CHUNG TP LÀO CAI</h3>
+        <p class="location">TP LÀO CAI</p>
+        <p class="year">Năm Hoàn Thành: 2024</p>
+        <p class="description">Quy Mô: 28,162.64ha, đến năm 2045</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/2.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>Quy Hoạch Chung XD TỶ LỆ 1/500</h3>
+        <p class="location">xã Hợp Thành, TP LÀO CAI</p>
+        <p class="year">Năm Hoàn Thành: 2025</p>
+        <p class="description">Quy Mô: 2,693.3ha</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/3.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>Quy Hoạch Phân Khu 6B (PHƯỜNG NGUYỄN ÁI QUỐC)</h3>
+        <p class="location">Thành Phố Hải Dương</p>
+        <p class="year">Năm Hoàn Thành: 2025</p>
+        <p class="description">Quy Mô: 1,159ha</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/4.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>QUY HOẠCH PHÂN KHU XD CỐC SAN</h3>
+        <p class="location">Thành Phố Lào Cai</p>
+        <p class="year">Năm Hoàn Thành: 2025</p>
+        <p class="description">Quy Mô: 1,173.1ha </p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/5.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>QUY HOẠCH CHUNG ĐÔ THỊ ĐÔNG YÊN, HUYỆN BẮC GIANG</h3>
+        <p class="location">xã Đồng Yên, TP Hà Giang</p>
+        <p class="year">Năm Hoàn Thành: 2024</p>
+        <p class="description">Quy Mô:4,407.9ha; đến năm 2035, định hướng đến năm 2050</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/6.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>QUY HOẠCH CHUNG ĐÔ THỊ NÀ CHÌ, HUYỆN XÍN MẦN</h3>
+        <p class="location">xã Nà Chì, Xín Màn, Hà Giang, China</p>
+        <p class="year">Năm Hoàn Thành: 2024</p>
+        <p class="description">Quy Mô:8,038.7ha, đến năm 2035, định hướng đến năm 2050</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/7.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>Hangzhou Sports Tower</h3>
+        <p class="location">Hangzhou, China</p>
+        <p class="year">Completed: 2024</p>
+        <p class="description">A landmark bridge structure combining high-speed transport with green design.</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/8.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>Hangzhou Sports Tower</h3>
+        <p class="location">Hangzhou, China</p>
+        <p class="year">Completed: 2024</p>
+        <p class="description">A landmark bridge structure combining high-speed transport with green design.</p>
+      </div>
+    </div>
+
+    <div class="card image-card">
+      <div class="image-wrapper">
+      <img src="public/pastProjects/9.png" alt="Solar bicycle hall">
+      </div>
+      <div class="card-info">
+        <h3>Hangzhou Sports Tower</h3>
+        <p class="location">Hangzhou, China</p>
+        <p class="year">Completed: 2024</p>
+        <p class="description">A landmark bridge structure combining high-speed transport with green design.</p>
+      </div>
+
+  </main>
+</body>
+</html>

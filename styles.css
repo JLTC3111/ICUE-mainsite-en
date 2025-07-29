@@ -1818,6 +1818,48 @@ body.loaded #app {
     }
 }
 
+.pp-grid-container {
+  top:10%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.pp-card {
+  background: #000;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.pp-cardDark {
+  background: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pp-card.dark a {
+  margin-top: 1em;
+  color: #ccc;
+  text-decoration: underline;
+}
+
+.pp-image-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.pp-image-card p {
+  margin-top: 10px;
+  font-size: large;
+  font-weight: bold;
+}
+
 @media (max-width: 450px) and (min-aspect-ratio: 1.96/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
