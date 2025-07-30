@@ -32,7 +32,7 @@ cards.forEach(card => {
     .then(template => {
       // Create image HTML from array
       const imagesHTML = card.images
-        .map(src => `<img src="public${src}" alt="${card.title}" style="width:100%; margin-bottom: 10px;">`)
+        .map(src => `<img src="${src}" alt="${card.title}" style="width:100%; margin-bottom: 10px;">`)
         .join('');
       const cardHTML = template
         .replace(/{{title}}/g, card.title)
