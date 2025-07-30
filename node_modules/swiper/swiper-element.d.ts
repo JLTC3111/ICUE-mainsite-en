@@ -6,13 +6,6 @@ declare const register: () => void;
 // prettier-ignore
 interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'progress' | 'keypress' | 'resize' | 'touchstart' | 'touchmove' | 'touchend' | 'transitionend' | 'transitionstart'> {
   /**
-   * Event will be fired on window hash change
-   */
-  hashchange: CustomEvent<[swiper: Swiper]>;
-  /**
-   * Event will be fired when swiper updates the hash
-   */
-  hashset: CustomEvent<[swiper: Swiper]>;/**
    * Event will be fired in when autoplay started
    */
   autoplaystart: CustomEvent<[swiper: Swiper]>;
@@ -36,6 +29,16 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    * Event will be fired when slide changed with autoplay
    */
   autoplay: CustomEvent<[swiper: Swiper]>;/**
+   * Event will be fired on window hash change
+   */
+  hashchange: CustomEvent<[swiper: Swiper]>;
+  /**
+   * Event will be fired when swiper updates the hash
+   */
+  hashset: CustomEvent<[swiper: Swiper]>;/**
+   * Event will be fired on key press
+   */
+  keypress: CustomEvent<[swiper: Swiper, keyCode: string]>;/**
    * Event will be fired on navigation hide
    */
   navigationhide: CustomEvent<[swiper: Swiper]>;
@@ -54,9 +57,6 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    * Event will be fired on mousewheel scroll
    */
   scroll: CustomEvent<[swiper: Swiper, event: WheelEvent]>;/**
-   * Event will be fired on key press
-   */
-  keypress: CustomEvent<[swiper: Swiper, keyCode: string]>;/**
    * Event will be fired on draggable scrollbar drag start
    */
   scrollbardragstart: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;

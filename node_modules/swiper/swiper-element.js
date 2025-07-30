@@ -1,5 +1,5 @@
 /**
- * Swiper Custom Element 11.2.8
+ * Swiper Custom Element 11.2.10
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * https://swiperjs.com
  *
@@ -7,14 +7,14 @@
  *
  * Released under the MIT License
  *
- * Released on: May 23, 2025
+ * Released on: June 28, 2025
  */
 
 (function () {
   'use strict';
 
   /**
-   * SSR Window 5.0.0
+   * SSR Window 5.0.1
    * Better handling for window object in SSR environment
    * https://github.com/nolimits4web/ssr-window
    *
@@ -22,7 +22,7 @@
    *
    * Licensed under MIT
    *
-   * Released on: February 12, 2025
+   * Released on: June 27, 2025
    */
   /* eslint-disable no-param-reassign */
   function isObject$2(obj) {
@@ -2227,23 +2227,16 @@
       slidesEl
     } = swiper;
     const slidesPerView = params.slidesPerView === 'auto' ? swiper.slidesPerViewDynamic() : params.slidesPerView;
-    let slideToIndex = swiper.clickedIndex;
+    let slideToIndex = swiper.getSlideIndexWhenGrid(swiper.clickedIndex);
     let realIndex;
     const slideSelector = swiper.isElement ? `swiper-slide` : `.${params.slideClass}`;
+    const isGrid = swiper.grid && swiper.params.grid && swiper.params.grid.rows > 1;
     if (params.loop) {
       if (swiper.animating) return;
       realIndex = parseInt(swiper.clickedSlide.getAttribute('data-swiper-slide-index'), 10);
       if (params.centeredSlides) {
-        if (slideToIndex < swiper.loopedSlides - slidesPerView / 2 || slideToIndex > swiper.slides.length - swiper.loopedSlides + slidesPerView / 2) {
-          swiper.loopFix();
-          slideToIndex = swiper.getSlideIndex(elementChildren(slidesEl, `${slideSelector}[data-swiper-slide-index="${realIndex}"]`)[0]);
-          nextTick(() => {
-            swiper.slideTo(slideToIndex);
-          });
-        } else {
-          swiper.slideTo(slideToIndex);
-        }
-      } else if (slideToIndex > swiper.slides.length - slidesPerView) {
+        swiper.slideToLoop(realIndex);
+      } else if (slideToIndex > (isGrid ? (swiper.slides.length - slidesPerView) / 2 - (swiper.params.grid.rows - 1) : swiper.slides.length - slidesPerView)) {
         swiper.loopFix();
         slideToIndex = swiper.getSlideIndex(elementChildren(slidesEl, `${slideSelector}[data-swiper-slide-index="${realIndex}"]`)[0]);
         nextTick(() => {
@@ -2280,7 +2273,20 @@
         el.setAttribute('data-swiper-slide-index', index);
       });
     };
+    const clearBlankSlides = () => {
+      const slides = elementChildren(slidesEl, `.${params.slideBlankClass}`);
+      slides.forEach(el => {
+        el.remove();
+      });
+      if (slides.length > 0) {
+        swiper.recalcSlides();
+        swiper.updateSlides();
+      }
+    };
     const gridEnabled = swiper.grid && params.grid && params.grid.rows > 1;
+    if (params.loopAddBlankSlides && (params.slidesPerGroup > 1 || gridEnabled)) {
+      clearBlankSlides();
+    }
     const slidesPerGroup = params.slidesPerGroup * (gridEnabled ? params.grid.rows : 1);
     const shouldFillGroup = swiper.slides.length % slidesPerGroup !== 0;
     const shouldFillGrid = gridEnabled && swiper.slides.length % params.grid.rows !== 0;
@@ -2372,7 +2378,7 @@
       }
     }
     const slidesPerGroup = params.slidesPerGroupAuto ? slidesPerView : params.slidesPerGroup;
-    let loopedSlides = slidesPerGroup;
+    let loopedSlides = centeredSlides ? Math.max(slidesPerGroup, Math.ceil(slidesPerView / 2)) : slidesPerGroup;
     if (loopedSlides % slidesPerGroup !== 0) {
       loopedSlides += slidesPerGroup - loopedSlides % slidesPerGroup;
     }
@@ -3970,6 +3976,16 @@
     getSlideIndexByData(index) {
       return this.getSlideIndex(this.slides.find(slideEl => slideEl.getAttribute('data-swiper-slide-index') * 1 === index));
     }
+    getSlideIndexWhenGrid(index) {
+      if (this.grid && this.params.grid && this.params.grid.rows > 1) {
+        if (this.params.grid.fill === 'column') {
+          index = Math.floor(index / this.params.grid.rows);
+        } else if (this.params.grid.fill === 'row') {
+          index = index % Math.ceil(this.slides.length / this.params.grid.rows);
+        }
+      }
+      return index;
+    }
     recalcSlides() {
       const swiper = this;
       const {
@@ -4657,10 +4673,17 @@
       if (moduleParam) {
         const parentObjName = attrToProp(moduleParam);
         const subObjName = attrToProp(attr.name.split(`${moduleParam}-`)[1]);
-        if (typeof passedParams[parentObjName] === 'undefined') passedParams[parentObjName] = {};
+        if (typeof passedParams[parentObjName] === 'undefined') {
+          passedParams[parentObjName] = {};
+        }
         if (passedParams[parentObjName] === true) {
           passedParams[parentObjName] = {
             enabled: true
+          };
+        }
+        if (passedParams[parentObjName] === false) {
+          passedParams[parentObjName] = {
+            enabled: false
           };
         }
         passedParams[parentObjName][subObjName] = formatValue(attr.value);
@@ -4711,7 +4734,7 @@
   }
 
   /**
-   * Swiper Custom Element 11.2.8
+   * Swiper Custom Element 11.2.10
    * Most modern mobile touch slider and framework with hardware accelerated transitions
    * https://swiperjs.com
    *
@@ -4719,7 +4742,7 @@
    *
    * Released under the MIT License
    *
-   * Released on: May 23, 2025
+   * Released on: June 28, 2025
    */
 
 

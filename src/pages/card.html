@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
   <header>
@@ -29,6 +30,10 @@
     </nav>
   </header>
 <style>
+* {
+  margin: 0;
+  padding: 0;
+}
 nav {
   position: relative;
   background-color: #333333;
@@ -109,28 +114,26 @@ nav a:hover {
   }
 }
 
+.page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .card-detail {
-  max-width: 800px;
-  margin: 4rem auto;
+  max-width: 600px;
+  margin: auto 2rem;
   padding: 3.5rem;
   background-color: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   font-family: 'Segoe UI', sans-serif;
   line-height: 1.6;
 }
 
-.card-detail img {
-  width: clamp(75%, 90vw, 100%);
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  object-fit: cover;
-}
-
 .card-detail h1 {
-  text-decoration: underline;
-  font-size: clamp(0.9rem, 3.75vw, 2.5rem);;
+  text-align: center;
+  font-size: clamp(0.9rem, 3.75vw, 1.75rem);;
   margin-bottom: 1rem;
   color: #333;
 }
@@ -146,21 +149,65 @@ nav a:hover {
   margin-right: 0.5rem;
 }
 
+.swiper {
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 700px;
+    height:500px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    will-change: transform;
+  }
+
+  .swiper-slide:hover img {
+  transform: scale(1.1);
+  }
+
 @media (max-width: 600px) {
   .card-detail {
-    padding: 1rem;
+    max-width: 350px;
+    padding: .5rem;
     margin: 2rem 1rem;
+  }
+  .swiper {
+    aspect-ratio: 4 / 3;
+    max-height: 350px;
+    border-radius: 8px;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
-  <div class="card-detail">
-    <img id="card-image" src="" alt="" />
-    <h1 id="card-title"></h1>
-    <p><strong>Description:</strong><span id="card-description"></spanid>></span></p>
-    <p><strong>Location:</strong> <span id="card-location"></span></p>
-    <p><strong>Year of Completion:</strong><span id="card-year"></span></p>
-  </div>
 
+<section id="carousel-container"></section>
+
+<section id="card-container" class="page-container">
+  <article class="card-detail">
+    <h1 id="card-title"></h1>
+    <p><strong>Mô tả:</strong> <span id="card-description"></span></p>
+    <p><strong>Vị Trí:</strong> <span id="card-location"></span></p>
+    <p><strong>Năm Hoàn Thành:</strong> <span id="card-year"></span></p>
+  </article>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="../card.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -170,18 +217,41 @@ nav a:hover {
     if (!card) {
       document.body.innerHTML = "<h1>Card not found 😞</h1>";
     } else {
+      const carouselContainer = document.getElementById("carousel-container");
+        const swiperHTML = document.createElement("div");
+        swiperHTML.className = "swiper mySwiper";
+        swiperHTML.innerHTML = `
+          <div class="swiper-wrapper">
+            ${card.images.map(src => `
+              <div class="swiper-slide">
+                <img src="${src}" alt="${card.title}" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            `).join('')}
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        `;
+      carouselContainer.appendChild(swiperHTML);
       document.getElementById("card-title").textContent = card.title;
       document.getElementById("card-description").textContent = card.description;
-      document.getElementById("card-image").src = card.image;
-      document.getElementById("card-image").alt = card.title;
       document.getElementById("card-location").textContent = card.location;
       document.getElementById("card-year").textContent = card.year;
-    }
-    fetch('src/components/navbar.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('navbar').innerHTML = html;
+    // Init Swiper (no import needed!)
+    new Swiper('.swiper', {
+      loop: true,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
     });
+  }
   </script>
+
 </body>
 </html>
