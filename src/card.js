@@ -32,8 +32,14 @@ cards.forEach(card => {
     .then(template => {
       // Create image HTML from array
       const imagesHTML = card.images
-        .map(src => `<img src="/${src.replace(/^\/?/, '')}" alt="${card.title}" style="width:100%; margin-bottom: 10px;">`)
+        .map(src => `<img src="${getAbsolutePath(src)}" alt="${card.title}" style="width:100%; margin-bottom: 10px;">`)
         .join('');
+
+      // Helper to normalize path
+      function getAbsolutePath(src) {
+        // Remove leading slash if there is one, then prefix with root "/"
+        return '/' + src.replace(/^\/+/, '');
+      }
       const cardHTML = template
         .replace(/{{title}}/g, card.title)
         .replace(/{{description}}/g, card.description)
