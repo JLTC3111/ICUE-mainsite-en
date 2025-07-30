@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detailed Project</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="card-detail">
+    <img id="card-image" src="" alt="" />
+    <h1 id="card-title">ABC</h1>
+    <p id="card-description">DFE123</p>
+    <p><strong>Location:123</strong> <span id="card-location"></span></p>
+    <p><strong>Year:29ennfd</strong> <span id="card-year"></span></p>
+  </div>
+
+  <script src="../card.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const cardId = params.get('id');
+    const card = cards.find(c => c.id === cardId);
+
+    if (!card) {
+      document.body.innerHTML = "<h1>Card not found 😞</h1>";
+    } else {
+      document.getElementById("card-title").textContent = card.title;
+      document.getElementById("card-description").textContent = card.description;
+      document.getElementById("card-image").src = card.image;
+      document.getElementById("card-image").alt = card.title;
+      document.getElementById("card-location").textContent = card.location;
+      document.getElementById("card-year").textContent = card.year;
+    }
+    fetch('src/components/navbar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('navbar').innerHTML = html;
+    });
+  </script>
+</body>
+</html>
