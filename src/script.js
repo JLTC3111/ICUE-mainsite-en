@@ -453,7 +453,6 @@ window.loadPage = (page) => {
                   attachHomeButtonEvents();
                   makeItRainText("#rainText");
                   calendarModal();
-                  triggerFanfare();
                   break;
                 case 'News':
                   initLogoSlider();
