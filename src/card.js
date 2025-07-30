@@ -4,8 +4,8 @@ const cards = [
     title: "General Planning Adjustment for Lao Cai City",
     description: "Total Area - 28,162.64 hectares, projected completion year is 2045. The plan focuses on optimizing land use, improving infrastructure, guiding population growth, and enhancing the city’s role as a regional economic and transportation hub.",
     images: [
-      "public/pastprojects/project_1/pp_1a.png", 
-      "public/pastprojects/project_1/pp_1b.png",
+      "/pastprojects/project_1/pp_1a.png", 
+      "/pastprojects/project_1/pp_1b.png",
     ],
     year: "2024",
     location: "Lao Cai City"
