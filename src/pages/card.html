@@ -165,8 +165,9 @@ nav a:hover {
 }
 
 .swiper-slide img {
-    width: 100%;
-    height: 100%;
+    filter: grayscale(50%);
+    width: 90%;
+    height: 90%;
     object-fit: cover;
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
@@ -175,6 +176,8 @@ nav a:hover {
 
 .swiper-slide:hover img {
   transform: scale(1.1);
+  filter: grayscale(0%);
+  filter: brightness(1);
 }
 
 .swiper-pagination {
@@ -205,7 +208,6 @@ nav a:hover {
     margin: 2rem 1rem;
   }
   .swiper {
-    aspect-ratio: 4 / 3;
     max-height: 350px;
     border-radius: 8px;
   }
@@ -223,9 +225,9 @@ nav a:hover {
 <section id="card-container" class="page-container">
   <article class="card-detail">
     <h1 id="card-title"></h1>
-    <p><strong>Descriptio </strong> <span id="card-description"></span></p>
-    <p><strong>Location</strong> <span id="card-location"></span></p>
-    <p><strong>Year of Completion</strong> <span id="card-year"></span></p>
+    <p><strong>Description:</strong> <span id="card-description"></span></p>
+    <p><strong>Location:</strong> <span id="card-location"></span></p>
+    <p><strong>Year of Completion:</strong> <span id="card-year"></span></p>
   </article>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
