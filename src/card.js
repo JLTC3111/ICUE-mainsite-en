@@ -3,17 +3,17 @@ const cards = [
     id: "1",
     title: "Card One",
     description: "This is the first card.",
-    image: "images/card1.jpg",
-    year: "2023",
-    location: "New York"
+    image: "/pastProjects/pp_1.jpg",
+    year: "2024",
+    location: "VN"
   },
   {
     id: "2",
     title: "Card Two",
     description: "Second card's details here.",
-    image: "images/card2.jpg",
+    image: "/pastProjects/pp_1.jpg",
     year: "2024",
-    location: "Tokyo"
+    location: "VN"
   },
   // Add more cards...
 ];

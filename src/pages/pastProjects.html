@@ -40,20 +40,12 @@ body {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
-
-  .tall {
-    grid-row: auto;
-  }
 }
 
 @media (min-width: 768px) and (max-width: 1368px) {
   .grid {
     grid-template-columns: repeat(2, auto);
     grid-template-rows: auto;
-  }
-
-  .tall {
-    grid-row: auto;
   }
 }
 
@@ -116,11 +108,6 @@ body {
   transform: translateY (-2px);
   transform: scale(1.025);
   will-change: transform;
-}
-
-/* Tall card spans 2 rows on desktop */
-.tall {
-  grid-row: span 2;
 }
 
 .card-info {
