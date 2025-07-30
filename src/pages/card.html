@@ -156,27 +156,48 @@ nav a:hover {
     height:500px;
     border-radius: 12px;
     overflow: hidden;
-  }
+}
 
-  .swiper-slide {
+.swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
 
-  .swiper-slide img {
+.swiper-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
     will-change: transform;
-  }
+}
 
-  .swiper-slide:hover img {
+.swiper-slide:hover img {
   transform: scale(1.1);
-  }
+}
 
+.swiper-pagination {
+  bottom: 10px !important;
+  text-align: center;
+}
+
+  /* Default bullet style */
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.65);
+  opacity: 1;
+  margin: 0 4px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 50%;
+}
+
+/* Active bullet */
+.swiper-pagination-bullet-active {
+  background: #007bff; /* primary color */
+  transform: scale(1.2);
+}
 @media (max-width: 600px) {
   .card-detail {
     max-width: 350px;
@@ -202,9 +223,9 @@ nav a:hover {
 <section id="card-container" class="page-container">
   <article class="card-detail">
     <h1 id="card-title"></h1>
-    <p><strong>Mô tả:</strong> <span id="card-description"></span></p>
-    <p><strong>Vị Trí:</strong> <span id="card-location"></span></p>
-    <p><strong>Năm Hoàn Thành:</strong> <span id="card-year"></span></p>
+    <p><strong>Descriptio </strong> <span id="card-description"></span></p>
+    <p><strong>Location</strong> <span id="card-location"></span></p>
+    <p><strong>Year of Completion</strong> <span id="card-year"></span></p>
   </article>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
