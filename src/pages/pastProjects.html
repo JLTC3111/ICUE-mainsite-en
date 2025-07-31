@@ -21,11 +21,8 @@ body {
 .grid {
   margin-top: 5%;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: minmax(300px, auto) auto;
-  align-items: center;
-  justify-content: center;
   padding: 20px;
 }
 
@@ -55,7 +52,7 @@ body {
   overflow: hidden;
   padding: 1.5px;
   text-align: center;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.75s ease-in-out;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
 }
 
@@ -100,7 +97,7 @@ body {
   object-fit: cover;
   display: block;
   border-radius: 4px;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.75s ease-in-out;
 }
 
 .image-card:hover img {
@@ -146,10 +143,23 @@ body {
   background: #000000;
 }
 
+/* Initial (hidden) state */
+.card.image-card {
+  filter: blur(8px);
+  opacity: 0;
+  transition: all 0.75s ease-in-out;
+}
+
+/* When AOS activates */
+.card.image-card.aos-animate {
+  filter: blur(0);
+  opacity: 1;
+}
+
 </style>
 <body>
   <main class="grid">
-    <a href="src/pages/card.html?id=1" class="card image-card">
+    <a href="src/pages/card.html?id=1" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_1.jpg">
       </div>
@@ -161,7 +171,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=2" class="card image-card">
+    <a href="src/pages/card.html?id=2" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_2.jpg">
       </div>
@@ -173,7 +183,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=3" class="card image-card">
+    <a href="src/pages/card.html?id=3" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_3.jpg">
       </div>
@@ -185,7 +195,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=4" class="card image-card">
+    <a href="src/pages/card.html?id=4" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_4.jpg">
       </div>
@@ -197,7 +207,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=5" class="card image-card">
+    <a href="src/pages/card.html?id=5" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_5.jpg">
       </div>
@@ -209,7 +219,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=6" class="card image-card">
+    <a href="src/pages/card.html?id=6" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_6.jpg">
       </div>
@@ -221,7 +231,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=7" class="card image-card">
+    <a href="src/pages/card.html?id=7" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_7.jpg">
       </div>
@@ -233,7 +243,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=8" class="card image-card">
+    <a href="src/pages/card.html?id=8" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_8.jpg">
       </div>
@@ -245,7 +255,7 @@ body {
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=9" class="card image-card">
+    <a href="src/pages/card.html?id=9" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_9.jpg">
       </div>

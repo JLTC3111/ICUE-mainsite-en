@@ -1,5 +1,7 @@
 console.log('[script.js] Loaded ✅');
 
+// Run on page load
+window.addEventListener('DOMContentLoaded', handleAOSByScreenSize);
 // Touch device detection
 const isTouchDevice = (
   'ontouchstart' in window ||
@@ -470,6 +472,9 @@ window.loadPage = (page) => {
                 case 'ourWork':
                   initializeCarousel();
                   calendarModal();
+                  break;
+                case 'pastProject':
+                  handleAOSByScreenSize();
                   break;
               }
             });
