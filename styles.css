@@ -9,6 +9,10 @@ main {
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 canvas {
       display: block;
 }
