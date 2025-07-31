@@ -671,6 +671,7 @@ footer {
   transform: translateX(-100%); /* Hide off-screen initially */
   transition: transform 0.4s ease-in-out;
   z-index: 5;
+  box-shadow: 4px -2px 12px rgba(255, 255, 255, 1);
 }
 
 .drawer-blur-overlay {
@@ -690,13 +691,13 @@ footer {
   font-size: 1.4rem;
   text-decoration: none;
   border-left: 5px solid transparent;
-  transition: all 1.25s ease, border-color 0.2s ease;
+  transition: all .5s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 .drawer-menu a:hover {
   transform: translateX(45px);
-  background-color: #e1e1e1;
-  border-left: 1.5px solid #d5d5d5;
+  background-color: #fbfbfb;
+  border-left: 12.5px solid #8a8a8a;
   padding-left: .5rem;
   color: #000;
 }
@@ -713,7 +714,7 @@ footer {
 
 .has-submenu {
   cursor: pointer;
-  padding: 1rem 0;
+  padding: 0;
   color: #ffffff;
   display: block;
 }
@@ -735,18 +736,17 @@ footer {
   flex-direction: column;
   gap: 0.5rem;
   padding-left: 1.5rem;
-  pointer-events: none; /* prevent clicking when hidden */
+  pointer-events: none; 
 }
 
 .submenu.open {
-  transform: translateX(0) translateY(0); /* Slide in */
+  transform: translateX(0px) translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Optional: animate out vertically when closing */
 .submenu.closing {
-  transform: translateX(0) translateY(50px);
+  transform: translateX(0px) translateY(50px);
   opacity: 0;
   pointer-events: none;
 }
@@ -754,7 +754,7 @@ footer {
 .drawer-menu .submenu a {
   font-size: 1.2rem;
   color: #ffffff;
-  padding-top: 1.5rem;
+  padding-top: 1.05rem;
   padding-left: .75rem;
   position: relative;
   transition: all .3s ease;
@@ -763,10 +763,10 @@ footer {
 .drawer-menu .submenu a::before {
   content: "↳";
   color: #ffffff; 
-  font-size: 2.25rem;
+  font-size: clamp(1rem, 5vw, 2.25rem);
   display: inline-block;
   vertical-align: middle;
-  font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif; /* force consistency */
+  font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif !important; 
 }
 
 .drawer-menu .moe-subMenu:hover {
