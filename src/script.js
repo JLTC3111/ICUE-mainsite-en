@@ -1,7 +1,5 @@
 console.log('[script.js] Loaded ✅');
 
-// Run on page load
-window.addEventListener('DOMContentLoaded', handleAOSByScreenSize);
 // Touch device detection
 const isTouchDevice = (
   'ontouchstart' in window ||
