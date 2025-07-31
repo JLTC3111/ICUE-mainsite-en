@@ -136,14 +136,14 @@ footer {
 }
 
 .contact-sidebar {
-    position: fixed; /* Stays in place as the user scrolls */
-    right: 1.5%; /* Adjust as needed for desired distance from the right edge */
-    top: 30%; /* Center vertically */
-    transform: translateY(-70%); /* Adjust for perfect vertical centering */
+    position: fixed; 
+    right: 1.5%; 
+    top: 30%; 
+    transform: translateY(-70%); 
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 12.5px; /* Space between icons */
-    z-index: 14; /* Ensure it stays on top of other content */
+    flex-direction: column; 
+    gap: 12.5px; 
+    z-index: 14; 
     background: rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 0;
@@ -158,12 +158,12 @@ footer {
     align-items: center;
     width:50px;
     height:50px;
-    background-color: transparent; /* Or the specific color from the image */
+    background-color: transparent;
 }
 
 .contact-sidebar .contact-item svg {
-    width: 72.5%; /* Adjust icon size within the circle */
-    height: 72.5%; /* Adjust icon size within the circle */
+    width: 72.5%; 
+    height: 72.5%; 
 }
 
 .contact-sidebar .music-bars {
@@ -175,18 +175,17 @@ footer {
   transform: rotate(90deg);
 }
 
-/* Hover effects for a better user experience */
 .contact-item:hover {
-    transform: scale(1.25); /* Slightly enlarge on hover */
-    transition: all 0.5s ease-in-out; /* Smooth transition */
+    transform: scale(1.25); 
+    transition: all 0.5s ease-in-out; 
 }
 
 .icon-bar {
-  width: 15px;            /* Or any thickness you want */
-  height: 1px;          /* Set a visible height */
+  width: 15px;            
+  height: 1px;       
   background-color:rgba(0, 0, 0, 0.25);
-  margin: -7.5px auto;     /* Space around the bar */
-  border-left: .5px dotted black; /* Creates a vertical dotted line */
+  margin: -7.5px auto;     
+  border-left: .5px dotted black; 
   border-right: .5px dotted black;
 }
 
@@ -197,13 +196,10 @@ footer {
   font-weight: 400;
   margin-bottom: -3.5rem;
   margin-left: -30%;
-  /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px yellow,       /* hard shadow base */
     2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
-
-  /* Optional: add a slight transform for perspective */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
 }
 
@@ -217,13 +213,10 @@ footer {
   background-clip: text;
   letter-spacing:1vw;
   margin:7.5% 25% -4.5% 3%;
-  /* Add text shadow for 3D depth */
   text-shadow:
     .25px .25px 0 #9be1ff,       /* hard shadow base */
     1px 1px 1.5px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -.25px -.25px 0 rgb(253, 253, 253); /* slight highlight */
-
-  /* Optional: add a slight transform for perspective */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
 }
 
@@ -237,9 +230,9 @@ footer {
 }
 
 .lets-talk:hover{
-  background: transparent; /* no background color to avoid visible box */
+  background: transparent; 
   text-shadow: 1px 4px 18px rgba(0, 217, 255, 0.5);
-  border-radius: 50px; /* rounder edges help hide boxiness */
+  border-radius: 50px; 
   transition: all 0.3s ease;
 }
 
@@ -265,12 +258,12 @@ footer {
 }
 
 .lets-talk{
-  /* Add text shadow for 3D depth */
+
   text-shadow:
     1px 1px 1px #000000,       /* hard shadow base */
     2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
-  /* Optional: add a slight transform for perspective */
+  
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
 }
 
@@ -284,7 +277,7 @@ footer {
   font-size: 24px;
   color: black;
   font-optical-sizing: auto;
-  font-weight: 100; /* Make sure this weight is imported */
+  font-weight: 100; 
   text-shadow: none;
   line-height: 1.5;
   word-spacing: 2px;
@@ -435,11 +428,11 @@ footer {
 @keyframes shutterOpen {
   0% {
     opacity: 1;
-    transform: scaleY(0); /* fully closed */
+    transform: scaleY(0); 
   }
   100% {
     opacity: 0;
-    transform: scaleY(1); /* fully open */
+    transform: scaleY(1);
   }
 }
 
@@ -458,11 +451,11 @@ footer {
 @keyframes shutterClose {
   0% {
     opacity: 1;
-    transform: scaleY(0); /* fully closed */
+    transform: scaleY(0); 
   }
   100% {
     opacity: 0;
-    transform: scaleY(1); /* fully open */
+    transform: scaleY(1);
   }
 }
 
@@ -481,7 +474,7 @@ footer {
 }
 
 #profile-text {
-  background: rgba(255, 255, 255, 0.1); /* light transparent background */
+  background: rgba(255, 255, 255, 0.1); 
   backdrop-filter: blur(27.5px);          /* frosted glass blur */
   -webkit-backdrop-filter: blur(27.5px);  /* Safari 15.6.1 or lower */
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -538,8 +531,8 @@ footer {
   justify-content: center;
   align-items: center;
   background: transparent;
-  border-radius: 50%;               /* Removes the circular shape */
-  box-shadow: none;              /* Removes the shadow */
+  border-radius: 50%;             
+  box-shadow: none;             
   cursor: pointer;
   transition: transform 1.5s ease;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
@@ -619,7 +612,7 @@ footer {
   background-size: cover;
   width: 48px;
   height: 48px;
-  border-radius: 50%; /* ✅ Makes it circular */
+  border-radius: 50%; 
   box-shadow: 2px 4px 8px #fff;
 }
 
@@ -668,7 +661,7 @@ footer {
   display: flex;
   flex-direction: column;
   padding: 10rem 2.5rem;
-  transform: translateX(-100%); /* Hide off-screen initially */
+  transform: translateX(-100%);
   transition: transform 0.4s ease-in-out;
   z-index: 5;
   box-shadow: 4px -2px 12px rgba(255, 255, 255, 1);
@@ -680,7 +673,7 @@ footer {
   background: radial-gradient(circle at 85% 10%, rgba(255,255,255,0.08), #000 60%);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  pointer-events: none; /* let clicks pass through */
+  pointer-events: none; 
   z-index: -2;
 }
 
@@ -700,6 +693,7 @@ footer {
   border-left: 12.5px solid #8a8a8a;
   padding-left: .5rem;
   color: #000;
+  box-shadow: -4px -6px 12px rgba(255, 255, 255, 1);
 }
 
 .drawer-menu a.active {
@@ -817,7 +811,7 @@ footer {
 }
 
 #homeSliderText {
-  background: rgba(236, 236, 236, 0.2); /* Semi-transparent */
+  background: rgba(236, 236, 236, 0.2); 
   backdrop-filter: blur(5px);  
   -webkit-backdrop-filter: blur(5px);         /* Safari 15.6.1 or lower */
   border-radius: 15px;
