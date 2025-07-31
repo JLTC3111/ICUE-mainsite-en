@@ -1,13 +1,10 @@
-// src/main.js
-
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import './script.js'
 
 window.handleAOSByScreenSize = () => {
   if (window.innerWidth > 550) {
     AOS.init({
       duration: 750,
-      offset: 100,
+      offset: 150,
       once: false
     });
   } else {
@@ -21,7 +18,7 @@ window.handleAOSByScreenSize = () => {
   }
 }
 
-window.addEventListener('DOMContentLoaded', handleAOSByScreenSize);
+window.handleAOSByScreenSize();
 
 
  
