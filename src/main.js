@@ -1,7 +1,7 @@
 import './script.js'
 
 window.handleAOSByScreenSize = () => {
-  if (window.innerWidth > 550) {
+  if (window.innerWidth > 50) {
     AOS.init({
       duration: 750,
       offset: 150,
