@@ -471,9 +471,6 @@ window.loadPage = (page) => {
                   initializeCarousel();
                   calendarModal();
                   break;
-                case 'pastProject':
-                  handleAOSByScreenSize();
-                  break;
               }
             });
 
