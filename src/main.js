@@ -59,8 +59,8 @@ window.handleAOSByScreenSize = () => {
     restoreAOSAttributes();
     window.AOS.init({
       disable: false,
-      duration: 750,
-      offset: 200,
+      duration: 850,
+      offset: 225,
       once: false
     });
   }
