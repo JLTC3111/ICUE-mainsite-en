@@ -27,8 +27,7 @@ function restoreAOSAttributes() {
   }
 }
 
-
-  function clearAOSAttributes() {
+function clearAOSAttributes() {
     console.log('[AOS] Clearing AOS attributes');
     document.querySelectorAll('[data-aos]').forEach(el => {
       if (!originalAOS.has(el)) {
@@ -42,7 +41,7 @@ function restoreAOSAttributes() {
     });
   }
 
-  window.handleAOSByScreenSize = () => {
+window.handleAOSByScreenSize = () => {
     const width = window.innerWidth;
     console.log(`[AOS] Window resized to: ${width}px`);
 
@@ -67,7 +66,7 @@ function restoreAOSAttributes() {
   }
 }
 
-  return { handleAOSByScreenSize };
+ return { handleAOSByScreenSize };
 })();
 
 // Debounce utility
