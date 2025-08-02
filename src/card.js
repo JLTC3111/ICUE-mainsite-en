@@ -72,8 +72,10 @@ const cards = [
     title: "📍 General Planning for Tan Bac Urban Area, Quang Binh District",
     description: "Tan Bac is gradually emerging as a new regional center in Quang Binh. This 6,000+ ha plan emphasizes modern living spaces, green tech ecosystems, and integrated public amenities. With a vision through 2050, Tan Bac is set to become a benchmark for culturally grounded but future-ready highland urbanization.",
     images: [
-      "public/pastProjects/project_7/pp_7a.png",  
-      "public/pastProjects/project_7/pp_7b.png", 
+      "public/pastProjects/project_7/pp_7a.jpg",  
+      "public/pastProjects/project_7/pp_7b.jpg", 
+      "public/pastProjects/project_7/pp_7c.jpg",  
+      "public/pastProjects/project_7/pp_7d.jpg", 
     ],
     year: "2025",
     location: "Tan Bac Commune, Quang Binh, Ha Giang"
@@ -83,8 +85,14 @@ const cards = [
     title: "📍 Subdivision Plan 5A (Nam Dong Ward), Hai Duong City",
     description: "Subdivision 5A is a cornerstone of Hai Duong's sustainable development strategy. Spanning over 330 ha, it focuses on modern urban spatial planning, enhanced connectivity, and a flexible urban ecosystem. The project aims to elevate living quality and boost Nam Dong's regional appeal.",
     images: [
-      "public/pastProjects/project_8/pp_8a.png",  
-      "public/pastProjects/project_8/pp_8b.png", 
+      "public/pastProjects/project_8/pp_8a.jpg",  
+      "public/pastProjects/project_8/pp_8b.jpg", 
+      "public/pastProjects/project_8/pp_8c.jpg",  
+      "public/pastProjects/project_8/pp_8d.jpg",   
+      "public/pastProjects/project_8/pp_8f.jpg", 
+      "public/pastProjects/project_8/pp_8g.jpg",  
+      "public/pastProjects/project_8/pp_8h.jpg", 
+      "public/pastProjects/project_8/pp_8i.jpg", 
     ],
     year: "2025",
     location: "Hai Duong City, Hai Duong Province"
@@ -94,8 +102,10 @@ const cards = [
     title: "📍 Detailed Plan for Park City Xuan An Eco-Urban Area",
     description: "Park City Xuan An is a premium eco-urban area designed with elegance across 28 ha. With its 'green living, healthy living' vision, it blends lush green spaces, modern service facilities, and smart infrastructure. It’s a rising star in Ha Tinh’s real estate scene, setting new standards for upscale, sustainable urban living in central Vietnam.",
     images: [
-      "public/pastProjects/project_9/pp_9a.png",  
-      "public/pastProjects/project_9/pp_9b.png", 
+      "public/pastProjects/project_9/pp_9a.jpg",  
+      "public/pastProjects/project_9/pp_9b.jpg", 
+      "public/pastProjects/project_9/pp_9c.jpg",  
+      "public/pastProjects/project_9/pp_9d.jpg",
     ],
     year: "2025",
     location: "Xuan An Town, Nghi Xuan District, Ha Tinh Province"

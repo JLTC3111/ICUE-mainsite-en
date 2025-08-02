@@ -1056,7 +1056,7 @@ footer {
   background: linear-gradient(to right, #460000, #388E3C);
 }
 
-.model-building {
+.model-home {
   position: absolute;
   display: flex;
   align-items: center;
@@ -2235,7 +2235,7 @@ body.loaded #app {
     margin-left: 60px;
   }
 
-  .model-building {
+  .model-home {
     top: -1.5rem;
     right: 10.5rem;
     animation: slideDownFromTop 3s ease-in-out;
@@ -2825,7 +2825,7 @@ body.loaded #app {
     height:60%;
   }
 
-  .model-building{
+  .model-home{
     top:17.5%;
     animation: slideInFromRight 3.5s ease-in-out; 
   }
