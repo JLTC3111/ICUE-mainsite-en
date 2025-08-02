@@ -175,9 +175,14 @@ footer {
   transform: rotate(90deg);
 }
 
-.contact-item:hover {
-    transform: scale(1.25); 
-    transition: all 0.5s ease-in-out; 
+.contact-item:hover svg {
+  transform: rotate(-360deg) scale(1.25);
+  transition: transform 0.3s ease-in-out;
+}
+
+.contact-sidebar .music-bars:hover svg {
+  transform: rotate(-90deg);
+  transition: transform 0.3s ease-in-out;
 }
 
 .icon-bar {

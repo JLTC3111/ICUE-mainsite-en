@@ -49,8 +49,8 @@ const cards = [
     title: "📍 General Planning for Dong Yen Urban Area, Bac Giang District",
     description: "Dong Yen is an ambitious master plan covering nearly 4,500 ha with a long-term vision to 2050. It aims to build a smart satellite city that integrates living, working, and recreational spaces. Strategically designed, Dong Yen is poised to become a northern hub for sustainable, modern urban models.",
     images: [
-      "public/pastProjects/project_5/pp_5a.png",  
-      "public/pastProjects/project_5/pp_5b.png", 
+      "public/pastProjects/project_5/pp_5a.jpg",  
+      "public/pastProjects/project_5/pp_5b.jpg", 
     ],
     year: "2025",
     location: "Dong Yen Commune, Ha Giang City"
@@ -60,8 +60,9 @@ const cards = [
     title: "📍 General Planning for Na Chi Urban Area, Xin Man District",
     description: "One of the largest plans in the northern mountainous region, the Na Chi urban project spans over 8,000 ha. It’s a bold move to elevate Xin Man’s infrastructure, services, and investment appeal. The plan balances highland cultural preservation with smart infrastructure for long-term sustainability.",
     images: [
-      "public/pastProjects/project_6/pp_6a.png",  
-      "public/pastProjects/project_6/pp_6b.png", 
+      "public/pastProjects/project_6/pp_6a.jpg",  
+      "public/pastProjects/project_6/pp_6b.jpg", 
+      "public/pastProjects/project_6/pp_6c.jpg", 
     ],
     year: "2025",
     location: "Na Chi Commune, Xin Man District, Ha Giang"
