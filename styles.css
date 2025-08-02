@@ -1060,7 +1060,7 @@ footer {
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
   top: 1.5%;
-  right: -5rem;
+  right: -15rem;
   margin-left:3.5rem;
   animation: slideInFromRight 3.5s ease-in-out;
 }
