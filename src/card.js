@@ -38,8 +38,8 @@ const cards = [
     title: "📍 Subdivision Development Plan for Coc San",
     description: "A key part of Lao Cai City’s urban expansion strategy, the Coc San development integrates advanced infrastructure with natural landscapes to form a balanced ecological city. It lays the foundation for high-quality residential zones, commercial areas, and public facilities connected to regional transport corridors.",
     images: [
-      "public/pastProjects/project_4/pp_4a.png",  
-      "public/pastProjects/project_4/pp_4b.png", 
+      "public/pastProjects/project_4/pp_4a.webp",  
+      "public/pastProjects/project_4/pp_4b.webp", 
     ],
     year: "2025",
     location: "Lao Cai City"
