@@ -539,7 +539,7 @@ footer {
   border-radius: 50%;             
   box-shadow: none;             
   cursor: pointer;
-  transition: transform 1.5s ease;
+  transition: all 1.5s ease-in-out;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   z-index: 3;
 }
@@ -549,10 +549,6 @@ footer {
 .fill-white {fill: #FFFFFF;}
 .fill-dark {fill: #111;}
 
-.arrow-button:hover {
-  transform: scale(1.3);
-}
-
 .arrow-button:hover .fill-bright-blue,
 .arrow-button:hover .fill-blue,
 .arrow-button:hover .fill-white,
@@ -560,8 +556,16 @@ footer {
   fill: #ffbc41;
 }
 
-.arrow-button:active {
-  transform: scale(1.1);
+.arrow-button:hover svg {
+  transform: scale(1.2) rotateX(180deg);
+}
+
+.arrow-button:active svg {
+  transform: rotateY(180deg) scale(1.1);
+}
+
+.arrow-button svg {
+  transition: all 0.3s ease-in-out;
 }
 
 .arrow-button:active .fill-bright-blue,
@@ -989,9 +993,21 @@ footer {
   cursor: pointer;
   transition: all 0.3s ease;  
   background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.arrow-symbol:hover svg {
+  transform: scale(1.2) rotateX(180deg);
+}
+
+.arrow-symbol:active svg {
+  transform: rotateY(180deg) scale(1.1);
 }
 
 .arrow-symbol svg {
+  will-change: transform, fill;
+  transition: all 0.3s ease-in-out;
   width:100%;
   height:100%;
 }
@@ -1008,29 +1024,16 @@ footer {
 .fill-yellow { fill: #FFE100; }
 .fill-orange { fill: #FFA800; }
 .fill-white  { fill: #FFFFFF; }
-.fill-dark   { fill: #111; }
-
-/* Hover and active effects */
-.arrow-symbol {
-  cursor: pointer;
-  transition: transform 1s ease, box-shadow 0.2s ease;
-}
-
-.arrow-symbol:hover {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  background-color: rgb(109, 109, 109);
-}
+.fill-dark   { fill: #111111; }
 
 /* SVG color changes on hover */
 .arrow-symbol:hover .fill-yellow,
-.arrow-symbol:hover .fill-orange,
-.arrow-symbol:hover .fill-dark {
+.arrow-symbol:hover .fill-orange {
   fill: rgb(5, 249, 22);
 }
 
 .arrow-symbol:active .fill-yellow,
-.arrow-symbol:active .fill-orange,
-.arrow-symbol:active .fill-dark {
+.arrow-symbol:active .fill-orange {
   fill: #0b3f10;
 }
 
