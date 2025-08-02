@@ -693,7 +693,7 @@ footer {
   border-left: 12.5px solid #8a8a8a;
   padding-left: .5rem;
   color: #000;
-  box-shadow: -4px -6px 12px rgba(255, 255, 255, 1);
+  box-shadow: -2px -4px 8px rgba(255, 255, 255, 1);
 }
 
 .drawer-menu a.active {

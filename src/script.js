@@ -471,6 +471,10 @@ window.loadPage = (page) => {
                   initializeCarousel();
                   calendarModal();
                   break;
+                case 'pastProjects':
+                  handleAOSByScreenSize();
+                  calendarModal();
+                  break;
               }
             });
 

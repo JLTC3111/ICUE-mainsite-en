@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Project-Info</title>
+  <title>Đề Tài</title>
   <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -16,15 +16,15 @@
   <header>
     <nav>
       <!-- Logo & Navigation Links -->
-      <a href="/">Home</a>
-      <a href="/#/News">News</a>
-      <a href="/#/ourWork">Our Work</a>
-      <a href="/#/pastProjects">Projects History</a>
-      <a href="/#/aboutUs">About</a>
-      <a href="/#/Contact">Contact</a>
+      <a href="/">Trang Chủ</a>
+      <a href="/#/News">Tin Tức</a>
+      <a href="/#/ourWork">Công Việc</a>
+      <a href="/#/pastProjects">Đề Tài</a>
+      <a href="/#/aboutUs">Về Chúng Tôi</a>
+      <a href="/#/Contact">Liên Hệ</a>
         <div class="language-switcher">
-          <a href="https://icue.vn/#/pastProjects" class="flag-link">
-              <span class="flag-icon flag-icon-vn"></span>    
+          <a href="https://en.icue.vn/#/pastProjects" class="flag-link">
+              <span class="flag-icon flag-icon-gb"></span>    
           </a>
         </div>
     </nav>
@@ -39,7 +39,7 @@ nav {
   background-color: #333333;
   padding: 1rem 2rem;
   display: flex;
-  gap: 2.5rem;
+  gap: clamp(1.5rem, 5vw, 2.5rem);
   justify-content: center;
   align-items: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -106,11 +106,10 @@ nav a:hover {
 
   nav {
     margin-right: -1.5rem;
-    gap: 0.75rem;
+    gap: 0.85rem;
   }
   .flag-link {
-    margin-left: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -187,7 +186,22 @@ nav a:hover {
   text-align: center;
 }
 
-  /* Default bullet style */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  transition: all 0.25s ease-in-out;
+}
+
+.swiper-button-prev:hover::after,
+.swiper-button-next:hover::after {
+  transform: scale(1.2);
+}
+
+.swiper-button-prev:active::after,
+.swiper-button-next:active::after {
+  transform: rotateY(180deg);
+}
+
+/* Default bullet style */
 .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
@@ -203,6 +217,54 @@ nav a:hover {
   background: #007bff; /* primary color */
   transform: scale(1.2);
 }
+
+.card-nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+.card-nav button {
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #657faf;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.card-nav button:hover {
+    background: #005fa3;
+    transform: scale(1.05);
+}
+
+.btn-hover-effect {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(3, 74, 228, 0.15);
+}
+
+.btn-hover-effect:hover::before {
+  left: 100%;
+}
+
 @media (max-width: 600px) {
   .card-detail {
     max-width: 350px;
@@ -231,42 +293,57 @@ nav a:hover {
 <section id="card-container" class="page-container">
   <article class="card-detail">
     <h1 id="card-title"></h1>
-    <p><strong>Description:</strong> <span id="card-description"></span></p>
-    <p><strong>Location:</strong> <span id="card-location"></span></p>
-    <p><strong>Year of Completion:</strong> <span id="card-year"></span></p>
+    <p><strong>Mô Tả:</strong> <span id="card-description"></span></p>
+    <p><strong>Vị Trí:</strong> <span id="card-location"></span></p>
+    <p><strong>Năm Hoàn Thành:</strong> <span id="card-year"></span></p>
+    <div class="card-nav">
+      <button class="btn-hover-effect" id="prev-card">Previous</button>
+      <button class="btn-hover-effect" id="next-card">Next</button>
+    </div>
   </article>
 </section>
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="../card.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const cardId = params.get('id');
-    const card = cards.find(c => c.id === cardId);
+  // Get cardId from URL
+  const params = new URLSearchParams(window.location.search);
+  let cardId = params.get('id');
 
+  // Render card and carousel
+  function renderCard(cardId) {
+    const card = cards.find(c => c.id === cardId);
     if (!card) {
       document.body.innerHTML = "<h1>Card not found 😞</h1>";
-    } else {
-      const carouselContainer = document.getElementById("carousel-container");
-        const swiperHTML = document.createElement("div");
-        swiperHTML.className = "swiper mySwiper";
-        swiperHTML.innerHTML = `
-          <div class="swiper-wrapper">
-            ${card.images.map(src => `
-              <div class="swiper-slide">
-                <img src="${src}" alt="${card.title}" style="width: 100%; height: 100%; object-fit: cover;">
-              </div>
-            `).join('')}
+      return;
+    }
+
+    // Update card info
+    document.getElementById("card-title").textContent = card.title;
+    document.getElementById("card-description").textContent = card.description;
+    document.getElementById("card-location").textContent = card.location;
+    document.getElementById("card-year").textContent = card.year;
+
+    // Render carousel
+    const carouselContainer = document.getElementById("carousel-container");
+    carouselContainer.innerHTML = ""; // Clear previous carousel
+    const swiperHTML = document.createElement("div");
+    swiperHTML.className = "swiper mySwiper";
+    swiperHTML.innerHTML = `
+      <div class="swiper-wrapper">
+        ${card.images.map(src => `
+          <div class="swiper-slide">
+            <img src="${src}" alt="${card.title}" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-pagination"></div>
-        `;
-      carouselContainer.appendChild(swiperHTML);
-      document.getElementById("card-title").textContent = card.title;
-      document.getElementById("card-description").textContent = card.description;
-      document.getElementById("card-location").textContent = card.location;
-      document.getElementById("card-year").textContent = card.year;
-    // Init Swiper (no import needed!)
+        `).join('')}
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    `;
+    carouselContainer.appendChild(swiperHTML);
+
+    // Init Swiper
     new Swiper('.swiper', {
       loop: true,
       spaceBetween: 10,
@@ -280,7 +357,29 @@ nav a:hover {
       },
     });
   }
-  </script>
+
+  // Navigation handlers
+  document.getElementById('prev-card').onclick = () => {
+    const idx = cards.findIndex(c => c.id === cardId);
+    if (idx > 0) {
+      cardId = cards[idx - 1].id;
+      window.history.replaceState({}, '', `?id=${cardId}`);
+      renderCard(cardId);
+    }
+  };
+
+  document.getElementById('next-card').onclick = () => {
+    const idx = cards.findIndex(c => c.id === cardId);
+    if (idx < cards.length - 1) {
+      cardId = cards[idx + 1].id;
+      window.history.replaceState({}, '', `?id=${cardId}`);
+      renderCard(cardId);
+    }
+  };
+
+  // Initial render
+  renderCard(cardId);
+</script>
 
 </body>
 </html>
