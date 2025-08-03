@@ -4,8 +4,11 @@ const cards = [
     title: "📍 Master Plan Adjustment for Lao Cai City",
     description: "Total area: 28,162.64 ha. Scheduled for completion by 2045. The plan focuses on optimizing land use, upgrading infrastructure, guiding population growth, and reinforcing the city's role as a regional economic and transportation hub.",
     images: [
-      "public/pastProjects/project_1/pp_1a.png", 
-      "public/pastProjects/project_1/pp_1b.png",
+      "public/pastProjects/project_1/pp_1a.jpg", 
+      "public/pastProjects/project_1/pp_1b.jpg",
+      "public/pastProjects/project_1/pp_1c.jpg", 
+      "public/pastProjects/project_1/pp_1d.jpg",
+      "public/pastProjects/project_1/pp_1e.jpg",
     ],
     year: "2024",
     location: "Lao Cai City"
@@ -15,8 +18,11 @@ const cards = [
     title: "📍 Detailed Construction Plan at 1/500 Scale",
     description: "Total area: 2,693.3 ha. This 1/500 scale detailed plan for Hop Thanh Commune, Lao Cai City, lays the groundwork for future urban development. It includes zoning, infrastructure upgrades, and sustainable growth strategies aimed at 2025 targets.",
     images: [
-      "public/pastProjects/project_2/pp_2a.png",  
-      "public/pastProjects/project_2/pp_2b.png", 
+      "public/pastProjects/project_2/pp_2a.jpg",  
+      "public/pastProjects/project_2/pp_2b.jpg", 
+      "public/pastProjects/project_2/pp_2c.jpg",  
+      "public/pastProjects/project_2/pp_2d.jpg", 
+      "public/pastProjects/project_2/pp_2e.jpg", 
     ],
     year: "2025",
     location: "Hop Thanh Commune, Lao Cai City"
@@ -28,7 +34,8 @@ const cards = [
     images: [
       "public/pastProjects/project_3/pp_3a.jpg",  
       "public/pastProjects/project_3/pp_3b.jpg", 
-      "public/pastProjects/project_3/pp_3c.jpg",   
+      "public/pastProjects/project_3/pp_3c.jpg",  
+      "public/pastProjects/project_3/pp_3d.jpg",     
     ],
     year: "2025",
     location: "Hai Duong City"
@@ -40,6 +47,7 @@ const cards = [
     images: [
       "public/pastProjects/project_4/pp_4a.webp",  
       "public/pastProjects/project_4/pp_4b.webp", 
+      "public/pastProjects/project_4/pp_4c.webp",
     ],
     year: "2025",
     location: "Lao Cai City"
@@ -50,7 +58,10 @@ const cards = [
     description: "Dong Yen is an ambitious master plan covering nearly 4,500 ha with a long-term vision to 2050. It aims to build a smart satellite city that integrates living, working, and recreational spaces. Strategically designed, Dong Yen is poised to become a northern hub for sustainable, modern urban models.",
     images: [
       "public/pastProjects/project_5/pp_5a.jpg",  
-      "public/pastProjects/project_5/pp_5b.jpg", 
+      "public/pastProjects/project_5/pp_5b.jpg",
+      "public/pastProjects/project_5/pp_5c.jpg",  
+      "public/pastProjects/project_5/pp_5d.jpg",
+      "public/pastProjects/project_5/pp_5e.jpg", 
     ],
     year: "2025",
     location: "Dong Yen Commune, Ha Giang City"

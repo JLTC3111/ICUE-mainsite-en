@@ -117,6 +117,8 @@ nav a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 1;
+  transition: opacity 0.4s ease;
 }
 
 .card-detail {
@@ -173,6 +175,7 @@ nav a:hover {
     border-radius: 12px;
     transition: all 0.75s ease-in-out;
     will-change: transform;
+    cursor: pointer;
 }
 
 .swiper-slide:hover img {
@@ -326,9 +329,11 @@ nav a:hover {
 @keyframes zoomIn {
   from {
     transform: scale(0.25);
+    opacity: 0.75;
   }
   to {
     transform: scale(1);
+    opacity: 1;;
   }
 }
 
@@ -342,6 +347,11 @@ nav a:hover {
     opacity: 0;
   }
 }
+
+.page-container.fade-out {
+  opacity: 0;
+}
+
 </style>
 
 <section id="carousel-container"></section>
@@ -446,6 +456,17 @@ nav a:hover {
     });
   }
 
+  function transitionToCard(newId) {
+  const container = document.getElementById('card-container');
+  container.classList.add('fade-out');
+
+    setTimeout(() => {
+      cardId = newId;
+      window.history.replaceState({}, '', `?id=${cardId}`);
+      renderCard(cardId);
+      container.classList.remove('fade-out');
+    }, 400); 
+  }
   // Navigation handlers
   document.getElementById('prev-card').onclick = () => {
     const idx = cards.findIndex(c => c.id === cardId);
