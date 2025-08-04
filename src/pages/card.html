@@ -141,8 +141,8 @@ nav a:hover {
   margin: auto 2rem;
   padding: 3.5rem;
   background-color: #ffffff;
-  box-shadow: -2px -4px 12px rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
+  box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
   font-family: 'Segoe UI', sans-serif;
   line-height: 1.6;
 }
@@ -378,12 +378,6 @@ nav a:hover {
   font-family: sans-serif;
 }
 
-@media (min-width: 769px) {
-  .footer {
-    height: 150px; 
-  }
-}
-
 .footer-container {
   height: 100%;
   width: 100%;
@@ -439,6 +433,67 @@ nav a:hover {
 
 .footer-link:hover {
   color: #ffffff;
+  filter: brightness(1.2);
+}
+
+/* 📱 Mobile responsiveness */
+/* 📱 Mobile responsiveness */
+@media (max-width: 768px) {
+  .footer-grid {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-section {
+    min-width: none;
+    width: 100%;
+  }
+  .footer-section .collapsible {
+    display: none;
+    flex-direction: column;
+    transform-origin: bottom;
+    animation: slide-up 0.3s ease-out forwards;
+  }
+  .footer-toggle {
+    background-color: #1a202c;
+    padding: 0;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  .footer-section.open .collapsible {
+    display: flex;
+  }
+  .footer-toggle .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .footer-section.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Optional: collapse padding/margin to reduce vertical space */
+  .footer-section:not(.open) .collapsible * {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 </style>
@@ -461,11 +516,11 @@ nav a:hover {
   <div class="footer-container">
     <div class="footer-grid">
       <div class="footer-section">
-        <h3 class="footer-heading">Tham Gia</h3>
-        <ul class="footer-links">
+         <button class="footer-heading footer-toggle" aria-expanded="false">
+          Follow Us <span class="arrow">⌃</span>
+        </button>
+        <ul class="footer-links collapsible">
           <li><a href="/youtube" class="footer-link"><svg width="20px" height="20px" viewBox="0 -7 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <title>Youtube-color</title>
-            <desc>Created with Sketch.</desc>
             <defs>
                   </defs>
                       <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -503,20 +558,26 @@ nav a:hover {
       </div>
 
       <div class="footer-section">
-        <h3 class="footer-heading">Các Trang Khác</h3>
-        <ul class="footer-links">
+        <button class="footer-heading footer-toggle" aria-expanded="false">
+          Other Pages <span class="arrow">⌃</span>
+        </button>
+        <ul class="footer-links collapsible">
           <li><a href="/" class="footer-link"></a></li>
-          <li><a href="/news" class="footer-link">Tin Tức</a></li>
-          <li><a href="/meetOurExperts" class="footer-link">Chuyên Gia</a></li>
-          <li><a href="/coreTeam" class="footer-link">Cán Bộ</a></li>
+          <li><a href="/news" class="footer-link">News</a></li>
+          <li><a href="/meetOurExperts" class="footer-link">Meet Our Experts</a></li>
+          <li><a href="/coreTeam" class="footer-link">Core Team</a></li>
         </ul>
       </div>
 
       <div class="footer-section">
-        <h3 class="footer-heading">Liên Hệ</h3>
-        <p class="footer-text">📍 Hà Nội, Việt Nam</p>
-        <p class="footer-text">📧 info@icue.vn</p>
-        <p class="footer-text">📞 +84 (24) 3772 8485</p>
+        <button class="footer-heading footer-toggle" aria-expanded="false">
+          Contact Us <span class="arrow">⌃</span>
+        </button>
+        <ul class="footer-links collapsible">
+          <p class="footer-text">📍 Hà Nội, Việt Nam</p>
+          <p class="footer-text">📧 info@icue.vn</p>
+          <p class="footer-text">📞 +84 (24) 3772 8485</p>
+        </ul>
       </div>
     </div>
   </div>
