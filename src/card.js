@@ -74,6 +74,9 @@ const cards = [
       "public/pastProjects/project_6/pp_6a.jpg",  
       "public/pastProjects/project_6/pp_6b.jpg", 
       "public/pastProjects/project_6/pp_6c.jpg", 
+      "public/pastProjects/project_6/pp_6d.jpg",  
+      "public/pastProjects/project_6/pp_6e.jpg", 
+      "public/pastProjects/project_6/pp_6f.jpg",
     ],
     year: "2025",
     location: "Na Chi Commune, Xin Man District, Ha Giang"
