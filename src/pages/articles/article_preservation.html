@@ -117,14 +117,14 @@ nav a:hover {
   }
 
   .article-title {
-    font-size: 2rem;
+    font-size: clamp(1rem, 3vw, 2rem);
     text-align: center;
     margin-bottom: 0.5rem;
     color: #1a202c;
   }
 
   .lead {
-    font-size: 1.1rem;
+    font-size: clamp(0.75rem, 2.5vw, 1.1rem);
     color: #555;
     margin: 2rem auto;
     line-height: 1.5;
@@ -132,7 +132,7 @@ nav a:hover {
   }
 
   .meta {
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
     color: #888;
     margin-bottom: 1.5rem;
   }
@@ -153,9 +153,8 @@ nav a:hover {
 
   .article-body {
     letter-spacing: 0.25px;
-    
     line-height: 1.7;
-    font-size: 1.05rem;
+    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
   }
 
   .article-body h2 {
