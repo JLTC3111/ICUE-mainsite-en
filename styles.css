@@ -757,14 +757,14 @@ footer {
 .drawer-menu .submenu a {
   font-size: 1.2rem;
   color: #ffffff;
-  padding-top: 1.05rem;
+  padding-top: .75rem;
   padding-left: .75rem;
   position: relative;
   transition: all .3s ease;
 }
 
 .drawer-menu .submenu a::before {
-  content: "↳";
+  content: "";
   color: #ffffff; 
   font-size: clamp(1rem, 5vw, 2.25rem);
   display: inline-block;
