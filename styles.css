@@ -1063,8 +1063,9 @@ footer {
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
   top: 1.5%;
-  right: -15rem;
-  margin-left:3.5rem;
+  right: 2.5rem;
+  width: 375px;
+  height: 375px;
   animation: slideInFromRight 3.5s ease-in-out;
 }
 
@@ -2236,8 +2237,10 @@ body.loaded #app {
   }
 
   .model-home {
-    top: -1.5rem;
-    right: 10.5rem;
+    top: 1.5%;
+    right: 25%;
+    height: 220px;
+    width: 220px;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
@@ -2839,6 +2842,8 @@ body.loaded #app {
 
   .model-home{
     top:17.5%;
+    width: 315px;
+    height: 315px;
     animation: slideInFromRight 3.5s ease-in-out; 
   }
   .menu-toggle svg{
