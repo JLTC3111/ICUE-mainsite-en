@@ -664,7 +664,7 @@ footer {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 280px;
+  width: 300px;
   background: transparent;
   overflow-y: auto;
   display: flex;
@@ -700,7 +700,7 @@ footer {
 }
 
 .drawer-menu a:hover {
-  transform: translateX(45px);
+  transform: translateX(40px);
   background-color: #fbfbfb;
   border-left: 12.5px solid #8a8a8a;
   padding-left: .5rem;
@@ -746,7 +746,7 @@ footer {
 }
 
 .submenu.open {
-  transform: translateX(0px) translateY(0);
+  transform: translateX(15px) translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
@@ -769,7 +769,7 @@ footer {
 .drawer-menu .submenu a::before {
   content: "";
   color: #ffffff; 
-  font-size: clamp(1rem, 5vw, 2.25rem);
+  font-size: 1.95rem;
   display: inline-block;
   vertical-align: middle;
   font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif !important; 
