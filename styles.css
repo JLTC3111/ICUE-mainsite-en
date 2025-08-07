@@ -2785,7 +2785,7 @@ body.loaded #app {
   }
   .drawer-menu a {
     padding: 1rem;
-    margin-left: 0.5rem;
+    margin-left: -1rem;
     font-size: clamp(1.15rem, 3vw, 1.75rem);
     text-decoration: none;
     border-left: 5px solid transparent;
