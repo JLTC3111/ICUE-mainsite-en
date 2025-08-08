@@ -1999,11 +1999,11 @@ body.loaded #app {
     .arrow-symbol svg {
       width: 95%; 
       height: 95%;
-      transform: none; /
+      transform: none; 
     }
 
     .left-arrow-symbol {
-      transform: translateX(-30vw); /
+      transform: translateX(-30vw); 
     }
   
     .right-arrow-symbol {
