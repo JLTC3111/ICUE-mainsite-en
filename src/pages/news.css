@@ -1,0 +1,154 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: sans-serif;
+  background: #ffffff;
+  padding: 5%;
+}
+
+.grid {
+  margin-top: 5%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px;
+}
+
+.grid a{
+  text-decoration: none;
+}
+
+/* Responsive stacking layout for small screens */
+@media (max-width: 550px) {
+  .grid {
+    margin-top: 15%;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+@media (min-width: 551px) and (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: auto;
+  }
+}
+
+.card {
+  background: #c4c4c4;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 1.5px;
+  text-align: center;
+  transition: all 0.75s ease-in-out;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
+}
+
+.card:hover {
+  background-color: #3310ff;
+  transform: scale(1.025);
+  will-change: transform; 
+  transform: translateY(-5px)
+}
+
+.card:hover .description {
+  background-color: transparent;
+}
+
+.card:hover .location {
+  color: #ffffff;
+}
+
+.card:hover .year {
+  color: #ffffff;
+}
+
+.dark {
+  background: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dark a {
+  color: #ccc;
+  text-decoration: underline;
+  margin-top: 1rem;
+}
+
+.image-card img {
+  filter: grayscale(25%);
+  width: 100%;
+  height: 500px; 
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+  transition: all 0.75s ease-in-out;
+}
+
+.image-card:hover img {
+  filter: grayscale(0%);
+  filter: brightness(1.05);
+  transform: translateY (-2px);
+  transform: scale(1.025);
+  will-change: transform;
+}
+
+.card-info {
+  text-align: left;
+  padding: 20px 10px 10px;
+}
+
+.card-info h3 {
+  color: #fff;
+  font-size: clamp(0.75rem, 2.5vw, 1.1rem);
+  margin-bottom: 5px;
+}
+
+.card-info p {
+  margin: 3px 0;
+}
+
+.card-info p,
+.card-info .description,
+.card-info .location,
+.card-info .year {
+  font-size: clamp(0.65rem, 2.5vw, 1rem);
+  color: #000000;
+  margin-bottom: 4px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  white-space: normal;
+}
+
+.card-info .description {
+  color: #ffffff;
+  background: #000000;
+}
+
+/* Initial (hidden) state */
+.card.image-card {
+  filter: blur(8px);
+  opacity: 0;
+  transition: all 0.75s ease-in-out;
+}
+
+/* When AOS activates */
+.card.image-card.aos-animate {
+  filter: blur(0);
+  opacity: 1;
+  transition: all 0.75s ease-in-out;
+}
