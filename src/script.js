@@ -1403,7 +1403,7 @@ window.initMobileNewsSlider = () => {
     let endX = 0;
 
     function updateSlider() {
-      if (window.innerWidth <= 550) {
+      if (window.innerWidth <= 1440) {
         cards.forEach((card, i) => {
           card.style.display = i === currentIndex ? "block" : "none";
         });
@@ -1734,6 +1734,9 @@ function initAudioVisualizer(
         break;
       case 'pastProjects':
         color = '#a1c900ff';
+        break;
+      case 'News':
+        color = '#000000';
         break;
     }
   

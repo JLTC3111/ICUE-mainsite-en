@@ -165,34 +165,40 @@ body {
 }
 
 /* Responsive stacking layout for small screens */
-@media (max-width: 550px) {
+@media (max-width: 1440px) {
   .grid {
-    margin-top: 15%;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    display: flex; /* override grid */
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    touch-action: pan-y;
   }
-}
-
-@media (min-width: 551px) and (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: auto;
+  .card.image-card {
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
-}
-
-@media (max-width: 1024px) {
-    .news-slider .logo-list .item {
-      width: 150px;
-      height: 75px;
-    }
-    .news-carousel {
+  .news-slider-wrapper {
+    margin: 5% auto;
+  }
+  .news-carousel {
       position: relative;
       width: 100%;
       height: auto;
       min-height: 75px;
     }
+  .news-slider .logo-list .item {
+      width: 125px;
+      height: 65px;
+    }
+  .slider-arrow {
+    margin-top: -35px;
+  }
+  .slider-arrow svg {
+    width: 30px;
+    height: 30px;
+  }
 }
-
 .card {
   background: #c4c4c4;
   border-radius: 8px;
@@ -314,9 +320,8 @@ body {
         <path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" class="fill-colour" />
       </svg>
     </div>
-
     <!-- SLIDER CONTENT -->
-    <div class="news-slider" style="--width: 200px; --height: 100px; --quantity: 9;" id="sliderNews">
+    <div class="news-slider" style="--width: 250px; --height: 125px; --quantity: 9;" id="sliderNews">
       <div class="logo-list" id="logoList">
         <div class="item" style="--position: 1">
           <a href="https://greenviet.org" target="_blank" rel="noopener noreferrer">
@@ -365,13 +370,14 @@ body {
         </div>
     </div>
    </div>
-    <!-- RIGHT ARROW -->
+  <!-- RIGHT ARROW -->
   <div class="slider-arrow right-slider-arrow" id="arrowRight">
       <svg width="40px" height="40px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
         <path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" class="fill-colour" />
       </svg>
     </div>
   </div>
+
   <main class="grid">
     <a href="/src/pages/articles/article_hoian.html" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
