@@ -1797,6 +1797,9 @@ function initAudioVisualizer(
       case 'News':
         color = '#000000';
         break;
+      case 'orgStructure':
+        color = '#780000';
+        break;
     }
   
     paths.forEach(path => {
