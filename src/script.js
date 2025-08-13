@@ -1122,56 +1122,95 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.OrgStructure = {
-    showTab: function(tabName) {
-        const tabContents = document.querySelectorAll('.tab-content');
-          tabContents.forEach(content => content.classList.remove('active'));
-                
-                // Remove active class from all tabs
-                const tabs = document.querySelectorAll('.tab');
-                tabs.forEach(tab => tab.classList.remove('active'));
-                
-                // Show selected tab content
-                document.getElementById(tabName).classList.add('active');
-                
-                // Add active class to clicked tab
-                event.target.classList.add('active');
-            },
+  showTab: function(tabName) {
+      const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => content.classList.remove('active'));
+              
+              // Remove active class from all tabs
+              const tabs = document.querySelectorAll('.tab');
+              tabs.forEach(tab => tab.classList.remove('active'));
+              
+              // Show selected tab content
+              document.getElementById(tabName).classList.add('active');
+              
+              // Add active class to clicked tab
+              event.target.classList.add('active');
+          },
 
-            showPersonDetails: function(name, title) {
-                alert(`${name}\n${title}\n\nClick to view full profile and responsibilities.`);
-            },
+          showPersonDetails: function(name, title) {
+              alert(`${name}\n${title}\n\nClick to view full profile and responsibilities.`);
+          },
 
-            downloadDocument: function(docName) {
-                alert(`Downloading ${docName}...\n\nIn a real implementation, this would trigger a file download.`);
-            },
+          downloadDocument: function(docName) {
+              // Handle direct file paths (like 'public/files/...')
+              if (docName.includes('/') || docName.includes('.')) {
+                  const link = document.createElement('a');
+                  link.href = docName;
+                  link.download = docName.split('/').pop(); // Get filename from path
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  return;
+              }
+              
+              // Handle document IDs - map to actual file paths
+              const documentMap = {
+                  'remote-work-policy': 'public/files/company_policies/remote_work_policy.pdf',
+                  'pto-policy': 'public/files/company_policies/pto_policy.pdf',
+                  'articles-incorporation': 'public/files/legal/articles_of_incorporation.pdf',
+                  'privacy-policy': 'public/files/legal/privacy_policy.pdf',
+                  'terms-service': 'public/files/legal/terms_of_service.pdf',
+                  'data-protection': 'public/files/legal/data_protection_policy.pdf',
+                  'benefits-guide': 'public/files/hr/benefits_guide.pdf',
+                  '401k-plan': 'public/files/hr/401k_plan.pdf',
+                  'health-insurance': 'public/files/hr/health_insurance.pdf',
+                  'stock-options': 'public/files/hr/stock_options.pdf',
+                  'safety-manual': 'public/files/safety/safety_manual.pdf',
+                  'quality-standards': 'public/files/quality/quality_standards.pdf',
+                  'audit-report': 'public/files/audit/audit_report.pdf',
+                  'compliance-checklist': 'public/files/compliance/compliance_checklist.pdf'
+              };
+              
+              const filePath = documentMap[docName];
+              if (filePath) {
+                  const link = document.createElement('a');
+                  link.href = filePath;
+                  link.download = filePath.split('/').pop();
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+              } else {
+                  alert(`Document "${docName}" not found. Please check if the file exists.`);
+              }
+          },
 
-            searchDocuments: function(searchTerm) {
-                const categories = document.querySelectorAll('.document-category');
-                const searchLower = searchTerm.toLowerCase();
-                
-                categories.forEach(category => {
-                    const items = category.querySelectorAll('.document-list li');
-                    let hasVisibleItems = false;
-                    
-                    items.forEach(item => {
-                        const text = item.textContent.toLowerCase();
-                        if (text.includes(searchLower)) {
-                            item.style.display = 'block';
-                            hasVisibleItems = true;
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-                    
-                    category.style.display = hasVisibleItems || searchTerm === '' ? 'block' : 'none';
-                });
-            }
-        };
+          searchDocuments: function(searchTerm) {
+              const categories = document.querySelectorAll('.document-category');
+              const searchLower = searchTerm.toLowerCase();
+              
+              categories.forEach(category => {
+                  const items = category.querySelectorAll('.document-list li');
+                  let hasVisibleItems = false;
+                  
+                  items.forEach(item => {
+                      const text = item.textContent.toLowerCase();
+                      if (text.includes(searchLower)) {
+                          item.style.display = 'block';
+                          hasVisibleItems = true;
+                      } else {
+                          item.style.display = 'none';
+                      }
+                  });
+                  
+                  category.style.display = hasVisibleItems || searchTerm === '' ? 'block' : 'none';
+              });
+          }
+      };
 
-      window.showTab = window.OrgStructure.showTab;
-      window.showPersonDetails = window.OrgStructure.showPersonDetails;
-      window.downloadDocument = window.OrgStructure.downloadDocument;
-      window.searchDocuments = window.OrgStructure.searchDocuments;
+    window.showTab = window.OrgStructure.showTab;
+    window.showPersonDetails = window.OrgStructure.showPersonDetails;
+    window.downloadDocument = window.OrgStructure.downloadDocument;
+    window.searchDocuments = window.OrgStructure.searchDocuments;
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
