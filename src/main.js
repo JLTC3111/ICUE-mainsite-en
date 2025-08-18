@@ -328,21 +328,21 @@ footer {
     <div class="footer-container">
         <div class="footer-section">
             <button class="footer-toggle" aria-expanded="false">
-                Công Ty
+                Company
             </button>
             <div class="collapsible">
-                <a href="#/notableAwards">Giải Thưởng Nổi Bật</a>
-                <a href="#/communityActivities">Hoạt Động Cộng Đồng</a>
+                <a href="#/notableAwards">Notable Awards</a>
+                <a href="#/communityActivities">Community Activities</a>
             </div>
         </div>
         <div class="footer-section">
             <button class="footer-toggle" aria-expanded="false">
-                Các Trang Khác
+                Other Pages
             </button>
             <div class="collapsible">
-                <a href="#/FAQs">Câu Hỏi Thường Gặp</a>
-                <a href="#/recruitment">Tuyển Dụng</a>
-                <a href="#/donations">Quyên Góp</a>
+                <a href="#/FAQs">FAQs</a>
+                <a href="#/recruitment">Job Opprtunities</a>
+                <a href="#/donations">Donations</a>
             </div>
         </div>
         <div class="footer-brand">
@@ -377,9 +377,9 @@ footer {
     <div class="footer-bottom">
             <div class="footer-bottom">
         <div class="footer-bottom-left">
-            <a href="#/privacy">Quyền Riêng Tư</a>
+            <a href="#/privacy">Privacy</a>
             <span>|</span>
-            <a href="#/terms">Điều Khoản</a>
+            <a href="#/terms">T&C</a>
             <span>|</span>
             <a href="#/gdpr">GDPR</a>
             <span>|</span>
@@ -387,7 +387,7 @@ footer {
         </div>
         <div class="footer-bottom-right">
             <a href="#" class="company-deck">
-                Hợp Tác Cùng Chúng Tôi
+                Let's Work Together!
                 <svg fill="currentColor" viewBox="0 0 24 24">
                     <path d="M7 14l5-5 5 5z"/>
                 </svg>
@@ -446,34 +446,42 @@ footer {
         }
     }
 
-    // Expose globally
-    global.ICUEFooter = {
-        inject: injectFooter,
-        autoInject: autoInjectFooter,
-        injectInto(element) {
-            if (typeof element === 'string') {
-                element = document.querySelector(element);
+    // Expose globally with error handling
+    if (typeof global !== 'undefined' && global) {
+        global.ICUEFooter = {
+            inject: injectFooter,
+            autoInject: autoInjectFooter,
+            injectInto(element) {
+                if (typeof element === 'string') {
+                    element = document.querySelector(element);
+                }
+                if (!element) {
+                    console.error('ICUEFooter: Element not found');
+                    return false;
+                }
+                return injectFooter(element);
+            },
+            updateLinks(newLinks) {
+                const footerColumns = document.querySelectorAll('.footer-section');
+                if (newLinks.company && footerColumns[0]) {
+                    const companyLinks = footerColumns[0].querySelector('.collapsible');
+                    if (companyLinks) {
+                        companyLinks.innerHTML = newLinks.company.map(link =>
+                            `<a href="${link.url}">${link.text}</a>`
+                        ).join('');
+                    }
+                }
+                if (newLinks.pages && footerColumns[1]) {
+                    const pageLinks = footerColumns[1].querySelector('.collapsible');
+                    if (pageLinks) {
+                        pageLinks.innerHTML = newLinks.pages.map(link =>
+                            `<a href="${link.url}">${link.text}</a>`
+                        ).join('');
+                    }
+                }
             }
-            if (!element) {
-                console.error('ICUEFooter: Element not found');
-                return false;
-            }
-            return injectFooter(element);
-        },
-        updateLinks(newLinks) {
-            const footerColumns = document.querySelectorAll('.footer-section');
-            if (newLinks.company && footerColumns[0]) {
-                const companyLinks = footerColumns[0].querySelector('.collapsible');
-                companyLinks.innerHTML = newLinks.company.map(link =>
-                    `<a href="${link.url}">${link.text}</a>`
-                ).join('');
-            }
-            if (newLinks.pages && footerColumns[1]) {
-                const pageLinks = footerColumns[1].querySelector('.collapsible');
-                pageLinks.innerHTML = newLinks.pages.map(link =>
-                    `<a href="${link.url}">${link.text}</a>`
-                ).join('');
-            }
-        }
-    };
+        };
+    } else {
+        console.error('ICUEFooter: Global object not available');
+    }
 })(window);

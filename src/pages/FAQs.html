@@ -381,38 +381,61 @@
 </div>
 
 <script>
-  // Define openCategory function in global scope
-  window.openCategory = function(category) {
-    // Add some visual feedback
-    event.target.closest('.faq-card').style.transform = 'scale(0.98)';
-    setTimeout(() => {
-      event.target.closest('.faq-card').style.transform = '';
-    }, 150);
+  // Define openCategory function with multiple fallbacks
+  (function() {
+    const openCategoryFunction = function(category) {
+      try {
+        // Add some visual feedback
+        if (typeof event !== 'undefined' && event && event.target) {
+          const card = event.target.closest('.faq-card');
+          if (card) {
+            card.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              card.style.transform = '';
+            }, 150);
+          }
+        }
 
-    // Show alert with category info (replace this with real navigation)
-    const categoryNames = {
-      'admissions': 'Admissions',
-      'applying': 'Application Process',
-      'academic': 'Academics',
-      'finance': 'Finance',
-      'postgraduate-finance': 'Postgraduate Finance',
-      'learning-support': 'Learning Support',
-      'accommodation': 'Accommodation',
-      'manchester-accommodation': 'City Accommodation',
-      'sports': 'Sports',
-      'employment': 'Jobs & Experience',
-      'general': 'General',
-      'international-finance': 'International Finance',
-      'visa-immigration': 'Visa & Immigration',
-      'international-working': 'International Work',
-      'general-international': 'General International'
+        // Show alert with category info (replace this with real navigation)
+        const categoryNames = {
+          'admissions': 'Admissions',
+          'applying': 'Application Process',
+          'academic': 'Academics',
+          'finance': 'Finance',
+          'postgraduate-finance': 'Postgraduate Finance',
+          'learning-support': 'Learning Support',
+          'accommodation': 'Accommodation',
+          'manchester-accommodation': 'City Accommodation',
+          'sports': 'Sports',
+          'employment': 'Jobs & Experience',
+          'general': 'General',
+          'international-finance': 'International Finance',
+          'visa-immigration': 'Visa & Immigration',
+          'international-working': 'International Work',
+          'general-international': 'General International'
+        };
+
+        alert(`Opening category: ${categoryNames[category] || category}\n\nIn a real implementation, this would navigate to a detailed page with FAQs for this category.`);
+
+        // In a real implementation, you would navigate:
+        // window.location.href = `faq-details.html?category=${category}`;
+      } catch (error) {
+        console.error('Error in openCategory:', error);
+        alert('Error opening category. Please try again.');
+      }
     };
-
-    alert(`Opening category: ${categoryNames[category]}\n\nIn a real implementation, this would navigate to a detailed page with FAQs for this category.`);
-
-    // In a real implementation, you would navigate:
-    // window.location.href = `faq-details.html?category=${category}`;
-  };
+    
+    // Assign to multiple scopes for maximum compatibility
+    window.openCategory = openCategoryFunction;
+    globalThis.openCategory = openCategoryFunction;
+    
+    // Also create as regular function
+    if (typeof openCategory === 'undefined') {
+      window.openCategory = openCategoryFunction;
+    }
+    
+    console.log('openCategory function defined:', typeof window.openCategory);
+  })();
 
   // Wait for DOM to load before setting up event listeners
   document.addEventListener('DOMContentLoaded', function() {

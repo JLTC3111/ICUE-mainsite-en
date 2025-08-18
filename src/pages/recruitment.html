@@ -556,12 +556,23 @@
             alert(`Apply for: ${job.title}\n\nDepartment: ${job.department}\nLocation: ${job.location}\n\nIn production, this would open a detailed job page or application form.`);
         }
 
-        // Smooth scroll for CTA button
-        document.querySelector('.cta-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('open-positions').scrollIntoView({
-                behavior: 'smooth'
-            });
+        // Initialize jobs on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderJobs(jobPositions);
+            
+            // Smooth scroll for CTA button
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const openPositions = document.getElementById('open-positions');
+                    if (openPositions) {
+                        openPositions.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
         });
     </script>
 </body>

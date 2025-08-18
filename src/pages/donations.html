@@ -417,7 +417,7 @@
   <header class="header">
     <div class="container">
       <h1>Building Strong Communities</h1>
-      <p>Your donation helps us provide essential infrastructure and planning services to underserved communities, creating a lasting positive impact for future generations.</p>
+      <div>Your donation helps us provide essential infrastructure and planning services to underserved communities, creating a lasting positive impact for future generations.</div>
     </div>
   </header>
 
@@ -446,12 +446,12 @@
 
         <div class="impact-story">
           <h3>Recent Success: Riverside Community Center</h3>
-          <p>Thanks to donor support, we completed planning and construction oversight for a new community center serving over 800 families. The facility now hosts education programs, healthcare services, and can serve as an emergency shelter.</p>
+          <div>Thanks to donor support, we completed planning and construction oversight for a new community center serving over 800 families. The facility now hosts education programs, healthcare services, and can serve as an emergency shelter.</div>
         </div>
 
         <div class="impact-story">
           <h3>Emergency Response: Flood Recovery</h3>
-          <p>Our rapid response team provided free structural assessments and rebuilding plans for 34 homes affected by recent flooding, helping families return to safe housing 60% faster than average.</p>
+          <div>Our rapid response team provided free structural assessments and rebuilding plans for 34 homes affected by recent flooding, helping families return to safe housing 60% faster than average.</div>
         </div>
       </div>
 
@@ -519,6 +519,109 @@
       </form>
     </div>
   </main>
+
+  <script>
+    let selectedAmount = 100;
+    let selectedFrequency = 'one-time';
+
+    // Function to select donation amount
+    function selectAmount(button, amount) {
+      // Remove active class from all amount buttons
+      document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Add active class to clicked button
+      button.classList.add('active');
+      
+      // Update selected amount
+      selectedAmount = amount;
+      document.getElementById('donateAmount').textContent = amount;
+      
+      // Clear custom amount input
+      document.getElementById('customAmount').value = '';
+    }
+
+    // Function to update custom amount
+    function updateCustomAmount(input) {
+      const customAmount = parseInt(input.value);
+      if (customAmount && customAmount > 0) {
+        // Remove active class from preset buttons
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Update selected amount
+        selectedAmount = customAmount;
+        document.getElementById('donateAmount').textContent = customAmount;
+      }
+    }
+
+    // Function to select donation frequency
+    function selectFrequency(option, frequency) {
+      // Remove active class from all frequency options
+      document.querySelectorAll('.donation-option').forEach(opt => {
+        opt.classList.remove('active');
+      });
+      
+      // Add active class to clicked option
+      option.classList.add('active');
+      
+      // Update selected frequency
+      selectedFrequency = frequency;
+    }
+
+    // Function to process donation
+    function processDonation(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(event.target);
+      const donationData = {
+        amount: selectedAmount,
+        frequency: selectedFrequency,
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        company: formData.get('company')
+      };
+      
+      // Validate required fields
+      if (!donationData.firstName || !donationData.lastName || !donationData.email) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
+      // Validate amount
+      if (!selectedAmount || selectedAmount <= 0) {
+        alert('Please select a valid donation amount.');
+        return;
+      }
+      
+      // Show success message (in production, this would process the payment)
+      alert(`Thank you for your ${selectedFrequency} donation of $${selectedAmount}!\n\nDonor: ${donationData.firstName} ${donationData.lastName}\nEmail: ${donationData.email}\n\nIn production, this would redirect to a secure payment processor.`);
+      
+      console.log('Donation data:', donationData);
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set initial donate button amount
+      document.getElementById('donateAmount').textContent = selectedAmount;
+      
+      // Add hover effects to cards
+      const cards = document.querySelectorAll('.award-card, .project-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-5px)';
+        });
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
