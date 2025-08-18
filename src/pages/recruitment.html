@@ -374,6 +374,17 @@
         </div>
     </section>
 
+    <!-- Job Positions Section -->
+    <section class="jobs-section" id="open-positions">
+        <div class="container">
+            <h2 class="section-title">Open Positions</h2>
+            <div class="section-subtitle">Join our team and make a difference in the energy sector</div>
+            <div id="jobs-container" class="jobs-grid">
+                <!-- Jobs will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
     <!-- Benefits Section -->
     <section class="benefits-section">
         <div class="container">
@@ -463,6 +474,11 @@
         // Function to render job positions
         function renderJobs(jobs) {
             const jobsContainer = document.getElementById('jobs-container');
+            if (!jobsContainer) {
+                console.error('Jobs container not found');
+                return;
+            }
+            
             jobsContainer.innerHTML = '';
 
             jobs.forEach(job => {
