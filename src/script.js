@@ -437,86 +437,70 @@ window.loadPage = (page) => {
               updateCalendarSvgTime();
               initAudioVisualizer();
               updateMusicBarColor(page);
+              calendarModal(page);
               
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'Home':
                   makeItRainText();
                   realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
-                  calendarModal();
                   break;
                 case 'News':
                   initLogoSlider();
-                  calendarModal();
                   initMobileNewsSlider();
                   triggerFanfare();
                   break;
                 case 'aboutUs':
                   createBalloons();
-                  calendarModal();
                   break;
                 case 'Contact':
                   initPostMethod();
-                  calendarModal();
                   break;
                 case 'ourWork':
                   initializeCarousel();
-                  calendarModal();
                   break;
                 case 'pastProjects':
                   handleAOSByScreenSize();
-                  calendarModal();
                   break;
                 case 'orgStructure':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'FAQs':
+                  initFrequentlyAskedQuestions();
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'recruitment':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'donations':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'notableAwards':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'communityActivities':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'privacy':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'terms':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'gdpr':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'cookies':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
               }
             });
@@ -1230,6 +1214,206 @@ window.OrgStructure = {
     window.showTab = window.OrgStructure.showTab;
     window.downloadDocument = window.OrgStructure.downloadDocument;
     window.searchDocuments = window.OrgStructure.searchDocuments;
+
+window.initFrequentlyAskedQuestions = function() {
+    let currentOpenCategory = null; // Track currently open category
+        const faqData = {
+          services: [
+              { q: "Question - What types of consulting services do you provide?", a: "Answer: We provide consulting in planning, design, project management, supervision, and legal procedure support." },
+              { q: "Question - Do you take on small residential projects?", a: "Answer: Yes, we handle everything from residential housing to commercial and industrial buildings." }
+          ],
+          process: [
+              { q: "Question - What is the collaboration process like?", a: "Answer: The process includes: initial consultation → site survey → preliminary design → finalized drawings → construction support." },
+              { q: "Question - Can I make changes to the design during the process?", a: "Answer: Yes, clients have the right to request revisions at different stages before finalizing the drawings." }
+          ],
+          costs: [
+              { q: "Question - How are service fees calculated?", a: "Answer: Fees can be charged as a package, as a percentage of total investment, or hourly depending on the project type." },
+              { q: "Question - Do you allow payment in installments?", a: "Answer: Yes, we accept flexible payments according to project phases." }
+          ],
+          legal: [
+              { q: "Question - Do you assist with building permits?", a: "Answer: Yes, we provide full support from preparing documents to submitting them to the authorities." },
+              { q: "Question - What documents do clients need to provide?", a: "Answer: Typically: land ownership papers, current site drawings, and relevant legal documents." }
+          ],
+          timeline: [
+              { q: "Question - How long does it take to complete a project?", a: "Answer: Depending on scale, usually 2-6 months for design and 6-18 months for construction." },
+              { q: "Question - What if the project is delayed?", a: "Answer: We immediately report delays, propose solutions, and commit to catching up when possible." }
+          ],
+          technology: [
+              { q: "Question - Do you use BIM technology?", a: "Answer: Yes, we use BIM and 3D modeling to help clients clearly visualize the design." },
+              { q: "Question - Do you offer green design solutions?", a: "Answer: Yes, we prioritize sustainable materials and energy-saving solutions." }
+          ],
+          clients: [
+              { q: "Question - Who are your main clients?", a: "Answer: We serve individuals, businesses, and government agencies." },
+              { q: "Question - Do you provide maintenance support after handover?", a: "Answer: Yes, we offer after-sales service and maintenance upon request." }
+          ],
+          general: [
+              { q: "Question - Can I see your past projects?", a: "Answer: Yes, please contact us to receive our portfolio and project list." },
+              { q: "Question - What’s the fastest way to contact you?", a: "Answer: You can call our hotline directly or send an email, we respond within 24 hours." }
+          ]
+      };
+      
+      function openCategory(category) {
+            // Find the clicked card first
+            const clickedCard = event.target.closest('.faq-card');
+            
+            // Clear any existing answers with animation
+            const existingAnswers = document.querySelectorAll('.faq-answer-section');
+            if (existingAnswers.length > 0) {
+                gsap.to(existingAnswers, {
+                    duration: 0.3,
+                    height: 0,
+                    opacity: 0,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        existingAnswers.forEach(section => section.remove());
+                    }
+                });
+            }
+            
+            // Remove active state from all cards with animation
+            const allCards = document.querySelectorAll('.faq-card');
+            gsap.to(allCards, {
+                duration: 0.2,
+                scale: 1,
+                ease: "power2.out",
+                onComplete: () => {
+                    allCards.forEach(card => card.classList.remove('active'));
+                }
+            });
+            
+            // If clicking the same category that's already open, just close it
+            if (currentOpenCategory === category) {
+                currentOpenCategory = null;
+                return;
+            }
+            
+            // Set new current category
+            currentOpenCategory = category;
+            
+            if (faqData[category] && clickedCard) {
+                // Animate clicked card
+                gsap.to(clickedCard, {
+                    duration: 0.3,
+                    scale: 1.02,
+                    ease: "back.out(1.7)",
+                    onComplete: () => {
+                        clickedCard.classList.add('active');
+                    }
+                });
+                
+                // Create the FAQ section
+                const section = document.createElement("div");
+                section.classList.add("faq-answer-section");
+                
+                // Set initial state for animation
+                gsap.set(section, {
+                    height: 0,
+                    opacity: 0,
+                    overflow: "hidden"
+                });
+                
+                faqData[category].forEach((item, index) => {
+                    const div = document.createElement("div");
+                    div.classList.add("faq-answer");
+                    div.innerHTML = `
+                        <h4 class="faq-question" onclick="toggleAnswer(this)">${item.q}</h4>
+                        <div class="faq-answer-text" style="display: none;">${item.a}</div>
+                    `;
+                    
+                    // Set initial animation state for each FAQ item
+                    gsap.set(div, {
+                        y: 20,
+                        opacity: 0
+                    });
+                    
+                    section.appendChild(div);
+                });
+                
+                // Insert the section after the clicked card
+                clickedCard.insertAdjacentElement('afterend', section);
+                
+                // Animate section appearance
+                gsap.to(section, {
+                    duration: 0.5,
+                    height: "auto",
+                    opacity: 1,
+                    ease: "power2.out",
+                    delay: 0.1
+                });
+                
+                // Stagger animate FAQ items
+                const faqItems = section.querySelectorAll('.faq-answer');
+                gsap.to(faqItems, {
+                    duration: 0.4,
+                    y: 0,
+                    opacity: 1,
+                    ease: "power2.out",
+                    stagger: 0.1,
+                    delay: 0.3
+                });
+            }
+        }
+    
+        function toggleAnswer(el) {
+            const p = el.nextElementSibling;
+            if (p && p.classList.contains('faq-answer-text')) {
+                const isOpen = p.style.display === "block";
+                
+                if (isOpen) {
+                    // Closing animation
+                    gsap.to(p, {
+                        duration: 0.3,
+                        height: 0,
+                        opacity: 0,
+                        ease: "power2.inOut",
+                        onComplete: () => {
+                            p.style.display = "none";
+                            p.style.height = "auto"; // Reset height for next opening
+                        }
+                    });
+                    
+                    // Animate question
+                    gsap.to(el, {
+                        duration: 0.2,
+                        scale: 1,
+                        backgroundColor: "#fff",
+                        ease: "power2.out"
+                    });
+                } else {
+                    // Opening animation
+                    p.style.display = "block";
+                    gsap.set(p, { height: 0, opacity: 0 });
+                    
+                    gsap.to(p, {
+                        duration: 0.4,
+                        height: "auto",
+                        opacity: 1,
+                        ease: "power2.out"
+                    });
+                    
+                    // Animate question
+                    gsap.to(el, {
+                        duration: 0.2,
+                        scale: 1.01,
+                        backgroundColor: "#bbdefb",
+                        ease: "back.out(1.7)"
+                    });
+                }
+                
+                // Toggle expanded class
+                el.classList.toggle('expanded');
+            }
+        }
+      
+          // Make functions globally available
+          window.openCategory = openCategory;
+          window.toggleAnswer = toggleAnswer;
+      
+          return {
+              openCategory,
+              toggleAnswer
+          };
+      };
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
