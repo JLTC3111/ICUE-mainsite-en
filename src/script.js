@@ -656,7 +656,7 @@ const contactUs = document.getElementById('contactLink');
     });
 }
 
-// 🔁 MENU ICON ANIMATION
+//🍔 MENU ICON ANIMATION
 const menuToggle = document.getElementById('menuIcon');
   if (menuToggle) {
     const newToggle = menuToggle.cloneNode(true);
@@ -1861,6 +1861,26 @@ function initAudioVisualizer(
       path.setAttribute('stroke', color);
       path.setAttribute('fill', color); 
     });
+  }
+
+  // Function to change hamburger menu icon color based on page background
+  function updateHamburgerIcon(page) {
+    const hamburgerIcon = document.getElementById('menuIcon');
+    const contactLink = document.getElementById('contactLink');
+    if (!hamburgerIcon) return;
+    
+    // Pages with dark backgrounds that need white icons
+    const darkBackgroundPages = ['communityActivities', 'aboutUs'];
+    
+    if (darkBackgroundPages.includes(page)) {
+      hamburgerIcon.style.stroke = 'white';
+      hamburgerIcon.style.strokeWidth = '0.5px';
+      hamburgerIcon.style.fill = 'none';
+      contactLink.style.color = 'white';
+    } else {
+      hamburgerIcon.style.stroke = 'none';
+      hamburgerIcon.style.fill = 'none';
+    }
   }
 
   function enableCursorGradientTrail(color = 'yellow') {
