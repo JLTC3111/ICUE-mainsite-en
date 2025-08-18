@@ -414,122 +414,111 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1>Xây Dựng Cộng Đồng Vững Mạnh</h1>
-            <p>Quyên góp của bạn giúp chúng tôi cung cấp các dịch vụ hạ tầng và quy hoạch thiết yếu cho những cộng đồng thiếu thốn, tạo ra tác động tích cực lâu dài cho các thế hệ tương lai.</p>
+  <header class="header">
+    <div class="container">
+      <h1>Building Strong Communities</h1>
+      <p>Your donation helps us provide essential infrastructure and planning services to underserved communities, creating a lasting positive impact for future generations.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="main-content">
+      <div class="impact-section">
+        <h2>Your Impact</h2>
+        <div class="impact-stats">
+          <div class="stat-item">
+            <span class="stat-number">127</span>
+            <div class="stat-label">Projects Completed</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">45K</span>
+            <div class="stat-label">People Helped</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">23</span>
+            <div class="stat-label">Communities Served</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">$2.3M</span>
+            <div class="stat-label">In-Kind Services</div>
+          </div>
         </div>
-    </header>
 
-    <main class="container">
-        <div class="main-content">
-            <div class="impact-section">
-                <h2>Tác Động Của Bạn</h2>
-                
-                <div class="impact-stats">
-                    <div class="stat-item">
-                        <span class="stat-number">127</span>
-                        <div class="stat-label">Dự án hoàn thành</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">45K</span>
-                        <div class="stat-label">Người được giúp</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">23</span>
-                        <div class="stat-label">Cộng đồng được phục vụ</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">$2.3M</span>
-                        <div class="stat-label">Dịch vụ hiện vật</div>
-                    </div>
-                </div>
+        <div class="impact-story">
+          <h3>Recent Success: Riverside Community Center</h3>
+          <p>Thanks to donor support, we completed planning and construction oversight for a new community center serving over 800 families. The facility now hosts education programs, healthcare services, and can serve as an emergency shelter.</p>
+        </div>
 
-                <div class="impact-story">
-                    <h3>Thành Công Gần Đây: Trung Tâm Cộng Đồng Riverside</h3>
-                    <p>Nhờ sự hỗ trợ của các nhà tài trợ, chúng tôi đã hoàn thành lập kế hoạch và giám sát xây dựng cho một trung tâm cộng đồng mới phục vụ hơn 800 gia đình. Cơ sở này hiện tổ chức các chương trình giáo dục, dịch vụ y tế và khả năng làm nơi trú ẩn khẩn cấp.</p>
-                </div>
+        <div class="impact-story">
+          <h3>Emergency Response: Flood Recovery</h3>
+          <p>Our rapid response team provided free structural assessments and rebuilding plans for 34 homes affected by recent flooding, helping families return to safe housing 60% faster than average.</p>
+        </div>
+      </div>
 
-                <div class="impact-story">
-                    <h3>Ứng Phó Khẩn Cấp: Hồi Phục Sau Lũ Lụt</h3>
-                    <p>Đội phản ứng nhanh của chúng tôi đã cung cấp đánh giá kết cấu và kế hoạch xây dựng miễn phí cho 34 ngôi nhà bị ảnh hưởng bởi trận lũ gần đây, giúp các gia đình trở lại nơi ở an toàn nhanh hơn trung bình 60%.</p>
-                </div>
+      <form class="donation-form" onsubmit="processDonation(event)">
+        <h2>Donate</h2>
+        <div class="amount-buttons">
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 50)">$50</button>
+          <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
+        </div>
+
+        <div class="custom-amount">
+          <label for="customAmount">Custom Amount</label>
+          <input type="number" id="customAmount" name="customAmount" placeholder="Enter amount" min="1" onchange="updateCustomAmount(this)">
+        </div>
+
+        <div class="donation-type">
+          <label>Donation Frequency</label>
+          <div class="donation-options">
+            <div class="donation-option active" onclick="selectFrequency(this, 'one-time')">One-time</div>
+            <div class="donation-option" onclick="selectFrequency(this, 'monthly')">Monthly</div>
+            <div class="donation-option" onclick="selectFrequency(this, 'annual')">Annual</div>
+          </div>
+        </div>
+
+        <div class="donor-info">
+          <h3>Donor Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" required>
             </div>
-
-            <form class="donation-form" onsubmit="processDonation(event)">
-                <h2>Quyên Góp</h2>
-                
-                <div class="amount-buttons">
-                    <button type="button" class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
-                    <button type="button" class="amount-btn" onclick="selectAmount(this, 50)">$50</button>
-                    <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
-                    <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
-                    <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
-                    <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
-                </div>
-
-                <div class="custom-amount">
-                    <label for="customAmount">Số Tiền Tùy Chọn</label>
-                    <input type="number" id="customAmount" name="customAmount" placeholder="Nhập số tiền" min="1" onchange="updateCustomAmount(this)">
-                </div>
-
-                <div class="donation-type">
-                    <label>Tần Suất Quyên Góp</label>
-                    <div class="donation-options">
-                        <div class="donation-option active" onclick="selectFrequency(this, 'one-time')">Một lần</div>
-                        <div class="donation-option" onclick="selectFrequency(this, 'monthly')">Hàng tháng</div>
-                        <div class="donation-option" onclick="selectFrequency(this, 'annual')">Hàng năm</div>
-                    </div>
-                </div>
-
-                <div class="donor-info">
-                    <h3>Thông Tin Nhà Tài Trợ</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">Tên</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Họ</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Số Điện Thoại (Tùy chọn)</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="company">Công Ty/Tổ Chức (Tùy chọn)</label>
-                        <input type="text" id="company" name="company">
-                    </div>
-                </div>
-
-                <button type="submit" class="donate-btn">
-                    Quyên Góp $<span id="donateAmount">100</span>
-                </button>
-
-                <div class="security-note">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
-                    </svg>
-                    Quyên góp an toàn với mã hóa SSL 256-bit
-                </div>
-            </form>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone (Optional)</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="company">Company/Organization (Optional)</label>
+            <input type="text" id="company" name="company">
+          </div>
         </div>
-    </main>
 
-    <section class="projects-section">
-        <div class="container">
-            <h2>Các Dự Án Hiện Tại Cần Sự Hỗ Trợ Của Bạn</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">Mở Rộng Trung Tâm Cộng Đồng</div>
-                    <div class="project-content">
-                        <h3 class="project-title">Trung Tâm Cộng Đồng Eastside</h3>
-                        <p class="project-description">Mở rộng cơ sở để bao gồm phòng máy t
+        <button type="submit" class="donate-btn">
+          Donate $<span id="donateAmount">100</span>
+        </button>
+
+        <div class="security-note">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+          </svg>
+          Secure donation with 256-bit SSL encryption
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
 
 </html>

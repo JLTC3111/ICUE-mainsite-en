@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Chính Sách Cookies - ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            padding: 80px 20px 60px;
+            text-align: center;
+            margin-top: 7.5%;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header div {
+            font-size: 1.2rem;
+            color: white;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #f59e0b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-content div {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .section-content ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box div {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .cookie-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .cookie-card::before {
+            content: '🍪';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #f59e0b;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .cookie-card h3 {
+            color: #d97706;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .cookie-card div {
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .cookie-card ul {
+            margin-left: 20px;
+        }
+
+        .cookie-card li {
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-info div {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .contact-info a {
+            color: #c8ff00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .cookies-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .cookies-table th,
+        .cookies-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cookies-table th {
+            background-color: #fef3c7;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .cookies-table tr:nth-child(even) {
+            background-color: #fefcf3;
+        }
+
+        .consent-section {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .consent-section h3 {
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .consent-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .consent-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .consent-item h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .consent-item div {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #f59e0b;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .save-preferences {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .save-preferences:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .browser-guide {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .browser-guide h4 {
+            color: #f59e0b;
+            margin-bottom: 15px;
+        }
+
+        .browser-guide .browser-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .browser-guide .browser-item strong {
+            min-width: 80px;
+            color: #374151;
+        }
+
+        .browser-guide .browser-item span {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 15px 40px;
+                margin-top: 15%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .consent-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .consent-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body data-footer="true" class="with-footer">
+    <div class="header">
+        <h1>Cookie Policy</h1>
+        <div>Understand cookies and how we use them to improve your experience</div>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <h2 class="section-title">
+                Cookies – What Are They?
+            </h2>
+            <div class="section-content">
+                <div>Cookies are small files stored on your device (computer, phone, tablet) when you visit a website. They help the website "remember" information about your visit, making your next visit easier and more useful.</div>
+                
+                <div class="highlight-box">
+                    <div>🍪 Cookies cannot harm your device. They cannot contain viruses, malware, or access your personal files.</div>
+                </div>
+
+                <div>At ICUE, we use cookies to improve your experience on our website, analyze usage, and provide better services.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                Types of Cookies We Use
+            </h2>
+            <div class="section-content">
+                <div>We use several different types of cookies, each with its own purpose:</div>
+
+                <div class="cookie-card">
+                    <h3>1. Essential Cookies</h3>
+                    <div>These cookies are necessary for the website to function properly and cannot be disabled.</div>
+                    <ul>
+                        <li><strong>Purpose:</strong> Security, login, shopping cart, language preferences</li>
+                        <li><strong>Duration:</strong> Session or up to 1 year</li>
+                        <li><strong>Examples:</strong> PHPSESSID, language_preference, security_token</li>
+                        <li><strong>Can be disabled:</strong> ❌ No</li>
+                    </ul>
+                </div>
+
+                <div class="cookie-card">
+                    <h3>2. Performance Cookies</h3>
+                    <div>Collect information about how you use the website to help us improve it.</div>
+                    <ul>
+                        <li><strong>Purpose:</strong> Traffic analysis, page performance, technical errors</li>
+                        <li><strong>Duration:</strong> 1–2 years</li>
+                        <li><strong>Examples:</strong> Google Analytics, heatmap tracking</li>
+                        <li><strong>Can be disabled:</strong> ✅ Yes</li>
+                    </ul>
+                </div>
+
+                <div class="cookie-card">
+                    <h3>3. Functional Cookies</h3>
+                    <div>Remember your choices to provide a personalized experience.</div>
+                    <ul>
+                        <li><strong>Purpose:</strong> Interface preferences, geolocation, personal settings</li>
+                        <li><strong>Duration:</strong> 6 months – 2 years</li>
+                        <li><strong>Examples:</strong> theme_preference, location_setting</li>
+                        <li><strong>Can be disabled:</strong> ✅ Yes</li>
+                    </ul>
+                </div>
+
+                <div class="cookie-card">
+                    <h3>4. Marketing Cookies</h3>
+                    <div>Used to track visitors across websites and display relevant ads.</div>
+                    <ul>
+                        <li><strong>Purpose:</strong> Targeted ads, campaign effectiveness measurement</li>
+                        <li><strong>Duration:</strong> 1 month – 2 years</li>
+                        <li><strong>Examples:</strong> Facebook Pixel, Google Ads, retargeting</li>
+                        <li><strong>Can be disabled:</strong> ✅ Yes</li>
+                    </ul>
+                </div>
+
+                <table class="cookies-table">
+                    <thead>
+                        <tr>
+                            <th>Cookie Name</th>
+                            <th>Type</th>
+                            <th>Purpose</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>icue_session</td>
+                            <td>Essential</td>
+                            <td>Manage login session</td>
+                            <td>Session</td>
+                        </tr>
+                        <tr>
+                            <td>language_pref</td>
+                            <td>Functional</td>
+                            <td>Remember language</td>
+                            <td>1 year</td>
+                        </tr>
+                        <tr>
+                            <td>_ga</td>
+                            <td>Performance</td>
+                            <td>Google Analytics – User distinction</td>
+                            <td>2 years</td>
+                        </tr>
+                        <tr>
+                            <td>_gat</td>
+                            <td>Performance</td>
+                            <td>Google Analytics – Throttling request rate</td>
+                            <td>1 minute</td>
+                        </tr>
+                        <tr>
+                            <td>_fbp</td>
+                            <td>Marketing</td>
+                            <td>Facebook Pixel – Conversion tracking</td>
+                            <td>3 months</td>
+                        </tr>
+                        <tr>
+                            <td>cookie_consent</td>
+                            <td>Essential</td>
+                            <td>Remember cookie preferences</td>
+                            <td>1 year</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="consent-section">
+            <h3>🍪 Manage Cookie Preferences</h3>
+            <div>You can control the use of cookies through the options below. Note that disabling certain cookies may affect website functionality.</div>
+            
+            <div class="consent-controls">
+                <div class="consent-item">
+                    <h4>Essential Cookies</h4>
+                    <div>Required for basic website operation</div>
+                    <label class="switch">
+                        <input type="checkbox" checked disabled>
+                        <span class="slider"></span>
+                    </label>
+                    <span style="margin-left: 10px; color: #6b7280; font-size: 0.8rem;">Always on</span>
+                </div>
+
+                <div class="consent-item">
+                    <h4>Performance Cookies</h4>
+                    <div>Help us understand how you use the website</div>
+                    <label class="switch">
+                        <input type="checkbox" id="performance-cookies" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="consent-item">
+                    <h4>Functional Cookies</h4>
+                    <div>Remember preferences and personalize experience</div>
+                    <label class="switch">
+                        <input type="checkbox" id="functional-cookies" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="consent-item">
+                    <h4>Marketing Cookies</h4>
+                    <div>Used for advertising and tracking</div>
+                    <label class="switch">
+                        <input type="checkbox" id="marketing-cookies">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="save-preferences" onclick="saveCookiePreferences()">Save Preferences</button>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                How to Manage Cookies in Your Browser
+            </h2>
+            <div class="section-content">
+                <div>You can manage cookies directly through your browser settings:</div>
+
+                <div class="browser-guide">
+                    <h4>Browser Guide:</h4>
+                    
+                    <div class="browser-item">
+                        <strong>Chrome:</strong>
+                        <span>Settings → Privacy & Security → Cookies and other site data</span>
+                    </div>
+                    
+                    <div class="browser-item">
+                        <strong>Firefox:</strong>
+                        <span>Options → Privacy & Security → Cookies and Site Data</span>
+                    </div>
+                    
+                    <div class="browser-item">
+                        <strong>Safari:</strong>
+                        <span>Preferences → Privacy → Manage Website Data</span>
+                    </div>
+                    
+                    <div class="browser-item">
+                        <strong>Edge:</strong>
+                        <span>Settings → Cookies and site permissions → Manage and delete cookies</span>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <div>💡 Tip: Most modern browsers allow you to block third-party cookies while still allowing essential ones.</div>
+                </div>
+
+                <div>You can also:</div>
+                <ul>
+                    <li>Use private/incognito browsing mode</li>
+                    <li>Install ad blocker and tracker blocker extensions</li>
+                    <li>Delete all cookies when closing the browser</li>
+                    <li>Set whitelist/blacklist for specific websites</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                Third-Party Cookies
+            </h2>
+            <div class="section-content">
+                <div>In addition to our own cookies, ICUE’s website also uses third-party cookies:</div>
+
+                <table class="cookies-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Purpose</th>
+                            <th>Privacy Policy</th>
+                            <th>Opt-out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Google Analytics</td>
+                            <td>Website analytics</td>
+                            <td><a href="https://policies.google.com/privacy" target="_blank" style="color: #f59e0b;">Google Privacy</a></td>
+                            <td><a href="https://tools.google.com/dlpage/gaoptout" target="_blank" style="color: #f59e0b;">GA Opt-out</a></td>
+                        </tr>
+                        <tr>
+                            <td>Facebook Pixel</td>
+                            <td>Advertising and tracking</td>
+                            <td><a href="https://www.facebook.com/privacy/explanation" target="_blank" style="color: #f59e0b;">Facebook Privacy</a></td>
+                            <td><a href="https://www.facebook.com/help/568137493302217" target="_blank" style="color: #f59e0b;">FB Opt-out</a></td>
+                        </tr>
+                        <tr>
+                            <td>YouTube Embed</td>
+                            <td>Video display</td>
+                            <td><a href="https://policies.google.com/privacy" target="_blank" style="color: #f59e0b;">Google Privacy</a></td>
+                            <td>Do not watch videos</td>
+                        </tr>
+                        <tr>
+                            <td>Google Fonts</td>
+                            <td>Font display</td>
+                            <td><a href="https://policies.google.com/privacy" target="_blank" style="color: #f59e0b;">Google Privacy</a></td>
+                            <td>Block via browser</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <div>🔗 We do not control third-party cookies. Please refer to each service’s privacy policy for more details.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                Impact of Disabling Cookies
+            </h2>
+            <div class="section-content">
+                <div>Disabling cookies may affect your experience on the website:</div>
+
+                <table class="cookies-table">
+                    <thead>
+                        <tr>
+                            <th>Cookie Type Disabled</th>
+                            <th>Impact</th>
+                            <th>Functions Lost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Essential Cookies</td>
+                            <td>Severe</td>
+                            <td>Cannot log in, lost sessions, security issues</td>
+                        </tr>
+                        <tr>
+                            <td>Functional Cookies</td>
+                            <td>Medium</td>
+                            <td>Lost language, theme, location settings</td>
+                        </tr>
+                        <tr>
+                            <td>Performance Cookies</td>
+                            <td>Low</td>
+                            <td>No analytics data, harder to improve website</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing Cookies</td>
+                            <td>Very low</td>
+                            <td>Less relevant ads, no conversion tracking</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <div>⚠️ We recommend keeping essential and functional cookies enabled for the best experience.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                Security and Privacy
+            </h2>
+            <div class="section-content">
+                <div>We are committed to protecting information collected through cookies:</div>
+
+                <ul>
+                    <li><strong>Encryption:</strong> All sensitive cookies are encrypted</li>
+                    <li><strong>HTTPS:</strong> Cookies are only transmitted over secure connections</li>
+                    <li><strong>Expiry:</strong> Cookies have clear lifetimes and will expire automatically</li>
+                    <li><strong>Access limitation:</strong> Only authorized staff can access the data</li>
+                    <li><strong>Legal compliance:</strong> GDPR, CCPA, and local regulations</li>
+                    <li><strong>Regular reviews:</strong> Policies are audited and updated regularly</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div>🔒 We never sell personal information collected from cookies to third parties.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3>Contact About Cookies</h3>
+            <div>If you have questions about this cookie policy:</div>
+            <div><strong>Email:</strong> <a href="mailto:privacy@icue.vn">privacy@icue.vn</a></div>
+            <div><strong>Phone:</strong> <a href="tel:+842437728485">+84 24 3772 8485</a></div>
+            <div><strong>Address:</strong> Institute for Economic, Urban, and Construction Research</div>
+            <div>We will respond to your request within 5 business days.</div>
+        </div>
+
+        <div class="last-updated">
+            <div>This policy was last updated: <strong>August 18, 2025</strong></div>
+            <div>We may update this policy when changes are made to cookie usage.</div>
+        </div>
+    </div>
+</body>
+
+</html>

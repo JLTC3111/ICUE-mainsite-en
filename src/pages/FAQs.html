@@ -242,195 +242,194 @@
         }
 </style>
 </head>
-<body>
-</head>
-<body>
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Trang Chủ</a> / Các Câu Hỏi Thường Gặp
-        </div>
-
-            <div class="faq-grid">
-                <div class="faq-card primary" onclick="openCategory('admissions')">
-                    <div class="faq-icon">📋</div>
-                    <div class="faq-content">
-                        <h3>Tuyển Sinh</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('applying')">
-                    <div class="faq-icon">🔍</div>
-                    <div class="faq-content">
-                        <h3>Quy Trình Ứng Tuyển</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('academic')">
-                    <div class="faq-icon">🎓</div>
-                    <div class="faq-content">
-                        <h3>Học Tập</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('finance')">
-                    <div class="faq-icon">💰</div>
-                    <div class="faq-content">
-                        <h3>Tài Chính</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('postgraduate-finance')">
-                    <div class="faq-icon">💳</div>
-                    <div class="faq-content">
-                        <h3>Tài Chính Sau Đại Học</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('learning-support')">
-                    <div class="faq-icon">💡</div>
-                    <div class="faq-content">
-                        <h3>Hỗ Trợ Học Tập</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('accommodation')">
-                    <div class="faq-icon">🏠</div>
-                    <div class="faq-content">
-                        <h3>Chỗ Ở</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('manchester-accommodation')">
-                    <div class="faq-icon">🏢</div>
-                    <div class="faq-content">
-                        <h3>Chỗ Ở Tại Thành Phố</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('sports')">
-                    <div class="faq-icon">⚽</div>
-                    <div class="faq-content">
-                        <h3>Thể Thao</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('employment')">
-                    <div class="faq-icon">💼</div>
-                    <div class="faq-content">
-                        <h3>Việc Làm & Kinh Nghiệm</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('general')">
-                    <div class="faq-icon">💬</div>
-                    <div class="faq-content">
-                        <h3>Chung</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('international-finance')">
-                    <div class="faq-icon">🌍</div>
-                    <div class="faq-content">
-                        <h3>Tài Chính Quốc Tế</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('visa-immigration')">
-                    <div class="faq-icon">📄</div>
-                    <div class="faq-content">
-                        <h3>Visa & Xuất Nhập Cảnh</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('international-working')">
-                    <div class="faq-icon">🌐</div>
-                    <div class="faq-content">
-                        <h3>Làm Việc Quốc Tế</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-
-                <div class="faq-card" onclick="openCategory('general-international')">
-                    <div class="faq-icon">🌎</div>
-                    <div class="faq-content">
-                        <h3>Chung Quốc Tế</h3>
-                    </div>
-                    <div class="faq-arrow"></div>
-                </div>
-            </div>
-        </div>
+<body data-footer="true" class="with-footer">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / Frequently Asked Questions
     </div>
 
-    <script>
-        // Define openCategory function in global scope
-        window.openCategory = function(category) {
-            // Add some visual feedback
-            event.target.closest('.faq-card').style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                event.target.closest('.faq-card').style.transform = '';
-            }, 150);
+    <div class="faq-grid">
 
-            // Show alert with category info (you can replace this with actual navigation)
-            const categoryNames = {
-                'admissions': 'Tuyển Sinh',
-                'applying': 'Quy Trình Ứng Tuyển', 
-                'academic': 'Học Tập',
-                'finance': 'Tài Chính',
-                'postgraduate-finance': 'Tài Chính Sau Đại Học',
-                'learning-support': 'Hỗ Trợ Học Tập',
-                'accommodation': 'Chỗ Ở',
-                'manchester-accommodation': 'Chỗ Ở Tại Thành Phố',
-                'sports': 'Thể Thao',
-                'employment': 'Việc Làm & Kinh Nghiệm',
-                'general': 'Chung',
-                'international-finance': 'Tài Chính Quốc Tế',
-                'visa-immigration': 'Visa & Xuất Nhập Cảnh',
-                'international-working': 'Làm Việc Quốc Tế',
-                'general-international': 'Chung Quốc Tế'
-            };
+      <div class="faq-card primary" onclick="openCategory('admissions')">
+        <div class="faq-icon">📋</div>
+        <div class="faq-content">
+          <h3>Admissions</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
 
-            alert(`Đang mở danh mục: ${categoryNames[category]}\n\nTrong triển khai thực tế, điều này sẽ dẫn đến trang chi tiết với các câu hỏi cụ thể cho danh mục này.`);
-            
-            // In a real implementation, you would navigate to a detailed page:
-            // window.location.href = `faq-details.html?category=${category}`;
-        };
+      <div class="faq-card" onclick="openCategory('applying')">
+        <div class="faq-icon">🔍</div>
+        <div class="faq-content">
+          <h3>Application Process</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
 
-        // Wait for DOM to load before setting up event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Contact banner click handler
-            const contactBanner = document.querySelector('.contact-banner');
-            if (contactBanner) {
-                contactBanner.addEventListener('click', function() {
-                    alert('Liên hệ với chúng tôi!\n\nEmail: support@icue.vn\nSĐT: 0123 456 789');
-                });
-            }
+      <div class="faq-card" onclick="openCategory('academic')">
+        <div class="faq-icon">🎓</div>
+        <div class="faq-content">
+          <h3>Academics</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
 
-            // Add interactive effects to cards
-            const cards = document.querySelectorAll('.faq-card');
-            
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
-    </script>
+      <div class="faq-card" onclick="openCategory('finance')">
+        <div class="faq-icon">💰</div>
+        <div class="faq-content">
+          <h3>Finance</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('postgraduate-finance')">
+        <div class="faq-icon">💳</div>
+        <div class="faq-content">
+          <h3>Postgraduate Finance</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('learning-support')">
+        <div class="faq-icon">💡</div>
+        <div class="faq-content">
+          <h3>Learning Support</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('accommodation')">
+        <div class="faq-icon">🏠</div>
+        <div class="faq-content">
+          <h3>Accommodation</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('manchester-accommodation')">
+        <div class="faq-icon">🏢</div>
+        <div class="faq-content">
+          <h3>City Accommodation</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('sports')">
+        <div class="faq-icon">⚽</div>
+        <div class="faq-content">
+          <h3>Sports</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('employment')">
+        <div class="faq-icon">💼</div>
+        <div class="faq-content">
+          <h3>Jobs & Experience</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('general')">
+        <div class="faq-icon">💬</div>
+        <div class="faq-content">
+          <h3>General</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('international-finance')">
+        <div class="faq-icon">🌍</div>
+        <div class="faq-content">
+          <h3>International Finance</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('visa-immigration')">
+        <div class="faq-icon">📄</div>
+        <div class="faq-content">
+          <h3>Visa & Immigration</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('international-working')">
+        <div class="faq-icon">🌐</div>
+        <div class="faq-content">
+          <h3>International Work</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+      <div class="faq-card" onclick="openCategory('general-international')">
+        <div class="faq-icon">🌎</div>
+        <div class="faq-content">
+          <h3>General International</h3>
+        </div>
+        <div class="faq-arrow"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Define openCategory function in global scope
+  window.openCategory = function(category) {
+    // Add some visual feedback
+    event.target.closest('.faq-card').style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      event.target.closest('.faq-card').style.transform = '';
+    }, 150);
+
+    // Show alert with category info (replace this with real navigation)
+    const categoryNames = {
+      'admissions': 'Admissions',
+      'applying': 'Application Process',
+      'academic': 'Academics',
+      'finance': 'Finance',
+      'postgraduate-finance': 'Postgraduate Finance',
+      'learning-support': 'Learning Support',
+      'accommodation': 'Accommodation',
+      'manchester-accommodation': 'City Accommodation',
+      'sports': 'Sports',
+      'employment': 'Jobs & Experience',
+      'general': 'General',
+      'international-finance': 'International Finance',
+      'visa-immigration': 'Visa & Immigration',
+      'international-working': 'International Work',
+      'general-international': 'General International'
+    };
+
+    alert(`Opening category: ${categoryNames[category]}\n\nIn a real implementation, this would navigate to a detailed page with FAQs for this category.`);
+
+    // In a real implementation, you would navigate:
+    // window.location.href = `faq-details.html?category=${category}`;
+  };
+
+  // Wait for DOM to load before setting up event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    // Contact banner click handler
+    const contactBanner = document.querySelector('.contact-banner');
+    if (contactBanner) {
+      contactBanner.addEventListener('click', function() {
+        alert('Contact us!\n\nEmail: support@icue.vn\nPhone: 0123 456 789');
+      });
+    }
+
+    // Add interactive effects to cards
+    const cards = document.querySelectorAll('.faq-card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px)';
+      });
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  });
+</script>
 </body>
+
 </html>
