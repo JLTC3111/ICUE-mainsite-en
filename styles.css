@@ -777,21 +777,8 @@ nav a {
 }
 
 .contact-link {
-  background: conic-gradient(
-    from 180deg at 50% 50%,
-    #333 0deg,
-    #666 45deg,
-    #111 90deg,
-    #000 135deg,
-    #222 180deg,
-    #444 225deg,
-    #111 270deg,
-    #000 315deg,
-    #333 360deg
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  background: transparent;
+  color: #000000;
   font-size: 28px;
   margin-left: auto;
   margin-right: 15rem;
@@ -1296,13 +1283,13 @@ body.loaded #app {
     font-size: 12px;
     font-family: Poppins;
     font-weight: 500;
-    color: white; /* Assuming your default text color is white for contrast with the general button gradient */
-    cursor: pointer; /* Ensure pointer cursor */
+    color: white; 
+    cursor: pointer; 
     padding: 1.5px;
     /* --- Essential for the hover wipe animation on EACH BUTTON --- */
-    position: relative; /* Make sure pseudo-element positions relative to the button */
-    overflow: hidden; /* Hides the ::before element until it slides in */
-    z-index: 1; /* Ensures text is above the pseudo-element background */
+    position: relative; 
+    overflow: hidden; 
+    z-index: 1; 
     transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
@@ -1316,14 +1303,14 @@ body.loaded #app {
   height: 100%;
   /* This is the vibrant multi-color gradient that will slide in on hover */
   background: linear-gradient(to right, #1d9ae7, #0077c2, #004b8d, #0a1a3a);
-  z-index: -1; /* Puts this layer behind the button's text */
-  transform: translateX(-100%); /* Starts off-screen to the left */
-  transition: transform 0.4s ease-out; /* Smooth animation for the slide-in */
+  z-index: -1; 
+  transform: translateX(-100%); 
+  transition: transform 0.4s ease-out; 
 }
 
 /* Hover state for the button's pseudo-element (to trigger the wipe) */
-.work-carousel .work-list .work-item .work-buttons button:hover::before { /* Corrected selector */
-  transform: translateX(0%); /* Slides the pseudo-element to cover the button */
+.work-carousel .work-list .work-item .work-buttons button:hover::before {   
+  transform: translateX(0%); 
 }
 
 /* thumbail */
@@ -1350,7 +1337,7 @@ body.loaded #app {
     object-fit: cover;
     border-radius: 20px;
     transition: transform 0.3s ease-in-out;
-    filter: grayscale(1); /* 👈 move it here */
+    filter: grayscale(1); 
     opacity: 0.7;
 }
 
@@ -2833,19 +2820,19 @@ body.loaded #app {
 }
 
 .balloon-button::before {
-  content: ''; /* Essential for pseudo-elements */
+  content: ''; 
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeead, #d4a5a5, #9b5de5);
-  z-index: -1; /* Puts the pseudo-element behind the button's text */
-  transform: translateX(-100%); /* Starts completely off to the left, outside the button */
+  z-index: -1; 
+  transform: translateX(-100%); 
   transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 .balloon-button:hover::before {
-  transform: translateX(0%); /* Slides the pseudo-element to cover the button */
+  transform: translateX(0%); 
 }
 
 .balloon-button:hover {

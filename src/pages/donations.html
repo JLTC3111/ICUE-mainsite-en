@@ -6,7 +6,7 @@
     <title>Quyên Góp</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
-    <style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -21,8 +21,9 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
+            margin-top: 10%;
+            background: transparent;
+            color: #000000;
             padding: 60px 20px;
             text-align: center;
         }
@@ -34,7 +35,7 @@
             letter-spacing: -0.02em;
         }
 
-        .header p {
+        .header-p {
             font-size: 1.2rem;
             opacity: 0.9;
             max-width: 600px;
@@ -85,7 +86,7 @@
         .stat-number {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #3b82f6;
+            color: #052f71;
             display: block;
         }
 
@@ -99,12 +100,11 @@
             background: #eff6ff;
             padding: 24px;
             border-radius: 12px;
-            border-left: 4px solid #3b82f6;
             margin-bottom: 2rem;
         }
 
         .impact-story h3 {
-            color: #1e40af;
+            color: #031960;
             margin-bottom: 12px;
             font-size: 1.2rem;
         }
@@ -141,18 +141,22 @@
         .amount-btn {
             padding: 16px 20px;
             border: 2px solid #e2e8f0;
-            background: white;
+            color: #000000;
+            background: #ffffff;
             border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             text-align: center;
+            will-change: transform, color, background;
         }
 
         .amount-btn:hover {
+            background: #3b82f6;
             border-color: #3b82f6;
-            background: #eff6ff;
+            color: white;
+            
         }
 
         .amount-btn.active {
@@ -178,7 +182,7 @@
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-size: 1.1rem;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.15s ease;
         }
 
         .custom-amount input:focus {
@@ -212,7 +216,7 @@
             cursor: pointer;
             text-align: center;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .donation-option.active {
@@ -249,7 +253,7 @@
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.15s ease;
         }
 
         .form-group input:focus,
@@ -266,22 +270,40 @@
         }
 
         .donate-btn {
+            position: relative;
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            background: linear-gradient(to bottom, #1d9ae7, #0a1a3a);
             color: white;
             border: none;
             border-radius: 12px;
             font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .donate-btn::before {
+            content: ''; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeead, #d4a5a5, #9b5de5);
+            z-index: -1; 
+            transform: translateX(-100%); 
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        .donate-btn:hover::before {
+            transform: translateX(0%); 
         }
 
         .donate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            color: #000000;
+            transform: translateX(0%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
         .security-note {
@@ -319,7 +341,7 @@
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.15s ease;
         }
 
         .project-card:hover {
@@ -411,20 +433,20 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+</style>
 </head>
 <body>
   <header class="header">
     <div class="container">
       <h1>Building Strong Communities</h1>
-      <div>Your donation helps us provide essential infrastructure and planning services to underserved communities, creating a lasting positive impact for future generations.</div>
+      <div class="header-p">Your donation helps us provide essential infrastructure and planning services to underserved communities, creating a lasting positive impact for future generations.</div>
     </div>
   </header>
 
   <main class="container">
     <div class="main-content">
       <div class="impact-section">
-        <h2>Your Impact</h2>
+        <h2>What We Accomplish</h2>
         <div class="impact-stats">
           <div class="stat-item">
             <span class="stat-number">127</span>
@@ -460,15 +482,15 @@
         <div class="amount-buttons">
           <button type="button" class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 50)">$50</button>
-          <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 100)">$100</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
         </div>
 
         <div class="custom-amount">
-          <label for="customAmount">Custom Amount</label>
-          <input type="number" id="customAmount" name="customAmount" placeholder="Enter amount" min="1" onchange="updateCustomAmount(this)">
+          <label for="donateAmount">Custom Amount</label>
+          <input type="number" id="donateAmount" name="donateAmount" placeholder="Enter amount" min="1" onchange="updateCustomAmount(this)">
         </div>
 
         <div class="donation-type">
@@ -511,117 +533,11 @@
         </button>
 
         <div class="security-note">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
-          </svg>
+          <svg fill="#000000" width="16px" height="16px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M20.5 10c-.13 0-.266.06-.357.152l-5.498 5.498c-.247.247-.464.334-.65.335-.184 0-.386-.08-.642-.335l-2.493-2.49c-.454-.475-1.175.257-.706.708l2.493 2.49c.392.392.853.63 1.35.627.495-.003.974-.246 1.354-.626l5.5-5.5c.31-.305.108-.86-.35-.86zM14.72.05c-.132.058-.33.183-.562.325-.233.142-.687.43-1.13.672-.888.48-2 .955-3.028.955-1.1 0-1.923-.23-2.688-.477C6.548 1.278 5.835 1 5 1c-.774 0-1.526.122-2.107.603C2.31 2.085 2 2.916 2 4v8c0 1.18-.19 5.267 2.064 9.248 1.327 2.342 3.62 4.495 5.778 6.092 1.08.798 2.124 1.455 3.01 1.918.885.463 1.55.742 2.148.742.6 0 1.263-.28 2.148-.742.886-.463 1.93-1.12 3.01-1.918 2.158-1.597 4.45-3.75 5.778-6.092C28.19 17.268 28 13.18 28 12V4c0-1.084-.31-1.915-.893-2.397C26.527 1.123 25.774 1 25 1c-.834 0-1.548.278-2.313.523C21.924 1.77 21.1 2 20 2c-1.03 0-2.148-.474-3.035-.955-.444-.24-.89-.512-1.13-.672-.243-.16-.443-.26-.562-.325-.14-.064-.408-.064-.554 0zm.28 1.04c.092 0 .173.05.303.132.298.187.705.444 1.183.703C17.442 2.443 18.686 3 20 3c1.242 0 2.2-.27 2.992-.523C23.782 2.222 24.398 2 25 2c.662 0 1.16.12 1.47.375.31.256.53.72.53 1.625v8c0 1.277.167 5.045-1.936 8.755-1.21 2.138-3.42 4.24-5.502 5.782-1.04.77-2.05 1.403-2.876 1.836-.828.433-1.535.627-1.686.627-.15 0-.858-.194-1.686-.627-.827-.433-1.835-1.065-2.877-1.836-2.082-1.54-4.29-3.644-5.5-5.782C2.832 17.045 3 13.277 3 12V4c0-.905.22-1.37.53-1.625C3.84 2.12 4.337 2 5 2c.602 0 1.217.222 2.008.477C7.798 2.73 8.758 3 10 3c1.313 0 2.55-.558 3.506-1.077.478-.26.885-.516 1.183-.703.13-.08.218-.133.31-.133z"></path></g></svg>
           Secure donation with 256-bit SSL encryption
         </div>
       </form>
     </div>
   </main>
-
-  <script>
-    let selectedAmount = 100;
-    let selectedFrequency = 'one-time';
-
-    // Function to select donation amount
-    function selectAmount(button, amount) {
-      // Remove active class from all amount buttons
-      document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // Add active class to clicked button
-      button.classList.add('active');
-      
-      // Update selected amount
-      selectedAmount = amount;
-      document.getElementById('donateAmount').textContent = amount;
-      
-      // Clear custom amount input
-      document.getElementById('customAmount').value = '';
-    }
-
-    // Function to update custom amount
-    function updateCustomAmount(input) {
-      const customAmount = parseInt(input.value);
-      if (customAmount && customAmount > 0) {
-        // Remove active class from preset buttons
-        document.querySelectorAll('.amount-btn').forEach(btn => {
-          btn.classList.remove('active');
-        });
-        
-        // Update selected amount
-        selectedAmount = customAmount;
-        document.getElementById('donateAmount').textContent = customAmount;
-      }
-    }
-
-    // Function to select donation frequency
-    function selectFrequency(option, frequency) {
-      // Remove active class from all frequency options
-      document.querySelectorAll('.donation-option').forEach(opt => {
-        opt.classList.remove('active');
-      });
-      
-      // Add active class to clicked option
-      option.classList.add('active');
-      
-      // Update selected frequency
-      selectedFrequency = frequency;
-    }
-
-    // Function to process donation
-    function processDonation(event) {
-      event.preventDefault();
-      
-      // Get form data
-      const formData = new FormData(event.target);
-      const donationData = {
-        amount: selectedAmount,
-        frequency: selectedFrequency,
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        company: formData.get('company')
-      };
-      
-      // Validate required fields
-      if (!donationData.firstName || !donationData.lastName || !donationData.email) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-      
-      // Validate amount
-      if (!selectedAmount || selectedAmount <= 0) {
-        alert('Please select a valid donation amount.');
-        return;
-      }
-      
-      // Show success message (in production, this would process the payment)
-      alert(`Thank you for your ${selectedFrequency} donation of $${selectedAmount}!\n\nDonor: ${donationData.firstName} ${donationData.lastName}\nEmail: ${donationData.email}\n\nIn production, this would redirect to a secure payment processor.`);
-      
-      console.log('Donation data:', donationData);
-    }
-
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
-      // Set initial donate button amount
-      document.getElementById('donateAmount').textContent = selectedAmount;
-      
-      // Add hover effects to cards
-      const cards = document.querySelectorAll('.award-card, .project-card');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-5px)';
-        });
-        card.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0)';
-        });
-      });
-    });
-  </script>
 </body>
-
 </html>

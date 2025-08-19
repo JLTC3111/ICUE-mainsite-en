@@ -483,6 +483,7 @@ window.loadPage = (page) => {
                   ICUEFooter.autoInject();
                   break;
                 case 'donations':
+                  DonationForm.init();
                   ICUEFooter.autoInject();
                   break;
                 case 'notableAwards':
@@ -1569,6 +1570,179 @@ document.addEventListener('DOMContentLoaded', function() {
       window.JobBoard.init();
   }
 });
+
+window.DonationForm = (function () {
+  let selectedAmount = 0;
+  let selectedFrequency = "monthly";
+
+  // Function to select donation amount
+  function selectAmount(button, amount) {
+    // Remove active class from all amount buttons
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Add active class to clicked button
+    button.classList.add('active');
+
+    // Update selected amount
+    selectedAmount = amount;
+    const donateAmountElement = document.getElementById('donateAmount');
+    if (donateAmountElement) {
+      donateAmountElement.textContent = amount;
+    }
+
+    // Clear custom amount input if it exists
+    const customAmountInput = document.getElementById('customAmount');
+    if (customAmountInput) {
+      customAmountInput.value = '';
+    }
+  }
+
+  // Function to update custom amount
+  function updateCustomAmount(input) {
+    const customAmount = parseInt(input.value);
+    if (customAmount && customAmount > 0) {
+      // Remove active class from preset buttons
+      document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Update selected amount
+      selectedAmount = customAmount;
+      const donateAmountElement = document.getElementById('donateAmount');
+      if (donateAmountElement) {
+        donateAmountElement.textContent = customAmount;
+      }
+    }
+  }
+
+  // Function to select donation frequency
+  function selectFrequency(option, frequency) {
+    // Remove active class from all frequency options
+    document.querySelectorAll('.donation-option').forEach(opt => {
+      opt.classList.remove('active');
+    });
+
+    // Add active class to clicked option
+    option.classList.add('active');
+
+    // Update selected frequency
+    selectedFrequency = frequency;
+  }
+
+  // Function to process donation
+  function processDonation(event) {
+    event.preventDefault();
+
+    // Get form data
+    const formData = new FormData(event.target);
+    const donationData = {
+      amount: selectedAmount,
+      frequency: selectedFrequency,
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      company: formData.get('company')
+    };
+
+    // Validate required fields
+    if (!donationData.firstName || !donationData.lastName || !donationData.email) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Validate amount
+    if (!selectedAmount || selectedAmount <= 0) {
+      alert('Please select a valid donation amount.');
+      return;
+    }
+
+    // Stripe Integration - Create checkout session and redirect
+    fetch('/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(donationData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(session => {
+      // Redirect to Stripe Checkout
+      window.location.href = session.url;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Donations Not Available Right Now, Please Try Again in a Few Months.');
+    });
+
+    console.log('Donation data:', donationData);
+  }
+
+  // Initialize page
+  function init() {
+    // Check if donateAmount element exists before trying to set its content
+    const donateAmountElement = document.getElementById('donateAmount');
+    if (donateAmountElement) {
+      donateAmountElement.textContent = selectedAmount;
+    }
+
+    // Add hover effects to cards
+    const cards = document.querySelectorAll('.award-card, .project-card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-5px)';
+      });
+      card.addEventListener('mouseleave', function () {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  // Run init after DOM is ready
+  document.addEventListener('DOMContentLoaded', init);
+
+  // Public API (accessible globally as window.DonationForm)
+  return {
+    selectAmount,
+    updateCustomAmount,
+    selectFrequency,
+    processDonation,
+    init
+  };
+})();
+
+// Make selectAmount globally accessible for onclick handlers
+window.selectAmount = function(button, amount) {
+  if (window.DonationForm && window.DonationForm.selectAmount) {
+    window.DonationForm.selectAmount(button, amount);
+  }
+};
+
+// Make other donation functions globally accessible for onclick handlers
+window.updateCustomAmount = function(input) {
+  if (window.DonationForm && window.DonationForm.updateCustomAmount) {
+    window.DonationForm.updateCustomAmount(input);
+  }
+};
+
+window.selectFrequency = function(option, frequency) {
+  if (window.DonationForm && window.DonationForm.selectFrequency) {
+    window.DonationForm.selectFrequency(option, frequency);
+  }
+};
+
+window.processDonation = function(event) {
+  if (window.DonationForm && window.DonationForm.processDonation) {
+    window.DonationForm.processDonation(event);
+  }
+};
       
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
