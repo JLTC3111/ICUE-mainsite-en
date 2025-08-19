@@ -1857,8 +1857,7 @@ window.AwardsPage = (function () {
       });
     }
   };
-
-  // Auto-init when DOM is ready (optional, can remove if you only want manual call)
+  
   document.addEventListener('DOMContentLoaded', () => {
     if (window.CommunityPage && typeof window.CommunityPage.init === 'function') {
       window.CommunityPage.init();
