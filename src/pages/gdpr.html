@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Quyền GDPR - ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            padding: 80px 20px 60px;
+            text-align: center;
+            margin-top: 7.5%;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header div {
+            font-size: 1.2rem;
+            color: white;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #059669;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-content div {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .section-content ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box div {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .right-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .right-card::before {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #10b981;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .right-card h3 {
+            color: #059669;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .right-card div {
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .right-card ul {
+            margin-left: 20px;
+        }
+
+        .right-card li {
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-info div {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .contact-info a {
+            color: #c8ff00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .request-form {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .request-form h3 {
+            color: #059669;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .timeline {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .timeline-number {
+            background: #10b981;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h4 {
+            color: #059669;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content div {
+            color: #6b7280;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 15px 40px;
+                margin-top: 15%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .request-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body data-footer="true" class="with-footer">
+    <div class="header">
+        <h1>Quyền GDPR</h1>
+        <div>Tìm hiểu và thực hiện các quyền của bạn theo Quy định Bảo vệ Dữ liệu Chung (GDPR)</div>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <h2 class="section-title">
+                <!-- icon -->
+                GDPR là gì?
+            </h2>
+            <div class="section-content">
+                <div>Quy định Bảo vệ Dữ liệu Chung (GDPR) là luật về quyền riêng tư và bảo vệ dữ liệu của Liên minh Châu Âu (EU), có hiệu lực từ ngày 25 tháng 5 năm 2018.</div>
+                
+                <div class="highlight-box">
+                    <div>🇪🇺 GDPR áp dụng cho mọi tổ chức xử lý dữ liệu cá nhân của công dân EU, bất kể tổ chức đó đặt trụ sở ở đâu.</div>
+                </div>
+
+                <div>Tại ICUE, chúng tôi cam kết tuân thủ đầy đủ các quy định GDPR để bảo vệ quyền riêng tư và dữ liệu cá nhân của bạn, đặc biệt trong hợp tác quốc tế với các đối tác EU.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Quyền GDPR của bạn</h2>
+            <div class="section-content">
+                <div>Theo GDPR, bạn có 8 quyền cơ bản liên quan đến dữ liệu cá nhân của mình:</div>
+
+                <div class="right-card">
+                    <h3>1. Quyền được Thông tin</h3>
+                    <div>Bạn có quyền biết:</div>
+                    <ul>
+                        <li>Loại dữ liệu cá nhân nào được thu thập</li>
+                        <li>Mục đích sử dụng dữ liệu</li>
+                        <li>Thời gian lưu trữ dữ liệu</li>
+                        <li>Bên thứ ba nào có thể truy cập dữ liệu</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>2. Quyền Truy cập</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Yêu cầu xác nhận việc xử lý dữ liệu</li>
+                        <li>Nhận bản sao dữ liệu cá nhân của bạn</li>
+                        <li>Biết dữ liệu của bạn đang được xử lý như thế nào</li>
+                        <li>Nhận thông tin này miễn phí (trừ khi yêu cầu lặp lại hoặc quá mức)</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>3. Quyền Chỉnh sửa</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Yêu cầu sửa dữ liệu không chính xác</li>
+                        <li>Bổ sung thông tin nếu còn thiếu</li>
+                        <li>Cập nhật thông tin đã lỗi thời</li>
+                        <li>Nhận phản hồi trong vòng 1 tháng</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>4. Quyền Xóa Dữ liệu / “Quyền được Quên”</h3>
+                    <div>Bạn có thể yêu cầu xóa dữ liệu khi:</div>
+                    <ul>
+                        <li>Dữ liệu không còn cần thiết cho mục đích ban đầu</li>
+                        <li>Bạn rút lại sự đồng ý</li>
+                        <li>Dữ liệu được xử lý trái pháp luật</li>
+                        <li>Việc xóa là cần thiết để tuân thủ pháp luật</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>5. Quyền Hạn chế Xử lý</h3>
+                    <div>Bạn có thể tạm dừng xử lý dữ liệu khi:</div>
+                    <ul>
+                        <li>Có tranh chấp về tính chính xác của dữ liệu</li>
+                        <li>Việc xử lý là trái pháp luật nhưng bạn không muốn xóa</li>
+                        <li>Dữ liệu cần cho mục đích pháp lý</li>
+                        <li>Đang chờ xác minh phản đối</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>6. Quyền Chuyển đổi Dữ liệu</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Nhận dữ liệu của mình ở định dạng phổ biến, có cấu trúc</li>
+                        <li>Chuyển dữ liệu sang nhà cung cấp dịch vụ khác</li>
+                        <li>Yêu cầu chuyển trực tiếp (nếu khả thi về kỹ thuật)</li>
+                        <li>Áp dụng cho dữ liệu được xử lý tự động</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>7. Quyền Phản đối</h3>
+                    <div>Bạn có thể phản đối:</div>
+                    <ul>
+                        <li>Việc xử lý cho mục đích tiếp thị trực tiếp</li>
+                        <li>Việc xử lý dựa trên lợi ích hợp pháp</li>
+                        <li>Việc xử lý cho nghiên cứu khoa học</li>
+                        <li>Việc lập hồ sơ tự động</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>8. Quyền liên quan đến Quyết định Tự động</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Không bị quyết định hoàn toàn tự động chi phối</li>
+                        <li>Hiểu rõ logic phía sau việc tự động hóa</li>
+                        <li>Yêu cầu có sự can thiệp của con người</li>
+                        <li>Thách thức quyết định tự động</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Cách Thực hiện Quyền của Bạn</h2>
+            <div class="section-content">
+                <div>Để thực hiện quyền GDPR, bạn có thể liên hệ với chúng tôi qua các bước sau:</div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-number">1</div>
+                        <div class="timeline-content">
+                            <h4>Xác định Yêu cầu</h4>
+                            <div>Chọn quyền GDPR bạn muốn thực hiện và chuẩn bị thông tin cần thiết.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">2</div>
+                        <div class="timeline-content">
+                            <h4>Gửi Yêu cầu</h4>
+                            <div>Sử dụng mẫu bên dưới hoặc gửi email đến privacy@icue.vn kèm chi tiết.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">3</div>
+                        <div class="timeline-content">
+                            <h4>Xác minh Danh tính</h4>
+                            <div>Chúng tôi có thể yêu cầu xác minh ID để bảo vệ dữ liệu của bạn.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">4</div>
+                        <div class="timeline-content">
+                            <h4>Xử lý</h4>
+                            <div>Chúng tôi sẽ xử lý trong vòng 30 ngày (có thể gia hạn đến 60 ngày với trường hợp phức tạp).</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">5</div>
+                        <div class="timeline-content">
+                            <h4>Nhận Phản hồi</h4>
+                            <div>Bạn sẽ nhận được phản hồi chi tiết về kết quả yêu cầu.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Gửi Yêu cầu GDPR</h2>
+            <div class="section-content">
+                <div class="request-form">
+                    <h3>Mẫu Yêu cầu Quyền GDPR</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="requestType">Loại Yêu cầu *</label>
+                            <select id="requestType" required>
+                                <option value="">Chọn loại yêu cầu</option>
+                                <option value="access">Quyền Truy cập</option>
+                                <option value="rectification">Quyền Chỉnh sửa</option>
+                                <option value="erasure">Quyền Xóa dữ liệu</option>
+                                <option value="restrict">Quyền Hạn chế Xử lý</option>
+                                <option value="portability">Quyền Chuyển đổi Dữ liệu</option>
+                                <option value="object">Quyền Phản đối</option>
+                                <option value="automated">Quyền liên quan đến Tự động hóa</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fullName">Họ và Tên *</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Số Điện thoại</label>
+                            <input type="tel" id="phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="details">Chi tiết Yêu cầu *</label>
+                            <textarea id="details" placeholder="Vui lòng mô tả chi tiết yêu cầu của bạn. Bao gồm: loại dữ liệu, khoảng thời gian, mục đích, và các thông tin liên quan khác." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="identification">Xác minh Danh tính</label>
+                            <textarea id="identification" placeholder="Để bảo vệ dữ liệu của bạn, vui lòng cung cấp thông tin xác minh (ví dụ: số CMND/Hộ chiếu, mã số thuế, hoặc thông tin khác đã cung cấp cho ICUE)."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Gửi Yêu cầu GDPR</button>
+                    </form>
+                </div>
+
+                <div class="highlight-box">
+                    <div>📧 Bạn cũng có thể gửi yêu cầu trực tiếp qua email tới <strong>privacy@icue.vn</strong> với tiêu đề “[GDPR Request] - [Loại Yêu cầu]”</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Thời gian Xử lý & Phí</h2>
+            <div class="section-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-number">⏰</div>
+                        <div class="timeline-content">
+                            <h4>Thời gian tiêu chuẩn</h4>
+                            <div>Chúng tôi sẽ phản hồi trong vòng <strong>30 ngày</strong> kể từ khi nhận yêu cầu.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">📅</div>
+                        <div class="timeline-content">
+                            <h4>Gia hạn khi cần thiết</h4>
+                            <div>Với trường hợp phức tạp, có thể gia hạn đến <strong>60 ngày</strong> và thông báo lý do.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">💰</div>
+                        <div class="timeline-content">
+                            <h4>Phí</h4>
+                            <div>Hầu hết các yêu cầu GDPR được xử lý <strong>miễn phí</strong>. Phí có thể áp dụng cho yêu cầu quá mức hoặc lặp lại.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <div>⚡ Yêu cầu khẩn cấp: Nếu hợp lý, chúng tôi sẽ ưu tiên xử lý nhanh hơn.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Cơ quan Giám sát & Khiếu nại</h2>
+            <div class="section-content">
+                <div>Nếu bạn không hài lòng với cách chúng tôi xử lý yêu cầu GDPR, bạn có quyền:</div>
+
+                <ul>
+                    <li><strong>Khiếu nại nội bộ:</strong> Liên hệ với Nhân viên Bảo vệ Dữ liệu (DPO) của ICUE</li>
+                    <li><strong>Khiếu nại với cơ quan quản lý:</strong> Gửi khiếu nại đến cơ quan bảo vệ dữ liệu có thẩm quyền</li>
+                    <li><strong>Khởi kiện:</strong> Đưa vụ việc ra tòa nếu cần thiết</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div>🏛️ Với yêu cầu GDPR liên quan đến công dân EU, bạn có thể gửi khiếu nại đến cơ quan bảo vệ dữ liệu quốc gia của quốc gia EU liên quan.</div>
+                </div>
+
+                <div>Danh sách cơ quan bảo vệ dữ liệu EU có tại: <a href="https://edpb.europa.eu/about-edpb/board/members_en" target="_blank">European Data Protection Board</a></div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3>Liên hệ Nhân viên Bảo vệ Dữ liệu (DPO)</h3>
+            <div>Để được hỗ trợ về vấn đề GDPR:</div>
+            <div><strong>Email:</strong> <a href="mailto:dpo@icue.vn">dpo@icue.vn</a></div>
+            <div><strong>Email chung:</strong> <a href="mailto:privacy@icue.vn">privacy@icue.vn</a></div>
+            <div><strong>Điện thoại:</strong> <a href="tel:+842437728485">+84 24 3772 8485</a></div>
+            <div><strong>Địa chỉ:</strong> Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng</div>
+            <div>Chúng tôi cam kết xử lý yêu cầu của bạn một cách nhanh chóng và minh bạch.</div>
+        </div>
+
+        <div class="last-updated">
+            <div>Trang này được cập nhật lần cuối: <strong>18 tháng 8, 2025</strong></div>
+            <div>Tuân thủ GDPR (EU) 2016/679 và các quy định liên quan</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

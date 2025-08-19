@@ -292,11 +292,10 @@ footer {
 .footer-toggle {
     color: #ffffff;
     background: none;
-    border: none;
     font-size: clamp(14px, 2.5vw, 18px);
     font-weight: 500;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     cursor: pointer;
     width: 100%;
     padding: 10px 0;
@@ -308,6 +307,7 @@ footer {
 .collapsible {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
 .underline-hover {
   position: relative;
@@ -330,9 +330,12 @@ footer {
 .underline-hover:hover::after {
   transform: scaleX(1);
 }
+
 @media (max-width: 768px) {
     footer { padding: 60px 30px 40px; }
-    .footer-toggle { text-decoration: underline; }
+    .footer-toggle {
+        text-decoration: underline;
+    }
     .footer-container { grid-template-columns: 1fr; gap: 30px; padding: 20px; }
     .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
     .footer-bottom-left { justify-content: center; }
@@ -340,78 +343,77 @@ footer {
 `;
 
       const html = `
-<footer>
-    <div class="footer-container">
-        <div class="footer-section">
-            <button class="footer-toggle underline-hover" aria-expanded="false">
-                Company
-            </button>
-            <div class="collapsible">
-                <a href="#/notableAwards">Notable Awards</a>
-                <a href="#/communityActivities">Community Activities</a>
-            </div>
-        </div>
-        <div class="footer-section">
-            <button class="footer-toggle underline-hover" aria-expanded="false">
-                Other Pages
-            </button>
-            <div class="collapsible">
-                <a href="#/FAQs">FAQs</a>
-                <a href="#/recruitment">Job Opprtunities</a>
-                <a href="#/donations">Donations</a>
-            </div>
-        </div>
-        <div class="footer-brand">
-                <div class="security-badges">
-                    <div class="badge norton" data-tooltip="Được xác minh bởi Norton - Dữ liệu của bạn được bảo vệ">
-                        <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 2V7M12 2C11.2867 2 10.5909 2.07467 9.91991 2.21663M12 2C12.7132 2 13.4091 2.07467 14.08 2.21663M12 7C9.23855 7 7 9.2386 7 12M12 7C14.7614 7 17 9.2386 17 12M12 17V22M12 17C14.7614 17 17 14.7614 17 12M12 17C9.23855 17 7 14.7614 7 12M12 22C12.7122 22 13.407 21.9255 14.077 21.784M12 22C11.2851 22 10.5878 21.925 9.91545 21.7824M4.92891 4.92893L8.46444 8.46447M15.5355 15.5355L19.071 19.0711M2 12H7M2 12C2 12.7133 2.07466 13.4092 2.21664 14.0802M2 12C2 11.2857 2.07488 10.5888 2.21727 9.91683M17 12H22M22 12C22 11.2867 21.9253 10.5908 21.7833 9.91978M22 12C22 12.7131 21.9254 13.4086 21.7835 14.0794M4.92891 19.0711L8.46444 15.5355M15.5355 8.46447L19.071 4.92893M17.4466 3.61208C18.621 4.37619 19.6249 5.38023 20.3888 6.55469M20.386 17.4496C19.622 18.6229 18.6183 19.626 17.4445 20.3893M6.55371 20.3882C5.38104 19.6252 4.37831 18.623 3.61474 17.4508M3.61171 6.55387C4.37545 5.37994 5.37894 4.37633 6.55275 3.61244" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                        Norton Secured
-                    </div>
-                    <div class="badge ssl" data-tooltip="Mã hóa SSL 256-bit bảo mật tất cả các giao dịch">
-                        <svg width="16px" height="16px" viewBox="0 0 8.4666669 8.4666669" id="svg8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg">
-
-                        <defs id="defs2"/>
-
-                        <g id="layer1" transform="translate(0,-288.53332)">
-
-                        <path d="M 16,1 C 12.139297,1 9,4.1392882 9,8 v 5 H 7 c -0.5522619,5.5e-5 -0.9999448,0.447738 -1,1 v 16 c 5.52e-5,0.552262 0.4477381,0.999945 1,1 h 18 c 0.552262,-5.5e-5 0.999945,-0.447738 1,-1 V 14 c -5.5e-5,-0.552262 -0.447738,-0.999945 -1,-1 H 23 V 8 C 23,4.1392882 19.860703,1 16,1 Z m 0,2 c 2.787297,0 5,2.212674 5,5 v 5 H 11 V 8 C 11,5.212674 13.212703,3 16,3 Z M 8,15 H 24 V 29 H 8 Z" id="rect864" style="color:#ffffff;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#ffffff;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#ffffff;solid-opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.99999988;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" transform="matrix(0.26458333,0,0,0.26458333,0,288.53332)"/>
-
-                        <path d="m 4.4979169,294.36786 a 0.26458332,0.26458332 0 0 1 -0.2645833,0.26458 0.26458332,0.26458332 0 0 1 -0.2645833,-0.26458 0.26458332,0.26458332 0 0 1 0.2645833,-0.26458 0.26458332,0.26458332 0 0 1 0.2645833,0.26458 z" id="path877" style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"/>
-
-                        </g>
-
-                        </svg>
-                        SSL Encrypted
-                    </div>
-                    <div class="badge payment" data-tooltip="Chúng tôi chấp nhận tất cả các phương thức thanh toán chính">
-                        <svg fill="#ffffff" width="16px" height="16px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M29.005 5.5h-26.009c-1.657 0-3 1.343-3 3v15c0 1.657 1.343 3 3 3h26.009c1.657 0 3-1.343 3-3v-15c0-1.657-1.343-3-3-3zM2.995 7.5h26.009c0.552 0 1 0.448 1 1v2h-28.009v-2c0-0.552 0.449-1 1-1zM29.005 24.5h-26.009c-0.552 0-1-0.448-1-1v-9h28.009v9c0 0.552-0.448 1-1 1z"></path> </g></svg>
-                        Visa | MasterCard
+        <footer>
+            <div class="footer-container">
+                <div class="footer-section">
+                    <button class="footer-toggle underline-hover" aria-expanded="false">
+                        Company
+                    </button>
+                    <div class="collapsible">
+                        <a href="#/notableAwards">Notable Awards</a>
+                        <a href="#/communityActivities">Community Activities</a>
                     </div>
                 </div>
+                <div class="footer-section">
+                    <button class="footer-toggle underline-hover" aria-expanded="false">
+                        Other Pages
+                    </button>
+                    <div class="collapsible">
+                        <a href="#/FAQs">FAQs</a>
+                        <a href="#/recruitment">Job Opportunities</a>
+                        <a href="#/donations">Donations</a>
+                    </div>
+                </div>
+                <div class="footer-brand">
+                        <div class="security-badges">
+                            <div class="badge norton" data-tooltip="Verified by Trustwave">
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.5283 1.5999C11.7686 1.29437 12.2314 1.29437 12.4717 1.5999L14.2805 3.90051C14.4309 4.09173 14.6818 4.17325 14.9158 4.10693L17.7314 3.3089C18.1054 3.20292 18.4799 3.475 18.4946 3.86338L18.6057 6.78783C18.615 7.03089 18.77 7.24433 18.9984 7.32823L21.7453 8.33761C22.1101 8.47166 22.2532 8.91189 22.0368 9.23478L20.4078 11.666C20.2724 11.8681 20.2724 12.1319 20.4078 12.334L22.0368 14.7652C22.2532 15.0881 22.1101 15.5283 21.7453 15.6624L18.9984 16.6718C18.77 16.7557 18.615 16.9691 18.6057 17.2122L18.4946 20.1366C18.4799 20.525 18.1054 20.7971 17.7314 20.6911L14.9158 19.8931C14.6818 19.8267 14.4309 19.9083 14.2805 20.0995L12.4717 22.4001C12.2314 22.7056 11.7686 22.7056 11.5283 22.4001L9.71949 20.0995C9.56915 19.9083 9.31823 19.8267 9.08421 19.8931L6.26856 20.6911C5.89463 20.7971 5.52014 20.525 5.50539 20.1366L5.39427 17.2122C5.38503 16.9691 5.22996 16.7557 5.00164 16.6718L2.25467 15.6624C1.88986 15.5283 1.74682 15.0881 1.96317 14.7652L3.59221 12.334C3.72761 12.1319 3.72761 11.8681 3.59221 11.666L1.96317 9.23478C1.74682 8.91189 1.88986 8.47166 2.25467 8.33761L5.00165 7.32823C5.22996 7.24433 5.38503 7.03089 5.39427 6.78783L5.50539 3.86338C5.52014 3.475 5.89463 3.20292 6.26857 3.3089L9.08421 4.10693C9.31823 4.17325 9.56915 4.09173 9.71949 3.90051L11.5283 1.5999Z" stroke="#000000" stroke-width="1.5"></path> <path d="M9 12L11 14L15 10" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                Trustwave Verified
+                            </div>
+                            <div class="badge ssl" data-tooltip="SSL-256 bit Encryption for Secure Communications">
+                                <svg width="16px" height="16px" viewBox="0 0 8.4666669 8.4666669" id="svg8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg">
+
+                                <defs id="defs2"/>
+
+                                <g id="layer1" transform="translate(0,-288.53332)">
+
+                                <path d="M 16,1 C 12.139297,1 9,4.1392882 9,8 v 5 H 7 c -0.5522619,5.5e-5 -0.9999448,0.447738 -1,1 v 16 c 5.52e-5,0.552262 0.4477381,0.999945 1,1 h 18 c 0.552262,-5.5e-5 0.999945,-0.447738 1,-1 V 14 c -5.5e-5,-0.552262 -0.447738,-0.999945 -1,-1 H 23 V 8 C 23,4.1392882 19.860703,1 16,1 Z m 0,2 c 2.787297,0 5,2.212674 5,5 v 5 H 11 V 8 C 11,5.212674 13.212703,3 16,3 Z M 8,15 H 24 V 29 H 8 Z" id="rect864" style="color:#ffffff;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#ffffff;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#ffffff;solid-opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.99999988;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" transform="matrix(0.26458333,0,0,0.26458333,0,288.53332)"/>
+
+                                <path d="m 4.4979169,294.36786 a 0.26458332,0.26458332 0 0 1 -0.2645833,0.26458 0.26458332,0.26458332 0 0 1 -0.2645833,-0.26458 0.26458332,0.26458332 0 0 1 0.2645833,-0.26458 0.26458332,0.26458332 0 0 1 0.2645833,0.26458 z" id="path877" style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"/>
+
+                                </g>
+
+                                </svg>
+                                SSL Encrypted
+                            </div>
+                            <div class="badge payment" data-tooltip="We Accept Major Payment Methods">
+                                <svg fill="#ffffff" width="16px" height="16px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M29.005 5.5h-26.009c-1.657 0-3 1.343-3 3v15c0 1.657 1.343 3 3 3h26.009c1.657 0 3-1.343 3-3v-15c0-1.657-1.343-3-3-3zM2.995 7.5h26.009c0.552 0 1 0.448 1 1v2h-28.009v-2c0-0.552 0.449-1 1-1zM29.005 24.5h-26.009c-0.552 0-1-0.448-1-1v-9h28.009v9c0 0.552-0.448 1-1 1z"></path> </g></svg>
+                                Visa | MasterCard
+                            </div>
+                        </div>
+                    </div>
             </div>
-    </div>
-    <div class="footer-bottom">
             <div class="footer-bottom">
-        <div class="footer-bottom-left">
-            <a href="#/privacy">Privacy</a>
-            <span>|</span>
-            <a href="#/terms">T&C</a>
-            <span>|</span>
-            <a href="#/gdpr">GDPR</a>
-            <span>|</span>
-            <a href="#/cookies">Cookies</a>
-        </div>
-        <div class="footer-bottom-right">
-            <a href="#" class="company-deck">
-                Let's Work Together!
-                <svg fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7 14l5-5 5 5z"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-</footer>
-`;
+                <div class="footer-bottom-left">
+                    <a href="#/privacy">Privacy</a>
+                    <span>|</span>
+                    <a href="#/terms">T&C</a>
+                    <span>|</span>
+                    <a href="#/gdpr">GDPR</a>
+                    <span>|</span>
+                    <a href="#/cookies">Cookies</a>
+                </div>
+                <div class="footer-bottom-right">
+                    <a href="#" class="company-deck">
+                        Let's Work Together!
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 14l5-5 5 5z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
+        `;
             // Inject CSS once
             if (!document.querySelector('#icue-footer-style')) {
                 const styleElement = document.createElement('style');
@@ -462,42 +464,34 @@ footer {
         }
     }
 
-    // Expose globally with error handling
-    if (typeof global !== 'undefined' && global) {
-        global.ICUEFooter = {
-            inject: injectFooter,
-            autoInject: autoInjectFooter,
-            injectInto(element) {
-                if (typeof element === 'string') {
-                    element = document.querySelector(element);
-                }
-                if (!element) {
-                    console.error('ICUEFooter: Element not found');
-                    return false;
-                }
-                return injectFooter(element);
-            },
-            updateLinks(newLinks) {
-                const footerColumns = document.querySelectorAll('.footer-section');
-                if (newLinks.company && footerColumns[0]) {
-                    const companyLinks = footerColumns[0].querySelector('.collapsible');
-                    if (companyLinks) {
-                        companyLinks.innerHTML = newLinks.company.map(link =>
-                            `<a href="${link.url}">${link.text}</a>`
-                        ).join('');
-                    }
-                }
-                if (newLinks.pages && footerColumns[1]) {
-                    const pageLinks = footerColumns[1].querySelector('.collapsible');
-                    if (pageLinks) {
-                        pageLinks.innerHTML = newLinks.pages.map(link =>
-                            `<a href="${link.url}">${link.text}</a>`
-                        ).join('');
-                    }
-                }
+    // Expose globally
+    global.ICUEFooter = {
+        inject: injectFooter,
+        autoInject: autoInjectFooter,
+        injectInto(element) {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
             }
-        };
-    } else {
-        console.error('ICUEFooter: Global object not available');
-    }
+            if (!element) {
+                console.error('ICUEFooter: Element not found');
+                return false;
+            }
+            return injectFooter(element);
+        },
+        updateLinks(newLinks) {
+            const footerColumns = document.querySelectorAll('.footer-section');
+            if (newLinks.company && footerColumns[0]) {
+                const companyLinks = footerColumns[0].querySelector('.collapsible');
+                companyLinks.innerHTML = newLinks.company.map(link =>
+                    `<a href="${link.url}">${link.text}</a>`
+                ).join('');
+            }
+            if (newLinks.pages && footerColumns[1]) {
+                const pageLinks = footerColumns[1].querySelector('.collapsible');
+                pageLinks.innerHTML = newLinks.pages.map(link =>
+                    `<a href="${link.url}">${link.text}</a>`
+                ).join('');
+            }
+        }
+    };
 })(window);

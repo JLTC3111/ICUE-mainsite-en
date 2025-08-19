@@ -59,7 +59,7 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute("fill", "black"); // or darkblue, your choice
-  path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
+  path.setAttribute("d", "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z");
 
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
@@ -416,9 +416,8 @@ window.loadPage = (page) => {
   .then(response => response.text())
   .then(data => {
     content.innerHTML = data;
-    clearInterval(fakeProgress); // ensure we clear progress interval
+    clearInterval(fakeProgress); 
 
-    // Finalize progress bar to 100%
     let finalize = setInterval(() => {
       progress += 2;
       setProgress(progress);
@@ -438,6 +437,7 @@ window.loadPage = (page) => {
               initAudioVisualizer();
               updateMusicBarColor(page);
               calendarModal(page);
+              updateHamburgerIcon(page)
               
               switch (page) {
                 case 'meetOurExperts':
@@ -487,9 +487,11 @@ window.loadPage = (page) => {
                   ICUEFooter.autoInject();
                   break;
                 case 'notableAwards':
+                  AwardsPage.init();
                   ICUEFooter.autoInject();
                   break;
                 case 'communityActivities':
+                  CommunityPage.init();
                   ICUEFooter.autoInject();
                   break;
                 case 'privacy':
@@ -506,16 +508,6 @@ window.loadPage = (page) => {
                   break;
               }
             });
-
-          // Hide contact sidebar on News page
-          const contactSidebar = document.querySelector('.contact-sidebar');
-          if (contactSidebar) {
-            if (page === 'News' && isTouchDevice) {
-              contactSidebar.style.display = '';
-            } else {
-              contactSidebar.style.display = '';
-            }
-           }
           }, 10);
         }
       }, 0);
@@ -1423,11 +1415,18 @@ window.JobBoard = (function() {
   
   const jobPositions = [
       {
-          title: "Software Engineer",
+          title: "Head of Technology Assistant",
           department: "Technology",
           location: "Hanoi, Vietnam",
-          description: "Develop and maintain smart energy management systems. Work with modern tech like React, Node.js, and cloud computing.",
-          tags: ["JavaScript", "React", "Node.js", "AWS", "Full-time"]
+          description: "We’re looking for a tech-savvy, organized pro to support our CTO and tech leadership. Help manage projects, streamline workflows, and keep our tech teams firing on all cylinders.",
+          tags: ["Tech understanding + admin/project skills", "Great communication & organization", "Proactive, solution-oriented mindset", "Full-time"]
+      },
+      {
+          title: "Research Intern",
+          department: "Administration",
+          location: "Hanoi, Vietnam",
+          description: "Join our team to explore new technologies, support innovative projects, and learn from top experts in the field. This is a part-time internship with flexible hours.",
+          tags: ["Curiosity and passion for research", "Willingness to learn and contribute", "Strong analytical and problem-solving skills", "Part-time"]
       },
       {
           title: "Data Analyst",
@@ -1436,20 +1435,16 @@ window.JobBoard = (function() {
           description: "Analyze energy data to optimize performance and predict trends. Use Python, SQL, and machine learning tools.",
           tags: ["Python", "SQL", "Machine Learning", "Analytics", "Full-time"]
       },
-      {
-          title: "Research Intern",
-          department: "Administration",
-          location: "Hanoi, Vietnam",
-          description: "Assist in researching new energy technologies. Opportunity to learn and work with top experts.",
-          tags: ["Research", "Innovation", "Energy Tech", "Internship", "Part-time"]
-      }
   ];
 
   // Function to render job positions
   function renderJobs(jobs) {
       const jobsContainer = document.getElementById('jobs-container');
       if (!jobsContainer) {
-          console.error('Jobs container not found');
+          // Only log error if we're on a careers/jobs page
+          if (window.location.hash && window.location.hash.toLowerCase().includes('career')) {
+              console.error('Jobs container not found');
+          }
           return;
       }
       
@@ -1743,7 +1738,133 @@ window.processDonation = function(event) {
     window.DonationForm.processDonation(event);
   }
 };
-      
+
+window.AwardsPage = (function () {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    let observer;
+
+    function init() {
+      // Create observer if not already created
+      if (!observer) {
+        observer = new IntersectionObserver(handleIntersect, observerOptions);
+      }
+
+      // Observe award cards
+      const cards = document.querySelectorAll('.award-card, .cert-card, .timeline-item');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        observer.observe(card);
+      });
+
+      console.log('Awards page loaded successfully');
+    }
+
+    function handleIntersect(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }
+
+    // Expose public API
+    return {
+      init
+    };
+  })();
+
+  // Auto-init on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.AwardsPage && typeof window.AwardsPage.init === 'function') {
+      window.AwardsPage.init();
+    }
+  });
+
+ window.CommunityPage = {
+    init: function () {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Animate photo items
+      const photoItems = document.querySelectorAll('.photo-item');
+      photoItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        observer.observe(item);
+      });
+
+      // Floating elements parallax scroll
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        const floatingElements = document.querySelector('.floating-elements');
+        if (floatingElements) {
+          floatingElements.style.transform = `translateY(${rate}px)`;
+        }
+      });
+
+      // Community buttons interaction
+      document.querySelectorAll('.community-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+
+          if (btn.textContent.includes('Discord')) {
+            btn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.369a19.791 19.791 0 00-4.885-1.515.07.07 0 00-.074.034c-.21.375-.444.864-.608 1.249-1.844-.276-3.68-.276-5.486 0-.164-.393-.407-.874-.618-1.249a.07.07 0 00-.074-.034 19.736 19.736 0 00-4.885 1.515.064.064 0 00-.03.027C2.96 9.045 2.154 13.58 2.478 18.057a.082.082 0 00.031.057c2.052 1.507 4.041 2.422 5.992 3.029a.07.07 0 00.074-.027c.461-.63.873-1.295 1.226-1.994a.07.07 0 00-.041-.098c-.65-.249-1.263-.557-1.845-.914a.07.07 0 01-.007-.115c.124-.093.248-.19.366-.287a.07.07 0 01.073-.01c3.861 1.773 8.027 1.773 11.863 0a.07.07 0 01.074.01c.118.097.242.194.366.287a.07.07 0 01-.006.115 12.298 12.298 0 01-1.846.913.07.07 0 00-.04.099c.36.698.772 1.362 1.225 1.993a.07.07 0 00.074.028c1.962-.607 3.95-1.522 6.002-3.029a.07.07 0 00.031-.056c.5-6.933-1.043-11.436-4.548-13.661a.061.061 0 00-.03-.028zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.955 2.419-2.157 2.419zm7.974 0c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z"/>
+              </svg>
+            `;
+            setTimeout(() => {
+              btn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.317 4.369a19.791 19.791 0 00-4.885-1.515.07.07 0 00-.074.034c-.21.375-.444.864-.608 1.249-1.844-.276-3.68-.276-5.486 0-.164-.393-.407-.874-.618-1.249a.07.07 0 00-.074-.034 19.736 19.736 0 00-4.885 1.515.064.064 0 00-.03.027C2.96 9.045 2.154 13.58 2.478 18.057a.082.082 0 00.031.057c2.052 1.507 4.041 2.422 5.992 3.029a.07.07 0 00.074-.027c.461-.63.873-1.295 1.226-1.994a.07.07 0 00-.041-.098c-.65-.249-1.263-.557-1.845-.914a.07.07 0 01-.007-.115c.124-.093.248-.19.366-.287a.07.07 0 01.073-.01c3.861 1.773 8.027 1.773 11.863 0a.07.07 0 01.074.01c.118.097.242.194.366.287a.07.07 0 01-.006.115 12.298 12.298 0 01-1.846.913.07.07 0 00-.04.099c.36.698.772 1.362 1.225 1.993a.07.07 0 00.074.028c1.962-.607 3.95-1.522 6.002-3.029a.07.07 0 00.031-.056c.5-6.933-1.043-11.436-4.548-13.661a.061.061 0 00-.03-.028zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.955 2.419-2.157 2.419zm7.974 0c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z"/>
+                </svg>
+                Join Discord
+              `;
+            }, 2000);
+          } else {
+            btn.innerHTML = `
+              <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 59.312 59.312" xml:space="preserve" fill="#000" stroke="#000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffffff;" d="M41.507,0c-9.225,0-16.729,7.504-16.729,16.728c0,2.829,0.711,5.492,1.956,7.831L2.525,48.979 c-1.944,1.962-1.93,5.127,0.031,7.071c0.975,0.967,2.248,1.449,3.52,1.449c1.287,0,2.573-0.494,3.551-1.479l2.831-2.855 l6.148,6.147l3.662-3.662l-2.951-3.027l2.148-2.094l2.924,3l2.702-2.701l-6.185-6.186l12.945-13.059 c2.297,1.188,4.896,1.872,7.656,1.872c9.224,0,16.728-7.504,16.728-16.728S50.73,0,41.507,0z M41.507,27.456 c-5.917,0-10.729-4.812-10.729-10.728S35.59,6,41.507,6c5.915,0,10.728,4.812,10.728,10.728S47.422,27.456,41.507,27.456z"></path> </g> </g></svg>
+              Searching...
+            `;
+            setTimeout(() => {
+              btn.innerHTML = `
+                <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 59.312 59.312" xml:space="preserve" fill="#000" stroke="#000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffffff;" d="M41.507,0c-9.225,0-16.729,7.504-16.729,16.728c0,2.829,0.711,5.492,1.956,7.831L2.525,48.979 c-1.944,1.962-1.93,5.127,0.031,7.071c0.975,0.967,2.248,1.449,3.52,1.449c1.287,0,2.573-0.494,3.551-1.479l2.831-2.855 l6.148,6.147l3.662-3.662l-2.951-3.027l2.148-2.094l2.924,3l2.702-2.701l-6.185-6.186l12.945-13.059 c2.297,1.188,4.896,1.872,7.656,1.872c9.224,0,16.728-7.504,16.728-16.728S50.73,0,41.507,0z M41.507,27.456 c-5.917,0-10.729-4.812-10.729-10.728S35.59,6,41.507,6c5.915,0,10.728,4.812,10.728,10.728S47.422,27.456,41.507,27.456z"></path> </g> </g></svg>
+                Find Local Chapter
+              `;
+            }, 2000);
+          }
+        });
+      });
+    }
+  };
+
+  // Auto-init when DOM is ready (optional, can remove if you only want manual call)
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CommunityPage && typeof window.CommunityPage.init === 'function') {
+      window.CommunityPage.init();
+    }
+  });
+
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
