@@ -459,12 +459,14 @@ footer {
             const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();
 
             if (!allowedPages.map(p => p.toLowerCase()).includes(normalizedPage)) {
-                console.log("Not an allowed page, skipping footer injection.");
+                const footer = document.querySelector('footer'); 
+                if (footer) {
+                footer.remove();
+            }
                 return;
             }
 
             if (!document.querySelector('footer')) {
-                console.log("Injecting footer...");
                 injectFooter();
             } else {
                 console.log("Footer already exists.");
@@ -475,7 +477,7 @@ footer {
                 document.addEventListener('DOMContentLoaded', injectIfMissing);
             } else {
                 console.log("Footer already exists, skipping injection.");
-                injectIfMissing
+                injectIfMissing();
             }
     }
 
