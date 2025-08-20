@@ -443,11 +443,9 @@ window.loadPage = (page) => {
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
-                  
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
-                  
                   break;
                 case 'Home':
                   makeItRainText();
@@ -458,7 +456,6 @@ window.loadPage = (page) => {
                 case 'News':
                   initLogoSlider();
                   initMobileNewsSlider();
-                  triggerFanfare();
                   break;
                 case 'aboutUs':
                   createBalloons();
@@ -473,7 +470,6 @@ window.loadPage = (page) => {
                   handleAOSByScreenSize();
                   break;
                 case 'orgStructure':
-                  
                   break;
                 case 'FAQs':
                   initFrequentlyAskedQuestions();
@@ -491,16 +487,12 @@ window.loadPage = (page) => {
                   CommunityPage.init();
                   break;
                 case 'privacy':
-                
                   break;
                 case 'terms':
-                
                   break;
                 case 'gdpr':
-                 
                   break;
                 case 'cookies':
-              
                   break;
               }
             });
@@ -2353,35 +2345,6 @@ updateCalendarSvgTime();
 
 // Update the time every minute (60,000 milliseconds)
 setInterval(updateCalendarSvgTime, 60 * 1000);
-
-window.triggerFanfare = () => {
-    // Confetti burst!
-    const duration = 3 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
-
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    const interval = setInterval(() => {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
-      // since particles fall down, start a bit higher than random
-      confetti(Object.assign({}, defaults, {
-        particleCount,
-        origin: {
-          x: randomInRange(0.1, 0.9),
-          y: Math.random() - 0.2
-        }
-      }));
-    }, 250);
-  };
 
 function initAudioVisualizer(
     audioSrc = 'public/music/royalty_free.mp3',
