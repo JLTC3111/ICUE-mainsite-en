@@ -55,11 +55,11 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
   svgCursor.setAttribute("width", "24");
   svgCursor.setAttribute("height", "24");
   svgCursor.setAttribute("viewBox", "0 0 24 24");
-  svgCursor.setAttribute("class", "svg-blinking-cursor"); // custom class
+  svgCursor.setAttribute("class", "svg-blinking-cursor"); 
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("fill", "black"); // or darkblue, your choice
-  path.setAttribute("d", "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z");
+  path.setAttribute("fill", "black"); 
+  path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
 
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
@@ -437,16 +437,17 @@ window.loadPage = (page) => {
               initAudioVisualizer();
               updateMusicBarColor(page);
               calendarModal(page);
-              updateHamburgerIcon(page)
+              updateHamburgerIcon(page);
+              ICUEFooter.autoInject();
               
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
-                  ICUEFooter.autoInject();
+
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
-                  ICUEFooter.autoInject();
+                  
                   break;
                 case 'Home':
                   makeItRainText();
@@ -472,39 +473,34 @@ window.loadPage = (page) => {
                   handleAOSByScreenSize();
                   break;
                 case 'orgStructure':
-                  ICUEFooter.autoInject();
+                  
                   break;
                 case 'FAQs':
                   initFrequentlyAskedQuestions();
-                  ICUEFooter.autoInject();
                   break;
                 case 'recruitment':
                   JobBoard.init();
-                  ICUEFooter.autoInject();
                   break;
                 case 'donations':
                   DonationForm.init();
-                  ICUEFooter.autoInject();
                   break;
                 case 'notableAwards':
                   AwardsPage.init();
-                  ICUEFooter.autoInject();
                   break;
                 case 'communityActivities':
                   CommunityPage.init();
-                  ICUEFooter.autoInject();
                   break;
                 case 'privacy':
-                  ICUEFooter.autoInject();
+                
                   break;
                 case 'terms':
-                  ICUEFooter.autoInject();
+                
                   break;
                 case 'gdpr':
-                  ICUEFooter.autoInject();
+                 
                   break;
                 case 'cookies':
-                  ICUEFooter.autoInject();
+              
                   break;
               }
             });
@@ -1857,7 +1853,7 @@ window.AwardsPage = (function () {
       });
     }
   };
-  
+
   document.addEventListener('DOMContentLoaded', () => {
     if (window.CommunityPage && typeof window.CommunityPage.init === 'function') {
       window.CommunityPage.init();

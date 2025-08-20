@@ -350,8 +350,8 @@ footer {
                         Company
                     </button>
                     <div class="collapsible">
-                        <a href="#/notableAwards">Notable Awards</a>
-                        <a href="#/communityActivities">Community Activities</a>
+                        <a href="#/notableAwards" onclick="closeDrawerMenu();" data-page="notableAwards">Notable Awards</a>
+                        <a href="#/communityActivities" onclick="closeDrawerMenu();" data-page="communityActivities">Community Activities</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -359,9 +359,9 @@ footer {
                         Other Pages
                     </button>
                     <div class="collapsible">
-                        <a href="#/FAQs">FAQs</a>
-                        <a href="#/recruitment">Job Opportunities</a>
-                        <a href="#/donations">Donations</a>
+                        <a href="#/FAQs" onclick="closeDrawerMenu();" data-page="FAQs">FAQs</a>
+                        <a href="#/recruitment" onclick="closeDrawerMenu();" data-page="recruitment">Job Opportunities</a>
+                        <a href="#/donations" onclick="closeDrawerMenu();" data-page="donations">Donations</a>
                     </div>
                 </div>
                 <div class="footer-brand">
@@ -395,13 +395,13 @@ footer {
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <a href="#/privacy">Privacy</a>
+                    <a href="#/privacy" onclick="closeDrawerMenu();" data-page="privacy">Privacy</a>
                     <span>|</span>
-                    <a href="#/terms">T&C</a>
+                    <a href="#/terms" onclick="closeDrawerMenu();" data-page="terms">T&C</a>
                     <span>|</span>
-                    <a href="#/gdpr">GDPR</a>
+                    <a href="#/gdpr" onclick="closeDrawerMenu();" data-page="gdpr">GDPR</a>
                     <span>|</span>
-                    <a href="#/cookies">Cookies</a>
+                    <a href="#/cookies" onclick="closeDrawerMenu();" data-page="cookies">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
                     <a href="#" class="company-deck">
@@ -451,17 +451,32 @@ footer {
     }
 
     function autoInjectFooter() {
+        
         const injectIfMissing = () => {
+            const allowedPages = ['#/orgStructure', '#/meetOurExperts', '#/coreTeam', '#/Contact'];
+            const currentPage = window.location.hash.trim();
+            console.log("Current page:", currentPage);
+            const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();
+
+            if (!allowedPages.map(p => p.toLowerCase()).includes(normalizedPage)) {
+                console.log("Not an allowed page, skipping footer injection.");
+                return;
+            }
+
             if (!document.querySelector('footer')) {
+                console.log("Injecting footer...");
                 injectFooter();
+            } else {
+                console.log("Footer already exists.");
             }
         };
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', injectIfMissing);
-        } else {
-            injectIfMissing();
-        }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectIfMissing);
+            } else {
+                console.log("Footer already exists, skipping injection.");
+                injectIfMissing
+            }
     }
 
     // Expose globally
