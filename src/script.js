@@ -2459,8 +2459,8 @@ function initAudioVisualizer(
   function updateHamburgerIcon(page) {
     const hamburgerIcon = document.getElementById('menuIcon');
     const contactLink = document.getElementById('contactLink');
-    if (!hamburgerIcon) return;
-    
+    if (!hamburgerIcon || !contactLink) return;
+
     // Pages with dark backgrounds that need white icons
     const darkBackgroundPages = ['communityActivities', 'aboutUs'];
     
@@ -2470,6 +2470,7 @@ function initAudioVisualizer(
       hamburgerIcon.style.fill = 'none';
       contactLink.style.color = 'white';
     } else {
+      contactLink.style.color = 'black';
       hamburgerIcon.style.stroke = 'none';
       hamburgerIcon.style.fill = 'none';
     }
