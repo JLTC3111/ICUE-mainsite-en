@@ -482,15 +482,15 @@
         <div class="amount-buttons">
           <button type="button" class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 50)">$50</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, 100)">$100</button>
+          <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
           <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
         </div>
 
         <div class="custom-amount">
-          <label for="donateAmount">Custom Amount</label>
-          <input type="number" id="donateAmount" name="donateAmount" placeholder="Enter amount" min="1" onchange="updateCustomAmount(this)">
+          <label for="customAmount">Custom Amount</label>
+          <input type="number" id="customAmount" name="customAmount" placeholder="Enter amount" min="1" onchange="updateCustomAmount(this)">
         </div>
 
         <div class="donation-type">

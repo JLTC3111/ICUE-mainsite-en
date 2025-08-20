@@ -1555,17 +1555,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.DonationForm = (function () {
-  let selectedAmount = 0;
+  let selectedAmount = 100;
   let selectedFrequency = "monthly";
 
-  // Function to select donation amount
   function selectAmount(button, amount) {
-    // Remove active class from all amount buttons
     document.querySelectorAll('.amount-btn').forEach(btn => {
       btn.classList.remove('active');
     });
 
-    // Add active class to clicked button
     button.classList.add('active');
 
     // Update selected amount
@@ -1662,7 +1659,7 @@ window.DonationForm = (function () {
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('Donations Not Available Right Now, Please Try Again in a Few Months.');
+      alert('Quyên Góp Sẽ Được Kích Hoạt Trong Vài Tháng Tới.');
     });
 
     console.log('Donation data:', donationData);
@@ -1680,7 +1677,7 @@ window.DonationForm = (function () {
     const cards = document.querySelectorAll('.award-card, .project-card');
     cards.forEach(card => {
       card.addEventListener('mouseenter', function () {
-        this.style.transform = 'translateY(-5px)';
+        this.style.transform = 'translateY(-2.5px)';
       });
       card.addEventListener('mouseleave', function () {
         this.style.transform = 'translateY(0)';
@@ -1701,14 +1698,12 @@ window.DonationForm = (function () {
   };
 })();
 
-// Make selectAmount globally accessible for onclick handlers
 window.selectAmount = function(button, amount) {
   if (window.DonationForm && window.DonationForm.selectAmount) {
     window.DonationForm.selectAmount(button, amount);
   }
 };
 
-// Make other donation functions globally accessible for onclick handlers
 window.updateCustomAmount = function(input) {
   if (window.DonationForm && window.DonationForm.updateCustomAmount) {
     window.DonationForm.updateCustomAmount(input);
