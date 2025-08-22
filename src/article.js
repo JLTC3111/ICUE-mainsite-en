@@ -91,7 +91,7 @@ const articles = [
       date: "03 September, 2024",
       images: [
         {
-          src: "/public/news/articles/article_2/conference.png",
+          src: "/public/news/articles/article_2/conference.jpg",
           caption: "Vietnamese Delegation Participating in RCF 2024 Activities",
           type: "image"
         },
