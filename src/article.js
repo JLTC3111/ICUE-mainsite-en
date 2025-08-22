@@ -87,7 +87,56 @@ const articles = [
       `,
       pdf: "/public/files/photos.zip",
       pdfButtonText: "Trip Photos ⇲"
-    }
+    },
+    {
+      id: "4",
+      title: "Summary Conference of the Smart and Sustainable Urban Development Project in Vietnam for the 2018-2025 Period and 2030 Vision",
+      lead: "Vietnam's Smart City Initiative: Achievements and Roadmap for 2025-2030",
+      author: "By ICUE",
+      date: "August 13, 2025",
+      image: {
+        src: "/public/news/articles/article_4/conference.jpg",
+        caption: "Meeting Participants"
+      },
+      bodyHTML: `
+        <p>Vietnam’s Smart City Initiative: Milestones and Roadmap for 2025-2030
+        Vietnam's journey toward developing smart cities has gained considerable momentum since the launch of the “Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025” (Smart and Sustainable Urban Development Project) in 2018. The initiative aims to harness technology to improve governance, enhance quality of life for citizens, and foster sustainable growth. The government has committed to transforming its urban landscape with the help of data-driven technologies and people-centric approaches, aiming for full implementation by 2030.
+        Over the past seven years, the country has made significant strides in this direction, with several cities already showcasing successful implementations of smart city technologies.
+        Key Achievements:
+        1. Citizen-Centric Solutions: Hue
+        A leading example of the "people-first" philosophy is Hue, where the city has deployed the Hue-S platform, which allows citizens to directly report issues such as road repairs, sanitation, and infrastructure concerns. This app has facilitated a two-way communication channel between residents and local government, ensuring transparency and accountability in urban management. Hue-S has become a critical part of Hue’s smart city framework, helping improve services like healthcare, education, and traffic management. The city is also exploring more advanced smart services, such as AI-powered traffic control and smart lighting.
+        2. Data-Driven Urban Management: Da Nang
+        Da Nang is another standout example, where the city has integrated smart infrastructure and digital services. The IOC (Intelligent Operations Center) is a focal point for managing data from various sectors, including traffic, waste management, public services, and healthcare. Da Nang has partnered with local tech companies to deploy GIS and BIM (Building Information Modeling) to streamline urban planning. Through these platforms, the city can predict and manage urban needs effectively, especially during peak tourism seasons.
+        3. Smart Traffic Systems: Ho Chi Minh City
+        In Ho Chi Minh City, traffic management has been greatly enhanced through AI-based systems for real-time traffic monitoring, camera surveillance, and automatic toll collection. The city has also embraced smart parking solutions and self-driving vehicle research, making it one of the frontrunners in urban mobility. Ho Chi Minh City’s initiatives tie directly into its larger goal of improving sustainable urban development by reducing traffic congestion and lowering carbon emissions.
+        4. Integrated Public Services: Hanoi
+        Hanoi is integrating cloud-based data centers to provide a more seamless experience for residents when accessing government services. The city has created a unified platform for public service applications, allowing citizens to file complaints, pay taxes, and access local government information through one portal. By connecting various departments through shared databases, Hanoi is optimizing service delivery and increasing efficiency across its administrative structure.
+        5. Environmental and Green Smart Cities: Binh Dinh
+        In Binh Dinh, the focus is on green urbanization combined with smart city technologies. The province has been a testing ground for environmental sustainability initiatives, such as smart waste management systems and renewable energy solutions for urban buildings. The city has also incorporated solar-powered smart lighting to reduce its energy consumption and reliance on fossil fuels, aligning with the government’s push for sustainable growth in urban areas.
+        Challenges and Barriers:
+        Despite these advancements, the smart city initiative faces several hurdles that have slowed its progress:
+        Legal and Regulatory Gaps: The absence of a comprehensive legal framework for managing smart city projects continues to hamper coordination between local governments, tech companies, and citizens. Although several guidelines have been introduced, they remain fragmented across regions.
+        Data and Privacy Concerns: Cities like Hanoi and Ho Chi Minh City are collecting massive amounts of data to improve services, but data security and privacy concerns are still prominent.
+        Limited Financial Resources: Many smaller cities face challenges in securing the capital needed to fund large-scale digital infrastructure projects. As a result, some cities have opted for partial implementations or pilot projects with more basic services.
+        Strategic Focus for 2025-2030:
+        As Vietnam enters the next phase of the smart city transformation, the government has set out seven key priorities for the 2025-2030 period:
+        Legal and Regulatory Reform: Complete the legal framework that supports smart city development and governance.
+        Data Integration: Expand data-sharing platforms that integrate city-level data from different sources to create a cohesive management system.
+        Citizen Engagement: Ensure that citizens are not just passive recipients of services but active participants in decision-making processes.
+        Workforce Development: Focus on training and upskilling the workforce to manage smart city technologies effectively, including AI, big data, and IoT.
+        Public-Private Partnerships: Foster collaborations between tech companies, local governments, and international organizations to boost innovation and investment in smart city projects.
+        Environmental Sustainability: Continue to prioritize green technologies and energy-efficient solutions in urban planning.
+        National Infrastructure: Build a national platform for interoperable data systems to support the development of smart services across all cities.
+        Looking Ahead:
+        The next five years will be crucial for Vietnam’s smart city efforts. By 2030, the government aims to create a nationwide network of smart cities that operate seamlessly across borders, powered by interconnected data systems, cutting-edge technologies, and a unified legal framework. Cities like Hue, Da Nang, and Ho Chi Minh City provide a roadmap for others, demonstrating that, with the right investments and planning, smart cities can become powerful engines of economic growth, sustainability, and improved governance.
+        The focus on people-first urban development will ensure that technology serves the needs of the people, enhancing their daily lives and setting Vietnam on a path toward becoming a regional leader in smart city innovation.
+        </p>
+        <h2></h2>
+        <blockquote></blockquote>
+      `,
+      pdf: "",
+      pdfButtonText: ""
+    },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -107,8 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.title = article.title;
     document.getElementById("article-title").textContent = article.title;
     document.getElementById("article-lead").textContent = article.lead;
-    document.getElementById("article-author").textContent = `By ${article.author}`;
-    document.getElementById("article-date").textContent = new Date(article.date).toDateString();
+    document.getElementById("article-author").textContent = `${article.author}`;
+    document.getElementById("article-date").textContent = article.date;
     document.getElementById("article-date").setAttribute("datetime", article.date);
     document.getElementById("article-image").src = article.image.src;
     document.getElementById("article-caption").textContent = article.image.caption;
