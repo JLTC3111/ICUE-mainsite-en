@@ -1502,6 +1502,25 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentID = params.get("id");
 
   function renderCard(id) {
+    const imageContainer = document.getElementById("article-image").parentElement;
+    
+    const existingNavBtns = imageContainer.querySelectorAll('.article-nav-btn');
+    existingNavBtns.forEach(btn => btn.remove());
+    
+    const existingDots = imageContainer.querySelector('.media-dots-container');
+    if (existingDots) {
+      existingDots.remove();
+    }
+    
+    const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+    if (existingVideoContainer) {
+      existingVideoContainer.remove();
+    }
+    
+    const existingIndicator = imageContainer.querySelector('.image-count-indicator');
+    if (existingIndicator) {
+      existingIndicator.remove();
+    }
     const article = articles.find(a => a.id === id);
 
     if (!article) {
