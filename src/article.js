@@ -1,3 +1,392 @@
+// Function to render markdown to HTML
+function renderMarkdown(markdownText) {
+  if (!markdownText) return '';
+  return parseMarkdown(markdownText);
+}
+
+// Comprehensive Markdown-to-HTML converter
+function parseMarkdown(markdownText) {
+  let html = markdownText
+    // Normalize line endings
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    
+    // Convert ***bold and italic*** to <strong><em>
+    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    
+    // Convert **bold** to <strong>
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.*?)__/g, '<strong>$1</strong>')
+    
+    // Convert *italic* to <em>
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    
+    // Convert ~~strikethrough~~ to <del>
+    .replace(/~~(.*?)~~/g, '<del>$1</del>')
+    
+    // Convert `inline code` to <code>
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    
+    // Convert [link text](url) to <a>
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+    
+    // Convert [link text](url "title") to <a> with title
+    .replace(/\[([^\]]+)\]\(([^)]+)\s+"([^"]+)"\)/g, '<a href="$2" title="$3" target="_blank">$1</a>')
+    
+    // Convert ![alt text](image.jpg) to <img>
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
+    
+    // Convert ![alt text](image.jpg "title") to <img> with title
+    .replace(/!\[([^\]]*)\]\(([^)]+)\s+"([^"]+)"\)/g, '<img src="$2" alt="$1" title="$3" />')
+    
+    // Convert headers (must be done in order from largest to smallest)
+    .replace(/^###### (.*$)/gm, '<h6>$1</h6>')
+    .replace(/^##### (.*$)/gm, '<h5>$1</h5>')
+    .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
+    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+    
+    // Convert horizontal rules
+    .replace(/^---$/gm, '<hr>')
+    .replace(/^\*\*\*$/gm, '<hr>')
+    .replace(/^___$/gm, '<hr>')
+    
+    // Convert > blockquotes to <blockquote>
+    .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+    
+    // Handle code blocks (must be before lists)
+    .replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
+      const className = lang ? ` class="language-${lang}"` : '';
+      return `<pre><code${className}>${code.trim()}</code></pre>`;
+    })
+    
+    // Handle indented code blocks (4 spaces)
+    .replace(/^    (.*)$/gm, '<pre><code>$1</code></pre>');
+
+  // Handle lists (complex processing)
+  html = processLists(html);
+  
+  // Handle tables
+  html = processTables(html);
+  
+  // Convert line breaks to paragraphs (must be last)
+  html = processParagraphs(html);
+  
+  return html.trim();
+}
+
+// Process unordered and ordered lists
+function processLists(html) {
+  const lines = html.split('\n');
+  const result = [];
+  let inList = false;
+  let listType = '';
+  let listLevel = 0;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmedLine = line.trim();
+    
+    // Check for unordered list items
+    const unorderedMatch = line.match(/^(\s*)([-*+])\s(.+)$/);
+    // Check for ordered list items
+    const orderedMatch = line.match(/^(\s*)(\d+\.)\s(.+)$/);
+    // Check for task list items
+    const taskMatch = line.match(/^(\s*)([-*+])\s(\[[ x]\])\s(.+)$/);
+    
+    if (taskMatch) {
+      const indent = taskMatch[1].length;
+      const checked = taskMatch[3] === '[x]' ? ' checked' : '';
+      const content = taskMatch[4];
+      
+      if (!inList || listType !== 'task' || indent !== listLevel) {
+        if (inList) result.push(`</${listType}>`);
+        result.push('<ul class="task-list">');
+        inList = true;
+        listType = 'ul';
+        listLevel = indent;
+      }
+      
+      result.push(`<li><input type="checkbox"${checked} disabled> ${content}</li>`);
+      
+    } else if (unorderedMatch) {
+      const indent = unorderedMatch[1].length;
+      const content = unorderedMatch[3];
+      
+      if (!inList || listType !== 'ul' || indent !== listLevel) {
+        if (inList) result.push(`</${listType}>`);
+        result.push('<ul>');
+        inList = true;
+        listType = 'ul';
+        listLevel = indent;
+      }
+      
+      result.push(`<li>${content}</li>`);
+      
+    } else if (orderedMatch) {
+      const indent = orderedMatch[1].length;
+      const content = orderedMatch[3];
+      
+      if (!inList || listType !== 'ol' || indent !== listLevel) {
+        if (inList) result.push(`</${listType}>`);
+        result.push('<ol>');
+        inList = true;
+        listType = 'ol';
+        listLevel = indent;
+      }
+      
+      result.push(`<li>${content}</li>`);
+      
+    } else {
+      // Not a list item
+      if (inList && trimmedLine === '') {
+        // Empty line in list - continue list
+        result.push(line);
+      } else if (inList && trimmedLine !== '') {
+        // Non-empty, non-list line - end list
+        result.push(`</${listType}>`);
+        inList = false;
+        listType = '';
+        listLevel = 0;
+        result.push(line);
+      } else {
+        // Normal line
+        result.push(line);
+      }
+    }
+  }
+  
+  // Close any remaining list
+  if (inList) {
+    result.push(`</${listType}>`);
+  }
+  
+  return result.join('\n');
+}
+
+// Process tables
+function processTables(html) {
+  const lines = html.split('\n');
+  const result = [];
+  let inTable = false;
+  let tableLines = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    // Check if line looks like a table row
+    if (line.includes('|') && line.split('|').length >= 3) {
+      if (!inTable) {
+        inTable = true;
+        tableLines = [];
+      }
+      tableLines.push(line);
+    } else {
+      // Not a table line
+      if (inTable) {
+        // Process accumulated table lines
+        if (tableLines.length >= 2) {
+          result.push(processTable(tableLines));
+        } else {
+          // Not enough lines for a table, add as regular lines
+          result.push(...tableLines);
+        }
+        inTable = false;
+        tableLines = [];
+      }
+      result.push(lines[i]);
+    }
+  }
+  
+  // Handle table at end of content
+  if (inTable && tableLines.length >= 2) {
+    result.push(processTable(tableLines));
+  } else if (inTable) {
+    result.push(...tableLines);
+  }
+  
+  return result.join('\n');
+}
+
+// Process a single table
+function processTable(tableLines) {
+  if (tableLines.length < 2) return tableLines.join('\n');
+  
+  const headerLine = tableLines[0];
+  const separatorLine = tableLines[1];
+  const dataLines = tableLines.slice(2);
+  
+  // Check if second line is a separator
+  if (!separatorLine.match(/^[\|\s\-:]+$/)) {
+    return tableLines.join('\n');
+  }
+  
+  let table = '<table>\n';
+  
+  // Process header
+  const headerCells = headerLine.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+  table += '<thead>\n<tr>\n';
+  headerCells.forEach(cell => {
+    table += `<th>${cell}</th>\n`;
+  });
+  table += '</tr>\n</thead>\n';
+  
+  // Process data rows
+  if (dataLines.length > 0) {
+    table += '<tbody>\n';
+    dataLines.forEach(line => {
+      const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+      table += '<tr>\n';
+      cells.forEach(cell => {
+        table += `<td>${cell}</td>\n`;
+      });
+      table += '</tr>\n';
+    });
+    table += '</tbody>\n';
+  }
+  
+  table += '</table>';
+  return table;
+}
+
+// Process paragraphs (must be done last)
+function processParagraphs(html) {
+  return html
+    // Split by double newlines for paragraphs
+    .split('\n\n')
+    .map(paragraph => {
+      paragraph = paragraph.trim();
+      if (paragraph === '') return '';
+      
+      // Don't wrap certain elements in <p> tags
+      if (paragraph.match(/^<(h[1-6]|ul|ol|table|blockquote|pre|hr|div)/)) {
+        return paragraph;
+      }
+      
+      // Handle single line breaks within paragraphs (two spaces + newline)
+      paragraph = paragraph.replace(/  \n/g, '<br>\n');
+      
+      return `<p>${paragraph.replace(/\n/g, '<br>')}</p>`;
+    })
+    .join('\n\n');
+}
+
+// Additional utility functions for special features
+
+// Process definition lists (if needed)
+function processDefinitionLists(html) {
+  return html.replace(/^([^\n:]+)\n:\s+(.+)$/gm, '<dl><dt>$1</dt><dd>$2</dd></dl>');
+}
+
+// Process footnotes (basic implementation)
+function processFootnotes(html) {
+  const footnotes = {};
+  let footnoteCounter = 1;
+  
+  // Extract footnote definitions
+  html = html.replace(/^\[\^([^\]]+)\]:\s*(.+)$/gm, (match, id, content) => {
+    footnotes[id] = { number: footnoteCounter++, content };
+    return '';
+  });
+  
+  // Replace footnote references
+  html = html.replace(/\[\^([^\]]+)\]/g, (match, id) => {
+    if (footnotes[id]) {
+      return `<sup><a href="#fn${footnotes[id].number}" id="fnref${footnotes[id].number}">${footnotes[id].number}</a></sup>`;
+    }
+    return match;
+  });
+  
+  // Add footnotes section if any footnotes exist
+  if (Object.keys(footnotes).length > 0) {
+    html += '\n\n<div class="footnotes">\n<ol>\n';
+    Object.entries(footnotes).forEach(([id, footnote]) => {
+      html += `<li id="fn${footnote.number}">${footnote.content} <a href="#fnref${footnote.number}">↩</a></li>\n`;
+    });
+    html += '</ol>\n</div>';
+  }
+  
+  return html;
+}
+
+// Escape HTML in code blocks and inline code
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Enhanced parser with all features
+function parseMarkdownAdvanced(markdownText, options = {}) {
+  const {
+    footnotes = false,
+    definitionLists = false,
+    taskLists = true,
+    tables = true
+  } = options;
+  
+  let html = parseMarkdown(markdownText);
+  
+  if (footnotes) {
+    html = processFootnotes(html);
+  }
+  
+  if (definitionLists) {
+    html = processDefinitionLists(html);
+  }
+  
+  return html;
+}
+
+// Example usage:
+/*
+const markdownText = `
+# Header 1
+
+This is a **bold** and *italic* text with \`inline code\`.
+
+## Header 2
+
+- List item 1
+- List item 2
+- List item 3
+
+### Header 3
+
+> This is a blockquote
+
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+
+[Link text](https://example.com)
+
+![Alt text](image.jpg)
+`;
+
+const html = parseMarkdown(markdownText);
+console.log(html);
+*/
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { 
+    parseMarkdown, 
+    parseMarkdownAdvanced,
+    processLists,
+    processTables,
+    processFootnotes,
+    processDefinitionLists
+  };
+}
+
 const articles = [
     {
       id: "1",
@@ -67,19 +456,46 @@ const articles = [
           type: "image"
         },
       ],
-      bodyHTML: `
-        <p>On May 16, 2025, the Institute for Construction and Urban Economic Research (ICUE), in coordination with the People’s Committee of Hoi An City, organized a special event to inaugurate and hand over the green space and coastal park (now named Au Co Park), marking the successful completion of the project titled:
-        "Preventing erosion on Cua Dai beach through green corridors and park",
-        under the Climate Capacity Building and Biodiversity Action at National and Local Levels (CBF) program.
-        This initiative was implemented under the grant agreement of the International Climate Initiative (IKI), with ICUE as the grant recipient and project implementer, and the Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH as the project manager. The project played a crucial role in supporting climate action and biodiversity protection efforts in Vietnam.
-        The event served not only as a closing ceremony for the project but also as an opportunity to reflect on the progress made thanks to the shared commitment of all partners involved. The presence of stakeholders, experts, and contributors further highlighted the collaborative nature of this initiative and its positive impact on sustainable urban development in the Cua Dai area of Hoi An City.
-        Over the past months, the project not only strengthened technical and institutional capacities, but also promoted deeper cooperation between central and local governments on climate change-related issues. ICUE and the Hoi An city government were honored to contribute to this meaningful effort, which reflects a shared vision of a future more resilient to climate change and more responsible toward the environment.
-        None of this would have been possible without the generous support from IKI and the enthusiastic assistance from GIZ in implementing the project. We also deeply appreciate the facilitation provided by the People’s Committee of Quang Nam Province, the close coordination with the Hoi An City government, the Cua Dai Ward authorities, and the collaboration from local communities and civil society organizations.
-        The trust and funding from IKI & GIZ made this project a reality and delivered tangible benefits to the local community. We'd like to express our heartfelt gratitude to IKI & Giz for their continuous support and the trust they have placed in us.
-        This inauguration and handover ceremony is not an end, but rather a new beginning—paving the way for future cooperation towards greener, more sustainable cities in Vietnam and beyond.</p>
-        <h2>Thank You Everyone!</h2>
-        <blockquote>"We Hope You Enjoyed The Ceremony - Thanks for Coming!"</blockquote>
-      `,
+      bodyMarkdown: `
+## ICUE & Hoi An Inaugurate Au Co Park
+
+**Date:** May 16, 2025
+
+The Institute for Construction and Urban Economic Research (ICUE), in coordination with the People's Committee of Hoi An City, organized a special event to inaugurate and hand over the green space and coastal park (now named **Au Co Park**), marking the successful completion of the project titled:
+
+> "Preventing erosion on Cua Dai beach through green corridors and park"
+<div style="margin-left: 3rem;">
+This initiative was implemented under the **Climate Capacity Building and Biodiversity Action at National and Local Levels (CBF) program**, under the grant agreement of the **International Climate Initiative (IKI)**, with ICUE as the grant recipient and project implementer, and the **Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH** as the project manager.
+The project played a crucial role in supporting climate action and biodiversity protection efforts in Vietnam.
+
+## Event Significance
+The event served not only as a closing ceremony for the project but also as an opportunity to reflect on the progress made thanks to the shared commitment of all partners involved.
+The presence of stakeholders, experts, and contributors further highlighted the collaborative nature of this initiative and its positive impact on sustainable urban development in the Cua Dai area of Hoi An City.
+</div>
+
+Over the past months, the project:
+<div style="margin-left: 3rem;">
+- Strengthened technical and institutional capacities
+- Promoted deeper cooperation between central and local governments on climate change issues
+- Reflected a shared vision of a more climate-resilient and environmentally responsible future</div>
+
+## Acknowledgments
+
+<div style="margin-left: 3rem;">
+None of this would have been possible without the generous support from **IKI** and the enthusiastic assistance from **GIZ** in implementing the project.
+We also deeply appreciate:
+- The facilitation provided by the People's Committee of Quang Nam Province
+- The close coordination with the Hoi An City government and the Cua Dai Ward authorities
+- The collaboration from local communities and civil society organizations
+The trust and funding from **IKI & GIZ** made this project a reality and delivered tangible benefits to the local community. We express our heartfelt gratitude to IKI & GIZ for their continuous support and trust.</div>
+
+## Looking Ahead
+<div style="margin-left: 3rem;">
+This inauguration and handover ceremony is not an end, but rather a **new beginning** — paving the way for future cooperation towards greener, more sustainable cities in Vietnam and beyond.</div>
+
+## Thank You Everyone!
+> "We Hope You Enjoyed The Ceremony — Thanks for Coming!"
+`,
       pdf: "/public/files/speech.pdf",
       pdfButtonText: "Download - Speech ⇲"
     },
@@ -116,23 +532,83 @@ const articles = [
           type: "image"
         },
       ],
-      bodyHTML: `
-        <p>Representing Vietnam, the delegation included members from IUCN Vietnam, notably Dr. Nguyễn Hồng Hạnh, Director of the Institute for Construction and Urban Economics Research (ICUE). ICUE participated as one of the members presenting on marine conservation and sustainable rural development. The institute delivered a summary report on part of the project: "Support for Coastal Erosion Prevention at Cửa Đại through Green Corridors and Coastal Ecological Parks."
-        The Asia Regional Conservation Forum (RCF) runs for three days under the theme:
-        “Reimagining Conservation in Asia: A Positive Future for Nature.”
-        The forum aims to assess conservation progress, revisit priority goals, and propose strategic directions to address environmental and biodiversity challenges effectively over the next 20 years.
-        As part of RCF 2024, the first-ever Youth Leadership Forum, organized by young people from 23 countries, highlights the role of young experts and their growing contributions to nature conservation.
-        In addition to high-level discussions on regional challenges with diverse stakeholders, the 8th IUCN Asia RCF features:
-        8 technical sessions focused on both new and ongoing program priorities,
-        17 side events hosted by IUCN Members, Commissions, and partners, and
-        An exhibition area showcasing conservation efforts.
-        Dr. Nguyễn Hồng Hạnh also connected with Mr. Pornphrom Vikitsreth, a policy analyst from Thailand’s Democrat Party and a strong advocate for the party’s climate change agenda. He promotes both mitigation and adaptation strategies, raising awareness of climate change issues among youth networks and local communities across the country. Mr. Vikitsreth holds a Master’s degree in Global Affairs from New York University.
-        The forum also connected with the Thailand Environment Institute, which strives to become a leading environmental organization aligned with international standards, non-partisan, and committed to promoting sustainable development.
-        The CBCGDF (China Biodiversity Conservation and Green Development Foundation) is a national public fundraising foundation in China. Over the years, it has played a vital role in biodiversity conservation and green development. To keep pace with evolving times, the foundation was renamed "China Biodiversity Conservation and Green Development Foundation", integrating biodiversity conservation with green development. This renaming reflects the idea that biodiversity is developed through conservation and preserved through development, actively supporting China's economic restructuring.
-        During the three-day event, a dedicated learning session will be held, including knowledge-sharing and short training sessions conducted by the IUCN Academy. Participants will also have the opportunity to explore the exhibition and learn from various collaborative conservation efforts.</p>
-        <h2></h2>
-        <blockquote></blockquote>
-      `,
+      bodyMarkdown: `
+## Vietnam Delegation at IUCN Asia RCF
+
+Representing **Vietnam**, the delegation included members from **IUCN Vietnam**, notably **Dr. Nguyễn Hồng Hạnh**, Director of the **Institute for Construction and Urban Economics Research (ICUE)**.
+
+ICUE participated as one of the members presenting on **marine conservation** and **sustainable rural development**.
+
+The institute delivered a summary report on part of the project:
+
+> "Support for Coastal Erosion Prevention at Cửa Đại through Green Corridors and Coastal Ecological Parks."
+
+---
+
+## Forum Theme and Objectives
+
+The **Asia Regional Conservation Forum (RCF)** runs for three days under the theme:
+
+> "Reimagining Conservation in Asia: A Positive Future for Nature."
+
+The forum aims to:
+
+- Assess conservation progress
+- Revisit priority goals
+- Propose strategic directions to address environmental and biodiversity challenges over the next 20 years
+
+---
+
+## Youth Leadership Forum
+
+As part of **RCF 2024**, the **first-ever Youth Leadership Forum** — organized by young people from 23 countries — highlighted the role of **young experts** and their growing contributions to nature conservation.
+
+---
+
+## Key Features of the 8th IUCN Asia RCF
+
+- **8 technical sessions** focused on both new and ongoing program priorities
+- **17 side events** hosted by IUCN Members, Commissions, and partners
+- An **exhibition area** showcasing conservation efforts
+
+---
+
+## International Partnerships
+
+**Dr. Nguyễn Hồng Hạnh** also connected with **Mr. Pornphrom Vikitsreth**, a policy analyst from Thailand's **Democrat Party** and a strong advocate for the party's climate change agenda.
+
+He promotes both **mitigation** and **adaptation** strategies, raising awareness of climate change issues among **youth networks** and **local communities** across the country.
+
+Mr. Vikitsreth holds a **Master's degree in Global Affairs** from New York University.
+
+---
+
+## Thailand Environment Institute
+
+The forum also engaged with the **Thailand Environment Institute**, an organization striving to become a leading, **non-partisan environmental body** aligned with international standards and committed to promoting **sustainable development**.
+
+---
+
+## China Biodiversity Conservation and Green Development Foundation
+
+The **CBCGDF (China Biodiversity Conservation and Green Development Foundation)** is a national public fundraising foundation in China. Over the years, it has played a vital role in **biodiversity conservation** and **green development**.
+
+To reflect evolving times, the foundation was renamed **"China Biodiversity Conservation and Green Development Foundation"**, integrating biodiversity conservation with green development.
+
+This renaming reflects the belief that:
+
+> Biodiversity is developed through conservation and preserved through development.
+
+The organization continues to actively support **China's economic restructuring** while ensuring sustainability.
+
+---
+
+## Learning and Knowledge Sharing
+
+During the three-day event, a dedicated **learning session** was held, including **knowledge-sharing** and **short training sessions** conducted by the **IUCN Academy**.
+
+Participants also had the opportunity to explore the **exhibition** and learn from various **collaborative conservation efforts**.
+`,
       pdf: ""
     },
     {
@@ -195,26 +671,38 @@ const articles = [
           caption: "Thank You Letter"
         }
       ],
-      bodyHTML: `
-        <p>In recent days, due to the impact of Typhoon No. 3 (Typhoon Yagi), Bảo Yên District has continuously suffered from heavy rains and successive floods, causing severe damage to many communes in the district.
-        Particularly during the three days from September 8–10, 2024, prolonged heavy rain combined with rising floodwaters led to widespread flooding and landslides. As of now, the floods and landslides have resulted in 71 deaths, 29 injuries, and 11 people unaccounted for. The transportation system has been seriously damaged; homes, property, and crops have suffered heavy losses, with many houses completely destroyed (a total of 4,825 homes affected, with estimated damages of around 820 billion VND). This is the most severe flooding ever recorded in Bảo Yên District.
-        On September 25th, 2024, the ICUE Relief Team, together with generous benefactors, carried out a mission to support the people of Bảo Yên District.
-        Under the coordination and guidance of the local receiving committee from the People’s Committee and the Vietnam Fatherland Front Committee of Bảo Yên District—led by Mr. Đoàn Xuân Hưng—the team was directed to Chom Hamlet, Yên Sơn Commune, where 100 relief packages were directly handed to local residents.
-        Each package included:
+      bodyMarkdown: `
+In recent days, due to the impact of **Typhoon No. 3 (Typhoon Yagi)**, **Bảo Yên District** has continuously suffered from heavy rains and successive floods, causing severe damage to many communes in the district.  
 
-        <ul style="margin-left: 1.5rem;">  
-        <li>10 kg of fragrant rice</li>
-        <li>Cooking oil </li>
-        <li>Roasted peanuts </li>
-        <li>Preserved pork with shrimp paste </li>
-        <li>Hải Châu seasoning powder</li>
-        <li>Along with clothing, blankets, and mosquito nets.</li>
-        </ul>
+Particularly during the three days from **September 8–10, 2024**, prolonged heavy rain combined with rising floodwaters led to widespread flooding and landslides.  
+<div style="margin-left:5rem;">
 
-        In Chom Hamlet, significant losses were reported in terms of property, crops, and livestock. Notably, three households had their homes completely collapsed, but fortunately, there were no human casualties. These families—Mrs. Hoàng Thị Bốn, Mr. Hoàng Văn Bản, and Mr. Nguyễn Bá Quán—were given aid four times larger than the standard packages.
-        </p>
-        <h2></h2>
-        <blockquote>"We hope the people can soon stabilize their lives, overcome difficulties, and join hands to build a strong and resilient community."</blockquote>
+- **Casualties:** 71 deaths, 29 injuries, and 11 people unaccounted for  
+- **Damage:** Transportation systems destroyed; homes, property, and crops heavily impacted  
+- **Housing impact:** 4,825 homes affected, with estimated damages of around **820 billion VND**  
+</div>
+
+- This is the **most severe flooding ever recorded** in Bảo Yên District.  
+---
+<div style="margin-left:5rem;">
+### Each package included:
+- 10 kg of fragrant rice  
+- Cooking oil  
+- Roasted peanuts  
+- Preserved pork with shrimp paste  
+- Hải Châu seasoning powder  
+- Clothing, blankets, and mosquito nets  
+</div> 
+---
+<div style="margin-left:3rem;">
+In **Chom Hamlet**, significant losses were reported in terms of property, crops, and livestock. Notably, three households had their homes completely collapsed. Fortunately, there were no human casualties.</div>
+
+The families affected — **Mrs. Hoàng Thị Bốn**, **Mr. Hoàng Văn Bản**, and **Mr. Nguyễn Bá Quán** — were given **aid four times larger** than the standard packages.  
+
+---
+
+> *"We hope the people can soon stabilize their lives, overcome difficulties, and join hands to build a strong and resilient community."*
+
       `,
       pdf: "/public/files/photos.zip",
       pdfButtonText: "Trip Photos"
@@ -243,41 +731,73 @@ const articles = [
           caption: "Deputy Minister of Construction Nguyễn Tường Văn affirmed that the development of smart cities is not a race for technology but must be people-centered."
         },
       ],
-      bodyHTML: `
-        <p>Vietnam’s Smart City Initiative: Milestones and Roadmap for 2025-2030
-        Vietnam's journey toward developing smart cities has gained considerable momentum since the launch of the “Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025” (Smart and Sustainable Urban Development Project) in 2018. The initiative aims to harness technology to improve governance, enhance quality of life for citizens, and foster sustainable growth. The government has committed to transforming its urban landscape with the help of data-driven technologies and people-centric approaches, aiming for full implementation by 2030.
-        Over the past seven years, the country has made significant strides in this direction, with several cities already showcasing successful implementations of smart city technologies.
-        Key Achievements:
-        1. Citizen-Centric Solutions: Hue
-        A leading example of the "people-first" philosophy is Hue, where the city has deployed the Hue-S platform, which allows citizens to directly report issues such as road repairs, sanitation, and infrastructure concerns. This app has facilitated a two-way communication channel between residents and local government, ensuring transparency and accountability in urban management. Hue-S has become a critical part of Hue’s smart city framework, helping improve services like healthcare, education, and traffic management. The city is also exploring more advanced smart services, such as AI-powered traffic control and smart lighting.
-        2. Data-Driven Urban Management: Da Nang
-        Da Nang is another standout example, where the city has integrated smart infrastructure and digital services. The IOC (Intelligent Operations Center) is a focal point for managing data from various sectors, including traffic, waste management, public services, and healthcare. Da Nang has partnered with local tech companies to deploy GIS and BIM (Building Information Modeling) to streamline urban planning. Through these platforms, the city can predict and manage urban needs effectively, especially during peak tourism seasons.
-        3. Smart Traffic Systems: Ho Chi Minh City
-        In Ho Chi Minh City, traffic management has been greatly enhanced through AI-based systems for real-time traffic monitoring, camera surveillance, and automatic toll collection. The city has also embraced smart parking solutions and self-driving vehicle research, making it one of the frontrunners in urban mobility. Ho Chi Minh City’s initiatives tie directly into its larger goal of improving sustainable urban development by reducing traffic congestion and lowering carbon emissions.
-        4. Integrated Public Services: Hanoi
-        Hanoi is integrating cloud-based data centers to provide a more seamless experience for residents when accessing government services. The city has created a unified platform for public service applications, allowing citizens to file complaints, pay taxes, and access local government information through one portal. By connecting various departments through shared databases, Hanoi is optimizing service delivery and increasing efficiency across its administrative structure.
-        5. Environmental and Green Smart Cities: Binh Dinh
-        In Binh Dinh, the focus is on green urbanization combined with smart city technologies. The province has been a testing ground for environmental sustainability initiatives, such as smart waste management systems and renewable energy solutions for urban buildings. The city has also incorporated solar-powered smart lighting to reduce its energy consumption and reliance on fossil fuels, aligning with the government’s push for sustainable growth in urban areas.
-        Challenges and Barriers:
-        Despite these advancements, the smart city initiative faces several hurdles that have slowed its progress:
-        Legal and Regulatory Gaps: The absence of a comprehensive legal framework for managing smart city projects continues to hamper coordination between local governments, tech companies, and citizens. Although several guidelines have been introduced, they remain fragmented across regions.
-        Data and Privacy Concerns: Cities like Hanoi and Ho Chi Minh City are collecting massive amounts of data to improve services, but data security and privacy concerns are still prominent.
-        Limited Financial Resources: Many smaller cities face challenges in securing the capital needed to fund large-scale digital infrastructure projects. As a result, some cities have opted for partial implementations or pilot projects with more basic services.
-        Strategic Focus for 2025-2030:
-        As Vietnam enters the next phase of the smart city transformation, the government has set out seven key priorities for the 2025-2030 period:
-        Legal and Regulatory Reform: Complete the legal framework that supports smart city development and governance.
-        Data Integration: Expand data-sharing platforms that integrate city-level data from different sources to create a cohesive management system.
-        Citizen Engagement: Ensure that citizens are not just passive recipients of services but active participants in decision-making processes.
-        Workforce Development: Focus on training and upskilling the workforce to manage smart city technologies effectively, including AI, big data, and IoT.
-        Public-Private Partnerships: Foster collaborations between tech companies, local governments, and international organizations to boost innovation and investment in smart city projects.
-        Environmental Sustainability: Continue to prioritize green technologies and energy-efficient solutions in urban planning.
-        National Infrastructure: Build a national platform for interoperable data systems to support the development of smart services across all cities.
-        Looking Ahead:
-        The next five years will be crucial for Vietnam’s smart city efforts. By 2030, the government aims to create a nationwide network of smart cities that operate seamlessly across borders, powered by interconnected data systems, cutting-edge technologies, and a unified legal framework. Cities like Hue, Da Nang, and Ho Chi Minh City provide a roadmap for others, demonstrating that, with the right investments and planning, smart cities can become powerful engines of economic growth, sustainability, and improved governance.
-        The focus on people-first urban development will ensure that technology serves the needs of the people, enhancing their daily lives and setting Vietnam on a path toward becoming a regional leader in smart city innovation.
-        </p>
-        <h2></h2>
-        <blockquote></blockquote>
+      bodyMarkdown: `
+<div style="margin:0 3.5rem;">
+# Vietnam’s Smart City Initiative: Milestones and Roadmap for 2025-2030
+
+Vietnam's journey toward developing smart cities has gained considerable momentum since the launch of the **“Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025”** (Smart and Sustainable Urban Development Project) in 2018.  
+
+The initiative aims to harness technology to improve governance, enhance quality of life for citizens, and foster sustainable growth. The government has committed to transforming its urban landscape with the help of data-driven technologies and people-centric approaches, aiming for full implementation by 2030.  
+</div>
+
+Over the past seven years, the country has made significant strides in this direction, with several cities already showcasing successful implementations of smart city technologies.  
+
+---
+
+## Key Achievements
+
+<div style="margin:0 3.5rem;">
+### 1. Citizen-Centric Solutions: Hue  
+Hue has deployed the **Hue-S platform**, which allows citizens to directly report issues such as road repairs, sanitation, and infrastructure concerns.  
+This app has facilitated a two-way communication channel between residents and local government, ensuring transparency and accountability in urban management. Hue-S has become a critical part of Hue’s smart city framework, helping improve services like healthcare, education, and traffic management.  
+The city is also exploring more advanced smart services, such as AI-powered traffic control and smart lighting.  
+---
+### 2. Data-Driven Urban Management: Da Nang  
+Da Nang has integrated smart infrastructure and digital services through its **Intelligent Operations Center (IOC)**, which manages data from sectors such as traffic, waste management, public services, and healthcare.  
+The city has partnered with local tech companies to deploy **GIS** and **BIM (Building Information Modeling)** for urban planning, enabling predictive management—especially useful during peak tourism seasons.  
+---
+### 3. Smart Traffic Systems: Ho Chi Minh City  
+Ho Chi Minh City has enhanced traffic management with **AI-based monitoring, camera surveillance, and automatic toll collection**.  
+It has also adopted smart parking solutions and is researching self-driving vehicles. These initiatives directly support its goal of reducing congestion and lowering carbon emissions.  
+---
+### 4. Integrated Public Services: Hanoi  
+Hanoi is developing **cloud-based data centers** and a **unified public service portal**. Citizens can now pay taxes, file complaints, and access government information in one place.  
+By interconnecting departments via shared databases, Hanoi is streamlining administration and improving efficiency.  
+---
+### 5. Environmental and Green Smart Cities: Binh Dinh  
+Binh Dinh is focusing on **green urbanization** with smart waste management, renewable energy projects, and solar-powered smart lighting.  
+This aligns with Vietnam’s national goal of energy efficiency and sustainability.</div>  
+
+---
+
+## Challenges and Barriers  
+
+<div style="margin:0 3.5rem;">
+- **Legal and Regulatory Gaps:** Fragmented frameworks hinder coordination.  
+- **Data and Privacy Concerns:** Security risks in large-scale citizen data collection.  
+- **Limited Financial Resources:** Smaller cities struggle to fund digital infrastructure.  
+
+---
+</div>
+
+## Strategic Focus for 2025-2030  
+
+<div style="margin:0 3.5rem;">
+1. **Legal and Regulatory Reform** – Establish a unified smart city legal framework.  
+2. **Data Integration** – Create interoperable, city-wide data platforms.  
+3. **Citizen Engagement** – Involve citizens as active participants in governance.  
+4. **Workforce Development** – Upskill talent in AI, big data, and IoT.  
+5. **Public-Private Partnerships** – Encourage collaboration with domestic and global partners.  
+6. **Environmental Sustainability** – Expand renewable energy and eco-friendly solutions.  
+7. **National Infrastructure** – Build a unified, nationwide data system.  
+
+---
+</div>
+
+## Looking Ahead  
+
+The next five years will be crucial for Vietnam’s smart city transformation. By 2030, the country aims to establish a **nationwide network of interconnected smart cities** with shared data systems, modern technology, and robust governance. Pioneering cities like **Hue, Da Nang, and Ho Chi Minh City** serve as models, proving that smart cities can be both engines of economic growth and champions of sustainability. With a **people-first approach**, Vietnam is positioning itself as a regional leader in smart city innovation.  
+
       `,
       pdf: "",
       pdfButtonText: ""
@@ -1133,7 +1653,11 @@ document.addEventListener("DOMContentLoaded", () => {
       setupArticleSwipe(article);
     }
     
-    document.getElementById("article-body").innerHTML = article.bodyHTML;
+    // Use markdown rendering if bodyMarkdown exists, otherwise use bodyHTML
+    const articleBodyContent = article.bodyMarkdown 
+      ? renderMarkdown(article.bodyMarkdown) 
+      : article.bodyHTML;
+    document.getElementById("article-body").innerHTML = articleBodyContent;
 
     if (article.pdf) {
       const dlBtn = document.getElementById("article-download");
@@ -1168,4 +1692,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 });
-
