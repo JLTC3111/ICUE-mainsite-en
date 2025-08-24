@@ -1505,11 +1505,10 @@ body.loaded #app {
     margin: 8px auto;
 }
 .work-item .work-content .work-des {
-    color: black; /* Default black */
-    transition: color 0.5s ease-in-out; /* Smooth transition for each */
+    color: black; 
+    transition: color 0.5s ease-in-out; 
 }
 
-/* Container for the buttons (Grid setup) */
 .work-carousel .work-list .work-item .work-buttons {
     display: grid;
     grid-template-columns: repeat(2, 110px);
@@ -1517,7 +1516,7 @@ body.loaded #app {
     gap: 5px;
     margin-top: 20px;
 }
-/* Styles for the individual buttons */
+
 .work-carousel .work-list .work-item .work-buttons button {
     display: block;
     border: none;
@@ -1528,34 +1527,29 @@ body.loaded #app {
     color: white; 
     cursor: pointer; 
     padding: 1.5px;
-    /* --- Essential for the hover wipe animation on EACH BUTTON --- */
     position: relative; 
     overflow: hidden; 
     z-index: 1; 
     transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
-/* Pseudo-element for the sliding background animation */
-.work-carousel .work-list .work-item .work-buttons button::before { /* Target the button's ::before */
+.work-carousel .work-list .work-item .work-buttons button::before { 
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* This is the vibrant multi-color gradient that will slide in on hover */
   background: linear-gradient(to right, #1d9ae7, #0077c2, #004b8d, #0a1a3a);
   z-index: -1; 
   transform: translateX(-100%); 
   transition: transform 0.4s ease-out; 
 }
 
-/* Hover state for the button's pseudo-element (to trigger the wipe) */
 .work-carousel .work-list .work-item .work-buttons button:hover::before {   
   transform: translateX(0%); 
 }
 
-/* thumbail */
 .work-thumbnail{
     position: absolute;
     bottom: 50px;
@@ -3103,7 +3097,6 @@ body.loaded #app {
     }
 }
 
-/* Balloon colors */
 .balloon:nth-child(1) { background-color: #ff6b6b; left: 10%; }
 .balloon:nth-child(2) { background-color: #4ecdc4; left: 20%; }
 .balloon:nth-child(3) { background-color: #45b7d1; left: 30%; }
@@ -3121,87 +3114,78 @@ body.loaded #app {
 .balloon:nth-child(15) { background-color: #ff6b6b; left: 65%; }
 
 body.contact-page {
-  font-family: 'Audiowide', sans-serif; /* Use Montserrat font */
-  background-color: #f4f4f4; /* Light background color */
+  font-family: 'Audiowide', sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
   padding: 0;
 }
 
-/* Contact Container */
 .contact-container {
-  max-width: 600px; /* Limit the width of the contact form */
-  margin: 150px auto; /* Center the container */
-  padding: 20px; /* Add padding */
-  background: white; /* White background for the form */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.11); /* Subtle shadow */
+  max-width: 600px;
+  margin: 150px auto; 
+  padding: 20px; 
+  background: white; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.11);
 }
 
 /* Headings */
 h1 {
-  text-align: center; /* Center the heading */
-  color: #333; /* Dark text color */
-  margin-bottom: 20px; /* Space below the heading */
+  text-align: center; 
+  color: #333; 
+  margin-bottom: 20px; 
 }
 
-/* Form Styles */
 .contact-form {
-  display: flex; /* Use flexbox for layout */
-  flex-direction: column; /* Stack elements vertically */
+  display: flex;
+  flex-direction: column; 
   padding: 7.5px;
 }
 
 .form-group {
-  margin-bottom: 15px; /* Space between form groups */
+  margin-bottom: 15px;
   margin-right:12px;
 }
 
 label {
-  margin-bottom: 5px; /* Space below labels */
-  color: #555; /* Slightly lighter text color */
+  margin-bottom: 5px; 
+  color: #555;
 }
 
 input[type="text"],
 input[type="email"],
 textarea {
-  padding: 10px; /* Padding inside input fields */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size */
-  width: 100%; /* Full width */
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  font-size: 16px; 
+  width: 100%; 
 }
 
 textarea {
-  resize: vertical; /* Allow vertical resizing */
-}
-
-/* Button Styles */
-button {
-  padding: 10px; /* Padding inside button */
-  background-color: #5cb85c; /* Green background */
-  color: white; /* White text */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Font size */
-  transition: background-color 0.3s; /* Smooth background transition */
+  resize: vertical; 
 }
 
 button {
-  padding: 10px; /* Padding inside button */
+  padding: 10px; 
   background: linear-gradient(to bottom, #5d82c6, #0a1a3a);
-  color: rgb(255, 255, 255); /* White text */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Font size */
-  transition: background-color 0.3s; /* Smooth background transition */
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  transition: background-color 0.3s; 
 }
 
-/* Contact Info Styles */
+button:hover {
+  background: linear-gradient(to top, #1d9ae7, #0a1a3a);
+  will-change: background, transform;
+  transform: rotate(-2deg);
+}
+
 .contact-info { 
   text-align: center; 
-  margin-top: 10px; /* Space above contact info */
+  margin-top: 10px;
 }
 
 .contact-info h1 {
@@ -3211,45 +3195,44 @@ button {
 .contact-info h2 {
   justify-content: center;
   font-family: 'Roboto';
-  margin: 15px auto; /* Space below the heading */
-  color: #333; /* Dark text color */
+  margin: 15px auto;
+  color: #333; 
 }
 
 .contact-info p {
   font-family: 'Roboto';
   letter-spacing: normal;
-  margin: 2.5px 0; /* Space above and below paragraphs */
-  color: #666; /* Lighter text color */
+  margin: 2.5px 0; 
+  color: #666; 
 }
 
 .submit-button {
   display: block;
   margin: 0 auto;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.55);
-  position: relative; /* Crucial: Needed to position the ::before pseudo-element */
-  overflow: hidden; /* Hides the ::before pseudo-element until it slides in */
-  z-index: 1; /* Ensures the button's content is above the pseudo-element */
+  position: relative; 
+  overflow: hidden; 
+  z-index: 1; 
   transition: color 0.4s ease-out;
 }
 .submit-button::before {
-  content: ''; /* Essential for pseudo-elements */
+  content: ''; 
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(to bottom, #1d9ae7, #0a1a3a);
-  z-index: -1; /* Puts the pseudo-element behind the button's text */
-  transform: translateX(-100%); /* Starts completely off to the left, outside the button */
-  transition: transform 0.4s ease-out; /* Smooth animation for the slide-in */
+  z-index: -1; 
+  transform: translateX(-100%); 
+  transition: transform 0.4s ease-out; 
 }
 .submit-button:hover::before {
-  transform: translateX(0%); /* Slides the pseudo-element to cover the button */
+  transform: translateX(0%); 
 }
 
-/* Optional: Adjust text color slightly on hover for better contrast or effect */
 .submit-button:hover {
-  color: #fff; /* Darker text color on hover */
+  color: #fff; 
 }
 
 @media (max-width: 1024px) and (min-aspect-ratio: 1.8/1) {
