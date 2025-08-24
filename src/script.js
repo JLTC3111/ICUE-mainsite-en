@@ -2819,7 +2819,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             <div class="chatbot-window" id="chatbot-window">
                 <div class="chatbot-header">
                     <div class="chatbot-title">
-                        <span>Trợ Lý AI-ICUE</span>
+                        <span>ICUE-AI Chatbot</span>
                     </div>
                     <button class="chatbot-close" id="chatbot-close">
                         <svg width="22px" height="22px" viewBox="0 0 24 24" fill="currentColor">
@@ -3274,14 +3274,14 @@ window.initMobileNewsSlider = () => {
   if (!cards.length || !gridContainer) return;
 
   // Detect touch device
-  const isTruelyTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   let currentIndex = 0;
   let startX = 0;
   let endX = 0;
 
   function updateSlider() {
-    if (window.innerWidth <= 1440 && isTruelyTouchDevice) {
+    if (window.innerWidth <= 1440 && isTouchDevice) {
       // Apply slider styles for touch devices
       Object.assign(gridContainer.style, {
         display: "flex",
