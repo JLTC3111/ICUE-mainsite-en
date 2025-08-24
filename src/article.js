@@ -390,10 +390,10 @@ if (typeof module !== 'undefined' && module.exports) {
 const articles = [
     {
       id: "1",
-      title: "IKI-GIZ-ICUE Completion Ceremony",
-      lead: "Province's Leader Attending",
-      author: "ICUE-IKI-Giz & City of Hội An",
-      date: "2025-05-16",
+      title: "<div style=\"line-height: 1.5;\"><strong>IKI-GIZ-ICUE Completion Ceremony</strong></div>",
+      lead: "<div style=\"line-height: 1.5;\"><em>Province's Leader Attending</em></div>",
+      author: "<div style=\"text-align: center;\"><strong>ICUE-IKI-Giz & City of Hội An</strong></div>",
+      date: "<div style=\"text-align: center;\"><em>2025-05-16</em></div>",
       images: [
         {
           src: "/public/news/articles/article_1/all_together.jpg",
@@ -502,9 +502,9 @@ This inauguration and handover ceremony is not an end, but rather a **new beginn
     {
       id: "2",
       title: "8th Asia Regional Conservation Forum Opens in Thailand",
-      lead: "On September 3, the 8th Asia Regional Conservation Forum (RCF) of the International Union for Conservation of Nature (IUCN) officially opened in Bangkok, Thailand. The event brought together nearly 600 conservation leaders from across the region, including representatives from governments, NGOs, donors and partners, academic institutions, and the private sector, along with other stakeholders.",
+      lead: "<div style=\"line-height: 1.5;\">*On September 3, the **8th Asia Regional Conservation Forum (RCF)** of the **International Union for Conservation of Nature (IUCN)** officially opened in Bangkok, Thailand. The event brought together nearly **600** conservation leaders from across the region, including representatives from governments, NGOs, donors and partners, academic institutions, and the private sector, along with other stakeholders*.</div>",
       author: "By ICUE",
-      date: "03 September, 2024",
+      date: "<div style=\"text-align: center;\"><em>03 September, 2024</em></div>",
       images: [
         {
           src: "/public/news/articles/article_2/conference.jpg",
@@ -551,11 +551,12 @@ The **Asia Regional Conservation Forum (RCF)** runs for three days under the the
 
 > "Reimagining Conservation in Asia: A Positive Future for Nature."
 
-The forum aims to:
+***The forum aims to:***
 
+<div style="margin-left: 3.5rem;">
 - Assess conservation progress
 - Revisit priority goals
-- Propose strategic directions to address environmental and biodiversity challenges over the next 20 years
+- Propose strategic directions to address environmental and biodiversity challenges over the next 20 years </div>
 
 ---
 
@@ -614,9 +615,9 @@ Participants also had the opportunity to explore the **exhibition** and learn fr
     {
       id: "3",
       title: "Aiding People & Areas Affected by Yagi Storm",
-      lead: "In response to the call from the Central Committee, the Institute for Construction and Urban Economic Research (ICUE) issued a notice calling on all of its staff, partners, and benefactors to join hands in contributing and supporting people affected by Typhoon Yagi.",
+      lead: "<div style=\"line-height: 1.5;\">*In response to the call from the Central Committee, **the Institute for Construction and Urban Economic Research (ICUE)** issued a notice calling on all of its staff, partners, and benefactors to join hands in contributing and supporting people affected by **Typhoon Yagi***.</div>",
       author: "By ICUE",
-      date: "26 September, 2024",
+      date: "<div style=\"text-align: center;\"><em>26 September, 2024</em></div>",
       images: [
         {
           src: "/public/news/articles/article_3/area_affected.png",
@@ -682,8 +683,9 @@ Particularly during the three days from **September 8–10, 2024**, prolonged he
 - **Housing impact:** 4,825 homes affected, with estimated damages of around **820 billion VND**  
 </div>
 
-- This is the **most severe flooding ever recorded** in Bảo Yên District.  
+This is the **most severe flooding ever recorded** in Bảo Yên District.  
 ---
+
 <div style="margin-left:5rem;">
 ### Each package included:
 - 10 kg of fragrant rice  
@@ -709,10 +711,10 @@ The families affected — **Mrs. Hoàng Thị Bốn**, **Mr. Hoàng Văn Bản**
     },
     {
       id: "4",
-      title: "Summary Conference of the Smart and Sustainable Urban Development Project in Vietnam for the 2018-2025 Period and 2030 Vision",
-      lead: "Vietnam's Smart City Initiative: Achievements and Roadmap for 2025-2030",
+      title: "Conference for Smart Cities and Sustainable Urban Development projects in Vietnam 2018-2025 and the 2030 Vision",
+      lead: "*Vietnam's Smart City Initiative: Achievements and Roadmap for 2025-2030*",
       author: "By ICUE",
-      date: "August 13, 2025",
+      date: "<div style=\"text-align: center;\"><em>August 13, 2025</em></div>",
       images: [
         {
           src: "/public/news/articles/article_4/conference.jpg",
@@ -1531,11 +1533,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Populate HTML
     document.title = article.title;
-    document.getElementById("article-title").textContent = article.title;
-    document.getElementById("article-lead").textContent = article.lead;
-    document.getElementById("article-author").textContent = `${article.author}`;
-    document.getElementById("article-date").textContent = article.date;
-    document.getElementById("article-date").setAttribute("datetime", article.date);
+
+    // CHANGE TO:
+    document.getElementById("article-title").innerHTML = renderMarkdown(article.title);
+    document.getElementById("article-lead").innerHTML = renderMarkdown(article.lead);
+    document.getElementById("article-author").innerHTML = renderMarkdown(article.author);
+    document.getElementById("article-date").innerHTML = renderMarkdown(article.date);
     
     // Handle multiple images/videos
     if (article.images && article.images.length > 0) {
