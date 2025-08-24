@@ -255,7 +255,7 @@ footer {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
     background: #c8ff00;
     color: #000;
     padding: 8px 20px;
@@ -265,6 +265,7 @@ footer {
     transition: all 0.4s ease;
     overflow: hidden;
     z-index: 1;
+    margin-right: 1rem;
 }
 .company-deck::before {
     content: '';
@@ -286,8 +287,12 @@ footer {
     color: #000000;
 }
 .company-deck svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
+    transition: transform 1.3s ease;
+}
+.company-deck:hover svg {
+    transform: rotate(360deg);
 }
 .footer-toggle {
     color: #ffffff;
@@ -404,7 +409,7 @@ footer {
                     <a href="#/cookies" onclick="closeDrawerMenu();" data-page="cookies">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
-                    <a href="#" class="company-deck">
+                    <a href="#/Contact" class="company-deck">
                         Let's Work Together!
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M7 14l5-5 5 5z"/>

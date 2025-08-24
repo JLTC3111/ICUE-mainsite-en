@@ -722,6 +722,7 @@ window.loadPage = (page) => {
               updateHamburgerIcon(page);
               ICUEFooter.autoInject();
               CommunityGallery.init();
+              initializeChatbot();
               
               switch (page) {
                 case 'meetOurExperts':
@@ -989,7 +990,6 @@ window.realSlamnorSlam = function () {
   const dust = document.querySelector('#textSlam .slam-dust');
 
   if (!text || !dust) {
-    console.warn("Missing .slam-text or .slam-dust");
     return;
   }
 
@@ -1680,7 +1680,6 @@ window.initFrequentlyAskedQuestions = function() {
           };
       };
 
-// Global Job Board Function
 window.JobBoard = (function() {
   'use strict';
   
@@ -1708,11 +1707,28 @@ window.JobBoard = (function() {
       },
   ];
 
-  // Function to render job positions
-  function renderJobs(jobs) {
+  // Function to highlight search terms in text
+  function highlightSearchTerms(text, searchTerm) {
+      if (!searchTerm) return text;
+      
+      const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+  }
+
+  // Function to remove highlights
+  function removeHighlights() {
+      const highlights = document.querySelectorAll('.search-highlight');
+      highlights.forEach(highlight => {
+          const parent = highlight.parentNode;
+          parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+          parent.normalize();
+      });
+  }
+
+  // Function to render job positions with optional highlighting
+  function renderJobs(jobs, searchTerm = '') {
       const jobsContainer = document.getElementById('jobs-container');
       if (!jobsContainer) {
-          // Only log error if we're on a careers/jobs page
           if (window.location.hash && window.location.hash.toLowerCase().includes('career')) {
               console.error('Jobs container not found');
           }
@@ -1726,13 +1742,19 @@ window.JobBoard = (function() {
           jobCard.className = 'job-card';
           jobCard.onclick = () => openJobDetail(job);
           
+          // Apply highlighting if search term exists
+          const highlightedTitle = highlightSearchTerms(job.title, searchTerm);
+          const highlightedDepartment = highlightSearchTerms(job.department, searchTerm);
+          const highlightedDescription = highlightSearchTerms(job.description, searchTerm);
+          const highlightedTags = job.tags.map(tag => highlightSearchTerms(tag, searchTerm));
+          
           jobCard.innerHTML = `
-              <h3 class="job-title">${job.title}</h3>
-              <div class="job-department">${job.department}</div>
+              <h3 class="job-title">${highlightedTitle}</h3>
+              <div class="job-department">${highlightedDepartment}</div>
               <div class="job-location"><svg width="16px" height="16px" viewBox="-3 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pin_sharp_circle [#624]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-223.000000, -5439.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M176,5286.219 C176,5287.324 175.105,5288.219 174,5288.219 C172.895,5288.219 172,5287.324 172,5286.219 C172,5285.114 172.895,5284.219 174,5284.219 C175.105,5284.219 176,5285.114 176,5286.219 M174,5296 C174,5296 169,5289 169,5286 C169,5283.243 171.243,5281 174,5281 C176.757,5281 179,5283.243 179,5286 C179,5289 174,5296 174,5296 M174,5279 C170.134,5279 167,5282.134 167,5286 C167,5289.866 174,5299 174,5299 C174,5299 181,5289.866 181,5286 C181,5282.134 177.866,5279 174,5279" id="pin_sharp_circle-[#624]"> </path> </g> </g> </g> </g></svg>${job.location}</div>
-              <div class="job-description">${job.description}</div>
+              <div class="job-description">${highlightedDescription}</div>
               <div class="job-tags">
-                  ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                  ${highlightedTags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
               </div>
           `;
           
@@ -1740,16 +1762,26 @@ window.JobBoard = (function() {
       });
   }
 
-  // Function to search jobs
+  // Function to search jobs with highlighting and auto-scroll
   function searchJobs(event) {
       event.preventDefault();
-      const searchTerm = document.getElementById('job-search').value.toLowerCase();
+      const searchInput = document.getElementById('job-search');
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      
+      // Clear search message
+      const existingMessage = document.querySelector('.search-result-message');
+      if (existingMessage) {
+          existingMessage.remove();
+      }
       
       if (!searchTerm) {
+          // If search is cleared, remove highlights and show all jobs
+          removeHighlights();
           renderJobs(jobPositions);
           return;
       }
 
+      // Filter jobs based on search term
       const filteredJobs = jobPositions.filter(job => 
           job.title.toLowerCase().includes(searchTerm) ||
           job.department.toLowerCase().includes(searchTerm) ||
@@ -1757,14 +1789,49 @@ window.JobBoard = (function() {
           job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
       );
 
-      renderJobs(filteredJobs);
+      // Render jobs with highlighting
+      renderJobs(filteredJobs, searchTerm);
+      
+      // Scroll to jobs section if matches found
+      if (filteredJobs.length > 0) {
+          const jobsSection = document.getElementById('open-positions') || 
+                             document.getElementById('jobs-container') || 
+                             document.querySelector('.jobs-section');
+          
+          if (jobsSection) {
+              setTimeout(() => {
+                  jobsSection.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                  });
+              }, 100); // Small delay to ensure rendering is complete
+          }
+      }
       
       // Show search results message
       const resultMessage = filteredJobs.length === 0 
-          ? `No positions found for "${searchTerm}"`
-          : `Found ${filteredJobs.length} position(s) matching "${searchTerm}"`;
+          ? `Không tìm thấy vị trí nào cho "${searchInput.value}"`
+          : `Tìm thấy ${filteredJobs.length} vị trí phù hợp với "${searchInput.value}"`;
           
       showSearchMessage(resultMessage);
+  }
+
+  // Function to clear search and remove highlights
+  function clearSearch() {
+      const searchInput = document.getElementById('job-search');
+      if (searchInput) {
+          searchInput.value = '';
+      }
+      
+      // Remove highlights and show all jobs
+      removeHighlights();
+      renderJobs(jobPositions);
+      
+      // Clear search message
+      const existingMessage = document.querySelector('.search-result-message');
+      if (existingMessage) {
+          existingMessage.remove();
+      }
   }
 
   // Function to show search message
@@ -1795,7 +1862,33 @@ window.JobBoard = (function() {
   function initialize() {
       renderJobs(jobPositions);
       
-      // Smooth scroll for CTA button
+      // Set up search functionality
+      const searchInput = document.getElementById('job-search');
+      const searchForm = document.querySelector('.job-search-form') || document.querySelector('form');
+      
+      if (searchInput) {
+          // Handle search on form submit
+          if (searchForm) {
+              searchForm.addEventListener('submit', searchJobs);
+          }
+          
+          // Handle search on input change (real-time search)
+          searchInput.addEventListener('input', function(e) {
+              // Add slight delay for better performance
+              clearTimeout(this.searchTimeout);
+              this.searchTimeout = setTimeout(() => {
+                  searchJobs(e);
+              }, 300);
+          });
+          
+          // Clear search when input is emptied
+          searchInput.addEventListener('keyup', function(e) {
+              if (e.target.value === '') {
+                  clearSearch();
+              }
+          });
+      }
+      
       const ctaButton = document.querySelector('.cta-button');
       if (ctaButton) {
           ctaButton.addEventListener('click', function(e) {
@@ -1808,6 +1901,37 @@ window.JobBoard = (function() {
               }
           });
       }
+      
+      // Add CSS for search highlighting if not already present
+      if (!document.getElementById('job-search-highlight-styles')) {
+          const style = document.createElement('style');
+          style.id = 'job-search-highlight-styles';
+          style.textContent = `
+              .search-highlight {
+                  background-color: #ffeb3b;
+                  color: #000;
+                  padding: 2px 4px;
+                  border-radius: 3px;
+                  font-weight: bold;
+              }
+              
+              .search-result-message {
+                  animation: slideIn 0.3s ease-out;
+              }
+              
+              @keyframes slideIn {
+                  from {
+                      opacity: 0;
+                      transform: translateY(-10px);
+                  }
+                  to {
+                      opacity: 1;
+                      transform: translateY(0);
+                  }
+              }
+          `;
+          document.head.appendChild(style);
+      }
   }
 
   // Public API - expose these functions globally
@@ -1815,6 +1939,9 @@ window.JobBoard = (function() {
       init: initialize,
       renderJobs: renderJobs,
       searchJobs: searchJobs,
+      clearSearch: clearSearch,
+      highlightSearchTerms: highlightSearchTerms,
+      removeHighlights: removeHighlights,
       getJobPositions: () => [...jobPositions], // Return a copy to prevent mutation
       addJob: (job) => {
           jobPositions.push(job);
@@ -1830,7 +1957,19 @@ window.JobBoard = (function() {
   };
 })();
 
-// Auto-initialize when DOM is ready
+// Make JobBoard functions globally accessible for HTML event handlers
+window.searchJobs = function(event) {
+  if (window.JobBoard && window.JobBoard.searchJobs) {
+      return window.JobBoard.searchJobs(event);
+  }
+};
+
+window.clearJobSearch = function() {
+  if (window.JobBoard && window.JobBoard.clearSearch) {
+      return window.JobBoard.clearSearch();
+  }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
   if (window.JobBoard) {
       window.JobBoard.init();
@@ -2664,6 +2803,201 @@ window.CommunityGallery = (function () {
       window.CommunityPage.init();
     }
   });
+
+window.initializeChatbot = function(targetSelector = 'body', css = '') {
+    if (document.getElementById('ai-chatbot')) {
+        return false;
+    }
+
+    const chatbotHTML = `
+        <div id="ai-chatbot" class="chatbot-container">
+            <div class="chatbot-toggle" id="chatbot-toggle">
+                <svg width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-bubble-message-dot-2" fill="#000000" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>1049</title> <defs> </defs> <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M9.019,1.04 C4.621,1.04 1.051,3.66 1.051,6.892 C1.051,9.842 4.026,12.276 7.893,12.679 L5.845,15.929 L11.964,12.326 C14.906,11.465 16.989,9.358 16.989,6.891 C16.989,3.66 13.42,1.04 9.019,1.04 L9.019,1.04 Z M6,8 L4,8 L4,6 L6,6 L6,8 L6,8 Z M10,8 L8,8 L8,6 L10,6 L10,8 L10,8 Z M14,8 L12,8 L12,6 L14,6 L14,8 L14,8 Z" fill="#34efeb" class="si-glyph-fill"> </path> </g> </g></svg>
+                <span class="chatbot-badge">AI</span>
+            </div>
+            
+            <div class="chatbot-window" id="chatbot-window">
+                <div class="chatbot-header">
+                    <div class="chatbot-title">
+                        <span>Trợ Lý AI-ICUE</span>
+                    </div>
+                    <button class="chatbot-close" id="chatbot-close">
+                        <svg width="22px" height="22px" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <svg style="transform:translateY(6px)" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_8_53)"> <path d="M16 12C15.87 12.0016 15.7409 11.9778 15.62 11.93C15.4971 11.8781 15.3852 11.8035 15.29 11.7101C15.2001 11.6179 15.1287 11.5092 15.08 11.39C15.0296 11.266 15.0025 11.1338 15 11C15.0011 10.7376 15.1053 10.4863 15.29 10.3C15.3825 10.2033 15.4952 10.1282 15.62 10.0801C15.8031 10.0047 16.0044 9.98535 16.1984 10.0245C16.3924 10.0637 16.5705 10.1596 16.71 10.3C16.8947 10.4863 16.9989 10.7376 17 11C16.9975 11.1338 16.9704 11.266 16.92 11.39C16.8713 11.5092 16.7999 11.6179 16.71 11.7101C16.6166 11.8027 16.5057 11.876 16.3839 11.9258C16.2621 11.9755 16.1316 12.0007 16 12Z" fill="#000000"></path> <path d="M12 12C11.87 12.0016 11.7409 11.9778 11.62 11.93C11.4971 11.8781 11.3852 11.8035 11.29 11.7101C11.2001 11.6179 11.1287 11.5092 11.08 11.39C11.0296 11.266 11.0025 11.1338 11 11C11.0011 10.7376 11.1053 10.4863 11.29 10.3C11.3825 10.2033 11.4952 10.1282 11.62 10.0801C11.8031 10.0047 12.0044 9.98535 12.1984 10.0245C12.3924 10.0637 12.5705 10.1596 12.71 10.3C12.8947 10.4863 12.9989 10.7376 13 11C12.9975 11.1338 12.9704 11.266 12.92 11.39C12.8713 11.5092 12.7999 11.6179 12.71 11.7101C12.6166 11.8027 12.5057 11.876 12.3839 11.9258C12.2621 11.9755 12.1316 12.0007 12 12Z" fill="#000000"></path> <path d="M8 12C7.86999 12.0016 7.74091 11.9778 7.62 11.93C7.49713 11.8781 7.38519 11.8035 7.29001 11.7101C7.20006 11.6179 7.12873 11.5092 7.07999 11.39C7.0296 11.266 7.0025 11.1338 7 11C7.0011 10.7376 7.10526 10.4863 7.29001 10.3C7.3825 10.2033 7.49516 10.1282 7.62 10.0801C7.80305 10.0047 8.00435 9.98535 8.19839 10.0245C8.39244 10.0637 8.57048 10.1596 8.70999 10.3C8.89474 10.4863 8.9989 10.7376 9 11C8.9975 11.1338 8.9704 11.266 8.92001 11.39C8.87127 11.5092 8.79994 11.6179 8.70999 11.7101C8.61655 11.8027 8.50575 11.876 8.38391 11.9258C8.26207 11.9755 8.13161 12.0007 8 12Z" fill="#000000"></path> </g> <path d="M4.99951 16.55V19.9C4.99922 20.3102 5.11905 20.7114 5.34418 21.0542C5.56931 21.397 5.88994 21.6665 6.26642 21.8292C6.6429 21.9919 7.05875 22.0408 7.46271 21.9698C7.86666 21.8989 8.24103 21.7113 8.53955 21.4301L11.1495 18.9701H12.0195C17.5395 18.9701 22.0195 15.1701 22.0195 10.4701C22.0195 5.77009 17.5395 1.97009 12.0195 1.97009C6.49953 1.97009 2.01953 5.78009 2.01953 10.4701C2.042 11.6389 2.32261 12.7882 2.84125 13.8358C3.35989 14.8835 4.10373 15.8035 5.01953 16.53L4.99951 16.55Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <defs> <clipPath id="clip0_8_53"> <rect width="10" height="2" fill="white" transform="translate(7 10)"></rect> </clipPath> </defs> </g></svg>
+                        </div>
+                        <div class="message-content">
+                            Hello! I am ICUE's AI assistant. I can help you learn about our projects, services, and information. What do you need assistance with?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chatbot-input-area">
+                    <div class="chatbot-input-container">
+                        <input type="text" id="chatbot-input" placeholder="Ask Anything..." />
+                        <button class="chatbot-send" id="chatbot-send">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="chatbot-suggestions">
+                        <button class="suggestion-btn">Services</button>
+                        <button class="suggestion-btn">Recent Projects</button>
+                        <button class="suggestion-btn">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Inject CSS if provided
+    if (css && !document.querySelector('#icue-chatbot-style')) {
+        const styleElement = document.createElement('style');
+        styleElement.id = 'icue-chatbot-style';
+        styleElement.textContent = css;
+        document.head.appendChild(styleElement);
+    }
+
+    // Inject HTML
+    const targetElement = document.querySelector(targetSelector);
+    if (!targetElement) {
+        console.error('Chatbot: Target element not found');
+        return false;
+    }
+
+    targetElement.insertAdjacentHTML('beforeend', chatbotHTML);
+
+    // Initialize chatbot functionality
+    setupChatbotEvents();
+    
+    return true;
+
+    // Function to set up chatbot events
+    function setupChatbotEvents() {
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+        
+        if (!chatbotToggle || !chatbotWindow) return;
+        
+        let isOpen = false;
+        
+        // Toggle chatbot window
+        chatbotToggle.addEventListener('click', () => {
+            isOpen = !isOpen;
+            if (isOpen) {
+                chatbotWindow.classList.add('open');
+            } else {
+                chatbotWindow.classList.remove('open');
+            }
+        });
+        
+        // Close chatbot
+        chatbotClose?.addEventListener('click', () => {
+            isOpen = false;
+            chatbotWindow.classList.remove('open');
+        });
+        
+        // Send message function
+        const sendMessage = (message) => {
+            if (!message.trim()) return;
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.innerHTML = `
+                <div class="message-avatar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </div>
+                <div class="message-content">${message}</div>
+            `;
+            chatbotMessages.appendChild(userMessage);
+            
+            // Clear input
+            chatbotInput.value = '';
+            
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            
+            // Simulate bot response (placeholder)
+            setTimeout(() => {
+                const botResponse = generateBotResponse(message);
+                const botMessage = document.createElement('div');
+                botMessage.className = 'message bot-message';
+                botMessage.innerHTML = `
+                    <div class="message-avatar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.4L1 22l5.6-2.05C8.96 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">${botResponse}</div>
+                `;
+                chatbotMessages.appendChild(botMessage);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }, 1000);
+        };
+        
+        // Send button click
+        chatbotSend?.addEventListener('click', () => {
+            sendMessage(chatbotInput.value);
+        });
+        
+        // Enter key to send
+        chatbotInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage(chatbotInput.value);
+            }
+        });
+        
+        // Suggestion buttons
+        suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sendMessage(btn.textContent);
+            });
+        });
+        
+        // Company deck link to open chatbot
+        const openChatbotLink = document.getElementById('open-chatbot-link');
+        if (openChatbotLink) {
+            openChatbotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                isOpen = true;
+                chatbotWindow.classList.add('open');
+            });
+        }
+    }
+    
+    // Bot response generator
+    function generateBotResponse(userMessage) {
+        const message = userMessage.toLowerCase();
+       
+        if (message.includes('dịch vụ') || message.includes('service')) {
+            return 'ICUE provides research services in construction economics and urban development, sustainable development consulting, and environmental project management. Which service do you want to know more about?';
+        } else if (message.includes('dự án') || message.includes('project')) {
+            return 'We’ve carried out important projects like Âu Cơ Park in Hội An, marine conservation projects, and smart urban development projects. Want more details on a specific project?';
+        } else if (message.includes('liên hệ') || message.includes('contact')) {
+            return 'You can contact ICUE via email or phone. Please check the Contact page for details. How else can I help?';  
+        } else if (message.includes('xin chào') || message.includes('hello')) {
+            return 'Hello! Happy to help. I can tell you about services, projects, or contact info for ICUE. What do you need?';
+        } else {
+            return 'Thanks for reaching out! I’m still under development, see our FAQs page for more info. For best support, please contact ICUE directly via the Contact page. I’ll be improved to serve you better soon!';
+        }
+    }
+};
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
