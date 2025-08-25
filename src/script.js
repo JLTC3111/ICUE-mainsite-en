@@ -3095,6 +3095,113 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         
         if (!chatbotToggle || !chatbotWindow) return;
         
+        // Local storage chat history
+        const CHAT_HISTORY_KEY = 'icueChatbotHistory';
+        
+        function saveChatHistory(history) {
+            try {
+                localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+            } catch (e) {
+                console.warn('Could not save chat history to localStorage:', e);
+            }
+        }
+        
+        function loadChatHistory() {
+            try {
+                const raw = localStorage.getItem(CHAT_HISTORY_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                console.warn('Could not load chat history from localStorage:', e);
+                return [];
+            }
+        }
+        
+        let chatHistory = loadChatHistory();
+        
+        function addMessageToHistory(messageObj) {
+            chatHistory.push({
+                ...messageObj,
+                timestamp: new Date().toISOString()
+            });
+            // Keep only last 50 messages to prevent localStorage bloat
+            if (chatHistory.length > 50) {
+                chatHistory = chatHistory.slice(-50);
+            }
+            saveChatHistory(chatHistory);
+        }
+        
+        function renderChatHistory() {
+            // Clear existing messages except the initial bot message
+            const initialMessage = chatbotMessages.querySelector('.bot-message');
+            chatbotMessages.innerHTML = '';
+            
+            // Re-add initial message if no history exists
+            if (chatHistory.length === 0 && initialMessage) {
+                chatbotMessages.appendChild(initialMessage);
+                return;
+            }
+            
+            // Render history
+            chatHistory.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.role === 'user' ? 'user-message' : 'bot-message'}`;
+                
+                if (msg.role === 'user') {
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div class="message-content">${msg.content}</div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">
+                            <svg style="transform:translateY(6px)" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 12C15.87 12.0016 15.7409 11.9778 15.62 11.93C15.4971 11.8781 15.3852 11.8035 15.29 11.7101C15.2001 11.6179 15.1287 11.5092 15.08 11.39C15.0296 11.266 15.0025 11.1338 15 11C15.0011 10.7376 15.1053 10.4863 15.29 10.3C15.3825 10.2033 15.4952 10.1282 15.62 10.0801C15.8031 10.0047 16.0044 9.98535 16.1984 10.0245C16.3924 10.0637 16.5705 10.1596 16.71 10.3C16.8947 10.4863 16.9989 10.7376 17 11C16.9975 11.1338 16.9704 11.266 16.92 11.39C16.8713 11.5092 16.7999 11.6179 16.71 11.7101C16.6166 11.8027 16.5057 11.876 16.3839 11.9258C16.2621 11.9755 16.1316 12.0007 16 12Z" fill="#000000"></path>
+                                <path d="M12 12C11.87 12.0016 11.7409 11.9778 11.62 11.93C11.4971 11.8781 11.3852 11.8035 11.29 11.7101C11.2001 11.6179 11.1287 11.5092 11.08 11.39C11.0296 11.266 11.0025 11.1338 11 11C11.0011 10.7376 11.1053 10.4863 11.29 10.3C11.3825 10.2033 11.4952 10.1282 11.62 10.0801C11.8031 10.0047 12.0044 9.98535 12.1984 10.0245C12.3924 10.0637 12.5705 10.1596 12.71 10.3C12.8947 10.4863 12.9989 10.7376 13 11C12.9975 11.1338 12.9704 11.266 12.92 11.39C12.8713 11.5092 12.7999 11.6179 12.71 11.7101C12.6166 11.8027 12.5057 11.876 12.3839 11.9258C12.2621 11.9755 12.1316 12.0007 12 12Z" fill="#000000"></path>
+                                <path d="M8 12C7.86999 12.0016 7.74091 11.9778 7.62 11.93C7.49713 11.8781 7.38519 11.8035 7.29001 11.7101C7.20006 11.6179 7.12873 11.5092 7.07999 11.39C7.0296 11.266 7.0025 11.1338 7 11C7.0011 10.7376 7.10526 10.4863 7.29001 10.3C7.3825 10.2033 7.49516 10.1282 7.62 10.0801C7.80305 10.0047 8.00435 9.98535 8.19839 10.0245C8.39244 10.0637 8.57048 10.1596 8.70999 10.3C8.89474 10.4863 8.9989 10.7376 9 11C8.9975 11.1338 8.9704 11.266 8.92001 11.39C8.87127 11.5092 8.79994 11.6179 8.70999 11.7101C8.61655 11.8027 8.50575 11.876 8.38391 11.9258C8.26207 11.9755 8.13161 12.0007 8 12Z" fill="#000000"></path>
+                            </svg>
+                        </div>
+                        <div class="message-content">${msg.content}</div>
+                    `;
+                }
+                
+                chatbotMessages.appendChild(messageDiv);
+            });
+            
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Auto-close chatbot functionality
+        function closeChatbot() {
+            chatbotWindow.classList.remove('open');
+            isOpen = false;
+        }
+        
+        // Auto-close on page load and navigation
+        window.addEventListener('DOMContentLoaded', closeChatbot);
+        window.addEventListener('hashchange', closeChatbot);
+        
+        // Auto-close when drawer menu opens/closes
+        const originalToggleDrawerMenu = window.toggleDrawerMenu;
+        if (originalToggleDrawerMenu) {
+            window.toggleDrawerMenu = function() {
+                closeChatbot(); // Close chatbot when drawer menu is toggled
+                return originalToggleDrawerMenu.apply(this, arguments);
+            };
+        }
+        
+        const originalCloseDrawerMenu = window.closeDrawerMenu;
+        if (originalCloseDrawerMenu) {
+            window.closeDrawerMenu = function() {
+                closeChatbot(); // Close chatbot when drawer menu is closed
+                return originalCloseDrawerMenu.apply(this, arguments);
+            };
+        }
+        
         let isOpen = false;
         
         // Toggle chatbot window
@@ -3102,6 +3209,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             isOpen = !isOpen;
             if (isOpen) {
                 chatbotWindow.classList.add('open');
+                // Render chat history when opening
+                renderChatHistory();
             } else {
                 chatbotWindow.classList.remove('open');
             }
@@ -3117,7 +3226,13 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const sendMessage = (message) => {
             if (!message.trim()) return;
             
-            // Add user message
+            // Add to chat history
+            addMessageToHistory({
+                role: 'user',
+                content: message.trim()
+            });
+            
+            // Add user message to UI
             const userMessage = document.createElement('div');
             userMessage.className = 'message user-message';
             userMessage.innerHTML = `
@@ -3139,6 +3254,13 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             // Simulate bot response (placeholder)
             setTimeout(() => {
                 const botResponse = generateBotResponse(message);
+                
+                // Add to chat history
+                addMessageToHistory({
+                    role: 'bot',
+                    content: botResponse
+                });
+                
                 const botMessage = document.createElement('div');
                 botMessage.className = 'message bot-message';
                 botMessage.innerHTML = `
