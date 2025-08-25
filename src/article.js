@@ -1165,14 +1165,14 @@ function createImageModal() {
         align-items: center;
         margin-left: -2.5rem;
       ">
-        <button id="modal-close" style="
+        <button id="modal-close" class="modal-close" style="
           position: absolute;
-          top: 0px;
-          right: 0;
+          top: 0;
+          right: 50px;
           background: none;
           border: none;
           color: white;
-          font-size: 30px;
+          font-size: 50px;
           cursor: pointer;
           z-index: 10000;
         ">&times;</button>
@@ -1187,7 +1187,7 @@ function createImageModal() {
         ">
           <button id="modal-prev" class="modal-arrow" style="
             position: absolute;
-            left: 10px;
+            left: 50px;
             background: transparent;
             border: none;
             color: white;
@@ -1222,7 +1222,7 @@ function createImageModal() {
           
           <button id="modal-next" class="modal-arrow" style="
             position: absolute;
-            right: 10px;
+            right: 50px;
             background: transparent;
             border: none;
             color: white;
@@ -1272,6 +1272,11 @@ function createImageModal() {
       }
       .image-container {
         margin-top: -75px !important;
+      }
+      .modal-close {
+        top: 0 !important;
+        right: 0 !important;
+        font-size: 30px !important;
       }
       .modal-description {
         margin-top: -110px !important;
