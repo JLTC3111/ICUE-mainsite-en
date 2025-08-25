@@ -3324,6 +3324,34 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     }
 };
 
+function setupLanguageSwitcher() {
+    const pageSwitch = document.getElementById("page-switch");
+    const langIcon = document.getElementById("langSwitcher");
+
+    if (!pageSwitch || !langIcon) return;
+
+    const currentHost = window.location.host;      // e.g. "icue.vn" or "en.icue.vn"
+    const currentPath = window.location.pathname;  // e.g. "/src/pages/article_template.html"
+    const currentHash = window.location.hash;      // e.g. "#/aboutUs"
+    const currentSearch = window.location.search;  // e.g. "?id=2"
+
+    // Decide target domain + update flag
+    let targetDomain;
+    if (currentHost.startsWith("en.")) {
+      targetDomain = currentHost.replace("en.", ""); // switch EN → VN
+      langIcon.className = "flag-icon flag-icon-vn"; // show VN flag
+    } else {
+      targetDomain = "en." + currentHost;           // switch VN → EN
+      langIcon.className = "flag-icon flag-icon-gb"; // or flag-icon-en if you have it
+    }
+
+    // Build and assign new URL
+    pageSwitch.href = `${window.location.protocol}//${targetDomain}${currentPath}${currentSearch}${currentHash}`;
+  }
+
+  // Call it on load
+  setupLanguageSwitcher();
+
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
