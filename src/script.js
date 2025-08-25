@@ -3467,11 +3467,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.initMobileNewsSlider();
 });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    window.initMobileNewsSlider();
-  });
-
-// Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
 window.initPostMethod = () => {

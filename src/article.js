@@ -387,17 +387,33 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 }
 
+function setResponsiveIndent() {
+  const indent = window.innerWidth >= 770 ? '3.5rem' : '0.25rem';
+  document.documentElement.style.setProperty('--article-indent', indent);
+}
+
+window.addEventListener('resize', setResponsiveIndent);
+setResponsiveIndent(); 
+
+function setResponsiveFontSize() {
+  const fontSize = window.innerWidth >= 770 ? '1.75rem' : '1.25rem';
+  document.documentElement.style.setProperty('--article-font-size', fontSize);
+}
+
+window.addEventListener('resize', setResponsiveFontSize);
+setResponsiveFontSize(); 
+
 const articles = [
     {
       id: "1",
-      title: "<div style=\"line-height: 1.5;\"><strong>IKI-GIZ-ICUE Completion Ceremony</strong></div>",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem)\"><strong>IKI-GIZ-ICUE Completion Ceremony</strong></div>",
       lead: "<div style=\"line-height: 1.5;\"><em>Province's Leader Attending</em></div>",
       author: "<div style=\"text-align: center;\"><strong>ICUE-IKI-Giz & City of Hội An</strong></div>",
       date: "<div style=\"text-align: center;\"><em>2025-05-16</em></div>",
       images: [
         {
           src: "/public/news/articles/article_1/all_together.jpg",
-          caption: "Parties Involved",
+          caption: "Project Participants",
           type: "image"
         },
          {
@@ -457,41 +473,42 @@ const articles = [
         },
       ],
       bodyMarkdown: `
-## ICUE & Hoi An Inaugurate Au Co Park
-
 **Date:** May 16, 2025
-
 The Institute for Construction and Urban Economic Research (ICUE), in coordination with the People's Committee of Hoi An City, organized a special event to inaugurate and hand over the green space and coastal park (now named **Au Co Park**), marking the successful completion of the project titled:
 
 > "Preventing erosion on Cua Dai beach through green corridors and park"
-<div style="margin-left: 3rem;">
+<div style="margin-left: var(--article-indent, 1rem);">
 This initiative was implemented under the **Climate Capacity Building and Biodiversity Action at National and Local Levels (CBF) program**, under the grant agreement of the **International Climate Initiative (IKI)**, with ICUE as the grant recipient and project implementer, and the **Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH** as the project manager.
 The project played a crucial role in supporting climate action and biodiversity protection efforts in Vietnam.
 
-## Event Significance
+### Event Significance
 The event served not only as a closing ceremony for the project but also as an opportunity to reflect on the progress made thanks to the shared commitment of all partners involved.
 The presence of stakeholders, experts, and contributors further highlighted the collaborative nature of this initiative and its positive impact on sustainable urban development in the Cua Dai area of Hoi An City.
-</div>
+### Key Highlights
+Over the past months, the project: </div>
 
-Over the past months, the project:
-<div style="margin-left: 3rem;">
-- Strengthened technical and institutional capacities
-- Promoted deeper cooperation between central and local governments on climate change issues
-- Reflected a shared vision of a more climate-resilient and environmentally responsible future</div>
+<ul style="margin-left: var(--article-indent, 1rem);">
+<li> Strengthened technical and institutional capacities </li>
+<li> Promoted deeper cooperation between central and local governments on climate change issues </li>
+<li> Reflected a shared vision of a more climate-resilient and environmentally responsible future </li>
+</ul>
 
-## Acknowledgments
+<div style="margin-left: var(--article-indent, 1rem);">
+### Acknowledgments
 
-<div style="margin-left: 3rem;">
-None of this would have been possible without the generous support from **IKI** and the enthusiastic assistance from **GIZ** in implementing the project.
-We also deeply appreciate:
-- The facilitation provided by the People's Committee of Quang Nam Province
-- The close coordination with the Hoi An City government and the Cua Dai Ward authorities
-- The collaboration from local communities and civil society organizations
-The trust and funding from **IKI & GIZ** made this project a reality and delivered tangible benefits to the local community. We express our heartfelt gratitude to IKI & GIZ for their continuous support and trust.</div>
+None of this would have been possible without the generous support from **IKI** and the enthusiastic assistance from **GIZ** in implementing the project. We very much appreciate:
 
-## Looking Ahead
-<div style="margin-left: 3rem;">
-This inauguration and handover ceremony is not an end, but rather a **new beginning** — paving the way for future cooperation towards greener, more sustainable cities in Vietnam and beyond.</div>
+<ul>
+<li> The facilitation provided by the People's Committee of Quang Nam Province</li>
+<li> The close coordination with the Hoi An City government and the Cua Dai Ward authorities</li>
+<li> The collaboration from local communities and civil society organizations</li>
+</ul>
+
+The trust and funding from **IKI & GIZ** made this project a reality and delivered tangible benefits to the local community. We express our heartfelt gratitude to IKI & GIZ for their continuous support and trust.
+
+### Looking Ahead
+
+This inauguration and handover ceremony is not an end, but rather a **new beginning** — paving the way for future cooperation towards greener, more sustainable cities in Vietnam and beyond. </div>
 
 ## Thank You Everyone!
 > "We Hope You Enjoyed The Ceremony — Thanks for Coming!"
@@ -501,7 +518,7 @@ This inauguration and handover ceremony is not an end, but rather a **new beginn
     },
     {
       id: "2",
-      title: "8th Asia Regional Conservation Forum Opens in Thailand",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">8th Asia Regional Conservation Forum Opens in Thailand</div>",
       lead: "<div style=\"line-height: 1.5;\">*On September 3, the **8th Asia Regional Conservation Forum (RCF)** of the **International Union for Conservation of Nature (IUCN)** officially opened in Bangkok, Thailand. The event brought together nearly **600** conservation leaders from across the region, including representatives from governments, NGOs, donors and partners, academic institutions, and the private sector, along with other stakeholders*.</div>",
       author: "By ICUE",
       date: "<div style=\"text-align: center;\"><em>03 September, 2024</em></div>",
@@ -533,7 +550,7 @@ This inauguration and handover ceremony is not an end, but rather a **new beginn
         },
       ],
       bodyMarkdown: `
-## Vietnam Delegation at IUCN Asia RCF
+### Vietnam Delegation at IUCN Asia RCF
 
 Representing **Vietnam**, the delegation included members from **IUCN Vietnam**, notably **Dr. Nguyễn Hồng Hạnh**, Director of the **Institute for Construction and Urban Economics Research (ICUE)**.
 
@@ -545,7 +562,7 @@ The institute delivered a summary report on part of the project:
 
 ---
 
-## Forum Theme and Objectives
+### Forum Theme and Objectives
 
 The **Asia Regional Conservation Forum (RCF)** runs for three days under the theme:
 
@@ -553,20 +570,16 @@ The **Asia Regional Conservation Forum (RCF)** runs for three days under the the
 
 ***The forum aims to:***
 
-<div style="margin-left: 3.5rem;">
+<div style="margin-left: var(--article-indent, 1rem);">
 - Assess conservation progress
 - Revisit priority goals
 - Propose strategic directions to address environmental and biodiversity challenges over the next 20 years </div>
-
 ---
-
-## Youth Leadership Forum
+### Youth Leadership Forum
 
 As part of **RCF 2024**, the **first-ever Youth Leadership Forum** — organized by young people from 23 countries — highlighted the role of **young experts** and their growing contributions to nature conservation.
-
 ---
-
-## Key Features of the 8th IUCN Asia RCF
+### Key Features of the 8th IUCN Asia RCF
 
 - **8 technical sessions** focused on both new and ongoing program priorities
 - **17 side events** hosted by IUCN Members, Commissions, and partners
@@ -574,7 +587,7 @@ As part of **RCF 2024**, the **first-ever Youth Leadership Forum** — organized
 
 ---
 
-## International Partnerships
+### International Partnerships
 
 **Dr. Nguyễn Hồng Hạnh** also connected with **Mr. Pornphrom Vikitsreth**, a policy analyst from Thailand's **Democrat Party** and a strong advocate for the party's climate change agenda.
 
@@ -584,13 +597,13 @@ Mr. Vikitsreth holds a **Master's degree in Global Affairs** from New York Unive
 
 ---
 
-## Thailand Environment Institute
+### Thailand Environment Institute
 
 The forum also engaged with the **Thailand Environment Institute**, an organization striving to become a leading, **non-partisan environmental body** aligned with international standards and committed to promoting **sustainable development**.
 
 ---
 
-## China Biodiversity Conservation and Green Development Foundation
+### China Biodiversity Conservation and Green Development Foundation
 
 The **CBCGDF (China Biodiversity Conservation and Green Development Foundation)** is a national public fundraising foundation in China. Over the years, it has played a vital role in **biodiversity conservation** and **green development**.
 
@@ -604,7 +617,7 @@ The organization continues to actively support **China's economic restructuring*
 
 ---
 
-## Learning and Knowledge Sharing
+### Learning and Knowledge Sharing
 
 During the three-day event, a dedicated **learning session** was held, including **knowledge-sharing** and **short training sessions** conducted by the **IUCN Academy**.
 
@@ -614,7 +627,7 @@ Participants also had the opportunity to explore the **exhibition** and learn fr
     },
     {
       id: "3",
-      title: "Aiding People & Areas Affected by Yagi Storm",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Aiding People & Areas Affected by Yagi Storm</div>",
       lead: "<div style=\"line-height: 1.5;\">*In response to the call from the Central Committee, **the Institute for Construction and Urban Economic Research (ICUE)** issued a notice calling on all of its staff, partners, and benefactors to join hands in contributing and supporting people affected by **Typhoon Yagi***.</div>",
       author: "By ICUE",
       date: "<div style=\"text-align: center;\"><em>26 September, 2024</em></div>",
@@ -676,17 +689,14 @@ Participants also had the opportunity to explore the **exhibition** and learn fr
 In recent days, due to the impact of **Typhoon No. 3 (Typhoon Yagi)**, **Bảo Yên District** has continuously suffered from heavy rains and successive floods, causing severe damage to many communes in the district.  
 
 Particularly during the three days from **September 8–10, 2024**, prolonged heavy rain combined with rising floodwaters led to widespread flooding and landslides.  
-<div style="margin-left:5rem;">
 
+<div style="margin-left: var(--article-indent, 1rem);">
 - **Casualties:** 71 deaths, 29 injuries, and 11 people unaccounted for  
 - **Damage:** Transportation systems destroyed; homes, property, and crops heavily impacted  
-- **Housing impact:** 4,825 homes affected, with estimated damages of around **820 billion VND**  
-</div>
+- **Housing impact:** 4,825 homes affected, with estimated damages of around **820 billion VND** 
+This is the **most severe flooding ever recorded** in Bảo Yên District. Answering the call, our volunteers were able to distribute aid packages to those in need. </div> 
 
-This is the **most severe flooding ever recorded** in Bảo Yên District.  
----
-
-<div style="margin-left:5rem;">
+<div style="margin-left: var(--article-indent, 1rem);">
 ### Each package included:
 - 10 kg of fragrant rice  
 - Cooking oil  
@@ -696,13 +706,10 @@ This is the **most severe flooding ever recorded** in Bảo Yên District.
 - Clothing, blankets, and mosquito nets  
 </div> 
 ---
-<div style="margin-left:3rem;">
-In **Chom Hamlet**, significant losses were reported in terms of property, crops, and livestock. Notably, three households had their homes completely collapsed. Fortunately, there were no human casualties.</div>
-
-The families affected — **Mrs. Hoàng Thị Bốn**, **Mr. Hoàng Văn Bản**, and **Mr. Nguyễn Bá Quán** — were given **aid four times larger** than the standard packages.  
-
+<div style="margin-left: var(--article-indent, 1rem);">
+In **Chom Hamlet**, significant losses were reported in terms of property, crops, and livestock. Notably, three households had their homes completely collapsed. Fortunately, there were no human casualties. 
+The families affected — **Mrs. Hoàng Thị Bốn**, **Mr. Hoàng Văn Bản**, and **Mr. Nguyễn Bá Quán** — were given **aid four times larger** than the standard packages. </div> 
 ---
-
 > *"We hope the people can soon stabilize their lives, overcome difficulties, and join hands to build a strong and resilient community."*
 
       `,
@@ -711,7 +718,7 @@ The families affected — **Mrs. Hoàng Thị Bốn**, **Mr. Hoàng Văn Bản**
     },
     {
       id: "4",
-      title: "Conference for Smart Cities and Sustainable Urban Development projects in Vietnam 2018-2025 and the 2030 Vision",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Conference for Smart Cities and Sustainable Urban Development projects in Vietnam 2018-2025 and the 2030 Vision</div>",
       lead: "*Vietnam's Smart City Initiative: Achievements and Roadmap for 2025-2030*",
       author: "By ICUE",
       date: "<div style=\"text-align: center;\"><em>August 13, 2025</em></div>",
@@ -734,8 +741,8 @@ The families affected — **Mrs. Hoàng Thị Bốn**, **Mr. Hoàng Văn Bản**
         },
       ],
       bodyMarkdown: `
-<div style="margin:0 3.5rem;">
-# Vietnam’s Smart City Initiative: Milestones and Roadmap for 2025-2030
+<div style="margin-left: var(--article-indent, 1rem);">
+### Vietnam’s Smart City Initiative: Milestones and Roadmap for 2025-2030
 
 Vietnam's journey toward developing smart cities has gained considerable momentum since the launch of the **“Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025”** (Smart and Sustainable Urban Development Project) in 2018.  
 
@@ -746,9 +753,9 @@ Over the past seven years, the country has made significant strides in this dire
 
 ---
 
-## Key Achievements
+### Key Achievements
 
-<div style="margin:0 3.5rem;">
+<div style="margin-left: var(--article-indent, 1rem);">
 ### 1. Citizen-Centric Solutions: Hue  
 Hue has deployed the **Hue-S platform**, which allows citizens to directly report issues such as road repairs, sanitation, and infrastructure concerns.  
 This app has facilitated a two-way communication channel between residents and local government, ensuring transparency and accountability in urban management. Hue-S has become a critical part of Hue’s smart city framework, helping improve services like healthcare, education, and traffic management.  
@@ -769,22 +776,20 @@ By interconnecting departments via shared databases, Hanoi is streamlining admin
 ### 5. Environmental and Green Smart Cities: Binh Dinh  
 Binh Dinh is focusing on **green urbanization** with smart waste management, renewable energy projects, and solar-powered smart lighting.  
 This aligns with Vietnam’s national goal of energy efficiency and sustainability.</div>  
-
 ---
 
-## Challenges and Barriers  
+### Challenges and Barriers  
 
-<div style="margin:0 3.5rem;">
+<div style="margin-left: var(--article-indent, 1rem);">
 - **Legal and Regulatory Gaps:** Fragmented frameworks hinder coordination.  
 - **Data and Privacy Concerns:** Security risks in large-scale citizen data collection.  
 - **Limited Financial Resources:** Smaller cities struggle to fund digital infrastructure.  
-
 ---
 </div>
 
-## Strategic Focus for 2025-2030  
+### Strategic Focus for 2025-2030  
 
-<div style="margin:0 3.5rem;">
+<div style="margin-left: var(--article-indent, 1rem);">
 1. **Legal and Regulatory Reform** – Establish a unified smart city legal framework.  
 2. **Data Integration** – Create interoperable, city-wide data platforms.  
 3. **Citizen Engagement** – Involve citizens as active participants in governance.  
@@ -792,10 +797,8 @@ This aligns with Vietnam’s national goal of energy efficiency and sustainabili
 5. **Public-Private Partnerships** – Encourage collaboration with domestic and global partners.  
 6. **Environmental Sustainability** – Expand renewable energy and eco-friendly solutions.  
 7. **National Infrastructure** – Build a unified, nationwide data system.  
-
 ---
 </div>
-
 ## Looking Ahead  
 
 The next five years will be crucial for Vietnam’s smart city transformation. By 2030, the country aims to establish a **nationwide network of interconnected smart cities** with shared data systems, modern technology, and robust governance. Pioneering cities like **Hue, Da Nang, and Ho Chi Minh City** serve as models, proving that smart cities can be both engines of economic growth and champions of sustainability. With a **people-first approach**, Vietnam is positioning itself as a regional leader in smart city innovation.  
