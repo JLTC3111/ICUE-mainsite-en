@@ -446,7 +446,7 @@ footer {
       <a href="/#/aboutUs">About</a>
       <a href="/#/Contact">Contact</a>
       <div class="language-switcher">
-        <a href="https://icue.vn/#/News" class="flag-link">
+        <a id="lang-switch" href="https://icue.vn/#/News" class="flag-link">
           <span class="flag-icon flag-icon-vn"></span>    
         </a>
       </div>
@@ -557,6 +557,11 @@ footer {
   </div>
 </footer>
 <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const articleId = urlParams.get("id");  
+  const langSwitch = document.getElementById("lang-switch");
+  langSwitch.href = `https://icue.vn/src/pages/article_template.html?id=${articleId}`;
+
   document.addEventListener("DOMContentLoaded", () => {
     const toggles = document.querySelectorAll(".footer-toggle");
 
