@@ -550,6 +550,7 @@ This inauguration and handover ceremony is not an end, but rather a **new beginn
         },
       ],
       bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 1rem);">
 ### Vietnam Delegation at IUCN Asia RCF
 
 Representing **Vietnam**, the delegation included members from **IUCN Vietnam**, notably **Dr. Nguyễn Hồng Hạnh**, Director of the **Institute for Construction and Urban Economics Research (ICUE)**.
@@ -621,7 +622,7 @@ The organization continues to actively support **China's economic restructuring*
 
 During the three-day event, a dedicated **learning session** was held, including **knowledge-sharing** and **short training sessions** conducted by the **IUCN Academy**.
 
-Participants also had the opportunity to explore the **exhibition** and learn from various **collaborative conservation efforts**.
+Participants also had the opportunity to explore the **exhibition** and learn from various **collaborative conservation efforts**. </div>
 `,
       pdf: ""
     },
@@ -1242,7 +1243,7 @@ function createImageModal() {
         ">
           <div id="modal-caption" style="
             font-size: 16px;
-            margin-bottom: 5px;
+            margin: 15px;
           "></div>
           <div id="modal-counter" style="
             font-size: 14px;
