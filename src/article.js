@@ -1163,7 +1163,7 @@ function createImageModal() {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-left: -2.5rem;
+        margin-left: -1.5rem;
       ">
         <button id="modal-close" class="modal-close" style="
           position: absolute;
