@@ -830,6 +830,7 @@ function setupArticleSwipe(article) {
   // Add navigation arrows
   if (!imageContainer.querySelector('.article-nav-btn')) {
     // Left arrow
+    if (window.innerWidth >= 769) {
     const leftArrow = document.createElement('button');
     leftArrow.className = 'article-nav-btn article-prev-btn';
     leftArrow.innerHTML = '<svg fill="#fff" width="25px" height="25px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M30 14.5c-.004.276-.224.504-.5.5h-26c-.66 0-.664-1 0-1h26c.282-.004.504.218.5.5zm-15 14c0 .45-.554.663-.854.354l-14-14c-.195-.196-.195-.512 0-.708l14-14c.426-.442 1.167.248.708.708L1.207 14.5l13.647 13.646c.097.095.146.22.146.354z"/></svg>';
@@ -850,36 +851,36 @@ function setupArticleSwipe(article) {
     leftArrow.onmouseenter = () => leftArrow.style.opacity = '1';
     leftArrow.onmouseleave = () => leftArrow.style.opacity = '0.7';
     leftArrow.onclick = () => navigateArticleMedia(-1);
-    
+
     // Right arrow
     const rightArrow = document.createElement('button');
     rightArrow.className = 'article-nav-btn article-next-btn';
     rightArrow.innerHTML = '<svg fill="#fff" width="25px" height="25px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 15.5c.004.276.224.504.5.5h26c.66 0 .664-1 0-1H.5c-.282-.004-.504.218-.5.5zm15 14c0 .45.554.663.854.354l14-14c.195-.195.195-.51 0-.707l-14-14c-.426-.443-1.167.248-.707.707L28.793 15.5 15.147 29.148c-.098.095-.147.218-.147.353z"/></svg>';
-    rightArrow.style.cssText = `
-      position: absolute;
-      right: 5px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.6);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 100;
-      transition: all 0.3s ease;
-      opacity: 0.7;
-    `;
-    rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
-    rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.7';
-    rightArrow.onclick = () => navigateArticleMedia(1);
-    
-    imageContainer.appendChild(leftArrow);
-    imageContainer.appendChild(rightArrow);
-    
-    // Ensure container is positioned
-    imageContainer.style.position = 'relative';
-  }
-  
+      rightArrow.style.cssText = `
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.6);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 100;
+        transition: all 0.3s ease;
+        opacity: 0.7;
+      `;
+      rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
+      rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.7';
+      rightArrow.onclick = () => navigateArticleMedia(1);
+      
+      imageContainer.appendChild(leftArrow);
+      imageContainer.appendChild(rightArrow);
+      
+      // Ensure container is positioned
+      imageContainer.style.position = 'relative';
+    }}
+
   // Add touch events for swipe
   imageContainer.addEventListener('touchstart', handleArticleTouchStart, { passive: false });
   imageContainer.addEventListener('touchmove', handleArticleTouchMove, { passive: false });
@@ -1156,8 +1157,8 @@ function createImageModal() {
         width: 55%;
         height: auto;
         overflow: hidden;
-        max-width: 90%;
-        max-height: 90%;
+        max-width: 92.5%;
+        max-height: 92.5%;
         object-fit:cover;
         display: flex;
         flex-direction: column;
@@ -1183,10 +1184,10 @@ function createImageModal() {
           width: 100%;
           height: 80vh;
         ">
-          <button id="modal-prev" style="
+          <button id="modal-prev" class="modal-arrow" style="
             position: absolute;
-            left: 20px;
-            background: rgba(255,255,255,0.2);
+            left: 10px;
+            background: transparent;
             border: none;
             color: white;
             font-size: 24px;
@@ -1195,8 +1196,8 @@ function createImageModal() {
             border-radius: 50%;
             z-index: 10000;
           "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 12H2" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 19L2.84 14C2.57 13.74 2.35 13.43 2.20 13.09C2.05 12.75 1.98 12.37 1.98 12C1.98 11.62 2.05 11.25 2.20 10.91C2.35 10.57 2.57 10.26 2.84 10L8 5" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 12H2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 19L2.84 14C2.57 13.74 2.35 13.43 2.20 13.09C2.05 12.75 1.98 12.37 1.98 12C1.98 11.62 2.05 11.25 2.20 10.91C2.35 10.57 2.57 10.26 2.84 10L8 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           </button>
           <img id="modal-image" style="
@@ -1218,10 +1219,10 @@ function createImageModal() {
             Your browser does not support the video tag.
           </video>
           
-          <button id="modal-next" style="
+          <button id="modal-next" class="modal-arrow" style="
             position: absolute;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
+            right: 10px;
+            background: transparent;
             border: none;
             color: white;
             font-size: 24px;
@@ -1229,7 +1230,7 @@ function createImageModal() {
             cursor: pointer;
             border-radius: 50%;
             z-index: 10000;
-          "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12.0701H22" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5L21.16 10C21.4324 10.2571 21.6494 10.567 21.7977 10.9109C21.946 11.2548 22.0226 11.6255 22.0226 12C22.0226 12.3745 21.946 12.7452 21.7977 13.0891C21.6494 13.433 21.4324 13.7429 21.16 14L16 19" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+          "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12.0701H22" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5L21.16 10C21.4324 10.2571 21.6494 10.567 21.7977 10.9109C21.946 11.2548 22.0226 11.6255 22.0226 12C22.0226 12.3745 21.946 12.7452 21.7977 13.0891C21.6494 13.433 21.4324 13.7429 21.16 14L16 19" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
         </div>
         
         <div style="
@@ -1261,7 +1262,17 @@ function createImageModal() {
       </div>
     </div>
   `;
-  
+
+  const navStyle = document.createElement('style');
+  navStyle.textContent = `
+    @media (max-width: 768px) {
+      .modal-arrow {
+        display: none !important;
+      }
+    }
+  `;
+  document.head.appendChild(navStyle);
+
   document.body.insertAdjacentHTML('beforeend', modalHTML);
   
   // Add event listeners
