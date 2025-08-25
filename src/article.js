@@ -1,3 +1,8 @@
+import { Swiper, Navigation, Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 // Function to render markdown to HTML
 function renderMarkdown(markdownText) {
   if (!markdownText) return '';
