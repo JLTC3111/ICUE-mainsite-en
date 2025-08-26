@@ -417,7 +417,7 @@ const articles = [
           type: "image"
         },
          {
-          src: "/public/news/articles/article_1/11.mp4",
+          src: "/public/news/articles/article_1/video_1.mp4",
           caption: "Video of the Inauguration Ceremony",
           type: "video"
         },
