@@ -3315,14 +3315,13 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     // Bot response generator
     function generateBotResponse(userMessage) {
         const message = userMessage.toLowerCase();
-       
-        if (message.includes('dịch vụ') || message.includes('service')) {
-            return 'ICUE provides research services in construction economics and urban development, sustainable development consulting, and environmental project management. Which service do you want to know more about?';
+        if (message.includes('dịch vụ') || message.includes('service') || message.includes('cost') || message.includes('giá')) {
+            return 'ICUE provides research services in construction economics and urban development, sustainable development consulting, and environmental project management. Our consultant fees vary with each project. Contact us to learn more.';
         } else if (message.includes('dự án') || message.includes('project')) {
             return 'We’ve carried out important projects like Âu Cơ Park in Hội An, marine conservation projects, and smart urban development projects. Want more details on a specific project?';
         } else if (message.includes('liên hệ') || message.includes('contact')) {
             return 'You can contact ICUE via email or phone. Please check the Contact page for details. How else can I help?';  
-        } else if (message.includes('xin chào') || message.includes('hello')) {
+        } else if (message.includes('ơi') || message.includes('hello') || message.includes('hi') || message.includes('chào') ) {
             return 'Hello! Happy to help. I can tell you about services, projects, or contact info for ICUE. What do you need?';
         } else {
             return 'Thanks for reaching out! I’m still under development, see our FAQs page for more info. For best support, please contact ICUE directly via the Contact page. I’ll be improved to serve you better soon!';
