@@ -808,6 +808,303 @@ The next five years will be crucial for Vietnam’s smart city transformation. B
       pdf: "",
       pdfButtonText: ""
     },
+{
+      id: "5",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Building and Developing Hue - A Unique Cultural Heritage City in Southeast Asia</div>",
+      lead: "<div style=\"line-height: 1.5;\">A scientific seminar in *Hanoi* brought together <em>experts and policymakers</em> to discuss a unique development path for **Thua Thien Hue**. The consensus was that the city's future should prioritize its rich cultural heritage and ecological identity over a traditional industrial model, ensuring Hue remains a distinct cultural hub in Southeast Asia.</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Date: May 22, 2014*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_5/1.jpg",
+          caption: "Leaders and experts at the seminar"
+        },
+        {
+          src: "/public/news/articles/article_5/2.jpg",
+          caption: "Chairman of Thua Thien Hue Provincial People's Committee - Mr. Nguyen Van Cao delivering the opening speech"
+        },
+        {
+          src: "/public/news/articles/article_5/3.jpg",
+          caption: "A view of the seminar"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:5px">Scientific Seminar on the Future of Thua Thien Hue</div>
+A scientific seminar was recently held in **Hanoi** with a critical mission: to define the future of **Thua Thien Hue** as it prepares to become a **centrally-governed city**.
+The event was organized by the **Thua Thien Hue Provincial People's Committee** in collaboration with the **Ministry of Home Affairs** and the **Vietnam Federation of Civil Engineering Associations**, focusing on a core theme:
+
+> **"Building and developing Hue to become a Unique Cultural Heritage City in Southeast Asia."**
+
+---
+
+# Development Orientation
+
+Participants, including:
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+<li> **Leading scientists** </li>
+<li> **Urban planners** </li>
+<li> **Government officials** all agreed that Hue's development must follow a **different path** from other major cities like **Hanoi** or **Ho Chi Minh City**. </li>
+</ul>
+
+Instead of chasing rapid urbanization and industrialization, Hue needs to develop based on its core values:
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+  <li>**Heritage city**</li>
+  <li>**Culture**</li>
+  <li>**Ecology**</li>
+  <li>**Environmental friendliness**</li>
+</ul>
+---
+### Preserving Identity
+
+A key highlight from the seminar was the **need to preserve Hue's unique identity**.
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+<li>Experts warned about the **risk of commercialization** and **high-rise building construction** that could destroy the city's serene and poetic beauty.</li>
+<li>They emphasized that development must be **harmonious**, with **minimal interference** to the existing architecture and natural landscape.</li>
+</ul>
+---
+### Economic Drivers
+
+The seminar concluded that **Hue's economic engine** should be driven by its most valuable assets:
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+<li> **Tourism**</li>
+<li> **Services**</li>
+<li> **Culture**</li>
+<li> **Education**</li>
+<li> **Healthcare**</li>
+</ul>
+
+By focusing on these sectors, Hue can achieve **sustainable growth** while **protecting its invaluable cultural and historical heritage** for future generations.
+
+---
+
+### Conclusion
+
+The seminar marked a significant step in:
+
+<ul style="margin-left: var(--article-margin-left, 0.5rem);">
+  <li> **Shaping the future of Hue**</li>
+  <li> **Respecting the past**</li>
+  <li> Building a **unique urban development model**, which can become a **template for other heritage cities in the region**.</li>
+</ul>
+</div>
+`
+},
+{
+      id: "6",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Urban Economics in Planning, Construction, and Sustainable Development in Vietnam - Opportunities & Challenges</div>",
+      lead: "<div style=\"line-height: 1.5;\">The Institute for Construction Economics and Urban Research, under the patronage of the Central Economic Commission and the Ministry of Construction, organized a seminar titled 'Urban economics in the planning, construction, and sustainable development of Vietnamese cities - opportunities and challenges.' This event was part of a series of activities for Vietnam Urban Day on November 8, 2022, held at the Ministry of Construction.</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Date: November 8, 2022*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_6/1.jpg",
+          caption: "Deputy Minister Bui Hong Minh speaking at the seminar"
+        },
+        {
+          src: "/public/news/articles/article_6/4.jpg",
+          caption: "Director of the Institute for Construction Economics and Urban Research, Nguyen Hong Hanh, sharing at the seminar."
+        },
+        {
+          src: "/public/news/articles/article_6/5.jpg",
+          caption: "Economist Pham Chi Lan speaking at the seminar."
+        },
+         {
+          src: "/public/news/articles/article_6/3.jpg",
+          caption: "General view of the seminar"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+**The Institute for Construction Economics and Urban Research**, under the patronage of the **Central Economic Commission** and the **Ministry of Construction**, organized a seminar on:
+
+- Urban economics in the planning, construction, and sustainable development of Vietnamese cities - opportunities and challenges
+- The event was part of a series of activities to celebrate **Vietnam Urban Day on November 8, 2022**, held at the Ministry of Construction.
+---
+
+### Seminar Objectives
+
+- Exchange and discuss **solutions for developing urban economies**.
+- Aim for the **sustainable development of Vietnamese cities**.
+- Contribute to the effective implementation of **Resolution No. 06-NQ/TW dated January 24, 2022,** of the Politburo on the planning, construction, management, and sustainable urban development until 2030, with a vision to 2045.
+---
+### Key Speeches
+
+### Mr. Bui Hong Minh – Deputy Minister of Construction
+
+<ul>
+<li> Affirmed the important role of the **urban economy**. </li>
+<li> Emphasized the key tasks of **Resolution 06-NQ/TW**. </li>
+<li> Implemented a **program for urban redevelopment** to enhance land use efficiency. </li>
+<li> Developed a **service economy**, **advanced manufacturing industry**, **digital economy**, **circular economy**, and **tourism economy**. </li>
+<li> Improved **real estate tax and fee policies** to encourage efficient use of land and housing. </li>
+<li> Created a mechanism to **mobilize investment capital** for the Hanoi Capital Region and Ho Chi Minh City Region. </li>
+<li> Built a mechanism to **create new sources of revenue** for urban areas. </li>
+</ul>
+
+### Dr. Nguyen Hong Hanh – Director of the Institute for Construction Economics and Urban Research:
+
+<ul>
+<li> Affirmed that **urban areas are the central nucleus** for economic, cultural, and social development. </li>
+<li> Urbanization is an **objective necessity** and a driving force for rapid and sustainable development. </li>
+<li> Presented a paper on **urban redevelopment** to improve land use efficiency, using the **Japanese experience** as an example. </li>
+<li> **Japan's Urban Redevelopment Law** was enacted in 1969. </li>
+<li> The mechanism includes: increasing the floor area ratio, loosening building height restrictions, and sharing development benefits with landowners. </li>
+<li> After nearly 40 years, Japan has had **~1,000 districts complete urban redevelopment**. </li>
+</ul>
+
+### Dr. Nguyen Ngoc Hieu – Vietnamese-German University:
+
+<ul>
+<li> Pointed out challenges in the **restructuring of the urban economic sector**. </li>
+<li> Argued that the success of **industrial servitization** and sectoral restructuring will be the key to sustainable development. </li>
+</ul>
+
+### Dr. Huynh The Du – Fulbright School of Public Policy and Management:
+
+<ul>
+<li> Analyzed global competition in the context of integration. </li>
+<li> Attracting **businesses**, **talented people**, and **wealthy people** is key. </li>
+<li> This primarily occurs in **central urban areas**. </li>
+<li> Emphasized the need to help cities **increase their international competitiveness**. </li>
+<li> Small urban areas often depend on a few production/business facilities, making them vulnerable. </li>
+</ul>
+
+### Dr. Dang Huy Dong – Former Deputy Minister of Planning and Investment:
+
+<ul>
+<li> Analyzed the **urban-rural economic differentiation** during development. </li>
+<li> Introduced the **TOD (Transit-Oriented Development)** model. </li>
+<li> Linked **public transport** with **urban land use**. </li>
+<li> The role of TOD in the management, planning, and development of the urban economy. </li>
+</ul>
+---
+## Presentations
+
+- The seminar received **16 presentations** from domestic and international experts.
+- **12 presentations** were delivered live, focusing on topics:
+- **Restructuring economic sectors** – a driver for urban growth.
+- **Circular economy** in the trend of sustainable development.
+- **Development of the service economy**.
+- **The state of the urban economy in Vietnam**, especially in centrally-governed cities.
+- **Urban economics and public policy** in sustainable development.
+---
+## Conclusion
+<div style="text-align: justify; margin-top:-1rem;">The seminar provided a comprehensive view on:</div>
+<ul>
+<li> The **position and role of urban areas** in socio-economic development. </li>
+<li> **Solutions for sustainable urban economic development**, from policy and sectoral restructuring to the TOD model. </li>
+<li> The importance of **combining urban planning, management, and redevelopment** with ensuring the quality of life for residents. </li>
+</ul>
+`
+},
+{
+      id: "7",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Seminar on the Overview and Current State of Vietnam's Coastal Cities - Perspectives on Development Control</div>",
+      lead: "<div style=\"line-height: 1.5;\">The Institute for Construction Economics and Urban Research – Vietnam Federation of Civil Engineering Associations organized a scientific seminar.</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Date: September 30, 2020*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_7/1.jpg",
+          caption: "A view of the seminar"
+        },
+        {
+          src: "/public/news/articles/article_7/2.jpg",
+          caption: "Dr. Nguyen Hong Hanh – Director of the Institute for Construction Economics and Urban Research (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_7/3.jpg",
+          caption: "Group photo at the seminar"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">Scientific Seminar: Overview of Vietnam's Coastal City Status and Perspectives on Development Control</div>
+
+On **September 30, 2020**, the **Institute for Construction Economics and Urban Research (ICUE)** – Vietnam Federation of Civil Engineering Associations organized a scientific seminar on:
+
+> **"Overview of the current state of Vietnam's coastal cities and some perspectives on development control"**
+
+The seminar took place in the context of **Resolution 36/NQ-TW (October 22, 2018)** of the Central Committee of the Communist Party of Vietnam (12th Congress) on the *Strategy for sustainable development of Vietnam's maritime economy until 2030, with a vision to 2045*, which emphasizes the role of **coastal economic zones** as powerful economic centers that ensure regional and inter-regional development.
+---
+### Attendees
+
+- Mr. **Tran Ngoc Hung** – Chairman of the Vietnam Federation of Civil Engineering Associations
+- Dr. **Nguyen Hong Hanh** – Director of the Institute for Construction Economics and Urban Research
+- Arch. **Pham Thi Nham** – Deputy Director of the National Institute of Urban and Rural Planning (Ministry of Construction)
+- Assoc. Prof. Dr. **Pham Trung Luong** – Former Deputy Director of the Institute for Tourism Development Research
+- M.A. Arch. **Trinh Minh Hieu** – Department of Planning Management (Ministry of Planning and Investment)
+- Mr. **Tran Trung Chinh** – Deputy Director of the Institute for Urban Research and Infrastructure Development
+- Along with many experts from other institutes, research centers, and professional social organizations.
+
+---
+
+### Speech by Dr. Nguyen Hong Hanh
+
+- Emphasized that **Vietnam's seas and islands** are sacred territories, explored and protected by our ancestors for thousands of years.
+- Protecting **maritime sovereignty** is the **sacred responsibility of every citizen**.
+- Quoted the Party's 12th Congress Resolution:
+
+> "Resolutely and persistently fight to firmly protect the independence, sovereignty, unity, and territorial integrity of the Fatherland; maintain a peaceful environment for national development…"
+
+- Coastal cities not only play a role in economic development but are also linked to **national defense and security**.
+
+---
+
+### Lessons from International Experience: The Case of France
+
+- Concept: **The coastline is a prominent political space that cannot become private property.**
+- The Public Property Law (Article 2122-1) stipulates:
+  - Protected zone: **100m from the public maritime domain**.
+  - Citizens have the **right to free access**: 80% of natural coastlines, 50% of artificial coastlines.
+  - Coastal structures only have **temporary usage rights**, which can always be revoked.
+  - Coastal structures must have a **lightweight structure**, returning the natural space after the concession expires (≤ 6 months).
+- **In-depth planning**: service and public works are placed far from the shore, not crammed right next to it.
+- After 40 years of application, France has:
+  - Protected **170,000 hectares of coastal ecosystems**
+  - Built **4,600 km of coastal roads**
+---
+### ICUE's Views and Recommendations
+
+To leverage advantages and control the development of **coastal and island cities**, ICUE – Vietnam Federation of Civil Engineering Associations recommends the Ministry of Construction to:
+
+<div = style="margin-left: var(--article-indent, 1rem); margin-right: 1rem;">
+#### 1. **Inter-agency coordination**:
+Coordinate closely with the Ministry of Natural Resources and Environment in building detailed documents for the **Law on Marine and Island Resources and Environment (Law No. 82/2015-QH3)**.
+
+#### 2. **Supplement coastal and island urban development orientations**:
+Make the development of the coastal and island urban system a **major content** in the *Adjustment of the Master Plan for the Development of Vietnam's Urban System until 2025, with a vision to 2050* and the **National Urban Development Program 2021–2045**.
+
+#### 3. **Develop a coastal urban development program**:
+After the master adjustment is approved, build a **Coastal Urban Development Program** linked to the *Strategy for sustainable development of Vietnam's maritime economy 2030–2045*.
+
+#### 4. **Shape development drivers:**
+
+<ul style="margin-left: -2rem;">
+   - In coastal urban planning, identify **economic, financial, educational, and healthcare centers** as development drivers.
+   - Develop the **tourism and service sectors** in combination with **technical and social infrastructure and residential areas.**
+</ul>
+
+### 5. **Improve legal framework**:
+Supplement legal regulations to serve as a basis for planning and building coastal and island cities.</div>
+
+---
+
+### Conclusion
+
+<div style="text-align:center; margin-top: -15px;">The seminar:</div>
+
+- Affirmed the **strategic role of coastal cities** in socio-economic development and national security.
+- Proposed many **solutions for controlling coastal urban development**, learning from international experience.
+- Sent specific recommendations to the Ministry of Construction to **improve policies and planning for Vietnam's coastal urban development** in the new period.
+</div>
+`
+}
 ];
 
 // Modal and Image Swipe Functionality
