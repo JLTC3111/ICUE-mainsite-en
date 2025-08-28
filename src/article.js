@@ -1104,6 +1104,222 @@ Supplement legal regulations to serve as a basis for planning and building coast
 - Sent specific recommendations to the Ministry of Construction to **improve policies and planning for Vietnam's coastal urban development** in the new period.
 </div>
 `
+},
+{
+      id: "8",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Warm Coats, Warm Hearts: A Journey of Love to Quản Bạ’s Highlands in Hà Giang</div>",
+      lead: "<div style=\"line-height: 1.5;\">In the chilly mountains of Hà Giang, a simple gift of warm clothing and heartfelt smiles turned into a story of compassion and community.</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Date: January 15, 2024*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_8/1.jpg",
+          caption: "Dr. Nguyen Hong Hanh – Director of the Institute for Construction Economics and Urban Research"
+        },
+        {
+          src: "/public/news/articles/article_8/2.jpg",
+          caption: "Children of Tam Son Town, Ha Giang"
+        },
+        {
+          src: "/public/news/articles/article_8/3.jpg",
+          caption: "Local children receiving gifts"
+        },
+        {
+          src: "/public/news/articles/article_8/4.jpg",
+          caption: "Local children receiving gifts"
+        },
+        {
+          src: "/public/news/articles/article_8/5.jpg",
+          caption: "ICUE presenting equipment to the school"
+        },
+        {
+          src: "/public/news/articles/article_8/6.jpg",
+          caption: "Children of Tam Son Town, Ha Giang"
+        },
+        {
+          src: "/public/news/articles/article_8/7.jpg",
+          caption: "Signed - Thank You Letter"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+<div style ="font-size: 1rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">SOCIAL WORK BY THE INSTITUTE FOR CONSTRUCTION ECONOMICS AND URBAN PLANNING</div> 
+---
+
+<div style ="text-align: center;">
+### 🌱 Spreading Love – *"Warm Coats for Children to School"*
+</div>
+
+<div style="margin-left: var(--article-indent, 1rem)">On **January 15, 2024**, representatives from:  
+
+- The Institute for Construction Economics and Urban Studies  
+- The Department of Construction of Hà Giang Province  
+- The People’s Committee of Tam Sơn Town  
+came together to deliver thoughtful gifts to the children of **Thượng Sơn hamlet’s school, Tam Sơn Town – Quản Bạ – Hà Giang**. Though the gifts were modest, they carried warmth and compassion. Beyond that, the program also extended support to the most disadvantaged households in the area. </div>
+
+---
+
+<div style ="text-align: center;">
+### 📸 Heartwarming Moments
+</div>
+
+**Dr. Nguyễn Hồng Hạnh**, Director of the Institute, together with representatives of the Department of Construction and local officials, personally handed out gifts to the children at Thượng Sơn Kindergarten.  
+
+---
+
+<div style ="text-align: center; margin-bottom: -1.5rem">
+### 🗣️ A Message from the Director
+</div>
+
+> “Seeing the children of Thượng Sơn hamlet smiling brightly in their new warm coats, receiving small gifts, as well as a TV and a sound system for daily learning and singing — that is the greatest joy for me at this moment.  
+>   
+> I wish the teachers in Quản Bạ’s highlands good health, youthful spirit, and endless dedication to guide the children on their path toward a happy and prosperous future.  
+>   
+> My gratitude goes to the leaders of Hà Giang Department of Construction and the People’s Committee of Tam Sơn for supporting our Institute in this journey of connecting love with the children of Quản Bạ’s mountains.”  
+
+---
+
+<div style ="text-align: center;">
+### Continuing to Spread Kindness
+</div>
+
+This charitable initiative not only brought practical support but also embodied a **spirit of sharing and community care**.  
+
+The Institute affirms its commitment to continue organizing such programs, spreading love and hope to schools in remote and disadvantaged regions.  
+
+---
+
+*A warm coat, a genuine smile — sometimes that’s all it takes to create true happiness.*
+</div>
+`
+},
+{
+  id: "9",
+  title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Green Hội An: Coastal Green Corridor Planning at Cửa Đại</div>",
+  lead: "<div style=\"line-height: 1.5;\">Faced with the severe erosion risk at Cửa Đại Beach, experts and local managers came together to discuss creating a green corridor – one that both protects the coastline and nurtures the ecosystem and local community.</div>",
+  author: "ICUE-VN",
+  date: "<div style=\"text-align: center;\">*Date: 05/12/2024*</div>",
+  images: [
+    {
+      src: "/public/news/articles/article_9/1.jpg",
+      caption: "Architect Nguyễn Thanh Tâm, Institute for Construction Economics and Urban Studies, presenting the research project."
+    },
+    {
+      src: "/public/news/articles/article_9/2.jpg",
+      caption: "Functional zoning of the Coastal Green Corridor at Cửa Đại Beach & Bird Protection."
+    },
+    {
+      src: "/public/news/articles/article_9/3.jpg",
+      caption: "Distribution of plantation areas."
+    },
+    {
+      src: "/public/news/articles/article_9/4.jpg",
+      caption: "Dr. Nguyễn Hồng Hạnh, Institute for Construction Economics and Urban Studies, speaking at the workshop."
+    },
+    {
+      src: "/public/news/articles/article_9/5.jpg",
+      caption: "Preliminary concept for the community park design."
+    },
+    {
+      src: "/public/news/articles/article_9/6.jpg",
+      caption: "Preliminary master plan design of the community ecological park."
+    },
+    {
+      src: "/public/news/articles/article_9/7.jpg",
+      caption: "Delegates and guests taking a group photo at the workshop on December 5."
+    },
+    {
+      src: "/public/news/articles/article_9/8.jpg",
+      caption: "Delegates and guests taking a group photo at the workshop on December 6."
+    },
+    {
+      src: "/public/news/articles/article_9/9.jpg",
+      caption: "Representatives from ICUE, GIZ, and stakeholders at the workshop."
+    },
+    {
+      src: "/public/news/articles/article_9/10.jpg",
+      caption: "Representatives from ICUE, GIZ, and stakeholders at the workshop."
+    },
+    {
+      src: "/public/news/articles/article_9/11.jpg",
+      caption: "Representatives from ICUE, GIZ, and stakeholders at the workshop."
+    },
+    {
+      src: "/public/news/articles/article_9/12.jpg",
+      caption: "Representatives from ICUE, GIZ, and stakeholders at the workshop."
+    }
+  ],
+  bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+
+<div style ="font-size: 1rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">WORKSHOP ON COASTAL GREEN CORRIDOR PLANNING AT CỬA ĐẠI – HỘI AN</div> 
+---
+
+<div style ="text-align: center;">
+### 🌊 Greening the Coast – *"A Solution for Cửa Đại"*
+</div>
+
+On **December 5–6, 2024**, the Institute for Construction Economics and Urban Studies (ICUE) in collaboration with GIZ (Germany) organized a workshop in Hanoi, focusing on **addressing Cửa Đại Beach erosion** through the solution of a **green corridor plan**.  
+
+The corridor spans **3.2 km** in length, **8m to 100m** in width, with a **10,000m² community park**. It is seen as an “ecological shield” against sea waves and a shared community space.
+
+---
+
+<div style ="text-align: center;">
+### Structure of the Green Corridor
+</div>
+
+According to Architect **Nguyễn Thanh Tâm**, the corridor includes 5 main zones:  
+
+<div style="margin-left: var(--article-indent, 0.5rem);">
+- Community beach area  
+- Herb garden  
+- Central park  
+- Ecological buffer zone  
+- Wetlands and bird sanctuary </div>
+
+A multi-layered vegetation system (coconut palms, shrubs, young pines) combined with mulch and branches helps retain soil, restore ecosystems, and enhance biodiversity.
+
+---
+
+<div style ="text-align: center;">
+### 🗣️ Expert Opinions
+</div>
+
+- **Assoc. Prof. Dr. Vũ Thị Vinh**: Praised practicality, with suitable selection of native plants.  
+- **Assoc. Prof. Dr. Architect Đỗ Tú Lan**: Suggested integrating tourism elements – attracting private investment for sustainability.  
+- **Dr. Nguyễn Hồng Hạnh**: Pointed out the absence of business voices – calling for the involvement of the business community.  
+- **Dr. Trần Thị Lâm Hà**: Recommended clarifying performance indicators – how effective is the corridor against erosion?  
+- **Architect Chu Kim Đức**: Highlighted environmental education value – 74 plant species, 99 bird species, and many rare species should be introduced to the community.  
+- **Architect Trần Xuân Hiếu**: Proposed developing it as a model for replication, with bilingual signage and integration of local cultural identity. 
+
+---
+
+<div style ="text-align: center;">
+### Perspectives from the Workshop
+</div>
+
+The workshop gathered representatives from the Vietnam Association for Urban Planning and Development, ICUE, GIZ, along with urban design and management experts.  
+
+The consensus was that the green corridor is not only a **climate adaptation solution** but also a **green infrastructure model**, paving the way for sustainable development, community cohesion, and eco-tourism.
+
+---
+
+<div style ="text-align: center;">
+### Conclusion
+
+<div style ="margin: -0.5rem auto;">
+The Cửa Đại Green Corridor is expected to become </div></div>
+
+- A **natural shield** against erosion and climate change  
+- A **green living space** for the community and visitors  
+- A **model for replication** in other coastal areas of Vietnam  
+
+---
+
+*A green coastline – a sustainable future. That is the message Cửa Đại sends today.*
+</div>
+`
 }
 ];
 
