@@ -351,18 +351,18 @@ footer {
         <footer>
             <div class="footer-container">
                 <div class="footer-section">
-                    <button class="footer-toggle underline-hover" aria-expanded="false">
+                    <div class="footer-toggle underline-hover" aria-expanded="false">
                         Company
-                    </button>
+                    </div>
                     <div class="collapsible">
                         <a href="#/notableAwards" onclick="closeDrawerMenu();" data-page="notableAwards">Notable Awards</a>
                         <a href="#/communityActivities" onclick="closeDrawerMenu();" data-page="communityActivities">Community Activities</a>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <button class="footer-toggle underline-hover" aria-expanded="false">
+                    <div class="footer-toggle underline-hover" aria-expanded="false">
                         Other Pages
-                    </button>
+                    </div>
                     <div class="collapsible">
                         <a href="#/FAQs" onclick="closeDrawerMenu();" data-page="FAQs">FAQs</a>
                         <a href="#/recruitment" onclick="closeDrawerMenu();" data-page="recruitment">Job Opportunities</a>
