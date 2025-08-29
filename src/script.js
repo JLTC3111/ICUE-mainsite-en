@@ -746,6 +746,7 @@ window.loadPage = (page) => {
                   attachHomeButtonEvents();
                   break;
                 case 'News':
+                  initMobileNewsSlider();
                   initLogoSlider();
                   break;
                 case 'aboutUs':
