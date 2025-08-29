@@ -1347,11 +1347,42 @@ let currentArticleIndex = 0;
 let articleStartX = 0;
 let articleEndX = 0;
 
+// Clean up existing media elements to prevent leakage between articles
+function cleanupExistingMedia() {
+  const imageContainer = document.getElementById("article-image")?.parentElement;
+  if (!imageContainer) return;
+  
+  // Remove any existing Swiper containers
+  const existingSwipers = imageContainer.querySelectorAll('.article-swiper');
+  existingSwipers.forEach(swiper => {
+    // Destroy Swiper instance if it exists
+    if (swiper.swiper) {
+      swiper.swiper.destroy(true, true);
+    }
+    swiper.remove();
+  });
+  
+  // Remove any existing video containers
+  const existingVideos = imageContainer.querySelectorAll('.article-video-container, .article-video-preview');
+  existingVideos.forEach(video => video.remove());
+  
+  // Reset the original image element
+  const articleImageElement = document.getElementById("article-image");
+  if (articleImageElement) {
+    articleImageElement.style.display = 'block';
+    articleImageElement.onclick = null;
+    articleImageElement.style.cursor = 'default';
+  }
+}
+
 // Create Swiper gallery for multiple images/videos
 function createSwiperGallery(article) {
   const articleImageElement = document.getElementById("article-image");
   const articleCaptionElement = document.getElementById("article-caption");
   const imageContainer = articleImageElement.parentElement;
+  
+  // Clean up any existing Swiper instances and elements
+  cleanupExistingMedia();
   
   // Hide the original image
   articleImageElement.style.display = 'none';
@@ -2478,7 +2509,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (article.images.length > 1) {
         createSwiperGallery(article);
       } else {
-        // Single image/video - use existing logic
+        // Single image/video - clean up first then use existing logic
+        cleanupExistingMedia();
+        
         const firstMedia = article.images[0];
         const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
                             firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
