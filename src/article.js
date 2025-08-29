@@ -1407,10 +1407,12 @@ function createSwiperGallery(article) {
   swiperContainer.className = 'swiper article-swiper';
   swiperContainer.style.cssText = `
     width: 100%;
+    max-width: 100%;
     height: 550px;
     border-radius: 8px;
     overflow: hidden;
     position: relative;
+    box-sizing: border-box;
   `;
   
   // Create Swiper wrapper
@@ -2625,6 +2627,7 @@ document.addEventListener("DOMContentLoaded", () => {
           videoContainer.style.cssText = `
             position: relative;
             width: 100%;
+            max-width: 100%;
             height: 550px;
             background: #000;
             display: flex;
@@ -2633,6 +2636,7 @@ document.addEventListener("DOMContentLoaded", () => {
             border-radius: 8px;
             overflow: hidden;
             cursor: pointer;
+            box-sizing: border-box;
           `;
           
           const video = document.createElement('video');
