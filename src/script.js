@@ -1,7 +1,5 @@
 console.log('[script.js] Loaded ✅');
-
-// Make isTruelyTouchDevice available globally
-window.isTruelyTouchDevice = function isTruelyTouchDevice() {
+function isTruelyTouchDevice() {
    
     const isProbablyMac = (() => {
         // Check User Agent for macOS indicators
@@ -746,8 +744,8 @@ window.loadPage = (page) => {
                   attachHomeButtonEvents();
                   break;
                 case 'News':
-                  initMobileNewsSlider();
                   initLogoSlider();
+                  initMobileNewsSlider();
                   break;
                 case 'aboutUs':
                   createBalloons();
