@@ -747,7 +747,6 @@ window.loadPage = (page) => {
                   break;
                 case 'News':
                   initLogoSlider();
-                  initMobileNewsSlider();
                   break;
                 case 'aboutUs':
                   createBalloons();
