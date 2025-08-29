@@ -1,5 +1,7 @@
 console.log('[script.js] Loaded ✅');
-function isTruelyTouchDevice() {
+
+// Make isTruelyTouchDevice available globally
+window.isTruelyTouchDevice = function isTruelyTouchDevice() {
    
     const isProbablyMac = (() => {
         // Check User Agent for macOS indicators
