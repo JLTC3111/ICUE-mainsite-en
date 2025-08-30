@@ -1462,7 +1462,7 @@ function updateArticleMedia() {
     videoContainer.style.cssText = `
       position: relative;
       width: 100%;
-      height: auto;
+      height: 300px;
       background-image: url('public/news/default_video_thumbnail.png');
       background-size: cover;
       background-position: center;
