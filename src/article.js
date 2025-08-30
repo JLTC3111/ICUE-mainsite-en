@@ -2106,8 +2106,12 @@ function updateModalImage() {
 
     // Provide a thumbnail image for iOS fallback
     // Example: "myvideo-thumb.jpg" stored alongside the video
-    video.poster = item.poster || "/public/News/default_video_thumbnail.png";
-
+    video.poster = item.poster || "/public/news/default_video_thumbnail.png";
+  // Important for iOS Safari:
+    video.setAttribute("preload", "none");   // prevents Safari from overriding poster
+    video.setAttribute("playsinline", "true"); 
+    video.setAttribute("webkit-playsinline", "true"); // iOS Safari inline playback
+    video.controls = true; // optional, unless you want hidden controls
     video.style.cssText = `
       width: 100%;
       height: 100%;
