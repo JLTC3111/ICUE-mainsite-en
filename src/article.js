@@ -419,7 +419,8 @@ const articles = [
          {
           src: "/public/news/articles/article_1/video_1.mp4",
           caption: "Video of the Inauguration Ceremony",
-          type: "video"
+          type: "video",
+          poster: "/public/news/articles/article_1/video_1-thumb.jpg",
         },
         {
           src: "/public/news/articles/article_1/1.jpg",
@@ -2105,7 +2106,7 @@ function updateModalImage() {
 
     // Provide a thumbnail image for iOS fallback
     // Example: "myvideo-thumb.jpg" stored alongside the video
-    video.poster = item.poster || 'fallback-thumbnail.jpg';
+    video.poster = item.poster || "/public/News/default-video-thumb.jpg";
 
     video.style.cssText = `
       width: 100%;
