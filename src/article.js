@@ -1463,13 +1463,14 @@ function updateArticleMedia() {
       position: relative;
       width: 100%;
       height: auto;
-      background: #fff;
+      background: transparent;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       border-radius: 8px;
       overflow: hidden;
+      z-index: 2;
     `;
     
     const video = document.createElement('video');
