@@ -1456,14 +1456,15 @@ function updateArticleMedia() {
   if (isVideo) {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
-    
+    videoContainer.style.backgroundImage = "url('public/news/default_video_thumbnail.png')";
+    imageContainer.appendChild(videoContainer);
     const videoContainer = document.createElement('div');
     videoContainer.className = 'article-video-container';
     videoContainer.style.cssText = `
       position: relative;
       width: 100%;
       height: auto;
-      background-image: url('public/news/default_video_thumbnail.png');
+      background-image: url('public/news/default_video_thumbnail.png') !important;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
