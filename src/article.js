@@ -1463,8 +1463,7 @@ function updateArticleMedia() {
       position: relative;
       width: 100%;
       height: auto;
-      background-color: #000;
-      background-image: url('/news/default_video_thumbnail.png');
+      background-image: url('public/news/video.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
