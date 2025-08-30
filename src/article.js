@@ -1457,13 +1457,13 @@ function updateArticleMedia() {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
 
-    const videoContainer = document.createElement('div');
-    videoContainer.className = 'article-video-container';
-    videoContainer.style.cssText = `
+    const videoThumbnailContainer = document.createElement('div');
+    videoThumbnailContainer.className = 'article-video-container';
+    videoThumbnailContainer.style.cssText = `
       position: relative;
       width: 100%;
       height: auto;
-      background-image: url('public/news/video.png');
+      background-image: url('public/news/default_video_thumbnail.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
