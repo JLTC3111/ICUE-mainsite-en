@@ -1459,7 +1459,7 @@ function updateArticleMedia() {
     const videoContainer = document.createElement('div');
     videoContainer.style.width = "100%";
     videoContainer.style.height = "250px";
-    videoContainer.style.backgroundImage = "url('/news/default_video_thumbnail.png')";
+    videoContainer.style.backgroundImage = "url('public/news/default_video_thumbnail.png')";
     videoContainer.style.backgroundSize = "cover";
     videoContainer.style.backgroundPosition = "center";
     videoContainer.className = 'article-video-container';
