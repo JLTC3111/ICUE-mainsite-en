@@ -1456,17 +1456,17 @@ function updateArticleMedia() {
   if (isVideo) {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
+    const videoContainer = document.createElement('div');
     videoContainer.style.width = "100%";
     videoContainer.style.height = "250px";
     videoContainer.style.backgroundImage = "url('/news/default_video_thumbnail.png')";
     videoContainer.style.backgroundSize = "cover";
     videoContainer.style.backgroundPosition = "center";
-    const videoContainer = document.createElement('div');
     videoContainer.className = 'article-video-container';
     videoContainer.style.cssText = `
       position: relative;
       width: 100%;
-      height: 300px;
+      height: 250px;
       background-image: url('public/news/default_video_thumbnail.png');
       background-size: cover;
       background-position: center;
