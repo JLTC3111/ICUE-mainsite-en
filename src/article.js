@@ -1457,20 +1457,17 @@ function updateArticleMedia() {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
     const videoContainer = document.createElement('div');
-    videoContainer.style.width = "100%";
-    videoContainer.style.height = "250px";
-    videoContainer.style.backgroundImage = "url('public/news/default_video_thumbnail.png')";
-    videoContainer.style.backgroundSize = "cover";
-    videoContainer.style.backgroundPosition = "center";
-    videoContainer.className = 'article-video-container';
+    videoContainer.innerHTML = `
+      <video controls>
+        <source src="${media.src}" type="${media.type}">
+        Your browser does not support the video tag.
+      </video>
+    `;
     videoContainer.style.cssText = `
       position: relative;
       width: 100%;
       height: 250px;
-      background-image: url('public/news/default_video_thumbnail.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -2277,9 +2274,9 @@ document.addEventListener("DOMContentLoaded", () => {
       articleImageElement.style.display = 'none';
 
       // Create a container for the video thumbnail
-      const videoContainer = document.createElement('div');
-      videoContainer.id = 'video-thumbnail-container';
-      videoContainer.style.cssText = `
+      const videoThumbnailContainer = document.createElement('div');
+      videoThumbnailContainer.id = 'video-thumbnail-container';
+      videoThumbnailContainer.style.cssText = `
         position: relative;
         width: 100%;
         height: 550px !important;
@@ -2320,11 +2317,11 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       // Append the poster image and play overlay to the container
-      videoContainer.appendChild(videoPoster);
-      videoContainer.appendChild(playOverlay);
+      videoThumbnailContainer.appendChild(videoPoster);
+      videoThumbnailContainer.appendChild(playOverlay);
 
       // Find the parent element of the article image and append the new video thumbnail
-      articleImageElement.parentElement.appendChild(videoContainer);
+      articleImageElement.parentElement.appendChild(videoThumbnailContainer);
         
         videoContainer.appendChild(video);
         videoContainer.appendChild(playIcon);
