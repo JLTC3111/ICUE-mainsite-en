@@ -2110,12 +2110,14 @@ function updateModalImage() {
     video.setAttribute("playsinline", "true"); 
     video.setAttribute("webkit-playsinline", "true"); // iOS Safari inline playback
     video.style.cssText = `
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid ${index === currentModalIndex ? '#fff' : 'transparent'};
+        border-radius: 4px;
+        opacity: ${index === currentModalIndex ? '1' : '0.7'};
+        transition: all 0.3s ease;
     `;
 
     // Don't autoplay, just sit there as a static preview
