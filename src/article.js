@@ -2103,24 +2103,23 @@ function updateModalImage() {
       // Create an <img> element for the video thumbnail
       const videoThumb = document.createElement('img');
 
-      // For videos, the thumbnail source is the poster image
-      // This is the most reliable way to display a static preview
       videoThumb.src = item.poster || '/public/news/default_video_thumbnail.png';
 
       // Apply a consistent style to the thumbnail image
       videoThumb.style.cssText = `
-        width: 60px;
-        height: 60px;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         cursor: pointer;
         border: 2px solid ${index === currentModalIndex ? '#fff' : 'transparent'};
         border-radius: 4px;
         opacity: ${index === currentModalIndex ? '1' : '0.7'};
         transition: all 0.3s ease;
+        z-index: 10000;
       `;
       
       // Set a data attribute to indicate this is a video thumbnail
-      videoThumb.setAttribute('data-is-video', 'false');
+      videoThumb.setAttribute('data-is-video', 'true');
 
       // Add the click handler to update the main modal view
       videoThumb.onclick = () => {
