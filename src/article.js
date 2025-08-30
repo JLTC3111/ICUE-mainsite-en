@@ -1463,7 +1463,7 @@ function updateArticleMedia() {
         alt="Video thumbnail" 
         style="
           width: 100%;
-          height: auto;
+          height: 250px;
           object-fit: cover;
           border-radius: 8px;
         "
@@ -1473,7 +1473,6 @@ function updateArticleMedia() {
       position: relative;
       width: 100%;
       height: 250px;
-      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
