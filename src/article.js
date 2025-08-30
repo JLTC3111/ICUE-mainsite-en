@@ -1456,7 +1456,11 @@ function updateArticleMedia() {
   if (isVideo) {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
-
+    videoContainer.style.width = "100%";
+    videoContainer.style.height = "250px";
+    videoContainer.style.backgroundImage = "url('/news/default_video_thumbnail.png')";
+    videoContainer.style.backgroundSize = "cover";
+    videoContainer.style.backgroundPosition = "center";
     const videoContainer = document.createElement('div');
     videoContainer.className = 'article-video-container';
     videoContainer.style.cssText = `
