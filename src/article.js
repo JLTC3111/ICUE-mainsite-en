@@ -1463,7 +1463,7 @@ function updateArticleMedia() {
       position: relative;
       width: 100%;
       height: auto;
-      background-image: url('public/news/default_video.png');
+      background-image: url('public/news/default_video_thumbnail.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
