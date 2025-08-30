@@ -1463,9 +1463,11 @@ function updateArticleMedia() {
       position: relative;
       width: 100%;
       height: auto;
-      background: transparent;
+      background-image: url('public/news/default_video_thumbnail.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       border-radius: 8px;
