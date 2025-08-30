@@ -2104,8 +2104,6 @@ function updateModalImage() {
     const video = document.createElement('video');
     video.src = item.src;
 
-    // Provide a thumbnail image for iOS fallback
-    // Example: "myvideo-thumb.jpg" stored alongside the video
     video.poster = item.poster || "/public/news/default_video_thumbnail.png";
   // Important for iOS Safari:
     video.setAttribute("preload", "none");   // prevents Safari from overriding poster
@@ -2118,7 +2116,6 @@ function updateModalImage() {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 2;
     `;
 
     // Don't autoplay, just sit there as a static preview
