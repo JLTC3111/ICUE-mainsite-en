@@ -2099,13 +2099,9 @@ function updateModalImage() {
                         item.src.toLowerCase().includes('.avi') || item.src.toLowerCase().includes('.mkv');
     
     if (itemIsVideo) {
-    // ✅ (works on iOS as static preview)
+    
     const video = document.createElement('video');
     video.src = item.src;
-
-    // Provide a thumbnail image for iOS fallback
-    // Example: "myvideo-thumb.jpg" stored alongside the video
-    video.poster = item.poster || 'fallback-thumbnail.jpg';
 
     video.style.cssText = `
       width: 100%;
@@ -2117,7 +2113,6 @@ function updateModalImage() {
       z-index: 2;
     `;
 
-    // Don't autoplay, just sit there as a static preview
     video.preload = 'metadata';
     video.muted = true;
 
