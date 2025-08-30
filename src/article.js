@@ -1460,7 +1460,7 @@ function updateArticleMedia() {
     videoContainer.style.cssText = `
       position: relative;
       width: 100%;
-      height: 250px;
+      height: auto;
       background: #000;
       display: flex;
       flex-direction: column;
