@@ -2294,37 +2294,6 @@ document.addEventListener("DOMContentLoaded", () => {
           object-fit: cover;
         `;
         
-        // Add play icon overlay
-        const playIcon = document.createElement('div');
-        playIcon.innerHTML = '▶';
-        playIcon.style.cssText = `
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          color: white;
-          font-size: 48px;
-          text-shadow: 0 0 10px rgba(0,0,0,0.8);
-          pointer-events: none;
-          z-index: 10;
-        `;
-        
-        // Add video type indicator
-        const videoIndicator = document.createElement('div');
-        videoIndicator.innerHTML = '🎥 VIDEO';
-        videoIndicator.style.cssText = `
-          position: absolute;
-          top: 15px;
-          left: 15px;
-          background: rgba(0,0,0,0.8);
-          color: white;
-          padding: 5px 10px;
-          border-radius: 15px;
-          font-size: 12px;
-          font-weight: bold;
-          z-index: 10;
-        `;
-        
         videoContainer.appendChild(video);
         videoContainer.appendChild(playIcon);
         videoContainer.appendChild(videoIndicator);
