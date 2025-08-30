@@ -2286,7 +2286,7 @@ document.addEventListener("DOMContentLoaded", () => {
           width: 100%;
           height: 550px !important;
           background: #333;
-          display: flex;
+          display: none;
           align-items: center;
           justify-content: center;
           cursor: pointer;
