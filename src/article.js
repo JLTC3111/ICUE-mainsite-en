@@ -2266,37 +2266,51 @@ document.addEventListener("DOMContentLoaded", () => {
       const articleCaptionElement = document.getElementById("article-caption");
       
       if (isFirstVideo) {
-        // If first media is video, create a video thumbnail with play overlay
-        const imageContainer = articleImageElement.parentElement;
-        
-        // Create video element to extract thumbnail
-        const video = document.createElement('video');
-        video.src = firstMedia.src;
-        video.style.cssText = `
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        `;
-        video.muted = true;
-        video.currentTime = 1; // Try to get a frame from 1 second in
-        
-        // Hide original image and show video thumbnail
-        articleImageElement.style.display = 'none';
-        
-        // Create video thumbnail container
-        const videoContainer = document.createElement('div');
-        videoContainer.style.cssText = `
-          position: relative;
-          width: 100%;
-          height: 550px !important;
-          background: #333;
-          display: none;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          border-radius: 8px;
-          object-fit: cover;
-        `;
+      // Hide the default image element
+      articleImageElement.style.display = 'none';
+
+      // Create a container for the video thumbnail
+      const videoThumbnailContainer = document.createElement('div');
+      videoThumbnailContainer.id = 'video-thumbnail-container';
+      videoThumbnailContainer.style.cssText = `
+        position: relative;
+        width: 100%;
+        height: 550px !important;
+        background: #000;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+      `;
+
+      // Create an <img> element for the video poster image
+      const videoPoster = document.createElement('img');
+      videoPoster.src = firstMedia.poster || "/public/news/default_video_thumbnail.png";
+      videoPoster.alt = "Video thumbnail";
+      videoPoster.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      `;
+
+      // Create a play button overlay
+      const playOverlay = document.createElement('div');
+      playOverlay.id = 'video-play-overlay';
+      playOverlay.innerHTML = '<svg fill="#fff" height="60" viewBox="0 0 24 24" width="60" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>';
+      playOverlay.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none; /* Prevents the overlay from blocking the container's click event */
+        z-index: 10;
+      `;
+
+      // Append the poster image and play overlay to the container
+      videoThumbnailContainer.appendChild(videoPoster);
+      videoThumbnailContainer.appendChild(playOverlay);
+
+      // Find the parent element of the article image and append the new video thumbnail
+      articleImageElement.parentElement.appendChild(videoThumbnailContainer);
         
         videoContainer.appendChild(video);
         videoContainer.appendChild(playIcon);
