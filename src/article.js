@@ -1468,6 +1468,7 @@ function updateArticleMedia() {
       background-position: center;
       background-repeat: no-repeat;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       border-radius: 8px;
@@ -1477,7 +1478,7 @@ function updateArticleMedia() {
     
     const video = document.createElement('video');
     video.src = media.src;
-    video.controls = false; // Disable default controls to use custom ones
+    video.controls = false; // Custom controls
     video.preload = 'metadata';
     video.style.cssText = `
       width: 100%;
