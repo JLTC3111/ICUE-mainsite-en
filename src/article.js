@@ -1377,36 +1377,36 @@ function setupArticleSwipe(article) {
     leftArrow.onmouseenter = () => leftArrow.style.opacity = '1';
     leftArrow.onmouseleave = () => leftArrow.style.opacity = '0.7';
     leftArrow.onclick = () => navigateArticleMedia(-1);
-
+    
     // Right arrow
     const rightArrow = document.createElement('button');
     rightArrow.className = 'article-nav-btn article-next-btn';
     rightArrow.innerHTML = '<svg fill="#fff" width="25px" height="25px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 15.5c.004.276.224.504.5.5h26c.66 0 .664-1 0-1H.5c-.282-.004-.504.218-.5.5zm15 14c0 .45.554.663.854.354l14-14c.195-.195.195-.51 0-.707l-14-14c-.426-.443-1.167.248-.707.707L28.793 15.5 15.147 29.148c-.098.095-.147.218-.147.353z"/></svg>';
-      rightArrow.style.cssText = `
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0,0,0,0.6);
-        border: none;
-        padding: 10px 15px;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 100;
-        transition: all 0.3s ease;
-        opacity: 0.7;
-      `;
-      rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
-      rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.7';
-      rightArrow.onclick = () => navigateArticleMedia(1);
-      
-      imageContainer.appendChild(leftArrow);
-      imageContainer.appendChild(rightArrow);
-      
-      // Ensure container is positioned
-      imageContainer.style.position = 'relative';
-    }}
-
+    rightArrow.style.cssText = `
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    `;
+    rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
+    rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.7';
+    rightArrow.onclick = () => navigateArticleMedia(1);
+    
+    imageContainer.appendChild(leftArrow);
+    imageContainer.appendChild(rightArrow);
+    
+    // Ensure container is positioned
+    imageContainer.style.position = 'relative';
+  }}
+  
   // Add touch events for swipe
   imageContainer.addEventListener('touchstart', handleArticleTouchStart, { passive: false });
   imageContainer.addEventListener('touchmove', handleArticleTouchMove, { passive: false });
@@ -1473,7 +1473,7 @@ function updateArticleMedia() {
     
     const video = document.createElement('video');
     video.src = media.src;
-    video.controls = false; // Disable default controls to use custom ones
+    video.controls = false; 
     video.preload = 'metadata';
     video.style.cssText = `
       width: 100%;
@@ -1615,6 +1615,7 @@ function updateArticleMedia() {
     volumeBtn.onmouseleave = () => volumeBtn.style.transform = "scale(1)";
     fullscreenBtn.onmouseenter = () => fullscreenBtn.style.transform = "rotateZ(-360deg) scale(1.25)";
     fullscreenBtn.onmouseleave = () => fullscreenBtn.style.transform = "rotateZ(360deg) scale(1)";
+
     // Event handlers
     playPauseBtn.onclick = () => {
       if (video.paused) {
@@ -1663,14 +1664,12 @@ function updateArticleMedia() {
       openImageModal(currentArticle.images, currentArticleIndex);
     };
     
-    // Helper function to format time
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
     
-    // Assemble the video player
     progressContainer.appendChild(progressBar);
     controlBar.appendChild(playPauseBtn);
     controlBar.appendChild(progressContainer);
@@ -1713,36 +1712,35 @@ function addMediaIndicatorDots(article) {
   if (existingDots) {
     existingDots.remove();
   }
-  
   if (article.images.length <= 1) return;
-  
-const dotsContainer = document.createElement('div');
-  dotsContainer.className = 'media-dots-container';
 
-  if (window.innerWidth >= 769) {
-    // Desktop
-    dotsContainer.style.cssText = `
-      position: absolute;
-      bottom: 92.5%;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      z-index: 100;
-    `;
-  } else {
-    // Mobile
-    dotsContainer.style.cssText = `
-      position: absolute;
-      top: -1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 4px;
-      z-index: 100;
-    `;
-  }
-  
+const dotsContainer = document.createElement('div');
+dotsContainer.className = 'media-dots-container';
+
+if (window.innerWidth >= 769) {
+  // Desktop
+  dotsContainer.style.cssText = `
+    position: absolute;
+    bottom: 92.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  `;
+} else {
+  // Mobile
+  dotsContainer.style.cssText = `
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    z-index: 100;
+  `;
+}
+
 document.body.appendChild(dotsContainer); 
   
   article.images.forEach((_, index) => {
@@ -1867,7 +1865,7 @@ function createImageModal() {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-left: -0.5rem;
+        margin-left: -2.5rem;
       ">
         <button id="modal-close" class="modal-close" style="
           position: absolute;
@@ -2068,12 +2066,10 @@ function updateModalImage() {
   const modalCounter = document.getElementById('modal-counter');
   const thumbnailContainer = document.getElementById('modal-thumbnails');
   
-  // Determine if current media is video or image
   const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') || 
                   media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
                   media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
   
-  // Hide both elements first
   modalImage.style.display = 'none';
   modalVideo.style.display = 'none';
   
@@ -2099,25 +2095,128 @@ function updateModalImage() {
                         item.src.toLowerCase().includes('.avi') || item.src.toLowerCase().includes('.mkv');
     
     if (itemIsVideo) {
-    
-    const video = document.createElement('video');
-    video.src = item.src;
-
-    video.style.cssText = `
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 2;
-    `;
-
-    video.preload = 'metadata';
-    video.muted = true;
-
-    thumbnailContainer.appendChild(video);
-  
+      // Create video thumbnail
+      const thumbContainer = document.createElement('div');
+      thumbContainer.style.cssText = `
+        width: 60px;
+        height: 60px;
+        position: relative;
+        cursor: pointer;
+        border: 2px solid ${index === currentModalIndex ? '#fff' : 'transparent'};
+        border-radius: 4px;
+        opacity: ${index === currentModalIndex ? '1' : '0.7'};
+        transition: all 0.3s ease;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      `;
+      
+      // Create a fallback background with video icon
+      const videoIcon = document.createElement('div');
+      videoIcon.innerHTML = '📹';
+      videoIcon.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        opacity: 1;
+        z-index: 1;
+        color: white;
+        background: rgba(0,0,0,0.6);
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(255,255,255,0.3);
+      `;
+      
+      // Try to create video thumbnail
+      const video = document.createElement('video');
+      video.src = item.src;
+      video.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      `;
+      video.muted = true;
+      video.preload = 'metadata';
+      
+      // Add play icon overlay
+      const playIcon = document.createElement('div');
+      playIcon.innerHTML = '▶';
+      playIcon.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 16px;
+        text-shadow: 0 0 4px rgba(0,0,0,0.8);
+        pointer-events: none;
+        z-index: 3;
+      `;
+      
+      // iOS-compatible thumbnail generation
+      const loadThumbnail = () => {
+        if (video.readyState >= 2) { 
+          try {
+            video.currentTime = Math.min(5, video.duration * 0.1); // 10% into video or 5 seconds, whichever is smaller
+            console.log('Video seeking to:', video.currentTime);
+          } catch (e) {
+            console.log('Video seeking not supported, keeping fallback visible');
+          }
+        }
+      };
+      
+      // Event listeners for better iOS compatibility
+      video.addEventListener('loadedmetadata', loadThumbnail);
+      video.addEventListener('loadeddata', loadThumbnail);
+      video.addEventListener('canplay', () => {
+        console.log('Video can play - showing thumbnail');
+        video.style.opacity = '1';
+        videoIcon.style.opacity = '0.3';
+      });
+      
+      video.addEventListener('seeked', () => {
+        console.log('Video seeked successfully');
+        video.style.opacity = '1';
+        videoIcon.style.opacity = '0.3';
+      });
+      
+      // Error handling - show fallback if video fails to load
+      video.addEventListener('error', () => {
+        console.log('Video failed to load');
+        video.style.opacity = '0';
+        videoIcon.style.opacity = '1';
+        videoIcon.innerHTML = '🎬';
+        videoIcon.style.background = 'rgba(255,0,0,0.4)';
+      });
+      
+      // Timeout to ensure emoji stays visible if video doesn't load
+      setTimeout(() => {
+        if (video.style.opacity === '0') {
+          console.log('Video thumbnail timeout - keeping emoji visible');
+          videoIcon.style.opacity = '1';
+        }
+      }, 3000);
+      
+      thumbContainer.appendChild(videoIcon); // Fallback background
+      thumbContainer.appendChild(video);
+      thumbContainer.appendChild(playIcon);
+      
+      thumbContainer.onclick = () => {
+        currentModalIndex = index;
+        updateModalImage();
+      };
+      
+      thumbnailContainer.appendChild(thumbContainer);
     } else {
       // Create image thumbnail
       const thumb = document.createElement('img');
@@ -2213,7 +2312,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (existingDots) {
       existingDots.remove();
     }
-    
+
     const existingVideoContainer = imageContainer.querySelector('.article-video-container');
     if (existingVideoContainer) {
       existingVideoContainer.remove();
@@ -2232,10 +2331,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const articleTitleEl = document.getElementById("article-title");
-      if (articleTitleEl) {
-          articleTitleEl.innerHTML = renderMarkdown(article.title);
-          document.title = articleTitleEl.textContent.trim();
-      }
+        if (articleTitleEl) {
+              articleTitleEl.innerHTML = renderMarkdown(article.title);
+              document.title = articleTitleEl.textContent.trim();}
 
     // CHANGE TO:
     document.getElementById("article-title").innerHTML = renderMarkdown(article.title);
@@ -2277,7 +2375,7 @@ document.addEventListener("DOMContentLoaded", () => {
           position: relative;
           width: 100%;
           height: 550px !important;
-          background: #000;
+          background: #333;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -2285,7 +2383,38 @@ document.addEventListener("DOMContentLoaded", () => {
           border-radius: 8px;
           object-fit: cover;
         `;
-      
+        
+        // Add play icon overlay
+        const playIcon = document.createElement('div');
+        playIcon.innerHTML = '▶';
+        playIcon.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 48px;
+          text-shadow: 0 0 10px rgba(0,0,0,0.8);
+          pointer-events: none;
+          z-index: 10;
+        `;
+        
+        // Add video type indicator
+        const videoIndicator = document.createElement('div');
+        videoIndicator.innerHTML = '🎥 VIDEO';
+        videoIndicator.style.cssText = `
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          background: rgba(0,0,0,0.8);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: 12px;
+          font-weight: bold;
+          z-index: 10;
+        `;
+        
         videoContainer.appendChild(video);
         videoContainer.appendChild(playIcon);
         videoContainer.appendChild(videoIndicator);
