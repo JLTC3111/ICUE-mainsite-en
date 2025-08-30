@@ -1487,157 +1487,244 @@ window.OrgStructure = {
     window.downloadDocument = window.OrgStructure.downloadDocument;
     window.searchDocuments = window.OrgStructure.searchDocuments;
 
-    window.initMobileNewsSlider = () => {
-      const cards = document.querySelectorAll(".card.image-card");
-      const gridContainer = document.querySelector("main.grid");
-      if (!cards.length || !gridContainer) return;
-    
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      // Read the saved index from localStorage, defaulting to 0 if it doesn't exist
-      let currentIndex = parseInt(localStorage.getItem('newsSliderIndex')) || 0;
-      let startX = 0;
-      let startY = 0;
-      let isAnimating = false;
-      let sliderWrapper = null;
-    
-      function updateSlider() {
-        const isMobile = window.innerWidth <= 1440 && isTouchDevice;
+window.initMobileProjectsSlider = () => {
+  const cards = document.querySelectorAll(".card.image-card");
+  const gridContainer = document.querySelector("main.grid");
+  if (!cards.length || !gridContainer) return;
+
+  // Detect touch device
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  let currentIndex = 0;
+  let startX = 0;
+  let endX = 0;
+  let isAnimating = false;
+
+  // Create slider wrapper
+  let sliderWrapper = null;
+
+  function createSliderStructure() {
+    if (!sliderWrapper) {
+      sliderWrapper = document.createElement('div');
+      sliderWrapper.className = 'slider-wrapper';
+      
+      // Apply styles to slider wrapper
+      Object.assign(sliderWrapper.style, {
+        position: 'relative',
+        width: '100%',
+        height: 'auto',
+        overflow: 'hidden'
+      });
+
+      // Create slider track
+      const sliderTrack = document.createElement('div');
+      sliderTrack.className = 'slider-track';
+      Object.assign(sliderTrack.style, {
+        display: 'flex',
+        width: `${cards.length * 100}%`,
+        transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        transform: `translateX(-${currentIndex * (100 / cards.length)}%)`
+      });
+
+      // Move all cards into the slider track
+      cards.forEach((card, index) => {
+        const cardWrapper = document.createElement('div');
+        cardWrapper.className = 'card-wrapper';
+        Object.assign(cardWrapper.style, {
+          width: `${100 / cards.length}%`,
+          flexShrink: '0',
+          display: 'flex',
+          justifyContent: 'center'
+        });
         
-        if (isMobile) {
-          gridContainer.style.display = "flex";
-          gridContainer.style.flexDirection = "column";
-          gridContainer.style.alignItems = "center";
-          gridContainer.style.overflow = "hidden";
-          gridContainer.style.touchAction = "pan-y";
-          
-          if (!sliderWrapper) {
-            sliderWrapper = document.createElement('div');
-            sliderWrapper.className = 'slider-wrapper';
-            Object.assign(sliderWrapper.style, {
-              position: 'relative',
-              width: '100%',
-              height: 'auto',
-              overflow: 'hidden'
-            });
-    
-            const sliderTrack = document.createElement('div');
-            sliderTrack.className = 'slider-track';
-            Object.assign(sliderTrack.style, {
-              display: 'flex',
-              width: `${cards.length * 100}%`,
-              transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              transform: `translateX(0%)`
-            });
-    
-            cards.forEach(card => {
-              const cardWrapper = document.createElement('div');
-              cardWrapper.className = 'card-wrapper';
-              Object.assign(cardWrapper.style, {
-                width: `${100 / cards.length}%`,
-                flexShrink: '0',
-                display: 'flex',
-                justifyContent: 'center'
-              });
-              cardWrapper.appendChild(card);
-              sliderTrack.appendChild(cardWrapper);
-            });
-    
-            sliderWrapper.appendChild(sliderTrack);
-            gridContainer.prepend(sliderWrapper);
-            
-            if (isTouchDevice) {
-              sliderWrapper.addEventListener("touchstart", handleTouchStart);
-              sliderWrapper.addEventListener("touchmove", handleTouchMove);
-              sliderWrapper.addEventListener("touchend", handleTouchEnd);
-            }
-          }
-          
-          const sliderTrack = sliderWrapper.querySelector('.slider-track');
-          if (sliderTrack) {
-            // Correctly set the initial transform based on the loaded index
-            sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
-          }
-          
-        } else {
-          if (sliderWrapper) {
-            if (isTouchDevice) {
-              sliderWrapper.removeEventListener("touchstart", handleTouchStart);
-              sliderWrapper.removeEventListener("touchmove", handleTouchMove);
-              sliderWrapper.removeEventListener("touchend", handleTouchEnd);
-            }
-            sliderWrapper.remove();
-            sliderWrapper = null;
-            cards.forEach(card => {
-              gridContainer.appendChild(card);
-            });
-          }
-          gridContainer.style.display = "grid";
-        }
-      }
-    
-      function handleTouchStart(e) {
-        if (isAnimating) return;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-      }
-    
-      function handleTouchMove(e) {
-        if (isAnimating) return;
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        const deltaX = Math.abs(currentX - startX);
-        const deltaY = Math.abs(currentY - startY);
-        
-        if (deltaX > deltaY) {
-          e.preventDefault();
-        }
-        
-        const sliderTrack = sliderWrapper?.querySelector('.slider-track');
+        // Clone the card to avoid moving the original
+        const cardClone = card.cloneNode(true);
+        cardWrapper.appendChild(cardClone);
+        sliderTrack.appendChild(cardWrapper);
+      });
+
+      sliderWrapper.appendChild(sliderTrack);
+      
+      // Insert slider wrapper before the first card
+      cards[0].parentNode.insertBefore(sliderWrapper, cards[0]);
+    }
+  }
+
+  function updateSlider() {
+    if (window.innerWidth <= 1440 && isTouchDevice) {
+      // Mobile/touch mode - show slider
+      Object.assign(gridContainer.style, {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        overflow: "hidden",
+        touchAction: "pan-y"
+      });
+
+      // Create slider if it doesn't exist
+      createSliderStructure();
+      
+      // Show slider wrapper and hide original cards
+      if (sliderWrapper) {
+        sliderWrapper.style.display = 'block';
+        const sliderTrack = sliderWrapper.querySelector('.slider-track');
         if (sliderTrack) {
-          const dragOffset = (currentX - startX) / window.innerWidth * 100;
-          const baseTransform = -currentIndex * (100 / cards.length);
-          sliderTrack.style.transition = 'none';
-          sliderTrack.style.transform = `translateX(${baseTransform + dragOffset}%)`;
+          sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
         }
       }
-    
-      function handleTouchEnd(e) {
-        const endX = e.changedTouches[0].clientX;
-        const deltaX = endX - startX;
-        const sliderTrack = sliderWrapper?.querySelector('.slider-track');
-        
-        if (!sliderTrack) return;
-        
-        // Re-enable transition for the snap effect
-        sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    
-        // Apply swipe logic with boundary checks
-        const swipeThreshold = 50;
-        let newIndex = currentIndex;
-        
-        if (Math.abs(deltaX) > swipeThreshold) {
-          if (deltaX < 0 && currentIndex < cards.length - 1) { 
-            // Swiped left and not at last card
-            newIndex = currentIndex + 1;
-          } else if (deltaX > 0 && currentIndex > 0) { 
-            // Swiped right and not at first card
-            newIndex = currentIndex - 1;
-          }
-          // If at boundaries, newIndex stays the same (no movement)
-        }
-    
-        // Update current index
-        currentIndex = newIndex;
-    
-        // Set the final position and save the state
-        const finalTransform = -currentIndex * (100 / cards.length);
-        sliderTrack.style.transform = `translateX(${finalTransform}%)`;
-        localStorage.setItem('newsSliderIndex', currentIndex.toString());
+      
+      // Hide original cards
+      cards.forEach(card => {
+        card.style.display = "none";
+      });
+      
+    } else {
+      // Desktop mode - show grid
+      gridContainer.style.display = "grid";
+      
+      // Hide slider wrapper and show original cards
+      if (sliderWrapper) {
+        sliderWrapper.style.display = 'none';
       }
+      
+      cards.forEach(card => {
+        card.style.display = "block";
+      });
+    }
+  }
+
+  function slideToIndex(newIndex, direction = 'next') {
+    if (isAnimating || !sliderWrapper) return;
     
-        updateSlider();
-        window.addEventListener("resize", updateSlider);
-      };
+    isAnimating = true;
+    const sliderTrack = sliderWrapper.querySelector('.slider-track');
+    
+    if (sliderTrack) {
+      // Add smooth transition
+      sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      
+      // Update transform
+      sliderTrack.style.transform = `translateX(-${newIndex * (100 / cards.length)}%)`;
+      
+      // Update current index
+      currentIndex = newIndex;
+      
+      // Reset animation flag after transition
+      setTimeout(() => {
+        isAnimating = false;
+      }, 300);
+    }
+  }
+
+  function handleSwipe() {
+    if (isAnimating) return;
+    
+    const swipeThreshold = 50;
+    const deltaX = endX - startX;
+    
+    if (Math.abs(deltaX) > swipeThreshold) {
+      if (deltaX < 0) {
+        // Swipe left - next card
+        const nextIndex = (currentIndex + 1) % cards.length;
+        slideToIndex(nextIndex, 'next');
+      } else {
+        // Swipe right - previous card
+        const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+        slideToIndex(prevIndex, 'prev');
+      }
+    }
+  }
+
+  // Touch event handlers
+  function handleTouchStart(e) {
+    startX = e.touches[0].clientX;
+  }
+
+  function handleTouchMove(e) {
+    if (isAnimating) return;
+    
+    const currentX = e.touches[0].clientX;
+    const deltaX = currentX - startX;
+    const sliderTrack = sliderWrapper?.querySelector('.slider-track');
+    
+    if (sliderTrack && Math.abs(deltaX) > 10) {
+      // Disable transition during drag
+      sliderTrack.style.transition = 'none';
+      
+      // Calculate drag offset
+      const dragOffset = (deltaX / window.innerWidth) * 100;
+      const baseTransform = -currentIndex * (100 / cards.length);
+      
+      sliderTrack.style.transform = `translateX(${baseTransform + dragOffset}%)`;
+    }
+  }
+
+  function handleTouchEnd(e) {
+  const endX = e.changedTouches[0].clientX;
+  const deltaX = endX - startX;
+  const sliderTrack = sliderWrapper?.querySelector('.slider-track');
+  
+  if (!sliderTrack) return;
+  
+  // Re-enable transition for the snap effect
+  sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.45, 0.94)';
+
+  // Get the width of a single card
+  const cardWidth = sliderTrack.offsetWidth / cards.length;
+  // Get the current translateX value
+  const currentTransform = parseFloat(getComputedStyle(sliderTrack).transform.split(',')[4]) || 0;
+  
+  // Calculate the new index based on the final position
+  let newIndex = Math.round(Math.abs(currentTransform) / cardWidth);
+
+  // Apply snapping logic based on a swipe threshold
+  const swipeThreshold = 50;
+  if (Math.abs(deltaX) > swipeThreshold) {
+    if (deltaX < 0) { // Swiped left
+      newIndex = currentIndex + 1;
+    } else { // Swiped right
+      newIndex = currentIndex - 1;
+    }
+  }
+
+  // Ensure newIndex is within bounds
+  newIndex = Math.max(0, Math.min(newIndex, cards.length - 1));
+
+  // Get the card that is closest to being centered
+  const targetCard = cards[newIndex];
+  const cardRect = targetCard.getBoundingClientRect();
+  const containerRect = sliderWrapper.getBoundingClientRect();
+  
+  // Calculate visibility percentage
+  const visibleWidth = Math.min(cardRect.right, containerRect.right) - Math.max(cardRect.left, containerRect.left);
+  const percentVisible = (visibleWidth / cardWidth) * 100;
+  
+  // Define the snap-in threshold (e.g., 80%)
+  const snapThreshold = 80;
+
+  if (percentVisible >= snapThreshold) {
+      currentIndex = newIndex;
+  }
+  // If the visibility is less than the threshold, snap back to the previous card
+  else {
+      // Logic to snap back to the previous card (currentIndex) is implicitly handled
+      // by the final transform calculation below. No change to currentIndex needed.
+  }
+
+  // Set the final position and save the state
+  const finalTransform = -currentIndex * (100 / cards.length);
+  sliderTrack.style.transform = `translateX(${finalTransform}%)`;
+  localStorage.setItem('newsSliderIndex', currentIndex.toString());
+}
+
+  if (isTouchDevice) {
+    gridContainer.addEventListener("touchstart", handleTouchStart);
+    gridContainer.addEventListener("touchmove", handleTouchMove);
+    gridContainer.addEventListener("touchend", handleTouchEnd);
+  }
+
+  updateSlider();
+  window.addEventListener("resize", updateSlider);
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   window.initMobileProjectsSlider();
@@ -3907,7 +3994,7 @@ window.initMobileNewsSlider = () => {
     }
   }
 
-  function handleTouchEnd(e) {
+function handleTouchEnd(e) {
     const endX = e.changedTouches[0].clientX;
     const deltaX = endX - startX;
     const sliderTrack = sliderWrapper?.querySelector('.slider-track');
