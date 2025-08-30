@@ -3843,9 +3843,10 @@ window.initMobileNewsSlider = () => {
   if (!cards.length || !gridContainer) return;
 
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  let currentIndex = 0;
+  // Read the saved index from localStorage, defaulting to 0 if it doesn't exist
+  let currentIndex = parseInt(localStorage.getItem('newsSliderIndex')) || 0;
   let startX = 0;
-  let startY = 0; // Added for vertical swipe detection
+  let startY = 0;
   let isAnimating = false;
   let sliderWrapper = null;
 
@@ -3857,7 +3858,7 @@ window.initMobileNewsSlider = () => {
       gridContainer.style.flexDirection = "column";
       gridContainer.style.alignItems = "center";
       gridContainer.style.overflow = "hidden";
-      gridContainer.style.touchAction = "pan-y"; // Helps with vertical scrolling
+      gridContainer.style.touchAction = "pan-y";
       
       if (!sliderWrapper) {
         sliderWrapper = document.createElement('div');
@@ -3894,7 +3895,6 @@ window.initMobileNewsSlider = () => {
         sliderWrapper.appendChild(sliderTrack);
         gridContainer.prepend(sliderWrapper);
         
-        // Add event listeners directly to the new slider wrapper
         if (isTouchDevice) {
           sliderWrapper.addEventListener("touchstart", handleTouchStart);
           sliderWrapper.addEventListener("touchmove", handleTouchMove);
@@ -3902,16 +3902,14 @@ window.initMobileNewsSlider = () => {
         }
       }
       
-      // Update the transform property on resize
       const sliderTrack = sliderWrapper.querySelector('.slider-track');
       if (sliderTrack) {
+        // Correctly set the initial transform based on the loaded index
         sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
       }
       
     } else {
-      // Desktop mode: show grid and remove slider
       if (sliderWrapper) {
-        // Detach event listeners before removing
         if (isTouchDevice) {
           sliderWrapper.removeEventListener("touchstart", handleTouchStart);
           sliderWrapper.removeEventListener("touchmove", handleTouchMove);
@@ -3919,7 +3917,6 @@ window.initMobileNewsSlider = () => {
         }
         sliderWrapper.remove();
         sliderWrapper = null;
-        // Re-append cards to grid container
         cards.forEach(card => {
           gridContainer.appendChild(card);
         });
@@ -3941,12 +3938,10 @@ window.initMobileNewsSlider = () => {
     const deltaX = Math.abs(currentX - startX);
     const deltaY = Math.abs(currentY - startY);
     
-    // Prevent vertical scrolling if horizontal movement is dominant
     if (deltaX > deltaY) {
       e.preventDefault();
     }
     
-    // Smooth drag effect
     const sliderTrack = sliderWrapper?.querySelector('.slider-track');
     if (sliderTrack) {
       const dragOffset = (currentX - startX) / window.innerWidth * 100;
@@ -3957,7 +3952,7 @@ window.initMobileNewsSlider = () => {
   }
 
   function handleTouchEnd(e) {
-    endX = e.changedTouches[0].clientX;
+    const endX = e.changedTouches[0].clientX;
     const swipeThreshold = 50;
     const deltaX = endX - startX;
     const sliderTrack = sliderWrapper?.querySelector('.slider-track');
@@ -3967,16 +3962,17 @@ window.initMobileNewsSlider = () => {
     }
 
     if (Math.abs(deltaX) > swipeThreshold) {
-      if (deltaX < 0) { // Swiped left
+      if (deltaX < 0) {
         currentIndex = Math.min(currentIndex + 1, cards.length - 1);
-      } else { // Swiped right
+      } else {
         currentIndex = Math.max(currentIndex - 1, 0);
       }
+      // Save the updated index to localStorage
+      localStorage.setItem('newsSliderIndex', currentIndex.toString());
     }
     
-    // Snap to the new position
     if (sliderTrack) {
-        sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
+      sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
     }
   }
 
