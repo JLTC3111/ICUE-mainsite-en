@@ -2100,25 +2100,15 @@ function updateModalImage() {
                         item.src.toLowerCase().includes('.avi') || item.src.toLowerCase().includes('.mkv');
     
     if (itemIsVideo) {
-    
-    const videoThumb = document.createElement('img');
-    if (itemIsVideo) {
-    // For videos, the thumbnail source is the poster image
-    // You should ensure your 'item' object has a 'poster' property
-    videoThumb.src = item.poster || '/public/news/default_video_thumbnail.png';
-  } else {
-    // For regular images, the source is the item's src
-    videoThumb.src = item.src;
-  }
-    const video = document.createElement('video');
-    video.src = item.src;
+      // Create an <img> element for the video thumbnail
+      const videoThumb = document.createElement('img');
 
-    video.poster = item.poster || "/public/news/default_video_thumbnail.png";
-  // Important for iOS Safari:
-    video.setAttribute("preload", "none");   // prevents Safari from overriding poster
-    video.setAttribute("playsinline", "true"); 
-    video.setAttribute("webkit-playsinline", "true"); // iOS Safari inline playback
-    video.style.cssText = `
+      // For videos, the thumbnail source is the poster image
+      // This is the most reliable way to display a static preview
+      videoThumb.src = item.poster || '/public/news/default_video_thumbnail.png';
+
+      // Apply a consistent style to the thumbnail image
+      videoThumb.style.cssText = `
         width: 60px;
         height: 60px;
         object-fit: cover;
@@ -2127,20 +2117,22 @@ function updateModalImage() {
         border-radius: 4px;
         opacity: ${index === currentModalIndex ? '1' : '0.7'};
         transition: all 0.3s ease;
-    `;
+      `;
+      
+      // Set a data attribute to indicate this is a video thumbnail
+      videoThumb.setAttribute('data-is-video', 'true');
 
-    video.preload = 'none';
-    video.muted = false;
-    videoThumb.onclick = () => {
-    currentModalIndex = index;
-    updateModalImage();
-  };
+      // Add the click handler to update the main modal view
+      videoThumb.onclick = () => {
+        currentModalIndex = index;
+        updateModalImage();
+      };
 
-  thumbnailContainer.appendChild(videoThumb);
-    thumbnailContainer.appendChild(video);
-  
+      // Append the created image thumbnail to the container
+      thumbnailContainer.appendChild(videoThumb);
+
     } else {
-      // Create image thumbnail
+      // Create a standard image thumbnail for non-video items
       const thumb = document.createElement('img');
       thumb.src = item.src;
       thumb.style.cssText = `
@@ -2159,7 +2151,6 @@ function updateModalImage() {
       };
       thumbnailContainer.appendChild(thumb);
     }
-  });
   
   // Show/hide navigation buttons
   const prevBtn = document.getElementById('modal-prev');
