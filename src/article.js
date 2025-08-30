@@ -2164,6 +2164,7 @@ function updateModalImage() {
         transform: translate(-50%, -50%);
         color: white;
         font-size: 16px;
+        padding: 15px;
         text-shadow: 0 0 4px rgba(0,0,0,0.8);
         pointer-events: none;
         z-index: 3;
