@@ -1525,7 +1525,7 @@ window.initMobileProjectsSlider = () => {
         Object.assign(sliderTrack.style, {
           display: 'flex',
           width: `${cards.length * 100}%`,
-          transition: 'transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)',
+          transition: 'transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
           transform: `translateX(0%)`
         });
 
@@ -3831,7 +3831,7 @@ window.initMobileNewsSlider = () => {
         Object.assign(sliderTrack.style, {
           display: 'flex',
           width: `${cards.length * 100}%`,
-          transition: 'transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)',
+          transition: 'transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
           transform: `translateX(0%)`
         });
 
