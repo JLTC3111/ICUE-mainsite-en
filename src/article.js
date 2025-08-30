@@ -1457,22 +1457,11 @@ function updateArticleMedia() {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
     const videoContainer = document.createElement('div');
-    videoContainer.innerHTML = `
-      <img 
-        src="public/news/default_video_thumbnail.png" 
-        alt="Video thumbnail" 
-        style="
-          width: 100%;
-          height: 250px;
-          object-fit: cover;
-          border-radius: 8px;
-        "
-      />
-    `;
     videoContainer.style.cssText = `
       position: relative;
       width: 100%;
       height: 250px;
+      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
