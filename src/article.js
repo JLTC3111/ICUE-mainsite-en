@@ -2112,6 +2112,9 @@ function updateModalImage() {
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        flex-shrink: 0;
+        min-width: 60px;
+        min-height: 60px;
       `;
       
       // Create a fallback background with video icon
