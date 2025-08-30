@@ -2277,9 +2277,9 @@ document.addEventListener("DOMContentLoaded", () => {
       articleImageElement.style.display = 'none';
 
       // Create a container for the video thumbnail
-      const videoThumbnailContainer = document.createElement('div');
-      videoThumbnailContainer.id = 'video-thumbnail-container';
-      videoThumbnailContainer.style.cssText = `
+      const videoContainer = document.createElement('div');
+      videoContainer.id = 'video-thumbnail-container';
+      videoContainer.style.cssText = `
         position: relative;
         width: 100%;
         height: 550px !important;
@@ -2320,11 +2320,11 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       // Append the poster image and play overlay to the container
-      videoThumbnailContainer.appendChild(videoPoster);
-      videoThumbnailContainer.appendChild(playOverlay);
+      videoContainer.appendChild(videoPoster);
+      videoContainer.appendChild(playOverlay);
 
       // Find the parent element of the article image and append the new video thumbnail
-      articleImageElement.parentElement.appendChild(videoThumbnailContainer);
+      articleImageElement.parentElement.appendChild(videoContainer);
         
         videoContainer.appendChild(video);
         videoContainer.appendChild(playIcon);
