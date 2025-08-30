@@ -1458,10 +1458,16 @@ function updateArticleMedia() {
     articleImageElement.style.display = 'none';
     const videoContainer = document.createElement('div');
     videoContainer.innerHTML = `
-      <video controls>
-        <source src="${media.src}" type="${media.type}">
-        Your browser does not support the video tag.
-      </video>
+      <img 
+        src="public/news/default_video_thumbnail.png" 
+        alt="Video thumbnail" 
+        style="
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          border-radius: 8px;
+        "
+      />
     `;
     videoContainer.style.cssText = `
       position: relative;
