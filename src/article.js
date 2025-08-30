@@ -1457,13 +1457,13 @@ function updateArticleMedia() {
     // Hide image and create video container
     articleImageElement.style.display = 'none';
 
-    const videoThumbnailContainer = document.createElement('div');
-    videoThumbnailContainer.className = 'article-video-container';
-    videoThumbnailContainer.style.cssText = `
+    const videoContainer = document.createElement('div');
+    videoContainer.className = 'article-video-container';
+    videoContainer.style.cssText = `
       position: relative;
       width: 100%;
       height: auto;
-      background-image: url('public/news/default_video_thumbnail.png');
+      background-image: url('public/news/default_video.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -2279,7 +2279,14 @@ document.addEventListener("DOMContentLoaded", () => {
         position: relative;
         width: 100%;
         height: 550px !important;
-        background: #000;
+        background-image: url('/news/default_video_thumbnail.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         border-radius: 8px;
         overflow: hidden;
         cursor: pointer;
