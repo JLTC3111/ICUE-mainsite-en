@@ -2100,7 +2100,16 @@ function updateModalImage() {
                         item.src.toLowerCase().includes('.avi') || item.src.toLowerCase().includes('.mkv');
     
     if (itemIsVideo) {
-    // ✅ (works on iOS as static preview)
+    
+    const videoThumb = document.createElement('img');
+    if (itemIsVideo) {
+    // For videos, the thumbnail source is the poster image
+    // You should ensure your 'item' object has a 'poster' property
+    videoThumb.src = item.poster || '/public/news/default_video_thumbnail.png';
+  } else {
+    // For regular images, the source is the item's src
+    videoThumb.src = item.src;
+  }
     const video = document.createElement('video');
     video.src = item.src;
 
@@ -2120,10 +2129,14 @@ function updateModalImage() {
         transition: all 0.3s ease;
     `;
 
-    // Don't autoplay, just sit there as a static preview
     video.preload = 'none';
     video.muted = false;
+    videoThumb.onclick = () => {
+    currentModalIndex = index;
+    updateModalImage();
+  };
 
+  thumbnailContainer.appendChild(videoThumb);
     thumbnailContainer.appendChild(video);
   
     } else {
