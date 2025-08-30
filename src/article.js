@@ -2111,7 +2111,6 @@ function updateModalImage() {
     video.setAttribute("preload", "none");   // prevents Safari from overriding poster
     video.setAttribute("playsinline", "true"); 
     video.setAttribute("webkit-playsinline", "true"); // iOS Safari inline playback
-    video.controls = true; // optional, unless you want hidden controls
     video.style.cssText = `
       width: 100%;
       height: 100%;
@@ -2123,8 +2122,8 @@ function updateModalImage() {
     `;
 
     // Don't autoplay, just sit there as a static preview
-    video.preload = 'metadata';
-    video.muted = true;
+    video.preload = 'none';
+    video.muted = false;
 
     thumbnailContainer.appendChild(video);
   
