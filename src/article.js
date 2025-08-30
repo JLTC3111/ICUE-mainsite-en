@@ -2106,7 +2106,7 @@ function updateModalImage() {
 
     // Provide a thumbnail image for iOS fallback
     // Example: "myvideo-thumb.jpg" stored alongside the video
-    video.poster = item.poster || "/public/News/default-video-thumb.jpg";
+    video.poster = item.poster || "/public/News/default-video-thumb.png";
 
     video.style.cssText = `
       width: 100%;
