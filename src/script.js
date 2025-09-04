@@ -4317,7 +4317,7 @@ function setupLanguageSwitcher() {
     'en': {
       domain: 'en.icue.vn',
       language: 'en',
-      flagClass: 'flag-icon-us'
+      flagClass: 'flag-icon-gb'
     },
     'vn': {
       domain: 'icue.vn',
@@ -4381,7 +4381,7 @@ function setupLanguageSwitcher() {
       const pathSegments = currentPath.split('/').filter(segment => segment);
       if (pathSegments.length > 0) {
         let pathPage = pathSegments[pathSegments.length - 1];
-        // Remove .html extension if present
+
         pathPage = pathPage.replace('.html', '');
         console.log('[Language Switcher] Detected path page:', pathPage);
         
@@ -4506,7 +4506,7 @@ function setupLanguageSwitcher() {
   console.log('[Language Switcher] Target page mapped:', targetPageName);
   
   // Static pages that use direct file paths instead of hash routing
-  const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'];
+  const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
   
   // Build target path
   let targetPath = '';
