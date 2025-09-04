@@ -4291,5 +4291,260 @@ window.preloadProfileImages = () => {
 
 window.addEventListener('DOMContentLoaded', () => {
   window.preloadProfileImages();
+  
+  // Setup language switcher
+  setupLanguageSwitcher();
 });
+
+// Language switcher functionality
+function setupLanguageSwitcher() {
+  console.log('[Language Switcher] Setting up language switcher...');
+  
+  // Find language switcher elements
+  const pageSwitch = document.querySelector('a[id*="page-switch"], a[class*="language"], a[href*="icue-vn"], .language-switcher a, [data-language-switch]');
+  const langIcon = document.querySelector('.flag-icon, .language-icon, [data-flag]');
+  
+  // If no language switcher found, create a basic console warning
+  if (!pageSwitch) {
+    console.warn('[Language Switcher] No language switcher element found. Expected elements: a[id*="page-switch"], a[class*="language"], a[href*="icue-vn"], .language-switcher a, [data-language-switch]');
+    return;
+  }
+  
+  console.log('[Language Switcher] Found language switcher elements:', {pageSwitch, langIcon});
+  
+  // Language configuration
+  const languages = {
+    'en': {
+      domain: 'icue-mainsite-en',
+      language: 'en',
+      flagClass: 'flag-icon-us'
+    },
+    'vn': {
+      domain: 'icue-mainsite-vn', 
+      language: 'vn',
+      flagClass: 'flag-icon-vn'
+    }
+  };
+  
+  // Detect current language from hostname
+  const currentHostname = window.location.hostname;
+  const currentProtocol = window.location.protocol;
+  const currentSearch = window.location.search;
+  const currentPath = window.location.pathname;
+  
+  console.log('[Language Switcher] Current URL info:', {currentHostname, currentProtocol, currentSearch, currentPath});
+  
+  let currentLang = 'en'; // Default to English
+  
+  // Detect language from hostname
+  if (currentHostname.includes('icue-mainsite-vn') || currentHostname.includes('.vn')) {
+    currentLang = 'vn';
+  } else if (currentHostname.includes('icue-mainsite-en') || currentHostname.includes('.en')) {
+    currentLang = 'en';
+  }
+  
+  console.log('[Language Switcher] Detected language:', currentLang);
+  
+  const currentSite = languages[currentLang];
+  const targetSite = currentLang === 'en' ? languages['vn'] : languages['en'];
+  
+  console.log('[Language Switcher] Target site:', targetSite);
+  
+  function getCurrentPage() {
+    console.log('[Language Switcher] Detecting current page...');
+    
+    // Check if there's a global currentPage variable
+    if (typeof window.currentPage !== 'undefined' && window.currentPage) {
+      console.log('[Language Switcher] Found global currentPage:', window.currentPage);
+      return window.currentPage;
+    }
+    
+    // Check for hash-based routing
+    if (window.location.hash) {
+      const hashPage = window.location.hash.replace('#/', '').replace('#', '');
+      if (hashPage) {
+        console.log('[Language Switcher] Found hash page:', hashPage);
+        return hashPage;
+      }
+    }
+    
+    // Check for data-page attribute on any currently highlighted/selected elements
+    const currentPageElement = document.querySelector('[data-page].current, [data-page].selected');
+    if (currentPageElement) {
+      const dataPage = currentPageElement.getAttribute('data-page');
+      console.log('[Language Switcher] Found current page element:', dataPage);
+      return dataPage;
+    }
+    
+    // Try to detect from URL path
+    if (currentPath && currentPath !== '/') {
+      const pathSegments = currentPath.split('/').filter(segment => segment);
+      if (pathSegments.length > 0) {
+        let pathPage = pathSegments[pathSegments.length - 1];
+        // Remove .html extension if present
+        pathPage = pathPage.replace('.html', '');
+        console.log('[Language Switcher] Detected path page:', pathPage);
+        
+        // Check for static pages that don't follow hash routing
+        if (['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'].includes(pathPage.toLowerCase())) {
+          return pathPage.toLowerCase();
+        }
+        
+        return pathPage;
+      }
+    }
+    
+    // Try to detect from page title or meta tags
+    const titleElement = document.querySelector('title');
+    if (titleElement) {
+      const title = titleElement.textContent.toLowerCase();
+      console.log('[Language Switcher] Checking title:', title);
+      if (title.includes('about') || title.includes('giới thiệu')) return 'aboutUs';
+      if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
+      if (title.includes('project') || title.includes('dự án')) return 'pastProjects';
+      if (title.includes('news') || title.includes('tin tức')) return 'News';
+      if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
+      if (title.includes('nhân lực') || title.includes('people')) return 'ourPeople';
+      if (title.includes('công việc') || title.includes('work')) return 'ourWork';
+      if (title.includes('cơ cấu') || title.includes('structure')) return 'orgStructure';
+      if (title.includes('chuyên gia') || title.includes('expert')) return 'meetOurExperts';
+      if (title.includes('cán bộ') || title.includes('core')) return 'coreTeam';
+      // Static pages
+      if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
+      if (title.includes('gdpr')) return 'gdpr';
+      if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
+      if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
+      if (title.includes('terms') || title.includes('điều khoản')) return 'terms';
+      if (title.includes('faq') || title.includes('hỏi đáp')) return 'faqs';
+    }
+    
+    // Try to detect from current content or active elements
+    const activeNavLinkText = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active');
+    if (activeNavLinkText) {
+      const linkText = activeNavLinkText.textContent.toLowerCase().trim();
+      console.log('[Language Switcher] Found active nav link:', linkText);
+      if (linkText.includes('about') || linkText.includes('giới thiệu')) return 'aboutUs';
+      if (linkText.includes('service') || linkText.includes('dịch vụ')) return 'Services';
+      if (linkText.includes('project') || linkText.includes('dự án')) return 'pastProjects';
+      if (linkText.includes('news') || linkText.includes('tin tức')) return 'News';
+      if (linkText.includes('contact') || linkText.includes('liên hệ')) return 'Contact';
+      if (linkText.includes('nhân lực') || linkText.includes('people')) return 'ourPeople';
+      if (linkText.includes('công việc') || linkText.includes('work')) return 'ourWork';
+      if (linkText.includes('cơ cấu') || linkText.includes('structure')) return 'orgStructure';
+      if (linkText.includes('chuyên gia') || linkText.includes('expert')) return 'meetOurExperts';
+      if (linkText.includes('cán bộ') || linkText.includes('core')) return 'coreTeam';
+    }
+    
+    // Check for specific content identifiers on the page
+    const contentArea = document.querySelector('#content, main, .content, .page-content');
+    if (contentArea) {
+      const contentText = contentArea.textContent.toLowerCase();
+      console.log('[Language Switcher] Checking content for page indicators...');
+      if (contentText.includes('about') || contentText.includes('giới thiệu')) return 'aboutUs';
+      if (contentText.includes('organization') || contentText.includes('cơ cấu')) return 'orgStructure';
+      if (contentText.includes('our work') || contentText.includes('công việc')) return 'ourWork';
+      if (contentText.includes('projects') || contentText.includes('dự án')) return 'pastProjects';
+      if (contentText.includes('news') || contentText.includes('tin tức')) return 'News';
+      if (contentText.includes('contact') || contentText.includes('liên hệ')) return 'Contact';
+      if (contentText.includes('experts') || contentText.includes('chuyên gia')) return 'meetOurExperts';
+      if (contentText.includes('core team') || contentText.includes('cán bộ')) return 'coreTeam';
+    }
+    
+    // Default fallback
+    console.log('[Language Switcher] Defaulting to Home page');
+    return 'Home';
+  }
+
+  // Page mapping between languages (using actual page names from navigation)
+  const pageMapping = {
+    'Home': 'Home',
+    'aboutUs': 'aboutUs', 
+    'orgStructure': 'orgStructure',
+    'ourWork': 'ourWork',
+    'pastProjects': 'pastProjects',
+    'News': 'News',
+    'ourPeople': 'ourPeople',
+    'meetOurExperts': 'meetOurExperts',
+    'coreTeam': 'coreTeam',
+    'Contact': 'Contact',
+    // Static pages
+    'donations': 'donations',
+    'gdpr': 'gdpr',
+    'privacy': 'privacy',
+    'recruitment': 'recruitment',
+    'terms': 'terms',
+    'faqs': 'faqs',
+    // Add any other page mappings as needed
+  };
+
+  // Get current page and map to target page
+  const currentPageName = getCurrentPage();
+  const targetPageName = pageMapping[currentPageName] || 'Home';
+  
+  console.log('[Language Switcher] Current page detected:', currentPageName);
+  console.log('[Language Switcher] Target page mapped:', targetPageName);
+  
+  // Static pages that use direct file paths instead of hash routing
+  const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'];
+  
+  // Build target path
+  let targetPath = '';
+  if (targetPageName === 'Home') {
+    targetPath = '';
+  } else if (staticPages.includes(targetPageName)) {
+    // Static pages use direct file paths
+    targetPath = `src/pages/${targetPageName}.html`;
+  } else {
+    // Hash-based routing for main navigation pages
+    targetPath = `#/${targetPageName}`;
+  }
+  
+  // Build target URL with mapped page (ensure proper slash after domain)
+  const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
+  
+  console.log('[Language Switcher] Target URL:', targetUrl);
+  
+  // Update the language switcher elements
+  if (langIcon) {
+    langIcon.className = `flag-icon ${targetSite.flagClass}`;
+  }
+  pageSwitch.href = targetUrl;
+  
+  // Optional: Add aria-label for accessibility
+  pageSwitch.setAttribute('aria-label', `Switch to ${targetSite.language === 'en' ? 'English' : 'Vietnamese'} version`);
+  
+  // Optional: Add data attributes for easier debugging/testing
+  pageSwitch.setAttribute('data-current-lang', currentSite.language);
+  pageSwitch.setAttribute('data-target-lang', targetSite.language);
+  pageSwitch.setAttribute('data-target-domain', targetSite.domain);
+
+  // Add click event for analytics or additional handling
+  pageSwitch.addEventListener('click', function(e) {
+    // Optional: Add analytics tracking
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'language_switch', {
+        'from_language': currentSite.language,
+        'to_language': targetSite.language,
+        'current_page': currentPageName,
+        'target_page': targetPageName,
+        'target_url': targetUrl
+      });
+    }
+    
+    // Optional: Store language preference in localStorage
+    try {
+      localStorage.setItem('preferred_language', targetSite.language);
+    } catch (e) {
+      console.warn('[Language Switcher] Could not store language preference:', e);
+    }
+    
+    console.log('[Language Switcher] Language switch clicked:', {
+      from: currentSite.language,
+      to: targetSite.language,
+      currentPage: currentPageName,
+      targetPage: targetPageName,
+      targetUrl: targetUrl
+    });
+  });
+}
   
