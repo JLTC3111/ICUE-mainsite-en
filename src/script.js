@@ -4315,12 +4315,12 @@ function setupLanguageSwitcher() {
   // Language configuration
   const languages = {
     'en': {
-      domain: 'icue-mainsite-en',
+      domain: 'en.icue.vn',
       language: 'en',
       flagClass: 'flag-icon-us'
     },
     'vn': {
-      domain: 'icue-mainsite-vn', 
+      domain: 'icue.vn',
       language: 'vn',
       flagClass: 'flag-icon-vn'
     }
