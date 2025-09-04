@@ -4294,7 +4294,183 @@ window.addEventListener('DOMContentLoaded', () => {
   
   // Setup language switcher
   setupLanguageSwitcher();
+  
+  // Initialize functions for static pages
+  initializePageFunctions();
 });
+
+// Also listen for page visibility changes (when switching back to tab)
+// and when hash changes for better coverage
+window.addEventListener('hashchange', () => {
+  console.log('[Init] Hash changed, reinitializing...');
+  setTimeout(initializePageFunctions, 100);
+});
+
+window.addEventListener('pageshow', () => {
+  console.log('[Init] Page shown, checking for initialization...');
+  setTimeout(initializePageFunctions, 100);
+});
+
+// Additional safety net: initialize after a delay
+setTimeout(() => {
+  console.log('[Init] Safety net initialization...');
+  initializePageFunctions();
+}, 1000);
+
+// Centralized function to initialize all page functions
+function initializePageFunctions() {
+  console.log('[Init] Initializing page functions...');
+  
+  // Check if we arrived here via language switch to static page
+  let languageSwitchTarget = null;
+  try {
+    languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
+    if (languageSwitchTarget) {
+      sessionStorage.removeItem('language_switch_to_static');
+      console.log('[Init] Detected language switch to static page:', languageSwitchTarget);
+    }
+  } catch (e) {
+    console.warn('[Init] Could not check language switch flag:', e);
+  }
+  
+  // Core functions that should be available on all pages
+  requestAnimationFrame(() => {
+    retriggerMenuAnimations();
+    updateCalendarSvgTime();
+    initAudioVisualizer();
+    calendarModal();
+    updateHamburgerIcon();
+    ICUEFooter.autoInject();
+    CommunityGallery.init();
+    initializeChatbot();
+    
+    // Initialize core page functions that should be available everywhere
+    if (typeof initFrequentlyAskedQuestions === 'function') {
+      initFrequentlyAskedQuestions();
+      console.log('[Init] FAQ functions initialized globally');
+    }
+    
+    if (typeof JobBoard !== 'undefined' && JobBoard.init) {
+      JobBoard.init();
+      console.log('[Init] JobBoard initialized globally');
+    }
+    
+    if (typeof DonationForm !== 'undefined' && DonationForm.init) {
+      DonationForm.init();
+      console.log('[Init] DonationForm initialized globally');
+    }
+    
+    if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
+      AwardsPage.init();
+      console.log('[Init] AwardsPage initialized globally');
+    }
+    
+    if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
+      CommunityPage.init();
+      console.log('[Init] CommunityPage initialized globally');
+    }
+    
+    // Setup language switcher (ensure it's available)
+    if (typeof setupLanguageSwitcher === 'function') {
+      setupLanguageSwitcher();
+      console.log('[Init] Language switcher initialized');
+    }
+    
+    // Page-specific initializations based on current path or hash
+    const currentPath = window.location.pathname;
+    const currentHash = window.location.hash;
+    
+    // Check if we're on a static page
+    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
+    const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
+    
+    if (isStaticPage || languageSwitchTarget) {
+      console.log('[Init] Detected static page, initializing specific functions...');
+      
+      // Determine which page we're on
+      const pageName = languageSwitchTarget || staticPages.find(page => currentPath.includes(`${page}.html`));
+      
+      // Initialize functions based on the specific static page
+      if (pageName === 'recruitment' || currentPath.includes('recruitment.html')) {
+        if (typeof JobBoard !== 'undefined' && JobBoard.init) {
+          JobBoard.init();
+          console.log('[Init] JobBoard initialized');
+        }
+      } else if (pageName === 'donations' || currentPath.includes('donations.html')) {
+        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
+          DonationForm.init();
+          console.log('[Init] DonationForm initialized');
+        }
+      } else if (pageName === 'faqs' || currentPath.includes('faqs.html')) {
+        if (typeof initFrequentlyAskedQuestions === 'function') {
+          initFrequentlyAskedQuestions();
+          console.log('[Init] FAQ functions initialized');
+        }
+      } else if (pageName === 'notableAwards' || currentPath.includes('notableAwards.html')) {
+        if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
+          AwardsPage.init();
+          console.log('[Init] AwardsPage initialized');
+        }
+      } else if (pageName === 'communityActivities' || currentPath.includes('communityActivities.html')) {
+        if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
+          CommunityPage.init();
+          console.log('[Init] CommunityPage initialized');
+        }
+      }
+      
+      // Add a small delay to ensure DOM is ready for static pages
+      setTimeout(() => {
+        console.log('[Init] Static page initialization complete for:', pageName);
+      }, 100);
+    }
+    
+    // Additional element-based detection for safety
+    // Check for specific page elements and initialize accordingly
+    setTimeout(() => {
+      // Job board elements
+      if (document.querySelector('.job-listings, .job-board, [data-job-board], #job-board')) {
+        console.log('[Init] Found job board elements, ensuring JobBoard is initialized...');
+        if (typeof JobBoard !== 'undefined' && JobBoard.init) {
+          JobBoard.init();
+        }
+      }
+      
+      // Donation form elements  
+      if (document.querySelector('.donation-form, .donate, [data-donation], #donation-form')) {
+        console.log('[Init] Found donation elements, ensuring DonationForm is initialized...');
+        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
+          DonationForm.init();
+        }
+      }
+      
+      // FAQ elements
+      if (document.querySelector('.faq-container, .faq, [data-faq], #faq')) {
+        console.log('[Init] Found FAQ elements, ensuring FAQ is initialized...');
+        if (typeof initFrequentlyAskedQuestions === 'function') {
+          initFrequentlyAskedQuestions();
+        }
+      }
+      
+      // Awards elements
+      if (document.querySelector('.awards-container, .awards, [data-awards], #awards')) {
+        console.log('[Init] Found awards elements, ensuring AwardsPage is initialized...');
+        if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
+          AwardsPage.init();
+        }
+      }
+      
+      // Community elements
+      if (document.querySelector('.community-container, .community, [data-community], #community')) {
+        console.log('[Init] Found community elements, ensuring CommunityPage is initialized...');
+        if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
+          CommunityPage.init();
+        }
+      }
+    }, 300); // Small delay to ensure DOM is ready
+    
+    console.log('[Init] Page functions initialization complete');
+  });
+}
 
 // Language switcher functionality
 function setupLanguageSwitcher() {
@@ -4541,6 +4717,16 @@ function setupLanguageSwitcher() {
 
   // Add click event for analytics or additional handling
   pageSwitch.addEventListener('click', function(e) {
+    // Mark that we're doing a language switch to a static page
+    if (staticPages.includes(targetPageName)) {
+      try {
+        sessionStorage.setItem('language_switch_to_static', targetPageName);
+        console.log('[Language Switcher] Marked language switch to static page:', targetPageName);
+      } catch (e) {
+        console.warn('[Language Switcher] Could not mark static page switch:', e);
+      }
+    }
+    
     // Optional: Add analytics tracking
     if (typeof gtag !== 'undefined') {
       gtag('event', 'language_switch', {
