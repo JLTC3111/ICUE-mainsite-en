@@ -720,7 +720,19 @@ window.loadPage = (page) => {
               updateMusicBarColor(page);
               calendarModal(page);
               updateHamburgerIcon(page);
-              ICUEFooter.autoInject();
+              
+              // Initialize footer with error handling
+              if (typeof ICUEFooter !== 'undefined' && ICUEFooter.autoInject) {
+                try {
+                  ICUEFooter.autoInject();
+                  console.log('[LoadPage] ICUEFooter initialized successfully');
+                } catch (error) {
+                  console.warn('[LoadPage] ICUEFooter.autoInject() failed:', error);
+                }
+              } else {
+                console.warn('[LoadPage] ICUEFooter not available');
+              }
+              
               CommunityGallery.init();
               initializeChatbot();
               
@@ -4103,7 +4115,19 @@ function initializePageFunctions() {
     initAudioVisualizer();
     calendarModal();
     updateHamburgerIcon();
-    ICUEFooter.autoInject();
+    
+    // Initialize footer with error handling
+    if (typeof ICUEFooter !== 'undefined' && ICUEFooter.autoInject) {
+      try {
+        ICUEFooter.autoInject();
+        console.log('[Init] ICUEFooter initialized successfully');
+      } catch (error) {
+        console.warn('[Init] ICUEFooter.autoInject() failed:', error);
+      }
+    } else {
+      console.warn('[Init] ICUEFooter not available');
+    }
+    
     CommunityGallery.init();
     initializeChatbot();
     
@@ -4220,11 +4244,8 @@ function initializePageFunctions() {
       }, 100);
     }
     
-    // Additional element-based detection for safety
-    // Check for specific page elements and initialize accordingly
     console.log('🔍 [DEBUG] Starting element-based detection...');
     setTimeout(() => {
-      // Job board elements
       if (document.querySelector('.job-listings, .job-board, [data-job-board], #job-board')) {
         console.log('💼 [DEBUG] Found job board elements, ensuring JobBoard is initialized...');
         console.log('[Init] Found job board elements, ensuring JobBoard is initialized...');
@@ -4235,7 +4256,6 @@ function initializePageFunctions() {
         }
       }
       
-      // Donation form elements  
       if (document.querySelector('.donation-form, .donate, [data-donation], #donation-form')) {
         console.log('💰 [DEBUG] Found donation elements, ensuring DonationForm is initialized...');
         console.log('[Init] Found donation elements, ensuring DonationForm is initialized...');
@@ -4246,7 +4266,6 @@ function initializePageFunctions() {
         }
       }
       
-      // FAQ elements
       if (document.querySelector('.faq-container, .faq, [data-faq], #faq')) {
         console.log('[Init] Found FAQ elements, ensuring FAQ is initialized...');
         if (typeof initFrequentlyAskedQuestions === 'function') {
@@ -4254,7 +4273,6 @@ function initializePageFunctions() {
         }
       }
       
-      // Awards elements
       if (document.querySelector('.awards-container, .awards, [data-awards], #awards')) {
         console.log('[Init] Found awards elements, ensuring AwardsPage is initialized...');
         if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
@@ -4262,20 +4280,18 @@ function initializePageFunctions() {
         }
       }
       
-      // Community elements
       if (document.querySelector('.community-container, .community, [data-community], #community')) {
         console.log('[Init] Found community elements, ensuring CommunityPage is initialized...');
         if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
           CommunityPage.init();
         }
       }
-    }, 300); // Small delay to ensure DOM is ready
+    }, 300);
     
     console.log('[Init] Page functions initialization complete');
   });
 }
 
-// Language switcher functionality - GLOBAL
 function setupLanguageSwitcher() {
   console.log('[Language Switcher] Setting up language switcher...');
   
