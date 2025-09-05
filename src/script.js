@@ -4071,11 +4071,9 @@ window.preloadProfileImages = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages and setup');
   window.preloadProfileImages();
 });
 
-// Centralized function to initialize all page functions
 function initializePageFunctions() {
   let languageSwitchTarget = null;
   try {
@@ -4210,8 +4208,6 @@ function initializePageFunctions() {
 }
 
 function setupLanguageSwitcher() {
-  console.log('[Language Switcher] Setting up language switcher...');
-  
   const pageSwitch = document.getElementById("page-switch");
   const langIcon = document.getElementById("langSwitcher");
 
@@ -4220,14 +4216,12 @@ function setupLanguageSwitcher() {
     return;
   }
 
-  // Get current URL components
   let currentHost = window.location.host;
   const currentPath = window.location.pathname;
   const currentHash = window.location.hash;
   const currentSearch = window.location.search;
   const currentProtocol = window.location.protocol;
 
-  // Configuration for language switching
   const siteConfig = {
     vietnamese: {
       domain: "icue.vn",
@@ -4299,7 +4293,6 @@ function setupLanguageSwitcher() {
     return 'Home';
   }
 
-  // Page mapping between languages (using actual page names from navigation)
   const pageMapping = {
     'Home': 'Home',
     'aboutUs': 'aboutUs', 
@@ -4322,17 +4315,14 @@ function setupLanguageSwitcher() {
     'cookies': 'cookies'
   };
 
-  // Get current page and map to target page
   const currentPageName = getCurrentPage();
   const targetPageName = pageMapping[currentPageName] || 'Home';
   
   console.log('[Language Switcher] Current page detected:', currentPageName);
   console.log('[Language Switcher] Target page mapped:', targetPageName);
   
-  // Static pages that can be accessed via hash routing
   const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
   
-  // Build target path - using hash-based routing for consistency
   let targetPath = '';
   console.log('🔧 [DEBUG] Building target path for:', targetPageName);
   if (targetPageName === 'Home') {
@@ -4347,29 +4337,22 @@ function setupLanguageSwitcher() {
     targetPath = `#/${targetPageName}`;
     console.log('🔧 [DEBUG] Regular page - hash path:', targetPath);
   }
-  
-  // Build target URL with mapped page (ensure proper slash after domain)
+
   const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
   
   console.log('[Language Switcher] Target URL (hash-based):', targetUrl);
   
-  // Update the language switcher elements
   if (langIcon) {
     langIcon.className = `flag-icon ${targetSite.flagClass}`;
   }
   pageSwitch.href = targetUrl;
   
-  // Optional: Add aria-label for accessibility
   pageSwitch.setAttribute('aria-label', `Switch to ${targetSite.language === 'en' ? 'English' : 'Vietnamese'} version`);
-  
-  // Optional: Add data attributes for easier debugging/testing
   pageSwitch.setAttribute('data-current-lang', currentSite.language);
   pageSwitch.setAttribute('data-target-lang', targetSite.language);
   pageSwitch.setAttribute('data-target-domain', targetSite.domain);
 
-  // Add click event for analytics or additional handling
   pageSwitch.addEventListener('click', function(e) {
-    // Set flag for static page initialization if switching to a static page
     if (staticPages.includes(targetPageName)) {
       try {
         sessionStorage.setItem('language_switch_to_static', targetPageName);
@@ -4378,8 +4361,7 @@ function setupLanguageSwitcher() {
         console.warn('Could not set static page flag:', error);
       }
     }
-    
-    // Optional: Add analytics tracking
+
     if (typeof gtag !== 'undefined') {
       gtag('event', 'language_switch', {
         'from_language': currentSite.language,
@@ -4390,274 +4372,16 @@ function setupLanguageSwitcher() {
       });
     }
     
-    // Optional: Store language preference in localStorage
     try {
       localStorage.setItem('preferredLanguage', targetSite.language);
       localStorage.setItem('lastVisitedPage', targetPageName);
     } catch (error) {
       console.warn('Could not save language preference:', error);
     }
-    
-    // Allow normal navigation to proceed
+
     return true;
   });
 
   console.log(`Language switcher configured: ${currentSite.language} (${currentPageName}) → ${targetSite.language} (${targetPageName})`);
   console.log(`Target URL: ${targetUrl}`);
 }
-  
-  // Detect current language from hostname
-  const currentHostname = window.location.hostname;
-  const currentProtocol = window.location.protocol;
-  const currentSearch = window.location.search;
-  const currentPath = window.location.pathname;
-  
-  console.log('[Language Switcher] Current URL info:', {currentHostname, currentProtocol, currentSearch, currentPath});
-  
-  let currentLang = 'en'; // Default to English
-  
-  // Detect language from hostname
-  if (currentHostname.includes('icue-mainsite-vn') || currentHostname.includes('.vn')) {
-    currentLang = 'vn';
-  } else if (currentHostname.includes('icue-mainsite-en') || currentHostname.includes('.en')) {
-    currentLang = 'en';
-  }
-  
-  console.log('[Language Switcher] Detected language:', currentLang);
-  
-  const currentSite = languages[currentLang];
-  const targetSite = currentLang === 'en' ? languages['vn'] : languages['en'];
-  
-  console.log('[Language Switcher] Target site:', targetSite);
-  
-  function getCurrentPage() {
-    console.log('[Language Switcher] Detecting current page...');
-    
-    // Check if there's a global currentPage variable
-    if (typeof window.currentPage !== 'undefined' && window.currentPage) {
-      console.log('[Language Switcher] Found global currentPage:', window.currentPage);
-      return window.currentPage;
-    }
-    
-    // Check for hash-based routing
-    if (window.location.hash) {
-      const hashPage = window.location.hash.replace('#/', '').replace('#', '');
-      if (hashPage) {
-        console.log('[Language Switcher] Found hash page:', hashPage);
-        return hashPage;
-      }
-    }
-    
-    // Check for data-page attribute on any currently highlighted/selected elements
-    const currentPageElement = document.querySelector('[data-page].current, [data-page].selected');
-    if (currentPageElement) {
-      const dataPage = currentPageElement.getAttribute('data-page');
-      console.log('[Language Switcher] Found current page element:', dataPage);
-      return dataPage;
-    }
-    
-    // Try to detect from URL path
-    if (currentPath && currentPath !== '/') {
-      const pathSegments = currentPath.split('/').filter(segment => segment);
-      if (pathSegments.length > 0) {
-        let pathPage = pathSegments[pathSegments.length - 1];
-
-        pathPage = pathPage.replace('.html', '');
-        console.log('[Language Switcher] Detected path page:', pathPage);
-        
-        // Check for static pages that don't follow hash routing
-        if (['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'].includes(pathPage.toLowerCase())) {
-          return pathPage.toLowerCase();
-        }
-        
-        return pathPage;
-      }
-    }
-    
-    // Try to detect from page title or meta tags
-      const titleElement = document.querySelector('title');
-      if (titleElement) {
-        const title = titleElement.textContent.toLowerCase();
-        console.log('[Language Switcher] Checking title:', title);
-        if (title.includes('about') || title.includes('chúng tôi')) return 'aboutUs';
-        if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
-        if (title.includes('project') || title.includes('dự án')) return 'pastProjects';
-        if (title.includes('news') || title.includes('tin tức')) return 'News';
-        if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
-        if (title.includes('people') || title.includes('nhân lực')) return 'ourPeople';
-        if (title.includes('work') || title.includes('công việc')) return 'ourWork';
-        if (title.includes('structure') || title.includes('cơ cấu')) return 'orgStructure';
-        if (title.includes('expert') || title.includes('chuyên gia')) return 'meetOurExperts';
-        if (title.includes('core') || title.includes('cán bộ')) return 'coreTeam';
-        if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
-        if (title.includes('gdpr')) return 'gdpr';
-        if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
-        if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
-        if (title.includes('terms') || title.includes('điều khoản')) return 'terms';
-        if (title.includes('faq') || title.includes('hỏi đáp')) return 'faqs';
-        if (title.includes('notableAward') || title.includes('giải thưởng nổi bật')) return 'notableAwards';
-        if (title.includes('community') || title.includes('cộng đồng')) return 'communityActivities';
-        if (title.includes('cookies') || title.includes('cookies')) return 'cookies';
-      }
-      
-      // Try to detect from current content or active elements
-      const activeNavLinkText = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active');
-      if (activeNavLinkText) {
-        const linkText = activeNavLinkText.textContent.toLowerCase().trim();
-        console.log('[Language Switcher] Found active nav link:', linkText);
-        if (title.includes('about') || title.includes('chúng tôi')) return 'aboutUs';
-        if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
-        if (title.includes('project') || title.includes('dự án')) return 'pastProjects';
-        if (title.includes('news') || title.includes('tin tức')) return 'News';
-        if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
-        if (title.includes('people') || title.includes('nhân lực')) return 'ourPeople';
-        if (title.includes('work') || title.includes('công việc')) return 'ourWork';
-        if (title.includes('structure') || title.includes('cơ cấu')) return 'orgStructure';
-        if (title.includes('expert') || title.includes('chuyên gia')) return 'meetOurExperts';
-        if (title.includes('core') || title.includes('cán bộ')) return 'coreTeam';
-        if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
-        if (title.includes('gdpr')) return 'gdpr';
-        if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
-        if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
-        if (title.includes('terms') || title.includes('điều khoản')) return 'terms';
-        if (title.includes('faq') || title.includes('hỏi đáp')) return 'faqs';
-        if (title.includes('notableAward') || title.includes('giải thưởng nổi bật')) return 'notableAwards';
-        if (title.includes('community') || title.includes('cộng đồng')) return 'communityActivities';
-        if (title.includes('cookies') || title.includes('cookies')) return 'cookies';
-      }
-      
-      // Check for specific content identifiers on the page
-      const contentArea = document.querySelector('#content, main, .content, .page-content');
-      if (contentArea) {
-        const contentText = contentArea.textContent.toLowerCase();
-        console.log('[Language Switcher] Checking content for page indicators...');
-        if (contentText.includes('about') || contentText.includes('giới thiệu')) return 'aboutUs';
-        if (contentText.includes('organization') || contentText.includes('cơ cấu')) return 'orgStructure';
-        if (contentText.includes('our work') || contentText.includes('công việc')) return 'ourWork';
-        if (contentText.includes('projects') || contentText.includes('dự án')) return 'pastProjects';
-        if (contentText.includes('news') || contentText.includes('tin tức')) return 'News';
-        if (contentText.includes('contact') || contentText.includes('liên hệ')) return 'Contact';
-        if (contentText.includes('experts') || contentText.includes('chuyên gia')) return 'meetOurExperts';
-        if (contentText.includes('core team') || contentText.includes('cán bộ')) return 'coreTeam';
-        if (contentText.includes('donation') || contentText.includes('quyên góp')) return 'donations';
-        if (contentText.includes('gdpr') || contentText.includes('gdpr')) return 'gdpr';
-        if (contentText.includes('privacy') || contentText.includes('bảo mật') || contentText.includes('riêng tư')) return 'privacy';
-        if (contentText.includes('recruitment') || contentText.includes('tuyển dụng')) return 'recruitment';
-        if (contentText.includes('terms') || contentText.includes('điều khoản')) return 'terms';
-        if (contentText.includes('faq') || contentText.includes('hỏi đáp')) return 'faqs';
-        if (contentText.includes('notableAward') || contentText.includes('giải thưởng nổi bật')) return 'notableAwards';
-        if (contentText.includes('community') || contentText.includes('cộng đồng')) return 'communityActivities';
-        if (contentText.includes('cookies') || contentText.includes('cookies')) return 'cookies';
-      }
-      
-      // Default fallback
-      console.log('[Language Switcher] Defaulting to Home page');
-      return 'Home';
-    }
-
-    // Page mapping between languages (using actual page names from navigation)
-    const pageMapping = {
-      'Home': 'Home',
-      'aboutUs': 'aboutUs', 
-      'orgStructure': 'orgStructure',
-      'ourWork': 'ourWork',
-      'pastProjects': 'pastProjects',
-      'News': 'News',
-      'ourPeople': 'ourPeople',
-      'meetOurExperts': 'meetOurExperts',
-      'coreTeam': 'coreTeam',
-      'Contact': 'Contact',
-      'donations': 'donations',
-      'gdpr': 'gdpr',
-      'privacy': 'privacy',
-      'recruitment': 'recruitment',
-      'terms': 'terms',
-      'faqs': 'faqs',
-      'notableAwards': 'notableAwards',
-      'communityActivities': 'communityActivities',
-      'cookies': 'cookies',
-    };
-
-  // Get current page and map to target page
-  const currentPageName = getCurrentPage();
-  const targetPageName = pageMapping[currentPageName] || 'Home';
-  
-  console.log('[Language Switcher] Current page detected:', currentPageName);
-  console.log('[Language Switcher] Target page mapped:', targetPageName);
-  
-  // Static pages that can be accessed via hash routing
-  const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
-  
-  // Build target path - using hash-based routing for consistency
-  let targetPath = '';
-  console.log('🔧 [DEBUG] Building target path for:', targetPageName);
-  if (targetPageName === 'Home') {
-    targetPath = '';
-    console.log('🔧 [DEBUG] Home page - empty path');
-  } else if (staticPages.includes(targetPageName)) {
-    // Use hash-based routing for static pages too
-    targetPath = `#/${targetPageName}`;
-    console.log('🔧 [DEBUG] Static page - hash path:', targetPath);
-  } else {
-    // Hash-based routing for main navigation pages
-    targetPath = `#/${targetPageName}`;
-    console.log('🔧 [DEBUG] Regular page - hash path:', targetPath);
-  }
-  
-  // Build target URL with mapped page (ensure proper slash after domain)
-  const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
-  
-  console.log('[Language Switcher] Target URL (hash-based):', targetUrl);
-  
-  // Update the language switcher elements
-  if (langIcon) {
-    langIcon.className = `flag-icon ${targetSite.flagClass}`;
-  }
-  pageSwitch.href = targetUrl;
-  
-  // Optional: Add aria-label for accessibility
-  pageSwitch.setAttribute('aria-label', `Switch to ${targetSite.language === 'en' ? 'English' : 'Vietnamese'} version`);
-  
-  // Optional: Add data attributes for easier debugging/testing
-  pageSwitch.setAttribute('data-current-lang', currentSite.language);
-  pageSwitch.setAttribute('data-target-lang', targetSite.language);
-  pageSwitch.setAttribute('data-target-domain', targetSite.domain);
-
-  // Add click event for analytics or additional handling
-  pageSwitch.addEventListener('click', function(e) {
-    // Mark that we're doing a language switch to a static page
-    if (staticPages.includes(targetPageName)) {
-      try {
-        sessionStorage.setItem('language_switch_to_static', targetPageName);
-        console.log('[Language Switcher] Marked language switch to static page:', targetPageName);
-      } catch (e) {
-        console.warn('[Language Switcher] Could not mark static page switch:', e);
-      }
-    }
-    
-    // Optional: Add analytics tracking
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'language_switch', {
-        'from_language': currentSite.language,
-        'to_language': targetSite.language,
-        'current_page': currentPageName,
-        'target_page': targetPageName,
-        'target_url': targetUrl
-      });
-    }
-    
-    // Optional: Store language preference in localStorage
-    try {
-      localStorage.setItem('preferred_language', targetSite.language);
-    } catch (e) {
-      console.warn('[Language Switcher] Could not store language preference:', e);
-    }
-    
-    console.log('[Language Switcher] Language switch clicked:', {
-      from: currentSite.language,
-      to: targetSite.language,
-      currentPage: currentPageName,
-      targetPage: targetPageName,
-      targetUrl: targetUrl
-    });
-  });
