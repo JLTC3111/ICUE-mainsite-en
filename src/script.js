@@ -720,19 +720,7 @@ window.loadPage = (page) => {
               updateMusicBarColor(page);
               calendarModal(page);
               updateHamburgerIcon(page);
-              
-              // Initialize footer with error handling
-              if (typeof ICUEFooter !== 'undefined' && ICUEFooter.autoInject) {
-                try {
-                  ICUEFooter.autoInject();
-                  console.log('[LoadPage] ICUEFooter initialized successfully');
-                } catch (error) {
-                  console.warn('[LoadPage] ICUEFooter.autoInject() failed:', error);
-                }
-              } else {
-                console.warn('[LoadPage] ICUEFooter not available');
-              }
-              
+              ICUEFooter.autoInject();
               CommunityGallery.init();
               initializeChatbot();
               
@@ -4089,13 +4077,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Centralized function to initialize all page functions
 function initializePageFunctions() {
-  console.log('🚀 [DEBUG] initializePageFunctions() called');
-  console.log('📍 [DEBUG] Current URL:', window.location.href);
-  console.log('📂 [DEBUG] Current pathname:', window.location.pathname);
-  console.log('🔗 [DEBUG] Current hash:', window.location.hash);
-  console.log('⏰ [DEBUG] Timestamp:', new Date().toISOString());
-  console.log('[Init] Initializing page functions...');
-  
   let languageSwitchTarget = null;
   try {
     languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
@@ -4108,30 +4089,16 @@ function initializePageFunctions() {
     console.warn('[Init] Could not check language switch flag:', e);
   }
   
-  // Core functions that should be available on all pages
   requestAnimationFrame(() => {
     retriggerMenuAnimations();
     updateCalendarSvgTime();
     initAudioVisualizer();
     calendarModal();
     updateHamburgerIcon();
-    
-    // Initialize footer with error handling
-    if (typeof ICUEFooter !== 'undefined' && ICUEFooter.autoInject) {
-      try {
-        ICUEFooter.autoInject();
-        console.log('[Init] ICUEFooter initialized successfully');
-      } catch (error) {
-        console.warn('[Init] ICUEFooter.autoInject() failed:', error);
-      }
-    } else {
-      console.warn('[Init] ICUEFooter not available');
-    }
-    
+    ICUEFooter.autoInject();
     CommunityGallery.init();
     initializeChatbot();
     
-    // Initialize core page functions that should be available everywhere
     if (typeof initFrequentlyAskedQuestions === 'function') {
       initFrequentlyAskedQuestions();
       console.log('[Init] FAQ functions initialized globally');
@@ -4156,14 +4123,12 @@ function initializePageFunctions() {
       CommunityPage.init();
       console.log('[Init] CommunityPage initialized globally');
     }
-    
-    // Setup language switcher (ensure it's available)
+
     if (typeof setupLanguageSwitcher === 'function') {
       setupLanguageSwitcher();
       console.log('[Init] Language switcher initialized');
     }
     
-    // Page-specific initializations based on current path or hash
     const currentPath = window.location.pathname;
     const currentHash = window.location.hash;
     
@@ -4185,7 +4150,6 @@ function initializePageFunctions() {
       console.log('✅ [DEBUG] Static/Hash page detected, proceeding with initialization...');
       console.log('[Init] Detected static or hash-routed page, initializing specific functions...');
       
-      // Determine which page we're on
       let pageName = languageSwitchTarget;
       if (!pageName && isStaticPage) {
         pageName = staticPages.find(page => currentPath.includes(`${page}.html`));
@@ -4193,9 +4157,8 @@ function initializePageFunctions() {
       if (!pageName && isHashRoutedPage) {
         pageName = staticPages.find(page => currentHash.includes(page));
       }
-      console.log('🎯 [DEBUG] Determined pageName:', pageName);
-      
-      // Initialize functions based on the specific static page
+      console.log('Determined pageName:', pageName);
+    
       if (pageName === 'recruitment' || currentPath.includes('recruitment.html') || currentHash.includes('recruitment')) {
         console.log('💼 [DEBUG] Initializing recruitment page functions...');
         if (typeof JobBoard !== 'undefined' && JobBoard.init) {
@@ -4238,56 +4201,10 @@ function initializePageFunctions() {
         }
       }
       
-      // Add a small delay to ensure DOM is ready for static pages
       setTimeout(() => {
         console.log('[Init] Static page initialization complete for:', pageName);
       }, 100);
     }
-    
-    console.log('🔍 [DEBUG] Starting element-based detection...');
-    setTimeout(() => {
-      if (document.querySelector('.job-listings, .job-board, [data-job-board], #job-board')) {
-        console.log('💼 [DEBUG] Found job board elements, ensuring JobBoard is initialized...');
-        console.log('[Init] Found job board elements, ensuring JobBoard is initialized...');
-        if (typeof JobBoard !== 'undefined' && JobBoard.init) {
-          JobBoard.init();
-        } else {
-          console.warn('⚠️ [DEBUG] JobBoard not available for element-based init');
-        }
-      }
-      
-      if (document.querySelector('.donation-form, .donate, [data-donation], #donation-form')) {
-        console.log('💰 [DEBUG] Found donation elements, ensuring DonationForm is initialized...');
-        console.log('[Init] Found donation elements, ensuring DonationForm is initialized...');
-        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-          DonationForm.init();
-        } else {
-          console.warn('⚠️ [DEBUG] DonationForm not available for element-based init');
-        }
-      }
-      
-      if (document.querySelector('.faq-container, .faq, [data-faq], #faq')) {
-        console.log('[Init] Found FAQ elements, ensuring FAQ is initialized...');
-        if (typeof initFrequentlyAskedQuestions === 'function') {
-          initFrequentlyAskedQuestions();
-        }
-      }
-      
-      if (document.querySelector('.awards-container, .awards, [data-awards], #awards')) {
-        console.log('[Init] Found awards elements, ensuring AwardsPage is initialized...');
-        if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
-          AwardsPage.init();
-        }
-      }
-      
-      if (document.querySelector('.community-container, .community, [data-community], #community')) {
-        console.log('[Init] Found community elements, ensuring CommunityPage is initialized...');
-        if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
-          CommunityPage.init();
-        }
-      }
-    }, 300);
-    
     console.log('[Init] Page functions initialization complete');
   });
 }
