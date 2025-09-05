@@ -723,6 +723,7 @@ window.loadPage = (page) => {
               ICUEFooter.autoInject();
               CommunityGallery.init();
               initializeChatbot();
+              setupLanguageSwitcher();
               
               // Update language switcher after page content is loaded
               if (typeof setupLanguageSwitcher === 'function') {
