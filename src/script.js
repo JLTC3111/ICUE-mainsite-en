@@ -4073,35 +4073,7 @@ window.preloadProfileImages = () => {
 window.addEventListener('DOMContentLoaded', () => {
   console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages and setup');
   window.preloadProfileImages();
-  
-  // Setup language switcher
-  setupLanguageSwitcher();
-  
-  // Initialize functions for static pages
-  console.log('🚀 [DEBUG] Calling initializePageFunctions from main DOMContentLoaded');
-  initializePageFunctions();
 });
-
-// Also listen for page visibility changes (when switching back to tab)
-// and when hash changes for better coverage
-window.addEventListener('hashchange', () => {
-  console.log('🔄 [DEBUG] Hash changed event fired');
-  console.log('[Init] Hash changed, reinitializing...');
-  setTimeout(initializePageFunctions, 100);
-});
-
-window.addEventListener('pageshow', () => {
-  console.log('👁️ [DEBUG] Page show event fired');
-  console.log('[Init] Page shown, checking for initialization...');
-  setTimeout(initializePageFunctions, 100);
-});
-
-// Additional safety net: initialize after a delay
-setTimeout(() => {
-  console.log('⏰ [DEBUG] Safety net timer fired');
-  console.log('[Init] Safety net initialization...');
-  initializePageFunctions();
-}, 1000);
 
 // Centralized function to initialize all page functions
 function initializePageFunctions() {
@@ -4110,10 +4082,8 @@ function initializePageFunctions() {
   console.log('📂 [DEBUG] Current pathname:', window.location.pathname);
   console.log('🔗 [DEBUG] Current hash:', window.location.hash);
   console.log('⏰ [DEBUG] Timestamp:', new Date().toISOString());
-  
   console.log('[Init] Initializing page functions...');
   
-  // Check if we arrived here via language switch to static page
   let languageSwitchTarget = null;
   try {
     languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
@@ -4177,7 +4147,7 @@ function initializePageFunctions() {
     console.log('🔍 [DEBUG] currentPath:', currentPath);
     console.log('🔍 [DEBUG] currentHash:', currentHash);
     
-    // Check if we're on a static page OR hash-routed page
+    // static page OR hash-routed page
     const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
     const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
