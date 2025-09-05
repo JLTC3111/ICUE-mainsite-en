@@ -4094,6 +4094,7 @@ function initializePageFunctions() {
     ICUEFooter.autoInject();
     CommunityGallery.init();
     initializeChatbot();
+    setupLanguageSwitcher();
     
     if (typeof initFrequentlyAskedQuestions === 'function') {
       initFrequentlyAskedQuestions();
