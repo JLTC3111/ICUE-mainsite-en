@@ -320,11 +320,6 @@
             gap: 3px;
         }
 
-        .security-note svg {
-            width: 9px !important;
-            height: 9px !important;
-        }
-
         .projects-section {
             background: white;
             padding: 60px 0;
@@ -420,6 +415,11 @@
                 font-size: clamp(1rem, 3vw, 1.5rem);
             }
 
+            .security-note svg {
+                width: 10px !important;
+                height: 10px !important;
+            }
+
             .main-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
@@ -493,12 +493,12 @@
       <form class="donation-form" onsubmit="processDonation(event)">
         <h2>Donate</h2>
         <div class="amount-buttons">
-          <button type="button" class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, 50)">$50</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, '25')">$25</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, '50')">$50</button>
           <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, '250')">$250</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, '500')">$500</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, '1,000')">$1,000</button>
         </div>
 
         <div class="custom-amount">

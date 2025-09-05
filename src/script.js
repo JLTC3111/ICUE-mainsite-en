@@ -2252,9 +2252,7 @@ window.DonationForm = (function () {
     console.log('Donation data:', donationData);
   }
 
-  // Initialize page
   function init() {
-    // Check if donateAmount element exists before trying to set its content
     const donateAmountElement = document.getElementById('donateAmount');
     if (donateAmountElement) {
       donateAmountElement.textContent = selectedAmount;
