@@ -3355,7 +3355,7 @@ window.attachProfileEvents_coreTeam = () => {
   },
   {
     name: `<span class="intro-core">Nguyễn Quỳnh Ly</span> I graduated from the National Economics University, have a thorough training and a high sense of responsibility in my work. I have experience in <span class="highlight-text-phrase-core">bidding for machinery and equipment projects</span>, as well as projects related to <span class="highlight-text-phrase-core">urban planning</span>. In addition, I am capable of handling various administrative tasks. These roles have helped me build strong technical and teamwork skills. I wish to work in a professional environment where I can apply my abilities and contribute to the development of the organization.`,
-    img: "public/profilePhotos/lyicue.png"
+    img: "public/profilePhotos/nguyenquynhly.png"
   },
   {
     name: `<span class="intro-core">Phan Thị Hiến</span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, <span class="highlight-text-phrase-core">financial reporting</span> and <span class="highlight-text-phrase-core">data analysis</span>. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
