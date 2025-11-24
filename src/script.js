@@ -452,7 +452,7 @@ window.attachProfileEvents_moe = () => {
   const profileData_moe = [
   {
     name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, <span class="highlight-text-phrase-moe">urban planning</span> and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on <span class="highlight-text-phrase-moe">green urban development</span>, <span class="highlight-text-phrase-moe">climate resilience</span> and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
-    img: "public/profilePhotos/nguyenhonghanh.jpg"
+    img: "public/profilePhotos/hanhnguyen.jpg"
   },
   {
     name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in <span class="highlight-text-phrase-moe"> accounting </span> software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
@@ -467,8 +467,8 @@ window.attachProfileEvents_moe = () => {
     img: "public/profilePhotos/tranquoctoan.jpg"
   },
   {
-    name: `<span class="intro-people">Long Đỗ - Project Manager</span><br> A dedicated Project Officer with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <span class="highlight-text-phrase-moe">design</span> and <span class="highlight-text-phrase-moe">creative problem solving</span>. <a href="https://en.longd.tech" target="_blank">🔧💬 View Profile</a>`,
-    img: "public/profilePhotos/longdo.jpg"
+    name: `<span class="intro-people">Gia Minh - Project Manager</span><br> A dedicated Project Officer with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <span class="highlight-text-phrase-moe">design</span> and <span class="highlight-text-phrase-moe">creative problem solving</span>. <a href="https://en.longd.tech" target="_blank">🔧💬 View Profile</a>`,
+    img: "public/profilePhotos/giaminh.jpg"
   }
 ];
 
