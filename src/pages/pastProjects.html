@@ -25,8 +25,11 @@ body {
 .grid {
   margin-top: 5%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  grid-template-rows: minmax(300px, auto) auto;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
 }
 
