@@ -2,8 +2,8 @@
 <body>
   
   <h1 class="cursive-default">
-    <div class="sub-text" id="rainText">BETTER TOGETHER</div><br>
-    Towards A Better Tomorrow!
+    <span id="rainText" class="sub-text">BETTER TOGETHER</span>
+    <span class="hero-body">Towards A Better Tomorrow!</span>
   </h1>
 
 <model-viewer 
@@ -37,9 +37,9 @@ camera-controls>
        </div>
      </div>
 
-       <video class="video-bg" autoplay muted loop playsinline>
-         <source src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
-         <source src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
+       <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
+         <source id="bgVideoHome" src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
+         <source id="bgVideHomeMobile" src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
        </video>  
 </body>
 
