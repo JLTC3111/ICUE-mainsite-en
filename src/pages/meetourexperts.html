@@ -1,27 +1,26 @@
 
-<body class="moePageContainer">
-    <div class="moe-container">
+<body>
     <div class="video-background" id="video-bg-container">
         <video class="video-bg-moe" autoplay muted loop playsinline>
             <source src="public/bgVideos/moe_bg.mp4" type="video/mp4" media="(min-width: 768px)">
             <source src="public/bgVideos/moe_bg_mobile.mp4" type="video/mp4">
         </video>
     </div>
-    <div class="moe-card">
+    <div class="moe-container">
+        <div class="moe-card">
             <div class="image-container">
                 <div class="shutter-top"></div>
                 <div class="shutter-bottom"></div>
-                <img id="profile-photo" class="profile-photo photo-hover-effect" src="public/profilePhotos/hanhnguyen.jpg" alt="Profile Photo" />
+                <img id="profile-photo" class="profile-photo photo-hover-effect" src="public/profilePhotos/nguyenhonghanh.jpg" alt="Profile Photo" />
             </div>
             <div id="text-slider" class="text-container">
                 <div id="profile-text" class="montserrat-pepple">
                     <div>
                         <span class="moe-title"></span>
-                        <span class="intro-people"></span>
+                        <span class="intro-people"></span> 
                     </div>
                 </div>
             </div>
-        </div>
     </div>
     </div>
     <div id="moe-prev-btn" class="arrow-button left-arrow">
@@ -43,7 +42,6 @@
 		S391.533,132.137,391.533,127.017"/>
     </g>
     </svg>
-
     </div> 
 
     <div id="moe-next-btn" class="arrow-button right-arrow">
@@ -66,11 +64,11 @@
 		C328.421,84.351,331.835,80.937,331.835,75.817"/> </g>
     </svg>
     </div>
-    
+
     <a href="https://hr.icue.vn" target="_blank" rel="noopener noreferrer" class="hr-button">
        Access HR Portal
     </a>
-    
+
     <model-viewer 
         class="model-butterfly"
         src="public/models/butterflies.glb" 
@@ -79,11 +77,13 @@
         camera-controls 
         camera-orbit="45deg 45deg 45deg 10m"
         style="width: 50%; height: 200px;">
-    </model-viewer> 
+    </model-viewer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+       
 
 </body>
-
-
+</html>
 
 
 

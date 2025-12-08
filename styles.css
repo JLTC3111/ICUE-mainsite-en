@@ -711,20 +711,6 @@ nav a {
   font-size: clamp(18px, 1.65vw, 24px);
 }
 
-.moePageContainer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.moe-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 .moe-card{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
