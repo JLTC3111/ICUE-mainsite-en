@@ -4319,7 +4319,7 @@ window.preloadProfileImages = () => {
     "public/profilePhotos/hoangthuha.jpg",
     "public/profilePhotos/tranthilananh.jpg",
     "public/profilePhotos/tranquoctoan.jpg",
-    "public/profilePhotos/longdo.jpg"
+    "public/profilePhotos/giaminh.jpg"
   ];
   // Images for coreTeam.html
   const coreTeamImages = [
