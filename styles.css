@@ -414,7 +414,7 @@ nav a {
 
 @media (max-width: 768px) {
     .hr-button {
-      margin-top: 1.5rem;
+      margin-top: 4.5rem;
     }
 
     .chatbot-window {
@@ -3377,7 +3377,7 @@ button:hover {
 }
 @media (max-width: 399px) and (min-aspect-ratio: .55/1) {
   .hr-button{
-    margin-top: 10rem;
+    margin-top: 11.5rem;
   }
 }
 @media (max-width: 540px) and (max-aspect-ratio: .7299/1) {
