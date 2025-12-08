@@ -644,28 +644,41 @@ window.calendarModal = () => {
     const calendarModalClose = document.getElementById('calendar-modal-close');
 
 if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calendarModalClose) {
-        calendarLink.addEventListener('click', function(e) {
-            // Clone the calendar SVG
-            const clone = calendarIcon.cloneNode(true);
-            // Clear previous
-            calendarModalSvg.innerHTML = '';
-            calendarModalSvg.appendChild(clone);
-            // Style the SVG
-            clone.style.width = '340px';
-            clone.style.height = '340px';
-            clone.style.display = 'block';
-            calendarModal.style.display = 'flex';
-        });
-        calendarModalClose.addEventListener('click', function() {
-            calendarModal.style.display = 'none';
-        });
-        // Close modal when clicking outside modal content
-        calendarModal.addEventListener('click', function(e) {
-            if (e.target === calendarModal) {
-                calendarModal.style.display = 'none';
-      }
+    calendarLink.addEventListener('click', function(e) {
+      // Clone the calendar SVG
+      const clone = calendarIcon.cloneNode(true);
+      // Clear previous
+      calendarModalSvg.innerHTML = '';
+      calendarModalSvg.appendChild(clone);
+      // Style the SVG
+      clone.style.width = '340px';
+      clone.style.height = '340px';
+      clone.style.display = 'block';
+      calendarModal.style.display = 'flex';
+    });
+    calendarModalClose.addEventListener('click', function() {
+      calendarModal.style.display = 'none';
+    });
+    // Close modal when clicking outside modal content
+    calendarModal.addEventListener('click', function(e) {
+      if (e.target === calendarModal) {
+        calendarModal.style.display = 'none';
+    }
   });
 }}
+
+window.setNavLinkContrast = (useLightLinks = false) => {
+  const nav = document.querySelector('.menu-bar');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menuIcon = document.getElementById('menuIcon');
+  const contactLink = document.getElementById('contactLink');
+  const shouldUseLight = !!useLightLinks;
+
+  if (nav) nav.classList.toggle('nav-on-dark', shouldUseLight);
+  if (menuToggle) menuToggle.classList.toggle('nav-on-dark', shouldUseLight);
+  if (menuIcon) menuIcon.classList.toggle('nav-icon-on-dark', shouldUseLight);
+  if (contactLink) contactLink.classList.toggle('nav-link-on-dark', shouldUseLight);
+};
 
 const HomeBackgroundVideoManager = (() => {
   const videoPlaylist = [
@@ -791,6 +804,12 @@ const HomeBackgroundVideoManager = (() => {
     videoEl.pause();
     videoEl.removeAttribute('src');
     videoEl.querySelectorAll('source').forEach(source => source.removeAttribute('src'));
+    // Also clear poster so old poster image doesn't remain visible between swaps
+    try {
+      videoEl.removeAttribute('poster');
+      videoEl.poster = '';
+      videoEl.style.backgroundImage = 'none';
+    } catch (e) {}
     videoEl.load();
   };
 
@@ -823,6 +842,13 @@ const HomeBackgroundVideoManager = (() => {
     const { desktop, mobile } = ensureSources();
     if (!desktop || !mobile) return;
 
+    // Ensure any previous poster is removed so it doesn't flash between videos
+    try {
+      videoEl.removeAttribute('poster');
+      videoEl.poster = '';
+      videoEl.style.backgroundImage = 'none';
+    } catch (e) {}
+
     desktop.src = meta.desktop;
     mobile.src = meta.mobile || meta.desktop;
 
@@ -843,6 +869,16 @@ const HomeBackgroundVideoManager = (() => {
     } else {
       videoEl.addEventListener('canplay', tryPlay, { once: true });
     }
+
+    // Remove poster once playback actually starts (covers browsers that keep showing poster until first frame)
+    const removePosterOnPlay = () => {
+      try {
+        videoEl.removeAttribute('poster');
+        videoEl.poster = '';
+        videoEl.style.backgroundImage = 'none';
+      } catch (e) {}
+    };
+    videoEl.addEventListener('playing', removePosterOnPlay, { once: true });
 
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
@@ -4263,22 +4299,10 @@ function initAudioVisualizer(
 
   // Function to change hamburger menu icon color based on page background
   function updateHamburgerIcon(page) {
-    const hamburgerIcon = document.getElementById('menuIcon');
-    const contactLink = document.getElementById('contactLink');
-    if (!hamburgerIcon || !contactLink) return;
-
-    // Pages with dark backgrounds that need white icons
     const darkBackgroundPages = ['communityActivities', 'aboutUs'];
-    
-    if (darkBackgroundPages.includes(page)) {
-      hamburgerIcon.style.stroke = 'white';
-      hamburgerIcon.style.strokeWidth = '0.5px';
-      hamburgerIcon.style.fill = 'none';
-      contactLink.style.color = 'white';
-    } else {
-      contactLink.style.color = 'black';
-      hamburgerIcon.style.stroke = 'none';
-      hamburgerIcon.style.fill = 'none';
+    const useLightNav = darkBackgroundPages.includes(page);
+    if (typeof window.setNavLinkContrast === 'function') {
+      window.setNavLinkContrast(useLightNav);
     }
   }
 
