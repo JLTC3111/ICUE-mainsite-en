@@ -4315,7 +4315,7 @@ function initAudioVisualizer(
 window.preloadProfileImages = () => {
   // Images for meetourexperts.html
   const expertImages = [
-    "public/profilePhotos/nguyenhonghanh.jpg",
+    "public/profilePhotos/hanhnguyen.jpg",
     "public/profilePhotos/hoangthuha.jpg",
     "public/profilePhotos/tranthilananh.jpg",
     "public/profilePhotos/tranquoctoan.jpg",
