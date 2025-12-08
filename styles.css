@@ -414,7 +414,7 @@ nav a {
 
 @media (max-width: 768px) {
     .hr-button {
-      margin-top: 3.5rem;
+      margin-top: 1.5rem;
     }
 
     .chatbot-window {
@@ -2154,6 +2154,7 @@ body.loaded #app {
     left: 48%;
     width: 90%;
     max-width: 90vw;
+    margin-bottom: 2rem;
     transform: translate(-50%, 22.5%);
     padding: 15px;
     box-shadow: none;
@@ -2895,7 +2896,7 @@ body.loaded #app {
 
 @media (max-width: 1024px) {
     .svg-blinking-cursor {
-      height: 1.35em; /* optional scaling */
+      height: 1.35em; 
       width: auto;
     }
 
@@ -3374,7 +3375,11 @@ button:hover {
     left:15%;
   }
 }
-
+@media (max-width: 399px) and (min-aspect-ratio: .55/1) {
+  .hr-button{
+    margin-top: 10rem;
+  }
+}
 @media (max-width: 540px) and (max-aspect-ratio: .7299/1) {
   .image-container-coreTeam{
     left:47.5%;
