@@ -413,6 +413,10 @@ nav a {
 }
 
 @media (max-width: 768px) {
+    .hr-button {
+      margin-top: 7.5%;
+    }
+
     .chatbot-window {
         width: 300px;
         height: 450px;
@@ -2213,8 +2217,8 @@ body.loaded #app {
 
   #contactLink {
     position: fixed;
-    right:2.5%;
-    margin:auto 7.5%;
+    right: 5%;
+    margin: auto 7.5%;
     z-index: 11;
   }
   
