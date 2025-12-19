@@ -706,9 +706,10 @@ nav a {
 }
 
 .hero-body {
+  color: #c3c3c3;
   display: block;
   margin-top: 0.75rem;
-  font-size: clamp(18px, 1.65vw, 24px);
+  font-size: clamp(24px, 5vw, 36px);
 }
 
 .moe-card{
@@ -1198,13 +1199,12 @@ nav a {
 
 .highlight-text {
   font-family: 'Roboto', cursive ;
-  font-size: 21px;
-  font-style: normal;
+  font-size: clamp(16px, 2.5vw, 22px);
   font-weight: 250;
   visibility: visible; 
   line-height: 2;
-  opacity: 1;          
-  /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+  opacity: 1;   
+  color: #b5b5b5;       
   pointer-events: none;
 }
 

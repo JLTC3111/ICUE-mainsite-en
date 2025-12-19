@@ -683,12 +683,6 @@ window.setNavLinkContrast = (useLightLinks = false) => {
 const HomeBackgroundVideoManager = (() => {
   const videoPlaylist = [
     {
-      id: 'heritage',
-      desktop: 'public/bgVideos/bg_video_home.mp4',
-      mobile: 'public/bgVideos/bg_video_home_mobile.mp4',
-      prefersLightNav: false
-    },
-    {
       id: 'momentum',
       desktop: 'public/bgVideos/home_bg_1.mp4',
       mobile: 'public/bgVideos/home_bg_1_mobile.mp4',
