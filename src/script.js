@@ -1379,13 +1379,14 @@ window.initHomeTextSlider = () => {
   let isAnimating = false;
   let typingSessionId = 0;
   let isTyping = false;
-  
-  // Remove existing event listeners
+  const SLIDE_INTERVAL = 25000; // ms - single source of truth for slide timing
+
+  // Remove existing interval if present
   if (window.homeSliderIntervalId) {
     clearInterval(window.homeSliderIntervalId);
   }
-  
-  // Remove existing event listeners from dots
+
+  // Remove existing event listeners from dots by replacing container
   if (dotsContainer) {
     const newDotsContainer = dotsContainer.cloneNode(true);
     dotsContainer.parentNode.replaceChild(newDotsContainer, dotsContainer);
@@ -1409,20 +1410,21 @@ window.initHomeTextSlider = () => {
   }
 
   let index = 0;
-  let isPaused = true;
+  let isPaused = false;
 
   function updateText(newIndex) {
+    console.debug('[slider] updateText start', { newIndex, index, isPaused, isTyping });
     index = newIndex;
     typingSessionId += 1;
     const thisSession = typingSessionId;
-  
+
     const message = messages[index];
     const typingSpeed = 50;
-  
+
     isTyping = true;
     textElement.innerHTML = "";
     gsap.killTweensOf(textElement);
-  
+
     gsap.fromTo(
       textElement,
       { opacity: 0, scale: 0.95, y: 10 },
@@ -1434,38 +1436,38 @@ window.initHomeTextSlider = () => {
         ease: "power2.out",
         onComplete: () => {
           typeHTMLString(textElement, message, typingSpeed, () => {
-          isTyping = false;
-          gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
-        });
-  
-         
+            isTyping = false;
+            console.debug('[slider] typing complete', { index, typingSessionId });
+            gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
+          });
         }
       }
     );
-  
+
     // Step 3: Update dot states and restart progress bar
     dots.forEach((dot, i) => {
-      const progress = dot.querySelector(".progress-dot");
+      const progress = dot.classList.contains('progress-dot') ? dot : dot.querySelector('.progress-dot');
       dot.classList.remove("active");
-  
+
       if (progress) {
         progress.style.animation = "none";
         void progress.offsetWidth;
       }
-  
+
       if (i === index) {
         dot.classList.add("active");
-  
+
         if (progress) {
           progress.style.animation = "none";
           void progress.offsetWidth;
-          progress.style.animation = "slide-progress 8s linear forwards";
+          progress.style.animation = `slide-progress ${SLIDE_INTERVAL / 1000}s linear forwards`;
         }
       }
     });
   }
 
   function nextText(force = false) {
+    console.debug('[slider] nextText called', { force, isPaused, index });
     if (!isPaused || force) {
       index = (index + 1) % messages.length;
       updateText(index);
@@ -1482,13 +1484,16 @@ window.initHomeTextSlider = () => {
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 8000);
+      console.debug('[slider] restartInterval starting interval', { SLIDE_INTERVAL });
+      window.homeSliderIntervalId = setInterval(nextText, SLIDE_INTERVAL);
     }
   }
 
   // Initialize the slider
   updateText(index);
-  window.homeSliderIntervalId = setInterval(nextText, 15000);
+  clearInterval(window.homeSliderIntervalId);
+  window.homeSliderIntervalId = setInterval(nextText, SLIDE_INTERVAL);
+  console.debug('[slider] interval started', { SLIDE_INTERVAL });
 
   // Add event listeners to dots
   dots.forEach((dot, i) => {
@@ -1509,11 +1514,11 @@ window.initHomeTextSlider = () => {
       clearInterval(window.homeSliderIntervalId);
       updateText(i);
       
-      // Add resume functionality after 5 seconds
+      // Add resume functionality after SLIDE_INTERVAL
       setTimeout(() => {
         isPaused = false;
         restartInterval();
-      }, 15000);
+      }, SLIDE_INTERVAL);
     });
   });
 
@@ -1536,7 +1541,7 @@ window.initHomeTextSlider = () => {
   sliderContainer.addEventListener("mouseleave", () => {
     if (!isPaused) {
       clearInterval(window.homeSliderIntervalId);
-      window.homeSliderIntervalId = setInterval(nextText, 15000);
+      window.homeSliderIntervalId = setInterval(nextText, SLIDE_INTERVAL);
     }
   });
 
