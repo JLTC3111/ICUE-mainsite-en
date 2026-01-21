@@ -714,6 +714,7 @@ const HomeBackgroundVideoManager = (() => {
   let resizeHandler = null;
   let visibilityHandler = null;
   let endFallbackHandler = null;
+  let isTransitioning = false;
   let currentIndex = -1;
   let warmupVideo = null;
 
@@ -889,8 +890,10 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const handleEnded = () => {
-    if (!videoPlaylist.length) return;
+    if (!videoPlaylist.length || isTransitioning) return;
+    isTransitioning = true;
     goToIndex((currentIndex + 1) % videoPlaylist.length);
+    setTimeout(() => { isTransitioning = false; }, 500);
   };
 
   const handleResize = () => {
@@ -929,17 +932,14 @@ const HomeBackgroundVideoManager = (() => {
     }
 
     videoEl.addEventListener('ended', handleEnded);
-    // Mobile fallback: some browsers/devices sometimes don't reliably fire 'ended'.
-    // Attach a lightweight timeupdate-based fallback on small viewports to
-    // trigger the same playlist advance logic when we reach near the end.
+    // Mobile fallback: some mobile browsers/devices may not reliably fire 'ended'.
+    // Keep a persistent timeupdate listener that works across all videos.
     if (window.matchMedia('(max-width: 767px)').matches) {
       endFallbackHandler = function () {
         try {
-          if (!videoEl || videoEl.paused || !videoEl.duration) return;
-          // if within 300ms of the end, advance
-          if (videoEl.currentTime >= videoEl.duration - 0.3) {
-            // remove listener briefly to avoid duplicate triggers
-            videoEl.removeEventListener('timeupdate', endFallbackHandler);
+          if (!videoEl || videoEl.paused || !videoEl.duration || isTransitioning) return;
+          // Trigger when within 0.5s of end to ensure it fires before video actually ends
+          if (videoEl.currentTime >= videoEl.duration - 0.5) {
             handleEnded();
           }
         } catch (e) {
