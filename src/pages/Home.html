@@ -2,7 +2,7 @@
 <body>
   <section class="home-hero" aria-label="Home hero">
     <div class="home-hero__media" aria-hidden="true">
-      <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
+      <video id="bgVideo" class="video-bg" autoplay muted loop playsinline preload="metadata" poster="public/preview.jpg">
         <source id="bgVideoHome" src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
         <source id="bgVideHomeMobile" src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
       </video>
@@ -31,24 +31,30 @@
     </div>
     <div class="home-grid">
       <article class="home-card">
-        <img src="public/pastProjects/pp_1.jpg" alt="Project preview 1" loading="lazy">
+        <a href="https://en.icue.vn/src/pages/card.html?id=1" onclick="loadPage('pastProjects');" data-page="pastProjects" aria-label="View project">
+          <img src="public/pastProjects/pp_1.jpg" alt="Project preview 1" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Community Impact Program</h3>
-          <p>Scaled outreach initiatives focused on sustainable local development.</p>
+          <h3>Master Plan Adjustment for Lao Cai City</h3>
+          <p>28,162.64 ha master plan targeting 2045 with optimized land use and upgraded infrastructure.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/pastProjects/pp_3.jpg" alt="Project preview 2" loading="lazy">
+        <a href="https://en.icue.vn/src/pages/card.html?id=3" onclick="loadPage('pastProjects');" data-page="pastProjects" aria-label="View project">
+          <img src="public/pastProjects/pp_3.jpg" alt="Project preview 2" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Innovation Challenge Series</h3>
-          <p>Mentored teams delivering real-world prototypes and measurable outcomes.</p>
+          <h3>Subdivision Planning Area 6B (Nguyen Ai Quoc Ward)</h3>
+          <p>Over 1,100 ha plan focused on integrated infrastructure and expanded green urban space.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/pastProjects/pp_5.jpg" alt="Project preview 3" loading="lazy">
+        <a href="https://en.icue.vn/src/pages/card.html?id=5" onclick="loadPage('pastProjects');" data-page="pastProjects" aria-label="View project">
+          <img src="public/pastProjects/pp_5.jpg" alt="Project preview 3" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Education Partnerships</h3>
-          <p>Collaborations that equip learners with future-ready skills.</p>
+          <h3>General Planning for Dong Yen Urban Area, Bac Giang District</h3>
+          <p>Nearly 4,500 ha with a 2050 vision for a smart satellite city.</p>
         </div>
       </article>
     </div>
@@ -62,24 +68,30 @@
     </div>
     <div class="home-grid">
       <article class="home-card">
-        <img src="public/work/ourWork_img1.jpg" alt="Our work preview 1" loading="lazy">
+        <a href="#/ourWork" onclick="loadPage('ourWork');" data-page="ourWork" aria-label="Explore our work">
+          <img src="public/work/ourWork_img1.jpg" alt="Our work preview 1" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Applied Research</h3>
-          <p>Insights turned into scalable, practical solutions.</p>
+          <h3>Evaluation &amp; Reports</h3>
+          <p>Design and evaluation of data networks for reliable digital infrastructure.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/work/ourWork_img2.jpg" alt="Our work preview 2" loading="lazy">
+        <a href="#/ourWork" onclick="loadPage('ourWork');" data-page="ourWork" aria-label="Explore our work">
+          <img src="public/work/ourWork_img2.jpg" alt="Our work preview 2" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Prototype Development</h3>
-          <p>Rapid iteration to validate ideas and accelerate impact.</p>
+          <h3>Quantity Surveying</h3>
+          <p>Specialized services supporting infrastructure projects from QS to BIM.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/work/ourWork_img3.jpg" alt="Our work preview 3" loading="lazy">
+        <a href="#/ourWork" onclick="loadPage('ourWork');" data-page="ourWork" aria-label="Explore our work">
+          <img src="public/work/ourWork_img3.jpg" alt="Our work preview 3" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Community Programs</h3>
-          <p>Initiatives that strengthen collaboration and social value.</p>
+          <h3>Infrastructure Gap Analysis</h3>
+          <p>Cost estimation, budget control, and standards-based structural assessment.</p>
         </div>
       </article>
     </div>
@@ -93,24 +105,30 @@
     </div>
     <div class="home-grid">
       <article class="home-card">
-        <img src="public/news/articles/Card_1.jpg" alt="News preview 1" loading="lazy">
+        <a href="https://en.icue.vn/src/pages/article_template.html?id=1" onclick="loadPage('News');" data-page="News" aria-label="Read news">
+          <img src="public/news/articles/Card_1.jpg" alt="News preview 1" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Innovation Spotlight</h3>
-          <p>Key milestones from the latest iCUE initiatives.</p>
+          <h3>IKI-GIZ-ICUE Completion Ceremony</h3>
+          <p>Completion ceremony and handover of Au Co Park in Hoi An with provincial leaders in attendance.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/news/articles/Card_2.jpg" alt="News preview 2" loading="lazy">
+        <a href="https://en.icue.vn/src/pages/article_template.html?id=2" onclick="loadPage('News');" data-page="News" aria-label="Read news">
+          <img src="public/news/articles/Card_2.jpg" alt="News preview 2" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Community Highlights</h3>
-          <p>Moments and stories from our partner communities.</p>
+          <h3>8th Asia Regional Conservation Forum Opens in Thailand</h3>
+          <p>RCF 2024 opened in Bangkok with nearly 600 conservation leaders across the region.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/news/articles/Card_3.jpg" alt="News preview 3" loading="lazy">
+        <a href="https://en.icue.vn/src/pages/article_template.html?id=3" onclick="loadPage('News');" data-page="News" aria-label="Read news">
+          <img src="public/news/articles/Card_3.jpg" alt="News preview 3" loading="lazy" decoding="async">
+        </a>
         <div class="home-card__body">
-          <h3>Upcoming Events</h3>
-          <p>Join upcoming workshops, talks, and collaborations.</p>
+          <h3>Aiding People &amp; Areas Affected by Yagi Storm</h3>
+          <p>ICUE called on staff, partners, and benefactors to support communities affected by Typhoon Yagi.</p>
         </div>
       </article>
     </div>
@@ -124,21 +142,21 @@
     </div>
     <div class="home-grid">
       <article class="home-card">
-        <img src="public/recruitment/office.jpg" alt="Recruitment preview 1" loading="lazy">
+        <img src="public/recruitment/office.jpg" alt="Recruitment preview 1" loading="lazy" decoding="async">
         <div class="home-card__body">
           <h3>Collaborative Culture</h3>
           <p>Work alongside researchers, designers, and community builders.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/recruitment/event.jpg" alt="Recruitment preview 2" loading="lazy">
+        <img src="public/recruitment/event.jpg" alt="Recruitment preview 2" loading="lazy" decoding="async">
         <div class="home-card__body">
           <h3>Learning & Growth</h3>
           <p>Continuous learning through workshops and mentorship.</p>
         </div>
       </article>
       <article class="home-card">
-        <img src="public/recruitment/survey.jpg" alt="Recruitment preview 3" loading="lazy">
+        <img src="public/recruitment/survey.jpg" alt="Recruitment preview 3" loading="lazy" decoding="async">
         <div class="home-card__body">
           <h3>Make an Impact</h3>
           <p>Contribute to programs that create real change.</p>
