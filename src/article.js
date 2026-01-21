@@ -608,66 +608,88 @@ Participants also had the opportunity to explore the **exhibition** and learn fr
         {
           src: "/public/news/articles/article_3/area_affected.png",
           caption: "Area Affected by Typhoon Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/video_1.mp4",
           caption: "Source: ABC NEWS",
+          type: "video",
+          poster: "/public/news/articles/article_3/video_poster_1.jpg",
+          previewImage: "/public/news/articles/article_3/video_poster_1.jpg"
         },
         {
           src: "/public/news/articles/article_3/1.jpg",
-          caption: "Area Affected by Typhoon Yagi"
+          caption: "Area Affected by Typhoon Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/video_2.mp4",
           caption: "Source: VTV1- BBC NEWS",
+          type: "video",
+          poster: "/public/news/articles/article_3/video_poster_2.jpg",
+          previewImage: "/public/news/articles/article_3/video_poster_2.jpg"
         },
         {
           src: "/public/news/articles/article_3/2.jpg",
-          caption: "Area Affected by Typhoon Yagi"
+          caption: "Area Affected by Typhoon Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/video_3.mp4",
           caption: "Source: ABC NEWS",
+          type: "video",
+          poster: "/public/news/articles/article_3/video_poster_3.jpg",
+          previewImage: "/public/news/articles/article_3/video_poster_3.jpg"
         },
         {
           src: "/public/news/articles/article_3/3.jpg",
-          caption: "Area Affected by Typhoon Yagi"
+          caption: "Area Affected by Typhoon Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/4.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/5.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/6.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/7.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/8.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/9.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/10.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/11.jpg",
-          caption: "ICUE Volunteer Group"
+          caption: "ICUE Volunteer Group",
+          type: "image"
         },
          {
           src: "/public/news/articles/article_3/a_thank_you_letter.png",
-          caption: "Thank You Letter"
+          caption: "Thank You Letter",
+          type: "image"
         }
       ],
       bodyMarkdown: `
