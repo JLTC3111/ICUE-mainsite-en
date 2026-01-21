@@ -3663,6 +3663,7 @@ button:hover {
   max-width: 760px;
   line-height: 1.6;
   text-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.01em;
 }
 
 .home-hero__actions {
