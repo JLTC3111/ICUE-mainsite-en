@@ -1036,7 +1036,6 @@ window.loadPage = (page) => {
                 case 'Home':
                   makeItRainText();
                   realSlamnorSlam();
-                  initHomeTextSlider();
                   attachHomeButtonEvents();
                   HomeBackgroundVideoManager.init();
                   break;
@@ -1045,7 +1044,7 @@ window.loadPage = (page) => {
                   initMobileNewsSlider();
                   break;
                 case 'aboutUs':
-                  createBalloons();
+                  initHomeTextSlider();
                   break;
                 case 'Contact':
                   initPostMethod();
