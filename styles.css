@@ -2016,6 +2016,16 @@ body.loaded #app {
     right:1%;
   }
 
+  .contact-sidebar .contact-item svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .contact-sidebar .music-bars svg {
+    width: 25px;
+    height: 25px;
+  }
+
   .submenu {
     margin-top: 1rem;
     margin-left: -1rem;
@@ -3778,6 +3788,25 @@ button:hover {
   text-decoration: none;
   font-weight: 600;
   margin-top: 1rem;
+}
+
+@media (max-width: 1368px) {
+  .home-section__header {
+    padding: 0 1rem; /* keep some horizontal gutter on small screens */
+  }
+
+  .home-section__header h2,
+  .home-section__header p {
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    align-self: center !important;
+    box-sizing: border-box;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }
 
 .home-grid {

@@ -1038,6 +1038,7 @@ window.loadPage = (page) => {
                   realSlamnorSlam();
                   attachHomeButtonEvents();
                   HomeBackgroundVideoManager.init();
+                  ICUEFooter.autoInject();
                   break;
                 case 'News':
                   initLogoSlider();
