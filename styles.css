@@ -3750,7 +3750,7 @@ button:hover {
 }
 
 .home-section__header {
-  max-width: 760px;
+  max-width: 1260px;
   margin: 0 auto 2.5rem;
   text-align: center;
   display: flex;
@@ -3768,11 +3768,12 @@ button:hover {
 }
 
 .home-section__header p {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
   letter-spacing: 0;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
-  margin-bottom: 1rem;
-  width: 100%;
+  margin: 0 auto;
+  max-width: 960px;
 }
 
 .home-section__link {
@@ -3781,6 +3782,7 @@ button:hover {
   color: #a6d4ff;
   text-decoration: none;
   font-weight: 600;
+  margin-top: 1rem;
 }
 
 .home-grid {
