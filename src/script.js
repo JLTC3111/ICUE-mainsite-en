@@ -713,6 +713,7 @@ const HomeBackgroundVideoManager = (() => {
   let videoEl = null;
   let resizeHandler = null;
   let visibilityHandler = null;
+  let endFallbackHandler = null;
   let currentIndex = -1;
   let warmupVideo = null;
 
@@ -928,6 +929,25 @@ const HomeBackgroundVideoManager = (() => {
     }
 
     videoEl.addEventListener('ended', handleEnded);
+    // Mobile fallback: some browsers/devices sometimes don't reliably fire 'ended'.
+    // Attach a lightweight timeupdate-based fallback on small viewports to
+    // trigger the same playlist advance logic when we reach near the end.
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      endFallbackHandler = function () {
+        try {
+          if (!videoEl || videoEl.paused || !videoEl.duration) return;
+          // if within 300ms of the end, advance
+          if (videoEl.currentTime >= videoEl.duration - 0.3) {
+            // remove listener briefly to avoid duplicate triggers
+            videoEl.removeEventListener('timeupdate', endFallbackHandler);
+            handleEnded();
+          }
+        } catch (e) {
+          console.warn('[HomeBackgroundVideo] endFallback error', e);
+        }
+      };
+      videoEl.addEventListener('timeupdate', endFallbackHandler);
+    }
     resizeHandler = debounce(handleResize, 250);
     window.addEventListener('resize', resizeHandler);
     visibilityHandler = handleVisibilityChange;
@@ -938,6 +958,10 @@ const HomeBackgroundVideoManager = (() => {
     if (videoEl) {
       videoEl.pause();
       videoEl.removeEventListener('ended', handleEnded);
+      if (endFallbackHandler) {
+        videoEl.removeEventListener('timeupdate', endFallbackHandler);
+        endFallbackHandler = null;
+      }
     }
     if (resizeHandler) {
       window.removeEventListener('resize', resizeHandler);
