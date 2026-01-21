@@ -4295,6 +4295,9 @@ function initAudioVisualizer(
       case 'communityActivities':
         color = '#ffffff';
         break;
+      case 'aboutUs': 
+        color = '#9df8bd';
+        break;
     }
   
     paths.forEach(path => {
