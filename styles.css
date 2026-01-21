@@ -3599,8 +3599,8 @@ button:hover {
 .home-hero__overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(60% 60% at 20% 10%, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 60%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 40%, rgba(0, 0, 0, 0.9) 100%);
+  background: radial-gradient(60% 60% at 20% 10%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.2) 60%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 40%, rgba(0, 0, 0, 0.85) 100%);
   pointer-events: none;
 }
 
@@ -3649,19 +3649,20 @@ button:hover {
 
 .home-hero__title {
   font-size: clamp(2.4rem, 6vw, 4.5rem);
+  color: #ffffff;
   margin: 0 0 1rem;
   font-family: "Audiowide", sans-serif;
   letter-spacing: 0.02em;
-  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
 }
 
 .home-hero__subtitle {
   font-size: clamp(1rem, 2.4vw, 1.35rem);
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.85);
   margin: 0 auto 2rem;
   max-width: 760px;
   line-height: 1.6;
-  text-shadow: 0 6px 16px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
 }
 
 .home-hero__actions {
@@ -3736,31 +3737,46 @@ button:hover {
   padding: 4.5rem 8vw;
   background: #0c0f14;
   color: #f5f5f5;
+  position: relative;
+  z-index: 2;
 }
 
 .home-section--alt {
   background: #11151c;
 }
 
+.home-hero .video-bg {
+  z-index: 0;
+}
+
 .home-section__header {
   max-width: 760px;
   margin: 0 auto 2.5rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .home-section__header h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   margin-bottom: 0.75rem;
+  color: #ffffff;
+  letter-spacing: -0.02em;
   font-family: "Poppins", sans-serif;
+  width: 100%;
 }
 
 .home-section__header p {
+  letter-spacing: 0;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .home-section__link {
+  align-self: center;
   display: inline-flex;
   color: #a6d4ff;
   text-decoration: none;
@@ -3798,13 +3814,15 @@ button:hover {
 .home-card__body h3 {
   margin: 0 0 0.6rem;
   font-family: "Poppins", sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.8rem , 1.5vw, 1.2rem);
   color: #ffffff;
 }
 
 .home-card__body p {
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
   margin: 0;
   color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0;
   line-height: 1.5;
 }
 
