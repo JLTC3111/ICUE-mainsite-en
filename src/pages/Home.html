@@ -1,45 +1,158 @@
 
 <body>
-  
-  <h1 class="cursive-default">
-    <span id="rainText" class="sub-text">BETTER TOGETHER</span>
-    <span class="hero-body">Towards A Better Tomorrow!</span>
-  </h1>
+  <section class="home-hero" aria-label="Home hero">
+    <div class="home-hero__media" aria-hidden="true">
+      <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
+        <source id="bgVideoHome" src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
+        <source id="bgVideHomeMobile" src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
+      </video>
+      <div class="home-hero__overlay"></div>
+    </div>
 
-<model-viewer 
-class="model-home"
-src="public/models/roman_boat.glb" 
-alt="A 3D model of a Roman boat" 
-autoplay
-auto-rotate 
-camera-controls>
-</model-viewer>
+    <div class="home-hero__content">
+      <div class="home-banner"><a href="#/News" onclick="loadPage('News');" data-page="News">Latest News</a></div>
+      <h1 class="home-hero__title">iCUE Vietnam</h1>
+      <p class="home-hero__subtitle">
+        Building impactful research, community initiatives, and real-world solutions that move society forward.
+      </p>
 
-<div id="textSlam" class="slam-container">
-  <h2 class="lets-talk slam-text"><a href="#/Contact" onclick="loadPage('Contact');" data-page="Contact">Let's Talk!</a></h2>
-  <div class="slam-dust"></div>
-</div>
+      <div class="home-hero__actions">
+        <a class="home-btn home-btn--primary" href="#/Contact" onclick="loadPage('Contact');" data-page="Contact">Contact Us</a>
+        <a class="home-btn home-btn--ghost" href="#/pastProjects" onclick="loadPage('pastProjects');" data-page="pastProjects">Explore Our Work</a>
+      </div>
+    </div>
+  </section>
 
-     <div>
-       <div class="home-text-slider" id="homeTextSlider">
-         <div class="home-slider-text" id="homeSliderText">
-           <span class="highlight-text"></span>
-         </div>
-       </div>
+  <section class="home-section" id="home-past-projects">
+    <div class="home-section__header">
+      <h2>Past Projects</h2>
+      <p>Highlights from cross-disciplinary collaborations and community-driven initiatives.</p>
+      <a class="home-section__link" href="#/pastProjects" onclick="loadPage('pastProjects');" data-page="pastProjects">View all projects →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/pastProjects/pp_1.jpg" alt="Project preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Community Impact Program</h3>
+          <p>Scaled outreach initiatives focused on sustainable local development.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/pastProjects/pp_3.jpg" alt="Project preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Innovation Challenge Series</h3>
+          <p>Mentored teams delivering real-world prototypes and measurable outcomes.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/pastProjects/pp_5.jpg" alt="Project preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Education Partnerships</h3>
+          <p>Collaborations that equip learners with future-ready skills.</p>
+        </div>
+      </article>
+    </div>
+  </section>
 
-       <div class="slider-dots" id="sliderDots">
-         <span class="dot progress-dot" data-index="0"></span>
-         <span class="dot progress-dot" data-index="1"></span>
-         <span class="dot progress-dot" data-index="2"></span>
-         <span class="dot progress-dot" data-index="3"></span>
-         <span class="dot progress-dot" data-index="4"></span>
-         <span class="dot progress-dot" data-index="5"></span>
-       </div>
-     </div>
+  <section class="home-section home-section--alt" id="home-our-work">
+    <div class="home-section__header">
+      <h2>Our Work</h2>
+      <p>Research, product development, and experiences built with purpose.</p>
+      <a class="home-section__link" href="#/ourWork" onclick="loadPage('ourWork');" data-page="ourWork">Explore our work →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/work/ourWork_img1.jpg" alt="Our work preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Applied Research</h3>
+          <p>Insights turned into scalable, practical solutions.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/work/ourWork_img2.jpg" alt="Our work preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Prototype Development</h3>
+          <p>Rapid iteration to validate ideas and accelerate impact.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/work/ourWork_img3.jpg" alt="Our work preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Community Programs</h3>
+          <p>Initiatives that strengthen collaboration and social value.</p>
+        </div>
+      </article>
+    </div>
+  </section>
 
-       <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
-         <source id="bgVideoHome" src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
-         <source id="bgVideHomeMobile" src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
-       </video>  
+  <section class="home-section" id="home-news">
+    <div class="home-section__header">
+      <h2>Latest News</h2>
+      <p>Announcements, events, and insights from iCUE Vietnam.</p>
+      <a class="home-section__link" href="#/News" onclick="loadPage('News');" data-page="News">Read all news →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/news/articles/Card_1.jpg" alt="News preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Innovation Spotlight</h3>
+          <p>Key milestones from the latest iCUE initiatives.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/news/articles/Card_2.jpg" alt="News preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Community Highlights</h3>
+          <p>Moments and stories from our partner communities.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/news/articles/Card_3.jpg" alt="News preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Upcoming Events</h3>
+          <p>Join upcoming workshops, talks, and collaborations.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-section home-section--alt" id="home-recruitment">
+    <div class="home-section__header">
+      <h2>Recruitment</h2>
+      <p>Join a mission-driven team focused on innovation and social impact.</p>
+      <a class="home-section__link" href="#/recruitment" onclick="loadPage('recruitment');" data-page="recruitment">See open roles →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/recruitment/office.jpg" alt="Recruitment preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Collaborative Culture</h3>
+          <p>Work alongside researchers, designers, and community builders.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/recruitment/event.jpg" alt="Recruitment preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Learning & Growth</h3>
+          <p>Continuous learning through workshops and mentorship.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/recruitment/survey.jpg" alt="Recruitment preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Make an Impact</h3>
+          <p>Contribute to programs that create real change.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-cta" aria-label="About Us">
+    <div class="home-cta__content">
+      <h2>Let’s build the future together</h2>
+      <p>Have a project in mind or want to partner with iCUE Vietnam? Let’s start a conversation.</p>
+    </div>
+    <a class="home-btn home-btn--primary" href="#/aboutUs" onclick="loadPage('aboutUs');" data-page="aboutUs">Get in touch</a>
+  </section>
 </body>
 
