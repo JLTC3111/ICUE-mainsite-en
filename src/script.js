@@ -1173,7 +1173,9 @@ window.loadPage = (page) => {
               updateMusicBarColor(page);
               calendarModal(page);
               updateHamburgerIcon(page);
-              ICUEFooter.autoInject();
+              if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
+                window.ICUEFooter.autoInject();
+              }
               CommunityGallery.init();
               initializeChatbot();
               
@@ -1195,7 +1197,9 @@ window.loadPage = (page) => {
                   realSlamnorSlam();
                   attachHomeButtonEvents();
                   HomeBackgroundVideoManager.init();
-                  ICUEFooter.autoInject();
+                  if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
+                    window.ICUEFooter.autoInject();
+                  }
                   break;
                 case 'News':
                   initLogoSlider();
@@ -4824,7 +4828,9 @@ function initializePageFunctions() {
     initAudioVisualizer();
     calendarModal();
     updateHamburgerIcon();
-    ICUEFooter.autoInject();
+    if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
+      window.ICUEFooter.autoInject();
+    }
     CommunityGallery.init();
     initializeChatbot();
     
