@@ -747,12 +747,14 @@ const HomeBackgroundVideoManager = (() => {
     }
   };
 
+  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
+
   const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
   const shouldKeepStatic = () => {
     const connection = getConnection();
     const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches || slowNetwork;
+    return isMobileViewport() || window.matchMedia('(prefers-reduced-motion: reduce)').matches || slowNetwork;
   };
 
   const ensureVideoElement = () => {
@@ -944,7 +946,8 @@ const HomeBackgroundVideoManager = (() => {
     if (!ensureVideoElement()) return;
     if (shouldKeepStatic()) {
       clearVideoSources();
-      applyNavTheme(null);
+      // Static hero background is dark; keep navigation readable.
+      applyNavTheme({ prefersLightNav: true });
       return;
     }
 
@@ -1111,6 +1114,8 @@ window.loadPage = (page) => {
   const progressText = document.getElementById('progress-text');
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
+
+  window.HomeBackgroundVideoManager?.destroy();
 
   let progress = 0;
   progressBar.style.strokeDasharray = `${circumference}`;
