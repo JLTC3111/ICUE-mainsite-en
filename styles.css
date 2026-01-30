@@ -943,7 +943,9 @@ nav a {
   margin: auto;
   display: flex;
   gap: 9px;
-  z-index: 22;
+  z-index: 60;
+  pointer-events: auto;
+  isolation: isolate;
   animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
@@ -3757,6 +3759,9 @@ button:hover {
   justify-content: center;
   opacity: 0.7;
   transition: opacity 200ms ease, transform 200ms ease;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .home-video-toggle:hover {
@@ -3778,6 +3783,7 @@ button:hover {
   letter-spacing: 0.01em;
   user-select: none;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .home-video-toggle__input {
