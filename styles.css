@@ -996,7 +996,7 @@ nav a {
 /* State when the menu is open (when the 'is-open' class is applied to the SVG) */
 #menuIcon.is-open #top-bar {
     /* Translate it down to roughly the center of the icon, then rotate 45deg */
-    transform: translateY(0px) rotate(-47.5deg);
+    transform: translateY(2.75px) rotate(-47.5deg);
 }
 
 #menuIcon.is-open #middle-bar {
@@ -1005,7 +1005,7 @@ nav a {
 
 #menuIcon.is-open #bottom-bar {
     /* Translate it up to roughly the center of the icon, then rotate -45deg */
-    transform: translateY(-5.5px) rotate(47.5deg);
+    transform: translateY(-2.75px) rotate(47.5deg);
 }
 
 #drawerMenu {
@@ -2073,8 +2073,8 @@ body.loaded #app {
   
   .flag-link {
     display: flex;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     background-color: #ffffff; 
     justify-content: center;
     align-items: center;
@@ -2083,8 +2083,8 @@ body.loaded #app {
   }
   
   .flag-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
 .sub-text {
@@ -3840,11 +3840,35 @@ button:hover {
   opacity: 0.65;
 }
 
-@media (max-width: 767px) {
-  .home-video-toggle {
-    display: none !important;
+/* Responsive placement: nav toggle on desktop, logo toggle on mobile/tablets */
+@media (max-width: 1024px) {
+  .home-video-toggle--nav { display: none !important; }
+  .home-video-toggle--sidebar { display: inline-flex !important; }
+}
+
+@media (min-width: 1025px) {
+  .home-video-toggle--sidebar { display: none !important; }
+  .home-video-toggle--nav { display: inline-flex !important; }
+}
+
+@media (max-width: 1024px) {
+  .logo-banner {
+    width: auto;
+    align-items: center;
+  }
+
+  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--sidebar {
+    margin-right: 5%;
+  }
+
+  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--sidebar .home-video-toggle__label {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
   }
 }
+
 
 [data-home-bg-video="off"] .home-hero .video-bg {
   display: none !important;
@@ -3866,7 +3890,7 @@ button:hover {
   z-index: 0;
 }
 
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .home-hero .video-bg {
     display: none !important;
   }
