@@ -1195,7 +1195,7 @@ nav a {
 }
 
 .home-slider-text {
-  color: rgb(44, 44, 44);
+  color: #00217d;
   max-width: 80%;
   transition: all 0.5s ease;
 }
@@ -1211,7 +1211,7 @@ nav a {
   visibility: visible; 
   line-height: 2;
   opacity: 1;   
-  color: #b5b5b5;       
+  color: #000000;       
   pointer-events: none;
 }
 
@@ -1384,8 +1384,8 @@ nav a {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 1.5%;
-  right: 12.5%;
+  top: 12.5%;
+  right: 17.5%;
   width: 375px;
   height: 375px;
   animation: slideInFromRight 3.5s ease-in-out;
@@ -2125,7 +2125,7 @@ body.loaded #app {
 }
 
 .highlight-text {
-  color:rgb(44, 44, 44);
+  color:#000000;
   font-family: 'Roboto', cursive ;
   font-size: 12px;
   font-weight: 400;
@@ -2453,8 +2453,8 @@ body.loaded #app {
   position: relative;
   padding: 6rem 8vw 4rem;
   text-align: center;
-  color: #ffffff;
-  background: linear-gradient(180deg, rgba(6, 10, 18, 0.95) 0%, rgba(16, 20, 30, 0.85) 60%, rgba(10, 14, 22, 0.98) 100%);
+  color: #000000;
+  background: transparent;
   overflow: hidden;
 }
 
@@ -2464,11 +2464,17 @@ body.loaded #app {
 }
 
 .about-legacy-hero .cursive-default {
-  color: #ffffff;
+  color: #000000;
+}
+
+@media (min-width: 1025px) {
+  .about-legacy-hero .cursive-default {
+    margin-left: 25%;
+  }
 }
 
 .about-legacy-hero .hero-body {
-  color: #d9d9d9;
+  color: #000000;
 }
 
 .about-legacy-hero .slam-container {
@@ -3147,7 +3153,7 @@ body.loaded #app {
     font-family: 'IMB Plex Sans', sans-serif;
     font-size: 36px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     transform: translateX(75px);
@@ -3156,7 +3162,7 @@ body.loaded #app {
 .contact-text {
     font-family: 'IMB Plex Sans', sans-serif;
     font-size: 1em;
-    color: #333;
+    color: #000000;
     margin: 30px 0;
     line-height: 1.8;
     text-align: justify;
@@ -3282,7 +3288,7 @@ body.contact-page {
 /* Headings */
 h1 {
   text-align: center; 
-  color: #333; 
+  color: #000000; 
   margin-bottom: 20px; 
 }
 
@@ -3345,7 +3351,7 @@ button:hover {
   justify-content: center;
   font-family: 'Roboto';
   margin: 15px auto;
-  color: #333; 
+  color: #000000; 
 }
 
 .contact-info p {
