@@ -3840,14 +3840,22 @@ button:hover {
   opacity: 0.65;
 }
 
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .contact-link {
+    font-size: clamp(16px, 2vw, 20px);
+    padding: 0.5rem 1.75rem;
+    margin: 0 auto;
+  }
+}
+
 /* Responsive placement: nav toggle on desktop, logo toggle on mobile/tablets */
 @media (max-width: 1024px) {
   .home-video-toggle--nav { display: none !important; }
-  .home-video-toggle--sidebar { display: inline-flex !important; }
+  .home-video-toggle--navbar { display: inline-flex !important; }
 }
 
 @media (min-width: 1025px) {
-  .home-video-toggle--sidebar { display: none !important; }
+  .home-video-toggle--navbar { display: none !important; }
   .home-video-toggle--nav { display: inline-flex !important; }
 }
 
@@ -3857,11 +3865,13 @@ button:hover {
     align-items: center;
   }
 
-  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--sidebar {
+  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--navbar {
     margin-right: 5%;
+    position: relative;
+    z-index: 1001; /* Ensure it is clickable */
   }
 
-  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--sidebar .home-video-toggle__label {
+  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--navbar .home-video-toggle__label {
     padding: 0;
     border: 0;
     background: transparent;
