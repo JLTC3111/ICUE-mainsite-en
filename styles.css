@@ -3378,7 +3378,7 @@ button:hover {
   color: #fff; 
 }
 
-@media (max-width: 1024px) and (min-aspect-ratio: 1.8/1) {
+@media (max-width: 1024px) and (min-aspect-ratio: 1.778/1) {
   .image-container{
     margin-top: 17.5%;
   }
@@ -3388,6 +3388,9 @@ button:hover {
   .text-container-coreTeam{
     margin-top: 5.5rem;
   }
+  .flag-link {
+    margin-top: clamp(12px, 2.0vw, 14px) !important;
+  }
 }
 
 @media (max-width: 1024px) and (min-aspect-ratio: .73/1) {
@@ -3395,6 +3398,9 @@ button:hover {
     left:47.5%;
     width:150px;
     height:210px;
+  }
+  .flag-link {
+    margin-top: clamp(9px, 2.0vw, 11.5px);
   }
   .text-container{
     left:45%;
