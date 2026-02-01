@@ -2086,6 +2086,7 @@ body.loaded #app {
     align-items: center;
     border-radius: 25px;
     cursor: pointer;
+    margin-top: clamp(0.75rem, 1.5vw, 1rem);
   }
   
   .flag-icon {
@@ -2105,7 +2106,7 @@ body.loaded #app {
 .cursive-default {
   font-size: clamp(16px, 2vw, 22px);
   line-height: 1.5;
-  margin: 8.5rem 2.5rem .75rem -0.25rem;
+  margin: 10% auto;
 }
 
 .slam-container {
@@ -2255,8 +2256,8 @@ body.loaded #app {
   }
 
   .model-home {
-    top: 1.5%;
-    right: 25%;
+    top: 17.5%;
+    right: 18.5%;
     height: 220px;
     width: 220px;
     animation: slideDownFromTop 3s ease-in-out;
@@ -4260,9 +4261,19 @@ button:hover {
   .home-hero {
     padding-top: 5.5rem;
   }
-
   .home-cta {
     flex-direction: column;
     text-align: center;
+  }
+}
+
+@media (min-width: 499px) and (max-width: 1024px) 
+{
+   .model-home {
+    top: 17.5%;
+    right: 37.5%;
+    height: 240px;
+    width: 240px;
+    animation: slideDownFromTop 3s ease-in-out;
   }
 }
