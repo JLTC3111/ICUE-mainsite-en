@@ -3982,6 +3982,22 @@ button:hover {
     background: transparent;
     box-shadow: none;
   }
+
+  /* Make About Us navbar toggle match Home/MOE compact/logo styling */
+  .logo-banner #aboutUsVideoToggleContainerMobile.home-video-toggle--navbar {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 5%;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .logo-banner #aboutUsVideoToggleContainerMobile.home-video-toggle--navbar .home-video-toggle__label {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
 }
 
 @media (min-width: 1025px) and (max-width: 1440px) {
