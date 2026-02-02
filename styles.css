@@ -2079,19 +2079,19 @@ body.loaded #app {
   
   .flag-link {
     display: flex;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     background-color: #ffffff; 
     justify-content: center;
     align-items: center;
     border-radius: 25px;
     cursor: pointer;
-    margin-top: clamp(0.75rem, 1.5vw, 1rem);
+    margin-top: clamp(0.35rem, 1.75vw, 0.4rem);
   }
   
   .flag-icon {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
   }
 
 .sub-text {
@@ -2214,7 +2214,7 @@ body.loaded #app {
   }
   
   .contact-link {
-    font-size: clamp(12px, 2vw, 16px);
+    font-size: clamp(12px, 2.75vw, 18px);
     font-weight: bold;
     padding: 0.5rem 1.5rem;
     border-radius: 18px;
@@ -3439,6 +3439,9 @@ button:hover {
 @media (max-width: 399px) and (min-aspect-ratio: .55/1) {
   .hr-button{
     margin-top: 11.5rem;
+  }
+  .flag-link {
+    margin-top: clamp(6.5px, 5.0vw, 9.5px) !important;
   }
 }
 @media (max-width: 540px) and (max-aspect-ratio: .7299/1) {
