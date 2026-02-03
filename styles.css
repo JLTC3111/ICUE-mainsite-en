@@ -474,6 +474,10 @@ nav a {
   visibility: hidden !important;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .contact-sidebar {
     position: fixed; 
     right: 1.5%; 
