@@ -1931,6 +1931,53 @@ body.loaded #app {
   font-weight: bold;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+   .image-container-coreTeam {
+      position: absolute;
+      width: clamp(180px , 25vw, 190px);
+      height: clamp(220px , 25vw, 270px);
+      left: 50% !important;
+      top: 15%; 
+      transform: translateX(-50%);
+    } 
+    .profile-photo-coreTeam {
+      width: clamp(150px , 25vw, 190px);
+    }
+    .text-container-coreTeam {
+      width:70%;
+      top:52.5%;
+      left:clamp(15%, 2.5vw, 15.5%) !important;
+      padding:15px;
+    }
+    .intro-core {
+      font-size: clamp(2rem, 3.5vw, 2.5px) !important;
+    }
+}
+
+@media (max-width: 1365px) and (min-width: 1024px) and (max-aspect-ratio: 1.3338/1) {
+  .image-container-coreTeam {
+      position: absolute;
+      width: clamp(220px , 25vw, 260px) !important;
+      height: clamp(260px , 25vw, 330px) !important;
+      left: 50% !important;
+      top: 15%; 
+      transform: translateX(-50%);
+    } 
+    .profile-photo-coreTeam {
+      width: clamp(220px , 25vw, 260px) !important;
+    }
+    .text-container-coreTeam {
+      width:90% !important;
+      max-width: 600px !important;
+      top:54.5% !important;
+      left:clamp(17.5%, 2vw, 17.75%) !important;
+      padding: 25px !important;
+    }
+    .intro-core {
+      font-size: clamp(2.5rem, 15vw, 3rem) !important;
+    }
+}
+
 @media (max-width: 450px) and (min-aspect-ratio: 1.96/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
