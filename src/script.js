@@ -1674,7 +1674,7 @@ window.loadPage = (page) => {
   navState.controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
   navState.fetching = true;
 
-  const updateNavVideoToggleVisibility = () => {
+  const getNavToggleEls = () => {
     const homeVideoToggleContainers = [
       document.getElementById('homeVideoToggleContainerDesktop'),
       document.getElementById('homeVideoToggleContainerMobile')
@@ -1688,14 +1688,27 @@ window.loadPage = (page) => {
       document.getElementById('aboutUsVideoToggleContainerMobile')
     ].filter(Boolean);
     const contactLink = document.getElementById('contactLink');
+    return { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink };
+  };
 
-    const showContainers = (containers, show) => {
-      containers.forEach((container) => {
-        container.hidden = !show;
-        if (show) container.style.removeProperty('display');
-        else container.style.setProperty('display', 'none', 'important');
-      });
-    };
+  const showContainers = (containers, show) => {
+    containers.forEach((container) => {
+      container.hidden = !show;
+      if (show) container.style.removeProperty('display');
+      else container.style.setProperty('display', 'none', 'important');
+    });
+  };
+
+  const hideAllNavVideoToggles = () => {
+    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
+    showContainers(homeVideoToggleContainers, false);
+    showContainers(moeVideoToggleContainers, false);
+    showContainers(aboutUsVideoToggleContainers, false);
+    if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+  };
+
+  const updateNavVideoToggleVisibility = () => {
+    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
 
     if (page === 'Home') {
       showContainers(homeVideoToggleContainers, true);
@@ -1720,8 +1733,8 @@ window.loadPage = (page) => {
     }
   };
 
-  // Apply immediately so we don't show stale toggles while loading.
-  updateNavVideoToggleVisibility();
+  // Hide all per-page toggles while loading so they don't flash.
+  hideAllNavVideoToggles();
 
   window.HomeBackgroundVideoManager?.destroy();
   window.MeetOurExpertsBackgroundVideoManager?.destroy();
@@ -1770,8 +1783,6 @@ window.loadPage = (page) => {
       markFetchDoneIfCurrent();
       if (navSeq !== window.__spaNavState?.seq) return;
       if (content) content.innerHTML = data;
-      // Immediately apply per-page toggle visibility to newly injected DOM.
-      updateNavVideoToggleVisibility();
       setProgress(100);
 
       setTimeout(() => {
@@ -1788,9 +1799,10 @@ window.loadPage = (page) => {
           requestAnimationFrame(() => {
             if (navSeq !== window.__spaNavState?.seq) return;
 
-            updateNavVideoToggleVisibility();
-
+            // Retrigger menu animation may clone/replace nav nodes.
+            // Apply toggle visibility AFTER it runs so we target the live nodes only once.
             retriggerMenuAnimations();
+            updateNavVideoToggleVisibility();
             updateCalendarSvgTime();
             initAudioVisualizer();
             updateMusicBarColor(page);
@@ -1920,9 +1932,11 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
 
   const animatedSelectors = [
     { selector: '.menu-toggle', delay: 0 },
-    { selector: '.logo-banner', delay: -0.3 },
+    // Avoid cloning/replacing `.logo-banner` because it contains per-page video toggles.
+    // Animating only the logo link prevents toggle “double render”/flash.
+    { selector: '#logo-link', delay: -0.3 },
     { selector: '.flag-link', delay: -0.3 },
-    { selector: '.contact-link', delay: 1 },
+    // Contact link is handled explicitly below (hover handlers + clone), so don't double-animate it here.
     { selector: '.contact-sidebar', delay: 1.25 },
   ];
 
@@ -2015,7 +2029,7 @@ const contactUs = document.getElementById('contactLink');
         opacity: 1,
         onStart: () => unhide(newContact)
       },
-      '-=0.3'
+      1
     );
 
 // CONTACT LINK HOVER
