@@ -2051,6 +2051,7 @@ body.loaded #app {
   .home-hero__title {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     justify-content: center;
+    text-align: center;
   }
 
   .language-switcher {
@@ -2459,7 +2460,7 @@ body.loaded #app {
   }
   50% {
     opacity: .25;
-    transform: translateX(25%);
+    transform: translateX(2.5%);
   }
   100% {
     opacity: 1;
@@ -3343,8 +3344,8 @@ body.contact-page {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.11);
 }
 
-h1 {
-  color: #000000; 
+body.contact-page h1 { 
+  color: #333; 
   margin-bottom: 20px; 
 }
 
