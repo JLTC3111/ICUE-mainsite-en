@@ -342,30 +342,26 @@ function typeHTMLString(
   typeNextNode();
 }
 
-let profileChangeAudioCtx;
-function playProfileChangeSound() {
-  if (!profileChangeAudioCtx) {
-    profileChangeAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  const audioCtx = profileChangeAudioCtx;
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  const oscillator = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-  oscillator.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
+const homeMobileObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+    }
+    else if (entry.intersectionRatio === 0) {
+      entry.target.classList.remove('animate-in');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-  oscillator.type = 'triangle';
-  oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
-  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+const initHomeMobileObserver = () => {
+  document.querySelectorAll('.home-section__header').forEach(el => {
+    homeMobileObserver.observe(el);
+  });
+};
 
-  oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-
-  oscillator.start(audioCtx.currentTime);
-  oscillator.stop(audioCtx.currentTime + 0.1);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  initHomeMobileObserver();
+});
 
 window.attachProfileEvents_moe = () => {
   const profileData_moe = [
@@ -374,11 +370,7 @@ window.attachProfileEvents_moe = () => {
     img: "public/profilePhotos/hanhnguyen.jpg"
   },
   {
-    name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in <span class="highlight-text-phrase-moe"> accounting </span> software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
-    img: "public/profilePhotos/hoangthuha.jpg"
-  },
-  {
-    name: `<span class="intro-people">Dr. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in <span class="highlight-text-phrase-moe">strategic urban design</span>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <span class="highlight-text-phrase-moe">climate change adaptation</span>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <span class="highlight-text-phrase-moe">resilience</span> and <span class="highlight-text-phrase-moe">urban planning</span> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages and passionate about shaping a sustainable, livable urban future.`,
+    name: `<span class="intro-people">Dr. Lan Anh</span><br> Urban planning and development expert with over 10 years of experience in <span class="highlight-text-phrase-moe">strategic urban design</span>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <span class="highlight-text-phrase-moe">climate change adaptation</span>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <span class="highlight-text-phrase-moe">resilience</span> and <span class="highlight-text-phrase-moe">urban planning</span> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages and passionate about shaping a sustainable, livable urban future.`,
     img: "public/profilePhotos/tranthilananh.jpg"
   },
   {
@@ -1829,8 +1821,7 @@ window.loadPage = (page) => {
                 attachProfileEvents_coreTeam();
                 break;
               case 'Home':
-                makeItRainText();
-                realSlamnorSlam();
+                initHomeMobileObserver();
                 attachHomeButtonEvents();
                 HomeBackgroundVideoManager.bindToggleUI();
                 HomeBackgroundVideoManager.init();
@@ -2092,7 +2083,7 @@ window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
     button.addEventListener('click', () => {
       console.log('Button clicked:', button.textContent);
-      // Add your button logic here
+     
     });
   });
 }
@@ -2125,96 +2116,11 @@ window.makeItRainText = () => {
   });
 };
 
-// Call when DOM is ready
 window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
-window.realSlamnorSlam = function () {
-  const text = document.querySelector('#textSlam .slam-text');
-  const dust = document.querySelector('#textSlam .slam-dust');
-
-  if (!text || !dust) {
-    return;
-  }
-
-  // Reset state
-  gsap.set(text, {
-    x: 0,
-    y: 0,
-    rotationX: 0,
-    scale: 1.05,
-    opacity: 0,
-    transformOrigin: "50% 50%",
-    perspective: 1000
-  });
-
-  gsap.set(dust, {
-    scale: 0.5,
-    opacity: 0,
-    filter: "brightness(0.25)"
-  });
-
-  const tl = gsap.timeline();
-
-  // 🌀 Spin + Drop Slam
-  tl.to(text, {
-    opacity: 1,
-    x: 1000,
-    y: 0,
-    rotationX: 360,
-    rotationY: 360,
-    rotationZ: 360,
-    scale: 1.05,
-    duration: 1.5,
-    ease: "back.out(1.7)",
-    transformPerspective: 1200
-  })
-
-  // 💥 Slam Impact
-  .to(text, {
-    x: -1000,
-    y: 0,
-    scaleY: 1.05,
-    scaleX: 1.05,
-    duration: 0.7,
-    ease: "power4.inOut"
-  })
-
-  // 👊 Bounce Back
-  .to(text, {
-    x: 0,
-    y: 0,
-    scaleY: 1,
-    scaleX: 1,
-    duration: 0.7,
-    ease: "elastic.out(1, 0.5)"
-  })
-
-  // 💨 Dust Puff
-  .to(dust, {
-    opacity: 1,
-    scale: 1.4,
-    filter: "brightness(1.5)",
-    duration: 0.75,
-    ease: "power2.out"
-  }, "-=1") // overlap dust with squash
-
-  .to(dust, {
-    opacity: 0,
-    scale: 2.2,
-    filter: "brightness(.75)",
-    duration: 1.2,
-    ease: "power2.in"
-  }, "-=0.6"); // overlap exit
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  realSlamnorSlam();
-});
-
 window.initHomeTextSlider = () => {
-  // Clean up existing event listeners and intervals
   const sliderContainer = document.querySelector("#homeTextSlider");
   const dotsContainer = document.querySelector("#sliderDots");
   let isAnimating = false;
