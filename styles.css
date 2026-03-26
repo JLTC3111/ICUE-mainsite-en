@@ -2047,6 +2047,11 @@ body.loaded #app {
       width: 5.5%;
     }
   }
+  
+  .home-hero__title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    justify-content: center;
+  }
 
   .language-switcher {
     display: inline-block;
@@ -4115,6 +4120,21 @@ button:hover {
   color: #f5f5f5;
   position: relative;
   z-index: 2;
+}
+
+.home-section__header {
+  opacity: 0;
+  transform: translateX(250px);
+  transition: opacity 2.5s ease, transform 2.5s ease;
+}
+
+.home-section__header.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+.home-section__header.animate-out {
+  opacity: 0;
+  transform: translateX(-250px);
 }
 
 .home-section--alt {
