@@ -370,6 +370,34 @@ document.addEventListener('DOMContentLoaded', () => {
   initHomeMobileObserver();
 });
 
+const homeMobileCardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in-card');
+      entry.target.classList.remove('animate-out-card');
+    }
+    else {
+      entry.target.classList.remove('animate-in-card');
+      entry.target.classList.add('animate-out-card');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+const initHomeMobileCardObserver = () => {
+  homeMobileCardObserver.disconnect();
+  document.querySelectorAll('.home-card img').forEach(el => {
+    homeMobileCardObserver.observe(el);
+  });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  initHomeMobileCardObserver();
+});
+
+const destroyHomeMobileCardObserver = () => {
+  homeMobileCardObserver.disconnect();
+};
+
 window.attachProfileEvents_moe = () => {
   const profileData_moe = [
   {
@@ -1833,6 +1861,7 @@ window.loadPage = (page) => {
               case 'Home':
                 initHomeMobileObserver();
                 attachHomeButtonEvents();
+                initHomeMobileCardObserver();
                 HomeBackgroundVideoManager.bindToggleUI();
                 HomeBackgroundVideoManager.init();
                 break;
