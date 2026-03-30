@@ -4209,7 +4209,7 @@ button:hover {
 @keyframes clipPath {
   from {
     opacity: 0;
-    clip-path: inset(100% 100% 0 0);
+    clip-path: inset(100% 100% 100% 100%);
   }
   to {
     opacity: 1;
