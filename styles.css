@@ -4257,10 +4257,6 @@ button:hover {
     padding: 0 1rem; /* keep some horizontal gutter on small screens */
   }
 
-  .home-grid .home-card {
-    animation: homeFadeInUp 1.5s ease-out forwards;
-  }
-
   .home-section__header h2,
   .home-section__header p {
     width: auto !important;
