@@ -441,19 +441,19 @@ window.attachProfileEvents_moe = () => {
   const profileData_moe = [
   {
     name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, <span class="highlight-text-phrase-moe">urban planning</span> and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on <span class="highlight-text-phrase-moe">green urban development</span>, <span class="highlight-text-phrase-moe">climate resilience</span> and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
-    img: "public/profilePhotos/hanhnguyen.jpg"
+    img: "public/profilePhotos/hanhnguyen__nobg.png"
   },
   {
     name: `<span class="intro-people">Dr. Lan Anh</span><br> Urban planning and development expert with over 10 years of experience in <span class="highlight-text-phrase-moe">strategic urban design</span>, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in <span class="highlight-text-phrase-moe">climate change adaptation</span>, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on <span class="highlight-text-phrase-moe">resilience</span> and <span class="highlight-text-phrase-moe">urban planning</span> to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages and passionate about shaping a sustainable, livable urban future.`,
-    img: "public/profilePhotos/tranthilananh.jpg"
+    img: "public/profilePhotos/tranthilananh__nobg.png"
   },
   {
     name: `<span class="intro-people">Mr. Trần Quốc Toản</span><br> <span class="highlight-text-phrase-moe">Urban Planning</span> and <span class="highlight-text-phrase-moe">Climate Change</span> with over 15 years of experience in sustainable infrastructure, transport planning and <span class="highlight-text-phrase-moe">climate resilience</span>. Degree in Bridge and Tunnel Engineering and has held key leadership roles in the Vietnamese Ministry of Transport and civil engineering associations. Skilled in policy consulting, <span class="highlight-text-phrase-moe">smart city planning</span> and <span class="highlight-text-phrase-moe">green growth strategy development</span>. Led major national projects focused on urban mobility, environmental sustainability and regulatory reform. A respected lecturer and trainer for organizations such as the World Bank and ADB, known for his extensive expertise, strategic thinking and commitment to building a <span class="highlight-text-phrase-moe">climate resilient urban future</span>.`,
-    img: "public/profilePhotos/tranquoctoan.jpg"
+    img: "public/profilePhotos/tranquoctoan__nobg.png"
   },
   {
     name: `<span class="intro-people">Đỗ Bảo Long - Project Manager</span><br> A dedicated Project Officer with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <span class="highlight-text-phrase-moe">design</span> and <span class="highlight-text-phrase-moe">creative problem solving</span>. <a href="https://en.longd.tech" target="_blank">🔧💬 View Profile</a>`,
-    img: "public/profilePhotos/giaminh.jpg"
+    img: "public/profilePhotos/dolong__nobg.png"
   }
 ];
 
