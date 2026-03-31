@@ -405,6 +405,38 @@ const destroyHomeMobileCardObserver = () => {
   homeMobileCardObserverTargets = new WeakSet();
 };
 
+window.makeItRainText = () => {
+  const el = document.querySelector("#rainText");
+  if (!el) return;
+
+  const text = el.textContent.trim();
+  el.textContent = "";
+
+  text.split("").forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char;
+    span.style.display = "inline-block";
+    span.style.opacity = 0;
+    el.appendChild(span);
+
+    gsap.fromTo(
+      span,
+      { x: "-50vw", opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        delay: i * 0.05,
+        duration: 0.75,
+        ease: "bounce.out"
+      }
+    );
+  });
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  window.makeItRainText();
+});
+
 window.attachProfileEvents_moe = () => {
   const profileData_moe = [
   {
@@ -1869,6 +1901,7 @@ window.loadPage = (page) => {
                 initHomeMobileObserver();
                 attachHomeButtonEvents();
                 initHomeMobileCardObserver();
+                makeItRainText();
                 HomeBackgroundVideoManager.bindToggleUI();
                 HomeBackgroundVideoManager.init();
                 break;
@@ -2133,38 +2166,6 @@ window.attachHomeButtonEvents = () => {
     });
   });
 }
-
-window.makeItRainText = () => {
-  const el = document.querySelector("#rainText");
-  if (!el) return;
-
-  const text = el.textContent.trim();
-  el.textContent = "";
-
-  text.split("").forEach((char, i) => {
-    const span = document.createElement("span");
-    span.textContent = char === " " ? "\u00A0" : char;
-    span.style.display = "inline-block";
-    span.style.opacity = 0;
-    el.appendChild(span);
-
-    gsap.fromTo(
-      span,
-      { y: "-40vh", opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        delay: i * 0.25,
-        duration: 3,
-        ease: "bounce.out"
-      }
-    );
-  });
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  window.makeItRainText();
-});
 
 window.initHomeTextSlider = () => {
   const sliderContainer = document.querySelector("#homeTextSlider");
