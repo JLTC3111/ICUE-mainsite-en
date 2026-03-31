@@ -2234,6 +2234,7 @@ body.loaded #app {
 
   .montserrat-pepple {
     font-size: clamp(12px, 3vw, 15px);
+    color: #e3e3e3;
     margin: 1rem 0;
     line-height: 1.8;
     text-align: center;
