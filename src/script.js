@@ -443,62 +443,62 @@ function initOrgProfiles() {
       {
         name: 'Nguyễn Hồng Hạnh',
         img: 'public/profilePhotos/hanhnguyenorgstructure.png',
-        title: 'Viện Trưởng',
-        bio: 'Tiến Sỹ Nguyễn Hồng Hạnh — Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị. Chuyên gia tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng.'
+        title: 'Managing Director',
+        bio: 'Dr. Nguyễn Hồng Hạnh — An expert in urban development and legal frameworks, holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association'
       },
       {
         name: 'Trần Thị Lan Anh',
         img: 'public/profilePhotos/tranthilananhorgstructure.png',
-        title: 'Phó Viện Trưởng',
-        bio: 'TS.KTS Trần Thị Lan Anh — Chuyên gia quy hoạch và phát triển đô thị. Tiến Sỹ từ Đại học Tokyo.'
+        title: 'Vice President',
+        bio: 'Dr. Trần Thị Lan Anh — An expert in urban planning and development. Holds a Masters degree from Tokyo University'
       },
       {
         name: 'Trần Quốc Toản',
         img: 'public/profilePhotos/tranquoctoanorgstructure.png',
-        title: 'Phó Viện Trưởng',
-        bio: 'KS. Trần Quốc Toản — Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông.'
+        title: 'Vice President',
+        bio: 'Eng. Trần Quốc Toản — A highly experinced engineer. Holds a degree in Bridge and Tunnel Engineering'
       },
       {
         name: 'Nguyễn Thanh Tâm',
         img: 'public/profilePhotos/tamorgstructure.png',
-        title: 'Phó Viện Trưởng',
-        bio: 'KTS. Nguyễn Thanh Tâm — Công tác trong lĩnh vực quy hoạch đô thị.'
+        title: 'Architectural Consultant',
+        bio: 'Nguyễn Thanh Tâm — Architectural consultant with extensive experience in urban design and sustainable architecture.'
       },
       {
         name: 'Đỗ Bảo Long',
         img: 'public/profilePhotos/longdoorgstructure.png',
-        title: 'Giám Đốc Công Nghệ',
-        bio: 'Đỗ Bảo Long — Thạc sỹ Quản Lý Dự Án từ Đại học Salford, Vương quốc Anh.'
+        title: 'Vice President',
+        bio: 'Đỗ Bảo Long — Project Manager with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber Security certifications'
       },
       {
         name: 'Phan Thị Hiến',
         img: 'public/profilePhotos/hienorgstructure.png',
-        title: 'Kế Toán Trưởng',
-        bio: 'Phan Thị Hiến — Kế toán trưởng với nhiều năm kinh nghiệm trong lĩnh vực tài chính và kế toán.'
+        title: 'Head Accountant',
+        bio: 'Phan Thị Hiến — Head Accountant with extensive experience in financial management and accounting practices.'
       },
       {
         name: 'Trịnh Thị Tình',
         img: 'public/profilePhotos/tinhorgstructure.png',
-        title: 'Trưởng Phòng Hành Chính',
-        bio: 'Trịnh Thị Tình — Trưởng phòng Hành chính với nhiều năm kinh nghiệm trong lĩnh vực quản lý nhân sự và hành chính.'
+        title: 'Head of Administration',
+        bio: 'Trịnh Thị Tình — Head of Administration with extensive experience in human resources and administrative management.'
       },
       {
         name: 'Nguyễn Quỳnh Ly',
         img: 'public/profilePhotos/lyicueorgstructure.png',
-        title: 'Quản Lý Hồ Sơ Dự Án',
-        bio: 'Nguyễn Quỳnh Ly — Quản lý hồ sơ dự án với nhiều năm kinh nghiệm trong lĩnh vực đấu thầu.'
+        title: 'Project Documentation Manager',
+        bio: 'Nguyễn Quỳnh Ly — Project Documentation Manager with extensive experience in project bidding and documentation.'
       },
       {
         name: 'Nguyễn Thị Ly',
         img: 'public/profilePhotos/lylyorgstructure.png',
-        title: 'Trương Phòng Hỗ Trợ Dự Án',
-        bio: 'Nguyễn Thị Ly — Hỗ trợ dự án với các kĩ năng quản lý và phối hợp.'
+        title: 'Project Support Officer',
+        bio: 'Nguyễn Thị Ly — Project Support Officer with strong skills in project management and coordination.'
       },
       {
         name: 'Đinh Tùng Dương',
         img: 'public/profilePhotos/duongorgstructure.png',
-        title: 'Cán Bộ Dự Án',
-        bio: 'Đinh Tùng Dương — Cán bộ dự án với các kĩ năng quản lý và phối hợp.'
+        title: 'Research Staff',
+        bio: 'Đinh Tùng Dương — Research Staff with a background in urban studies and data analysis, contributing to research projects and supporting the development of innovative solutions for sustainable urban development.'
       }
     ];
 
@@ -522,8 +522,8 @@ function initOrgProfiles() {
       modalImg.src = profile.img;
       modalText.innerHTML = `
         <h2>${profile.name}</h2>
-        <p class="profile-title">${profile.title}</p>
-        <p class="profile-bio">${profile.bio}</p>
+        <div class="profile-title">${profile.title}</div>
+        <div class="profile-bio">${profile.bio}</div>
       `;
 
       modal.style.display = 'flex';
