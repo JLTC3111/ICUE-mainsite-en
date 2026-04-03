@@ -437,6 +437,107 @@ window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
+function initOrgProfiles() {
+    // Profile data for org structure
+    const orgProfileData = [
+      {
+        name: 'Nguyễn Hồng Hạnh',
+        img: 'public/profilePhotos/hanhnguyenorgstructure.png',
+        title: 'Managing Director',
+        bio: 'Dr. Nguyễn Hồng Hạnh — An expert in urban development and legal frameworks, holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association'
+      },
+      {
+        name: 'Trần Thị Lan Anh',
+        img: 'public/profilePhotos/tranthilananhorgstructure.png',
+        title: 'Vice President',
+        bio: 'Dr. Trần Thị Lan Anh — An expert in urban planning and development. Holds a Masters degree from Tokyo University'
+      },
+      {
+        name: 'Trần Quốc Toản',
+        img: 'public/profilePhotos/tranquoctoanorgstructure.png',
+        title: 'Vice President',
+        bio: 'Eng. Trần Quốc Toản — A highly experinced engineer. Holds a degree in Bridge and Tunnel Engineering'
+      },
+      {
+        name: 'Nguyễn Thanh Tâm',
+        img: 'public/profilePhotos/tamorgstructure.png',
+        title: 'Architectural Consultant',
+        bio: 'Nguyễn Thanh Tâm — Architectural consultant with extensive experience in urban design and sustainable architecture.'
+      },
+      {
+        name: 'Đỗ Bảo Long',
+        img: 'public/profilePhotos/longdoorgstructure.png',
+        title: 'Vice President',
+        bio: 'Đỗ Bảo Long — Project Manager with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber Security certifications'
+      },
+      {
+        name: 'Phan Thị Hiến',
+        img: 'public/profilePhotos/hienorgstructure.png',
+        title: 'Head Accountant',
+        bio: 'Phan Thị Hiến — Head Accountant with extensive experience in financial management and accounting practices.'
+      },
+      {
+        name: 'Trịnh Thị Tình',
+        img: 'public/profilePhotos/tinhorgstructure.png',
+        title: 'Head of Administration',
+        bio: 'Trịnh Thị Tình — Head of Administration with extensive experience in human resources and administrative management.'
+      },
+      {
+        name: 'Nguyễn Quỳnh Ly',
+        img: 'public/profilePhotos/lyicueorgstructure.png',
+        title: 'Project Documentation Manager',
+        bio: 'Nguyễn Quỳnh Ly — Project Documentation Manager with extensive experience in project bidding and documentation.'
+      },
+      {
+        name: 'Nguyễn Thị Ly',
+        img: 'public/profilePhotos/lylyorgstructure.png',
+        title: 'Project Support Officer',
+        bio: 'Nguyễn Thị Ly — Project Support Officer with strong skills in project management and coordination.'
+      },
+      {
+        name: 'Đinh Tùng Dương',
+        img: 'public/profilePhotos/duongorgstructure.png',
+        title: 'Research Staff',
+        bio: 'Đinh Tùng Dương — Research Staff with a background in urban studies and data analysis, contributing to research projects and supporting the development of innovative solutions for sustainable urban development.'
+      }
+    ];
+
+    window.showPersonDetails = (name) => {
+      const modal = document.getElementById('profileModal');
+      const modalImg = document.getElementById('profileModalImg');
+      const modalText = document.getElementById('profileModalText');
+
+      const searchName = (name || '').trim().toLowerCase();
+
+      const profile = orgProfileData.find(p =>
+        p.name.toLowerCase().includes(searchName) ||
+        searchName.includes(p.name.toLowerCase())
+      );
+
+      if (!profile) {
+        console.warn(`Profile not found: ${name}`);
+        return;
+      }
+
+      modalImg.src = profile.img;
+      modalText.innerHTML = `
+        <h2>${profile.name}</h2>
+        <div class="profile-title">${profile.title}</div>
+        <div class="profile-bio">${profile.bio}</div>
+      `;
+
+      modal.style.display = 'flex';
+    };
+
+    document.getElementById('profileModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'profileModal' || e.target.classList.contains('profile-modal-close')) {
+        document.getElementById('profileModal').style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initOrgProfiles);
+
 window.attachProfileEvents_moe = () => {
   const profileData_moe = [
   {
@@ -453,7 +554,7 @@ window.attachProfileEvents_moe = () => {
   },
   {
     name: `<span class="intro-people">Đỗ Bảo Long - Project Manager</span><br> A dedicated Project Officer with a Masters Degree in Project Management from the University of Salford, UK, along with CCNA and Cyber Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in <span class="highlight-text-phrase-moe">design</span> and <span class="highlight-text-phrase-moe">creative problem solving</span>. <a href="https://en.longd.tech" target="_blank">🔧💬 View Profile</a>`,
-    img: "public/profilePhotos/dolong__nobg.png"
+    img: "public/profilePhotos/longdo__nobg.png"
   }
 ];
 
@@ -536,12 +637,12 @@ window.attachProfileEvents_moe = () => {
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
-        { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
+        { x: direction === 'right' ? -37.50 : 100, scale: 0.75, opacity: 0 },
+        { x: 0, opacity: 1, duration: .25, scale: 1, ease: "power2.out" }
       );
       tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
+        { x: direction === 'right' ? 100 : -37.50, scale: 0, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: .25, scale: 1, ease: "power2.out" },
         "-=0.5"
       );
     }, 300);
@@ -1925,6 +2026,7 @@ window.loadPage = (page) => {
                 handleAOSByScreenSize();
                 break;
               case 'orgStructure':
+                initOrgProfiles();
                 break;
               case 'FAQs':
                 initFrequentlyAskedQuestions();
