@@ -536,12 +536,12 @@ window.attachProfileEvents_moe = () => {
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
-        { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
+        { x: direction === 'right' ? -37.50 : 100, scale: 0.75, opacity: 0 },
+        { x: 0, opacity: 1, duration: .25, scale: 1, ease: "power2.out" }
       );
       tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
+        { x: direction === 'right' ? 100 : -37.50, scale: 0, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: .25, scale: 1, ease: "power2.out" },
         "-=0.5"
       );
     }, 300);
