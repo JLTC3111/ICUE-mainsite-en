@@ -451,8 +451,12 @@ nav a {
 }
 
 .highlight-text-phrase-core {
-  color: rgb(140, 138, 138);
-  text-shadow: 0 .5px 1px #fffefe, 0 0 2px rgb(252, 255, 50);
+  font-weight: 300;
+  font-style: italic;
+  background: linear-gradient(45deg, #4400ff, #027d81, #00963e, #b0b300);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .menu-bar {
