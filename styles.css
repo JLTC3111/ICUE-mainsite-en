@@ -869,7 +869,7 @@ nav a {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(12px, 2.5vw, 18px);
   line-height: 2;
-  color: #252525;
+  color: #000000;
   justify-content: center;
   text-align: center;
 }
@@ -2234,7 +2234,7 @@ body.loaded #app {
 
   .montserrat-pepple {
     font-size: clamp(12px, 3vw, 15px);
-    color: #e3e3e3;
+    color: #000000;
     margin: 1rem 0;
     line-height: 1.8;
     text-align: center;
