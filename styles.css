@@ -4149,10 +4149,39 @@ button:hover {
   transform: translateX(-250px);
 }
 
+.home-card__body {
+  text-decoration: none;
+}
+
+.home-card_body a {
+  transition: transform 1.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card__body a:hover {
+  transform: scale(1.1);
+}
+
 .home-card {
+  padding: 10px;
   opacity: 0;
   transform: translateX(300px);
   transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.home-card a {
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-card a img {
+  transition: transform 4.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card a:hover img {
+  margin-bottom: 10px;
+  transform: scale(1.25);
 }
 
 .home-card.animate-in-card {
