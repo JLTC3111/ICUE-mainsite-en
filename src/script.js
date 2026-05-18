@@ -5459,8 +5459,8 @@ window.initializeCarousel = () => {
 
   let autoAdvanceTimeout;
   let animationTimeout;
-  const timeRunning = 3000;
-  const timeAutoNext = 25000;
+  const timeRunning = 7000;
+  const timeAutoNext = 8000;
 
   const resetAutoAdvance = () => {
     clearTimeout(autoAdvanceTimeout);
@@ -5687,7 +5687,7 @@ function initAudioVisualizer(
   
     switch (page) {
       case 'ourWork':
-        color = '#ffcc00';
+        color = '#000000';
         break;
       case 'Contact':
         color = '#210000ff';

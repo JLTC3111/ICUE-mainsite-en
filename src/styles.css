@@ -1739,8 +1739,7 @@ body.loaded #app {
 }
 .work-arrows button:hover{
     transform: scale(1.1);
-    background-color: #b9ff80;
-    color: #000;
+    color: #b9ff80;
 }
 
 /* animation */
@@ -1828,15 +1827,16 @@ body.loaded #app {
     position: fixed;
     z-index: 5;
     width: 0%;
-    height: 2.5px;
+    height: 1.5px;
     background-color: #f1683a;
     top: 0;
     right:0;
+    box-shadow: #000000 0px 4px 12px;
 }
 
 .work-carousel.work-next .work-time,
 .work-carousel.work-prev .work-time{
-    animation: runningTime 3s linear 1 forwards;
+    animation: runningTime 7s linear 1 forwards;
 }
 @keyframes runningTime{
     from{ width: 100%}

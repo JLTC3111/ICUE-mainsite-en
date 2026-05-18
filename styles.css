@@ -451,8 +451,12 @@ nav a {
 }
 
 .highlight-text-phrase-core {
-  color: rgb(140, 138, 138);
-  text-shadow: 0 .5px 1px #fffefe, 0 0 2px rgb(252, 255, 50);
+  font-weight: 300;
+  font-style: italic;
+  background: linear-gradient(45deg, #4400ff, #027d81, #00963e, #b0b300);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .menu-bar {
@@ -869,7 +873,7 @@ nav a {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(12px, 2.5vw, 18px);
   line-height: 2;
-  color: #252525;
+  color: #000000;
   justify-content: center;
   text-align: center;
 }
@@ -2234,7 +2238,7 @@ body.loaded #app {
 
   .montserrat-pepple {
     font-size: clamp(12px, 3vw, 15px);
-    color: #e3e3e3;
+    color: #000000;
     margin: 1rem 0;
     line-height: 1.8;
     text-align: center;
@@ -4145,10 +4149,39 @@ button:hover {
   transform: translateX(-250px);
 }
 
+.home-card__body {
+  text-decoration: none;
+}
+
+.home-card_body a {
+  transition: transform 1.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card__body a:hover {
+  transform: scale(1.1);
+}
+
 .home-card {
+  padding: 10px;
   opacity: 0;
   transform: translateX(300px);
   transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.home-card a {
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-card a img {
+  transition: transform 4.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card a:hover img {
+  margin-bottom: 10px;
+  transform: scale(1.25);
 }
 
 .home-card.animate-in-card {
