@@ -1,9 +1,10 @@
 const crypto = require('crypto');
+const { getProviderApi } = require('../provider-api');
 
-const ZALOPAY_CREATE_URL =
-  process.env.ZALOPAY_ENV === 'production'
-    ? 'https://openapi.zalopay.vn/v2/create'
-    : 'https://sb-openapi.zalopay.vn/v2/create';
+function getZalopayCreateUrl() {
+  const { apiBase, createPath } = getProviderApi('zalopay').endpoints;
+  return `${apiBase}${createPath}`;
+}
 
 function buildMac(payload) {
   const data =
@@ -54,7 +55,7 @@ async function createPayment({ order, baseUrl }) {
     item: payload.item,
   });
 
-  const res = await fetch(ZALOPAY_CREATE_URL, {
+  const res = await fetch(getZalopayCreateUrl(), {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams(

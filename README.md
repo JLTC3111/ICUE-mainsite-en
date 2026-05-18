@@ -46,18 +46,40 @@ Integrated providers (one-time donations, **VND**):
 | VNPay | `VNPAY_ENV=sandbox` | `VNPAY_ENV=production` |
 | PayPal | `PAYPAL_MODE=sandbox` | `PAYPAL_MODE=live` |
 
-Only methods with complete env vars appear as available on the API; the UI still lists all five—configure credentials before going live.
+Only methods with complete env vars are returned from `GET /api/payments/methods`; the donations UI hides unconfigured providers.
+
+### Database (SQLite)
+
+Donations are stored in **`data/icue-payments.sqlite`** (override with `DATABASE_PATH` in `.env`).
+
+| Table | Purpose |
+|-------|---------|
+| `donors` | Email, name, phone, company (upserted by email) |
+| `orders` | Amount, provider, status, provider transaction IDs |
+| `payment_events` | Audit log (created, status changes, webhooks) |
+| `webhook_receipts` | Idempotency keys for provider callbacks |
+
+Migrations run automatically on server start. To apply manually:
+
+```bash
+npm run db:migrate
+```
+
+Inspect locally: `sqlite3 data/icue-payments.sqlite` → `SELECT * FROM orders;`
+
+For production at scale, point `DATABASE_PATH` at a persistent volume or migrate the schema to PostgreSQL.
 
 ### API
 
-- `GET /api/payments/methods` — configured methods
+- `GET /api/payments/methods` — configured methods + endpoint metadata
+- `GET /api/payments/config` — provider API bases (sandbox vs production)
+- `GET /api/payments/orders/:orderId` — order + donor status
 - `POST /api/payments/create` — start payment (rate-limited)
 - `GET /donations/return` — user return after redirect
 - Webhooks: `/api/webhooks/momo`, `/api/webhooks/zalopay`, `/api/webhooks/vnpay`, `/api/webhooks/paypal`
 
 ### Known limitations
 
-- **No database** — order and webhook idempotency use local JSON under `data/` (fine for sandbox; use a real DB for production scale).
 - **VNPay / MoMo** — merchant registration and URL whitelisting required.
 - **PayPal** — account must support VND; business verification may apply.
 - **Bank transfer** — donations stay `awaiting_transfer` until confirmed manually.

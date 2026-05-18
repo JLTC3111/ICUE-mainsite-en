@@ -1,14 +1,15 @@
-const PAYPAL_API =
-  process.env.PAYPAL_MODE === 'live'
-    ? 'https://api-m.paypal.com'
-    : 'https://api-m.sandbox.paypal.com';
+const { getProviderApi } = require('../provider-api');
+
+function getPaypalApiBase() {
+  return getProviderApi('paypal').endpoints.apiBase;
+}
 
 async function getAccessToken() {
   const clientId = process.env.PAYPAL_CLIENT_ID;
   const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
   const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-  const res = await fetch(`${PAYPAL_API}/v1/oauth2/token`, {
+  const res = await fetch(`${getPaypalApiBase()}/v1/oauth2/token`, {
     method: 'POST',
     headers: {
       Authorization: `Basic ${auth}`,
@@ -31,7 +32,7 @@ async function createPayment({ order, baseUrl }) {
   const returnUrl = `${baseUrl}/donations/return?provider=paypal&orderId=${encodeURIComponent(order.orderId)}`;
   const cancelUrl = `${baseUrl}/#/donations?cancelled=1`;
 
-  const res = await fetch(`${PAYPAL_API}/v2/checkout/orders`, {
+  const res = await fetch(`${getPaypalApiBase()}/v2/checkout/orders`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -78,7 +79,7 @@ async function createPayment({ order, baseUrl }) {
 
 async function captureOrder(paypalOrderId) {
   const token = await getAccessToken();
-  const res = await fetch(`${PAYPAL_API}/v2/checkout/orders/${paypalOrderId}/capture`, {
+  const res = await fetch(`${getPaypalApiBase()}/v2/checkout/orders/${paypalOrderId}/capture`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -89,4 +90,4 @@ async function captureOrder(paypalOrderId) {
   return { ok: res.ok, body };
 }
 
-module.exports = { createPayment, captureOrder, PAYPAL_API };
+module.exports = { createPayment, captureOrder, getPaypalApiBase };

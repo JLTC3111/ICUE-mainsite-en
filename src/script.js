@@ -3543,6 +3543,38 @@ window.DonationForm = (function () {
     });
   }
 
+  async function syncPaymentMethodsFromApi() {
+    const grid = document.getElementById('paymentMethodGrid');
+    if (!grid) return;
+
+    try {
+      const response = await fetch('/api/payments/methods');
+      const data = await response.json();
+      const configured = new Set((data.methods || []).map((m) => m.id));
+
+      let firstActive = null;
+      grid.querySelectorAll('.payment-method').forEach((label) => {
+        const provider = label.getAttribute('data-provider');
+        const enabled = configured.has(provider);
+        label.style.display = enabled ? '' : 'none';
+        label.classList.remove('active');
+        const input = label.querySelector('input[name="paymentMethod"]');
+        if (input) input.disabled = !enabled;
+        if (enabled && !firstActive) firstActive = label;
+      });
+
+      if (firstActive) {
+        selectPaymentMethod(firstActive);
+        const input = firstActive.querySelector('input[name="paymentMethod"]');
+        if (input) input.checked = true;
+      } else {
+        showMessage('No payment methods are configured on the server. Contact the site administrator.', 'error');
+      }
+    } catch (err) {
+      console.warn('[DonationForm] Could not load payment methods:', err);
+    }
+  }
+
   function init() {
     const donateAmountElement = document.getElementById('donateAmount');
     if (!donateAmountElement) return;
@@ -3552,6 +3584,7 @@ window.DonationForm = (function () {
     if (initBound) return;
     initBound = true;
     bindPaymentMethods();
+    syncPaymentMethodsFromApi();
 
     const params = new URLSearchParams(window.location.search);
     if (params.get('cancelled') === '1') {

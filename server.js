@@ -3,8 +3,11 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+const { initDatabase } = require('./server/db/client');
 const { apiRouter, pagesRouter } = require('./server/payments/routes');
 const { handlePaypalWebhook } = require('./server/payments/webhooks');
+
+initDatabase();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +24,6 @@ function handlePaypalWebhookRoute(req, res) {
   }
 }
 
-// Raw-body webhooks (must register before express.json())
 app.post(
   '/api/webhooks/paypal',
   express.raw({ type: 'application/json' }),

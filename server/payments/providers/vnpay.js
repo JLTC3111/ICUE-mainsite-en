@@ -1,10 +1,10 @@
 const crypto = require('crypto');
 const querystring = require('querystring');
+const { getProviderApi } = require('../provider-api');
 
-const VNPAY_HOST =
-  process.env.VNPAY_ENV === 'production'
-    ? 'https://vnpayment.vn'
-    : 'https://sandbox.vnpayment.vn';
+function getVnpayHost() {
+  return getProviderApi('vnpay').endpoints.apiBase;
+}
 
 function sortAndSign(params, secret) {
   const sorted = Object.keys(params)
@@ -55,7 +55,8 @@ async function createPayment({ order, baseUrl, clientIp }) {
   const { secureHash } = sortAndSign(params, secret);
   params.vnp_SecureHash = secureHash;
 
-  const paymentUrl = `${VNPAY_HOST}/paymentv2/vpcpay.html?${querystring.stringify(params)}`;
+  const { payPath } = getProviderApi('vnpay').endpoints;
+  const paymentUrl = `${getVnpayHost()}${payPath}?${querystring.stringify(params)}`;
 
   return { redirectUrl: paymentUrl, providerOrderId: order.orderId, ipnUrl };
 }
@@ -64,4 +65,4 @@ function verifyIpnQuery(query) {
   return verifyReturn(query);
 }
 
-module.exports = { createPayment, verifyReturn, verifyIpnQuery, VNPAY_HOST };
+module.exports = { createPayment, verifyReturn, verifyIpnQuery, getVnpayHost };

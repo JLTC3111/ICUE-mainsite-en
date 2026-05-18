@@ -5,6 +5,7 @@ const { getBaseUrl, isProviderConfigured } = require('./config');
 const { paymentRateLimit } = require('./rateLimit');
 const { logPaymentAttempt } = require('./logger');
 const { createOrder, updateOrderStatus, getOrder } = require('./orders');
+const { listProviderApis, getProviderApi } = require('./provider-api');
 const { initiate } = require('./providers');
 const paypal = require('./providers/paypal');
 const vnpay = require('./providers/vnpay');
@@ -18,20 +19,47 @@ const apiRouter = new express.Router();
 
 apiRouter.get('/payments/methods', (_req, res) => {
   const methods = [
-    { id: 'paypal', label: 'PayPal', configured: isProviderConfigured('paypal') },
-    { id: 'momo', label: 'MoMo', configured: isProviderConfigured('momo') },
-    { id: 'zalopay', label: 'ZaloPay', configured: isProviderConfigured('zalopay') },
-    { id: 'vnpay', label: 'VNPay', configured: isProviderConfigured('vnpay') },
-    {
-      id: 'bank_transfer',
-      label: 'Bank transfer',
-      configured: isProviderConfigured('bank_transfer'),
-    },
-  ];
-  res.json({ currency: 'VND', methods });
+    { id: 'paypal', label: 'PayPal' },
+    { id: 'momo', label: 'MoMo' },
+    { id: 'zalopay', label: 'ZaloPay' },
+    { id: 'vnpay', label: 'VNPay' },
+    { id: 'bank_transfer', label: 'Bank transfer' },
+  ].map((m) => ({
+    ...m,
+    configured: isProviderConfigured(m.id),
+    api: getProviderApi(m.id),
+  }));
+
+  res.json({
+    currency: 'VND',
+    methods: methods.filter((m) => m.configured),
+    allMethods: methods,
+  });
+});
+
+apiRouter.get('/payments/config', (_req, res) => {
+  res.json({ providers: listProviderApis() });
+});
+
+apiRouter.get('/payments/orders/:orderId', (req, res) => {
+  const order = getOrder(req.params.orderId);
+  if (!order) {
+    return res.status(404).json({ code: 'ORDER_NOT_FOUND', message: 'Order not found.' });
+  }
+  return res.json({
+    orderId: order.orderId,
+    provider: order.provider,
+    amountVnd: order.amountVnd,
+    currency: order.currency,
+    status: order.status,
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt,
+    donor: order.donor,
+  });
 });
 
 apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
+  let order;
   try {
     const provider = parseProvider(req.body.provider);
     if (!provider) {
@@ -62,7 +90,7 @@ apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
     }
 
     const baseUrl = getBaseUrl(req);
-    const order = createOrder({ provider, amountVnd, donor: donorResult });
+    order = createOrder({ provider, amountVnd, donor: donorResult });
 
     logPaymentAttempt({
       provider,
@@ -104,6 +132,13 @@ apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
     });
   } catch (err) {
     console.error('[payment] create error:', err.message);
+    if (order?.orderId) {
+      try {
+        updateOrderStatus(order.orderId, 'failed', { failureMessage: err.message });
+      } catch {
+        // ignore secondary failure
+      }
+    }
     return res.status(502).json({
       code: 'PAYMENT_INIT_FAILED',
       message: err.message || 'Could not start payment. Please try again.',
@@ -136,10 +171,13 @@ async function handleDonationReturn(req, res) {
       if (paypalOrderId) {
         const { ok, body } = await paypal.captureOrder(paypalOrderId);
         if (ok && body.status === 'COMPLETED') {
-          updateOrderStatus(orderId, 'paid');
+          updateOrderStatus(orderId, 'paid', { providerTransId: body.id });
           status = 'success';
           message = 'Thank you! Your PayPal donation was completed.';
         } else {
+          updateOrderStatus(orderId, 'failed', {
+            failureMessage: body?.message || 'PayPal capture failed',
+          });
           status = 'failed';
           message = 'PayPal could not complete this payment.';
         }
@@ -150,6 +188,9 @@ async function handleDonationReturn(req, res) {
         status = 'success';
         message = 'Thank you! Your MoMo payment was successful.';
       } else if (req.query.resultCode) {
+        updateOrderStatus(orderId, 'failed', {
+          failureMessage: req.query.message || 'MoMo payment failed',
+        });
         status = 'failed';
         message = req.query.message || 'MoMo payment was not completed.';
       }
@@ -159,6 +200,9 @@ async function handleDonationReturn(req, res) {
         status = 'success';
         message = 'Thank you! Your VNPay payment was successful.';
       } else {
+        updateOrderStatus(orderId, 'failed', {
+          failureMessage: req.query.vnp_ResponseCode || 'VNPay declined',
+        });
         status = 'failed';
         message = 'VNPay payment was cancelled or declined.';
       }
@@ -168,6 +212,7 @@ async function handleDonationReturn(req, res) {
         status = 'success';
         message = 'Thank you! Your ZaloPay payment was successful.';
       } else if (req.query.status || req.query.return_code) {
+        updateOrderStatus(orderId, 'failed');
         status = 'failed';
         message = 'ZaloPay payment was not completed.';
       }

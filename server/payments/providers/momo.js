@@ -1,9 +1,9 @@
 const crypto = require('crypto');
+const { getProviderApi } = require('../provider-api');
 
-const MOMO_HOST =
-  process.env.MOMO_ENV === 'production'
-    ? 'https://payment.momo.vn'
-    : 'https://test-payment.momo.vn';
+function getMomoApiBase() {
+  return getProviderApi('momo').endpoints.apiBase;
+}
 
 function signCreateRequest(fields) {
   const raw =
@@ -71,7 +71,7 @@ async function createPayment({ order, baseUrl }) {
 
   const signature = signCreateRequest(fields);
 
-  const res = await fetch(`${MOMO_HOST}/v2/gateway/api/create`, {
+  const res = await fetch(`${getMomoApiBase()}${getProviderApi('momo').endpoints.createPath}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=UTF-8' },
     body: JSON.stringify({
@@ -100,4 +100,4 @@ async function createPayment({ order, baseUrl }) {
   return { redirectUrl: body.payUrl, providerOrderId: body.requestId };
 }
 
-module.exports = { createPayment, verifyIpnSignature, MOMO_HOST };
+module.exports = { createPayment, verifyIpnSignature, getMomoApiBase };
