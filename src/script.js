@@ -5778,11 +5778,10 @@ function initAudioVisualizer(
 window.preloadProfileImages = () => {
   // Images for meetourexperts.html
   const expertImages = [
-    "public/profilePhotos/hanhnguyen.jpg",
-    "public/profilePhotos/hoangthuha.jpg",
-    "public/profilePhotos/tranthilananh.jpg",
-    "public/profilePhotos/tranquoctoan.jpg",
-    "public/profilePhotos/giaminh.jpg"
+    "public/profilePhotos/hanhnguyen__nobg.png",
+    "public/profilePhotos/tranthilananh__nobg.png",
+    "public/profilePhotos/tranquoctoan__nobg.png",
+    "public/profilePhotos/longdo__nobg.png"
   ];
   // Images for coreTeam.html
   const coreTeamImages = [
