@@ -191,40 +191,129 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        .donation-type {
+        .payment-methods {
             margin-bottom: 24px;
+            border: none;
+            padding: 0;
         }
 
-        .donation-type label {
+        .payment-methods > label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: #374151;
         }
 
-        .donation-options {
+        .payment-method-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .payment-method {
             display: flex;
-            gap: 12px;
-            font-size: clamp(0.75rem, 2vw, 1rem);
-        }
-
-        .donation-option {
-            flex: 1;
-        
-            padding: 12px 16px;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
             border: 2px solid #e2e8f0;
-            background: white;
-            border-radius: 8px;
+            border-radius: 10px;
+            background: #fff;
             cursor: pointer;
-            text-align: center;
-            font-weight: 500;
-            transition: all 0.15s ease;
+            font-weight: 600;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
+            transition: border-color 0.15s ease, background 0.15s ease;
         }
 
-        .donation-option.active {
+        .payment-method input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .payment-method.active {
             border-color: #3b82f6;
             background: #eff6ff;
             color: #1e40af;
+        }
+
+        .payment-method-logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .payment-method-logo.paypal { background: #003087; }
+        .payment-method-logo.momo { background: #a50064; }
+        .payment-method-logo.zalopay { background: #0068ff; }
+        .payment-method-logo.vnpay { background: #005baa; }
+        .payment-method-logo.bank { background: #0f766e; }
+
+        .donation-message {
+            display: none;
+            margin-bottom: 16px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .donation-message.visible { display: block; }
+        .donation-message.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        .donation-message.success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .bank-transfer-panel {
+            display: none;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        .bank-transfer-panel.visible { display: block; }
+        .bank-transfer-panel dt { font-weight: 600; margin-top: 8px; }
+        .bank-transfer-panel dd { margin: 0 0 4px 0; }
+
+        .donate-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .donate-btn .btn-spinner {
+            display: none;
+            width: 1em;
+            height: 1em;
+            border: 2px solid rgba(255,255,255,0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: donation-spin 0.7s linear infinite;
+            vertical-align: -0.15em;
+            margin-right: 8px;
+        }
+
+        .donate-btn.loading .btn-spinner { display: inline-block; }
+        .donate-btn.loading .btn-label { opacity: 0.9; }
+
+        @keyframes donation-spin {
+            to { transform: rotate(360deg); }
         }
 
         .donor-info {
@@ -492,30 +581,57 @@
 
       <form class="donation-form" onsubmit="processDonation(event)">
         <h2>Donate</h2>
+        <div id="donationMessage" class="donation-message" role="alert" aria-live="polite"></div>
         <div class="amount-buttons">
-          <button type="button" class="amount-btn" onclick="selectAmount(this, '25')">$25</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, '50')">$50</button>
-          <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, '250')">$250</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, '500')">$500</button>
-          <button type="button" class="amount-btn" onclick="selectAmount(this, '1,000')">$1,000</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 200000)">200.000 ₫</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 500000)">500.000 ₫</button>
+          <button type="button" class="amount-btn active" onclick="selectAmount(this, 1000000)">1.000.000 ₫</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 2000000)">2.000.000 ₫</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 5000000)">5.000.000 ₫</button>
+          <button type="button" class="amount-btn" onclick="selectAmount(this, 10000000)">10.000.000 ₫</button>
         </div>
 
         <div class="custom-amount">
-          <label for="customAmount">Custom Amount</label>
-          <input type="number" id="customAmount" name="customAmount" placeholder="Enter amount" min="1" onchange="updateCustomAmount(this)">
+          <label for="customAmount">Custom amount (VND)</label>
+          <input type="number" id="customAmount" name="customAmount" placeholder="e.g. 1500000" min="10000" step="1000" oninput="updateCustomAmount(this)">
         </div>
 
-        <div class="donation-type">
-          <label>Donation Frequency</label>
-          <div class="donation-options">
-            <div class="donation-option active" onclick="selectFrequency(this, 'one-time')">One-time</div>
-            <div class="donation-option" onclick="selectFrequency(this, 'monthly')">Monthly</div>
-            <div class="donation-option" onclick="selectFrequency(this, 'annual')">Annual</div>
+        <fieldset class="payment-methods">
+          <legend style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Payment method</legend>
+          <label>Payment method</label>
+          <div class="payment-method-grid" id="paymentMethodGrid">
+            <label class="payment-method active" data-provider="momo">
+              <input type="radio" name="paymentMethod" value="momo" checked>
+              <span class="payment-method-logo momo" aria-hidden="true">M</span>
+              <span>MoMo</span>
+            </label>
+            <label class="payment-method" data-provider="zalopay">
+              <input type="radio" name="paymentMethod" value="zalopay">
+              <span class="payment-method-logo zalopay" aria-hidden="true">Z</span>
+              <span>ZaloPay</span>
+            </label>
+            <label class="payment-method" data-provider="vnpay">
+              <input type="radio" name="paymentMethod" value="vnpay">
+              <span class="payment-method-logo vnpay" aria-hidden="true">VN</span>
+              <span>VNPay</span>
+            </label>
+            <label class="payment-method" data-provider="paypal">
+              <input type="radio" name="paymentMethod" value="paypal">
+              <span class="payment-method-logo paypal" aria-hidden="true">PP</span>
+              <span>PayPal</span>
+            </label>
+            <label class="payment-method" data-provider="bank_transfer">
+              <input type="radio" name="paymentMethod" value="bank_transfer">
+              <span class="payment-method-logo bank" aria-hidden="true">₫</span>
+              <span>Bank transfer</span>
+            </label>
           </div>
-        </div>
+        </fieldset>
+
+        <div id="bankTransferPanel" class="bank-transfer-panel" aria-live="polite"></div>
 
         <div class="donor-info">
+
           <h3>Donor Information</h3>
           <div class="form-row">
             <div class="form-group">
@@ -541,8 +657,9 @@
           </div>
         </div>
 
-        <button type="submit" class="donate-btn">
-          Donate $<span id="donateAmount">100</span>
+        <button type="submit" class="donate-btn" id="donateSubmitBtn">
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span class="btn-label">Donate <span id="donateAmount">1.000.000</span> ₫</span>
         </button>
 
         <div class="security-note">

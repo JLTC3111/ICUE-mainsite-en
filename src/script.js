@@ -3382,144 +3382,188 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.DonationForm = (function () {
-  let selectedAmount = 100;
-  let selectedFrequency = "monthly";
+  let selectedAmount = 1000000;
+  let selectedProvider = 'momo';
+  let initBound = false;
 
-  function selectAmount(button, amount) {
-    document.querySelectorAll('.amount-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
+  function formatVnd(amount) {
+    return Number(amount).toLocaleString('vi-VN');
+  }
 
-    button.classList.add('active');
+  function getMessageEl() {
+    return document.getElementById('donationMessage');
+  }
 
-    // Update selected amount
-    selectedAmount = amount;
+  function showMessage(text, type) {
+    const el = getMessageEl();
+    if (!el) return;
+    el.textContent = text;
+    el.className = `donation-message visible ${type}`;
+  }
+
+  function clearMessage() {
+    const el = getMessageEl();
+    if (!el) return;
+    el.textContent = '';
+    el.className = 'donation-message';
+  }
+
+  function updateAmountDisplay() {
     const donateAmountElement = document.getElementById('donateAmount');
     if (donateAmountElement) {
-      donateAmountElement.textContent = amount;
+      donateAmountElement.textContent = formatVnd(selectedAmount);
     }
+  }
 
-    // Clear custom amount input if it exists
+  function selectAmount(button, amount) {
+    document.querySelectorAll('.amount-btn').forEach((btn) => btn.classList.remove('active'));
+    button.classList.add('active');
+    selectedAmount = Number(amount);
+    updateAmountDisplay();
     const customAmountInput = document.getElementById('customAmount');
-    if (customAmountInput) {
-      customAmountInput.value = '';
-    }
+    if (customAmountInput) customAmountInput.value = '';
+    clearMessage();
   }
 
-  // Function to update custom amount
   function updateCustomAmount(input) {
-    const customAmount = parseInt(input.value);
+    const customAmount = parseInt(input.value, 10);
     if (customAmount && customAmount > 0) {
-      // Remove active class from preset buttons
-      document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      // Update selected amount
+      document.querySelectorAll('.amount-btn').forEach((btn) => btn.classList.remove('active'));
       selectedAmount = customAmount;
-      const donateAmountElement = document.getElementById('donateAmount');
-      if (donateAmountElement) {
-        donateAmountElement.textContent = customAmount;
-      }
+      updateAmountDisplay();
+      clearMessage();
     }
   }
 
-  // Function to select donation frequency
-  function selectFrequency(option, frequency) {
-    // Remove active class from all frequency options
-    document.querySelectorAll('.donation-option').forEach(opt => {
-      opt.classList.remove('active');
-    });
-
-    // Add active class to clicked option
-    option.classList.add('active');
-
-    // Update selected frequency
-    selectedFrequency = frequency;
+  function selectPaymentMethod(labelEl) {
+    document.querySelectorAll('.payment-method').forEach((el) => el.classList.remove('active'));
+    labelEl.classList.add('active');
+    const input = labelEl.querySelector('input[name="paymentMethod"]');
+    if (input) selectedProvider = input.value;
+    const bankPanel = document.getElementById('bankTransferPanel');
+    if (bankPanel) {
+      bankPanel.classList.remove('visible');
+      bankPanel.innerHTML = '';
+    }
+    clearMessage();
   }
 
-  // Function to process donation
-  function processDonation(event) {
-    event.preventDefault();
+  function setLoading(loading) {
+    const btn = document.getElementById('donateSubmitBtn');
+    if (!btn) return;
+    btn.disabled = loading;
+    btn.classList.toggle('loading', loading);
+  }
 
-    // Get form data
-    const formData = new FormData(event.target);
-    const donationData = {
-      amount: selectedAmount,
-      frequency: selectedFrequency,
+  function renderBankDetails(details) {
+    const panel = document.getElementById('bankTransferPanel');
+    if (!panel || !details) return;
+    panel.innerHTML = `
+      <p><strong>Transfer instructions</strong></p>
+      <dl>
+        <dt>Bank</dt><dd>${details.bankName}</dd>
+        <dt>Account name</dt><dd>${details.accountName}</dd>
+        <dt>Account number</dt><dd>${details.accountNumber}</dd>
+        ${details.branch ? `<dt>Branch</dt><dd>${details.branch}</dd>` : ''}
+        <dt>Amount</dt><dd>${formatVnd(details.amountVnd)} ₫</dd>
+        <dt>Transfer reference</dt><dd><strong>${details.transferReference}</strong></dd>
+      </dl>
+      <p>Use the reference exactly so we can match your donation.</p>
+    `;
+    panel.classList.add('visible');
+  }
+
+  async function processDonation(event) {
+    event.preventDefault();
+    clearMessage();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const providerInput = form.querySelector('input[name="paymentMethod"]:checked');
+    const provider = providerInput ? providerInput.value : selectedProvider;
+
+    const payload = {
+      provider,
+      amountVnd: selectedAmount,
       firstName: formData.get('firstName'),
       lastName: formData.get('lastName'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      company: formData.get('company')
+      company: formData.get('company'),
     };
 
-    // Validate required fields
-    if (!donationData.firstName || !donationData.lastName || !donationData.email) {
-      alert('Please fill in all required fields.');
+    if (!payload.firstName || !payload.lastName || !payload.email) {
+      showMessage('Please fill in all required fields.', 'error');
       return;
     }
 
-    // Validate amount
-    if (!selectedAmount || selectedAmount <= 0) {
-      alert('Please select a valid donation amount.');
+    if (!selectedAmount || selectedAmount < 10000) {
+      showMessage('Minimum donation is 10.000 ₫.', 'error');
       return;
     }
 
-    // Stripe Integration - Create checkout session and redirect
-    fetch('/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(donationData)
-    })
-    .then(response => {
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/payments/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        showMessage(data.message || 'Could not start payment. Please try again.', 'error');
+        return;
       }
-      return response.json();
-    })
-    .then(session => {
-      // Redirect to Stripe Checkout
-      window.location.href = session.url;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Quyên Góp Sẽ Được Kích Hoạt Trong Vài Tháng Tới.');
-    });
 
-    console.log('Donation data:', donationData);
+      if (data.bankDetails) {
+        renderBankDetails(data.bankDetails);
+        showMessage('Please complete the bank transfer using the details below.', 'success');
+        return;
+      }
+
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+        return;
+      }
+
+      showMessage('Unexpected response from payment server.', 'error');
+    } catch (err) {
+      console.error('[DonationForm]', err);
+      showMessage('Network error. Check your connection and try again.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function bindPaymentMethods() {
+    document.querySelectorAll('.payment-method').forEach((label) => {
+      label.addEventListener('click', () => selectPaymentMethod(label));
+    });
   }
 
   function init() {
     const donateAmountElement = document.getElementById('donateAmount');
-    if (donateAmountElement) {
-      donateAmountElement.textContent = selectedAmount;
-    }
+    if (!donateAmountElement) return;
 
-    // Add hover effects to cards
-    const cards = document.querySelectorAll('.award-card, .project-card');
-    cards.forEach(card => {
-      card.addEventListener('mouseenter', function () {
-        this.style.transform = 'translateY(-2.5px)';
-      });
-      card.addEventListener('mouseleave', function () {
-        this.style.transform = 'translateY(0)';
-      });
-    });
+    updateAmountDisplay();
+
+    if (initBound) return;
+    initBound = true;
+    bindPaymentMethods();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('cancelled') === '1') {
+      showMessage('Payment was cancelled. You can try again when ready.', 'error');
+    }
   }
 
-  // Run init after DOM is ready
-  document.addEventListener('DOMContentLoaded', init);
-
-  // Public API (accessible globally as window.DonationForm)
   return {
     selectAmount,
     updateCustomAmount,
-    selectFrequency,
     processDonation,
-    init
+    init,
   };
 })();
 
@@ -3532,12 +3576,6 @@ window.selectAmount = function(button, amount) {
 window.updateCustomAmount = function(input) {
   if (window.DonationForm && window.DonationForm.updateCustomAmount) {
     window.DonationForm.updateCustomAmount(input);
-  }
-};
-
-window.selectFrequency = function(option, frequency) {
-  if (window.DonationForm && window.DonationForm.selectFrequency) {
-    window.DonationForm.selectFrequency(option, frequency);
   }
 };
 
@@ -3596,6 +3634,8 @@ window.AwardsPage = (function () {
   });
 
  window.CommunityPage = {
+    _scrollRafId: null,
+    _scrollHandler: null,
     init: function () {
       const observerOptions = {
         threshold: 0.1,
@@ -3611,7 +3651,6 @@ window.AwardsPage = (function () {
         });
       }, observerOptions);
 
-      // Animate photo items
       const photoItems = document.querySelectorAll('.photo-item');
       photoItems.forEach((item, index) => {
         item.style.opacity = '0';
@@ -3620,15 +3659,21 @@ window.AwardsPage = (function () {
         observer.observe(item);
       });
 
-      // Floating elements parallax scroll
-      window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled * -0.5;
-        const floatingElements = document.querySelector('.floating-elements');
-        if (floatingElements) {
-          floatingElements.style.transform = `translateY(${rate}px)`;
+      const floatingElements = document.querySelector('.floating-elements');
+      if (floatingElements) {
+        if (this._scrollHandler) {
+          window.removeEventListener('scroll', this._scrollHandler);
         }
-      });
+        this._scrollHandler = () => {
+          if (this._scrollRafId) return;
+          this._scrollRafId = requestAnimationFrame(() => {
+            this._scrollRafId = null;
+            const rate = window.pageYOffset * -0.5;
+            floatingElements.style.transform = `translateY(${rate}px)`;
+          });
+        };
+        window.addEventListener('scroll', this._scrollHandler, { passive: true });
+      }
 
       // Community buttons interaction
       document.querySelectorAll('.community-btn').forEach(btn => {
