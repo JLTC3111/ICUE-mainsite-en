@@ -74,7 +74,9 @@ For production at scale, point `DATABASE_PATH` at a persistent volume or migrate
 - `GET /api/payments/methods` — configured methods + endpoint metadata
 - `GET /api/payments/config` — provider API bases (sandbox vs production)
 - `GET /api/payments/orders/:orderId` — order + donor status
-- `POST /api/payments/create` — start payment (rate-limited)
+- `POST /api/payments/{provider}/initiate` — start payment (rate-limited)
+  - `provider`: `paypal | momo | zalopay | vnpay | bank_transfer`
+- `POST /api/payments/create` — generic initiation (backward compatible)
 - `GET /donations/return` — user return after redirect
 - Webhooks: `/api/webhooks/momo`, `/api/webhooks/zalopay`, `/api/webhooks/vnpay`, `/api/webhooks/paypal`
 

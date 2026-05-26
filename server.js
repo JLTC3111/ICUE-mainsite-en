@@ -6,6 +6,7 @@ require('dotenv').config();
 const { initDatabase } = require('./server/db/client');
 const { apiRouter, pagesRouter } = require('./server/payments/routes');
 const { handlePaypalWebhook } = require('./server/payments/webhooks');
+const paypal = require('./server/payments/providers/paypal');
 
 initDatabase();
 
@@ -13,9 +14,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 
-function handlePaypalWebhookRoute(req, res) {
+async function handlePaypalWebhookRoute(req, res) {
   try {
     const event = JSON.parse(req.body.toString('utf8'));
+    // Verify signature via PayPal REST endpoint before processing.
+    await paypal.verifyWebhookSignature(req.headers, event);
     handlePaypalWebhook(event);
     res.json({ received: true });
   } catch (err) {

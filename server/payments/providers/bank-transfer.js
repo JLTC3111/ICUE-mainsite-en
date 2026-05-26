@@ -4,9 +4,9 @@ async function createPayment({ order }) {
 
   return {
     bankDetails: {
-      bankName: process.env.BANK_TRANSFER_BANK_NAME,
-      accountName: process.env.BANK_TRANSFER_ACCOUNT_NAME,
-      accountNumber: process.env.BANK_TRANSFER_ACCOUNT_NUMBER,
+      bankName: process.env.BANK_TRANSFER_BANK_NAME || 'Vietcombank',
+      accountName: process.env.BANK_TRANSFER_ACCOUNT_NAME || 'ICUE Vietnam',
+      accountNumber: process.env.BANK_TRANSFER_ACCOUNT_NUMBER || 'your_account',
       branch: process.env.BANK_TRANSFER_BRANCH || '',
       amountVnd: order.amountVnd,
       transferReference,

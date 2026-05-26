@@ -58,17 +58,9 @@ apiRouter.get('/payments/orders/:orderId', (req, res) => {
   });
 });
 
-apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
+async function initiatePaymentForProvider(provider, req, res) {
   let order;
   try {
-    const provider = parseProvider(req.body.provider);
-    if (!provider) {
-      return res.status(400).json({
-        code: 'INVALID_PROVIDER',
-        message: `Payment method must be one of: ${PROVIDERS.join(', ')}`,
-      });
-    }
-
     if (!isProviderConfigured(provider)) {
       return res.status(503).json({
         code: 'PROVIDER_NOT_CONFIGURED',
@@ -86,7 +78,10 @@ apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
 
     const donorResult = sanitizeDonor(req.body);
     if (donorResult.error) {
-      return res.status(400).json({ code: 'INVALID_DONOR', message: donorResult.error });
+      return res.status(400).json({
+        code: 'INVALID_DONOR',
+        message: donorResult.error,
+      });
     }
 
     const baseUrl = getBaseUrl(req);
@@ -131,7 +126,7 @@ apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
       redirectUrl: result.redirectUrl,
     });
   } catch (err) {
-    console.error('[payment] create error:', err.message);
+    console.error('[payment] initiate error:', err.message);
     if (order?.orderId) {
       try {
         updateOrderStatus(order.orderId, 'failed', { failureMessage: err.message });
@@ -144,7 +139,46 @@ apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
       message: err.message || 'Could not start payment. Please try again.',
     });
   }
+}
+
+// Generic initiation (kept for backward compatibility)
+apiRouter.post('/payments/create', paymentRateLimit, async (req, res) => {
+  const provider = parseProvider(req.body.provider);
+  if (!provider) {
+    return res.status(400).json({
+      code: 'INVALID_PROVIDER',
+      message: `Payment method must be one of: ${PROVIDERS.join(', ')}`,
+    });
+  }
+  return initiatePaymentForProvider(provider, req, res);
 });
+
+// One endpoint per provider (explicit initiation routes)
+apiRouter.post(
+  '/payments/paypal/initiate',
+  paymentRateLimit,
+  async (req, res) => initiatePaymentForProvider('paypal', req, res)
+);
+apiRouter.post(
+  '/payments/momo/initiate',
+  paymentRateLimit,
+  async (req, res) => initiatePaymentForProvider('momo', req, res)
+);
+apiRouter.post(
+  '/payments/zalopay/initiate',
+  paymentRateLimit,
+  async (req, res) => initiatePaymentForProvider('zalopay', req, res)
+);
+apiRouter.post(
+  '/payments/vnpay/initiate',
+  paymentRateLimit,
+  async (req, res) => initiatePaymentForProvider('vnpay', req, res)
+);
+apiRouter.post(
+  '/payments/bank_transfer/initiate',
+  paymentRateLimit,
+  async (req, res) => initiatePaymentForProvider('bank_transfer', req, res)
+);
 
 apiRouter.post('/webhooks/momo', handleMomoIpn);
 apiRouter.post(

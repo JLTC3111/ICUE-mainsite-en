@@ -3505,7 +3505,7 @@ window.DonationForm = (function () {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/payments/create', {
+      const response = await fetch(`/api/payments/${provider}/initiate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
