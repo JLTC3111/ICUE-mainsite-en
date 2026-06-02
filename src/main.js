@@ -1,4 +1,8 @@
-import './script.js';
+// NOTE: `script.js` is loaded once as a classic deferred <script> in index.html
+// (which keeps its top-level functions on `window` for inline HTML handlers).
+// It must NOT also be imported here, or the whole file would execute twice
+// (duplicate event listeners, observers, timers, etc.).
+import './modules/cardSlider.js';
 
 const AOSManager = (() => {
   const originalAOS = new Map();
