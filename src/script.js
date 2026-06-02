@@ -1910,25 +1910,77 @@ window.loadPage = (page) => {
     destroyHomeMobileObserver();
   }
 
+  const progressMs = document.getElementById('loading-ms');
+
   if (progressBar) {
     progressBar.style.strokeDasharray = `${circumference}`;
+    // Use a short, linear transition so the ring tracks the real-time
+    // per-frame updates smoothly instead of lagging behind a long ease.
+    progressBar.style.transition = 'stroke-dashoffset 0.12s linear';
   }
 
   const setProgress = (percent) => {
     if (!progressBar || !progressText) return;
-    const offset = circumference - (percent / 100) * circumference;
+    const clamped = Math.max(0, Math.min(100, percent));
+    const offset = circumference - (clamped / 100) * circumference;
     progressBar.style.strokeDashoffset = offset;
-    progressText.textContent = `${Math.round(percent)}%`;
+    progressText.textContent = `${Math.round(clamped)}%`;
   };
 
   if (landing) {
     landing.style.display = 'grid';
     landing.style.opacity = 1;
-    landing.style.pointerEvents = 'All';
+    landing.style.pointerEvents = 'auto';
   }
 
-  // Show quick progress animation
-  setProgress(30);
+  // Real-time loading indicator.
+  // The millisecond readout reflects the ACTUAL elapsed load time (measured
+  // with the high-resolution clock). The percentage follows a time-based ease
+  // that climbs quickly at first then asymptotically approaches a ceiling while
+  // the page fragment is still in flight, and only snaps to 100% once the real
+  // work (fetch + DOM injection) has completed.
+  const loadStart = (typeof performance !== 'undefined' && performance.now)
+    ? performance.now()
+    : Date.now();
+  const now = () => ((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now());
+
+  // Cancel any in-flight animation from a superseded navigation so the shared
+  // ring/text elements aren't driven by two loops at once.
+  if (navState.rafId) {
+    cancelAnimationFrame(navState.rafId);
+    navState.rafId = null;
+  }
+  let progressFinalized = false;
+
+  const renderElapsed = (elapsed) => {
+    if (progressMs) progressMs.textContent = `${Math.round(elapsed)} ms`;
+  };
+
+  const tickProgress = () => {
+    if (progressFinalized) return;
+    const elapsed = now() - loadStart;
+    // Exponential approach toward a 92% ceiling; ~600ms time constant feels
+    // responsive for fast loads while still showing motion on slow ones.
+    const ceiling = 92;
+    const pct = ceiling * (1 - Math.exp(-elapsed / 600));
+    setProgress(pct);
+    renderElapsed(elapsed);
+    navState.rafId = requestAnimationFrame(tickProgress);
+  };
+
+  const finalizeProgress = () => {
+    if (progressFinalized) return;
+    progressFinalized = true;
+    if (navState.rafId) {
+      cancelAnimationFrame(navState.rafId);
+      navState.rafId = null;
+    }
+    setProgress(100);
+    renderElapsed(now() - loadStart);
+  };
+
+  renderElapsed(0);
+  navState.rafId = requestAnimationFrame(tickProgress);
 
   const pageToFetch = page === 'meetOurExperts' ? 'meetourexperts' : page;
   // Capture the controller/signal used for THIS navigation.
@@ -1953,7 +2005,7 @@ window.loadPage = (page) => {
       markFetchDoneIfCurrent();
       if (navSeq !== window.__spaNavState?.seq) return;
       if (content) content.innerHTML = data;
-      setProgress(100);
+      finalizeProgress();
 
       setTimeout(() => {
         if (navSeq !== window.__spaNavState?.seq) return;
@@ -2068,7 +2120,7 @@ window.loadPage = (page) => {
       // Ignore expected aborts (usually due to fast navigation).
       if (signal?.aborted || err?.name === 'AbortError') return;
       console.error('[loadPage] Failed to fetch page:', pageToFetch, err);
-      setProgress(100);
+      finalizeProgress();
       try {
         if (landing) {
           landing.style.opacity = 0;

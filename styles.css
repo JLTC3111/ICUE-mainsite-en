@@ -1461,6 +1461,17 @@ nav a {
   animation: pulse 1.5s ease-in-out infinite;
 }
 
+.loading-ms {
+  margin-top: 0.6rem;
+  font-family: 'Space Mono', 'Audiowide', monospace;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: #00f7ff;
+  text-shadow: 0 0 6px rgba(0, 247, 255, 0.6);
+  font-variant-numeric: tabular-nums;
+  animation: none;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 0.4 }
   50% { opacity: 1 }
