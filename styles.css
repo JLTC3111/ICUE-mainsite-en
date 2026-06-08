@@ -1456,22 +1456,33 @@ nav a {
   height: auto;
 }
 
-.loading-text {
+/* Groups the LOADING PAGE text and the live ms pill into one centered unit. */
+.loading-status {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.6rem, 2.2vh, 1.1rem);
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+}
+
+.loading-text {
+  display: block;
   font-family: 'Audiowide', sans-serif;
   font-size: clamp(1.3rem, 5vw, 2rem);
   color: whitesmoke;
-  justify-content: center;
-  align-items: center;
-  gap: 0.1rem;
   margin: 0;
   text-align: center;
   text-shadow: 0 0 8px #00ffcc;
+  word-spacing: 0.25em;
+  line-height: 1.2;
 }
 
-/* Pulse only the LOADING / PAGE words, leaving the status pill steady. */
-.loading-text > span:not(.loading-ms) {
+/* Pulse the LOADING / PAGE words; the status pill stays steady. */
+.loading-text > span {
+  display: inline-block;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -1480,7 +1491,7 @@ nav a {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
-  margin-top: 1.1rem;
+  margin-top: 0;
   padding: 0.32em 0.9em 0.34em;
   border: 1px solid rgba(0, 247, 255, 0.45);
   border-radius: 999px;
