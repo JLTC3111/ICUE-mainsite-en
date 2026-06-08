@@ -3,6 +3,9 @@
 // It must NOT also be imported here, or the whole file would execute twice
 // (duplicate event listeners, observers, timers, etc.).
 import './modules/cardSlider.js';
+// Ensure Vite builds always bundle the full site stylesheet (including About Us
+// rules). Express/static hosting still serves styles.css via index.html as well.
+import '../styles.css';
 
 const AOSManager = (() => {
   const originalAOS = new Map();

@@ -1928,7 +1928,7 @@ window.loadPage = (page) => {
   };
 
   if (landing) {
-    landing.style.display = 'grid';
+    landing.style.display = 'flex';
     landing.style.opacity = 1;
     landing.style.pointerEvents = 'auto';
   }

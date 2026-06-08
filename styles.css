@@ -1436,45 +1436,85 @@ nav a {
 #landing-page {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, #000 40%, #111);
+  background: radial-gradient(circle at 50% 48%, #05211f 0%, #030606 55%, #020303 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: clamp(1.25rem, 4vh, 2.5rem);
+  padding: 2rem 1rem;
+  box-sizing: border-box;
   z-index: 999;
   color: #00ffcc;
   font-family: 'Audiowide', 'Courier New', monospace;
-  
+}
+
+/* ICUE logo sits at the top of the loading column. */
+.loading-logo {
+  display: block;
+  width: clamp(120px, 22vw, 200px);
+  height: auto;
 }
 
 .loading-text {
   display: flex;
   flex-direction: column;
   font-family: 'Audiowide', sans-serif;
-  font-size: 2rem;
+  font-size: clamp(1.3rem, 5vw, 2rem);
   color: whitesmoke;
   justify-content: center;
   align-items: center;
-  margin-top: clamp(2.5rem, 2.5vw, 3.75rem);
-  margin-left: 6.5rem;
+  gap: 0.1rem;
+  margin: 0;
+  text-align: center;
   text-shadow: 0 0 8px #00ffcc;
+}
+
+/* Pulse only the LOADING / PAGE words, leaving the status pill steady. */
+.loading-text > span:not(.loading-ms) {
   animation: pulse 1.5s ease-in-out infinite;
 }
 
+/* Real-time loading readout, styled as a "status pill" with a live dot. */
 .loading-ms {
-  margin-top: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 1.1rem;
+  padding: 0.32em 0.9em 0.34em;
+  border: 1px solid rgba(0, 247, 255, 0.45);
+  border-radius: 999px;
+  background: rgba(2, 26, 28, 0.45);
   font-family: 'Space Mono', 'Audiowide', monospace;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
   color: #00f7ff;
-  text-shadow: 0 0 6px rgba(0, 247, 255, 0.6);
+  text-shadow: 0 0 6px rgba(0, 247, 255, 0.55);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.12), inset 0 0 8px rgba(0, 247, 255, 0.06);
   animation: none;
+}
+
+.loading-ms::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #19f562;
+  box-shadow: 0 0 6px rgba(25, 245, 98, 0.95), 0 0 12px rgba(25, 245, 98, 0.5);
+  animation: ms-status-pulse 1.2s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 0.4 }
   50% { opacity: 1 }
+}
+
+@keyframes ms-status-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
 }
 
 body.loading nav,
@@ -1495,10 +1535,16 @@ body.loading .video-bg {visibility: hidden;
 
 .progress-container {
   position: relative;
-  width: 200px;
-  height: 200px;
-  margin-top: clamp(-27rem, -27.5rem, -30rem);
-  margin-left: 7.5rem;
+  width: clamp(150px, 42vw, 200px);
+  height: clamp(150px, 42vw, 200px);
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.progress-container svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .progress-bg {
@@ -1515,7 +1561,7 @@ body.loading .video-bg {visibility: hidden;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 6vw, 2rem);
   color: #00f7ff;
   font-family: 'Audiowide', sans-serif;
 }
@@ -2113,31 +2159,8 @@ body.loaded #app {
     margin-left: -1rem;
   }
 
-  .loading-logo {
-    width: 150px;
-    height: auto;
-    transform: translateX(.5px);
-  }
-
-  .progress-container {
-    width:120px;
-    height:120px;
-    margin-left: 15%;
-  }
-
-  .progress-bar svg {
-    width:120px;
-    height:120px;
-  }
-
-  .progress-text {
-    font-size: 1.5rem;
-  }
-
-  .loading-text {
-    font-size: 1.5rem;
-    margin-left: 1.5rem;
-  }
+  /* Loading screen sizing is handled responsively by the base rules
+     (clamp-based), so no mobile-specific offsets are needed here. */
 
   .logo-banner {
     display: flex;
@@ -2611,11 +2634,14 @@ body.loaded #app {
 .highlight-container {
     font-family: 'Rubik', sans-serif;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    gap: 0.35rem;
     margin: 20px auto;
     width: 100%;
-    transform: translate(125px, -75px);  /* Combines both X and Y translations */
+    max-width: 720px;
+    transform: translate(0, -40px);
 }
 
 .highlight-firstPart, .highlight-secondPart {
@@ -2631,16 +2657,23 @@ body.loaded #app {
 
 .highlight-firstPart {
     display: inline-block;
-    transform: rotate(5deg);
-    margin-left: 0;
-    margin-right: 5px;
+    transform: rotate(3deg);
+    margin: 0.25rem;
 }
 
 .highlight-secondPart {
     display: inline-flex;
-    transform: rotate(-5deg);
-    margin-left: 5px;
+    transform: rotate(-3deg);
+    margin: 0.25rem;
     white-space: nowrap;
+}
+
+.about-container .section:has(.greeting-text) {
+    margin-bottom: 2.5rem;
+}
+
+.about-container .section:has(.highlight-container) {
+    margin-top: 1.5rem;
 }
 
 /* Character colors */
@@ -2665,8 +2698,9 @@ body.loaded #app {
     font-family: 'IMB Plex Sans', sans-serif;
     font-size: 2em;
     color: #874b1d;
-    margin: 10px 0;
-    transform: translate(150px, -50px);
+    margin: 10px auto;
+    text-align: center;
+    transform: translate(0, -25px);
 }
 
 .regular-text {
@@ -3025,6 +3059,29 @@ body.loaded #app {
   }
 }
 
+@media (max-width: 1440px) {
+    .about-container .highlight-container {
+        transform: translate(0, -35px);
+        max-width: 100%;
+    }
+
+    .about-container .highlight-fourthPart {
+        transform: translate(0, -15px);
+    }
+
+    .about-container .regular-text {
+        margin-left: 0;
+        text-align: center;
+        display: block;
+    }
+
+    .about-container .greeting-text::before {
+        font-size: 0.5em;
+        white-space: normal;
+        text-align: center;
+    }
+}
+
 @media (max-width: 1024px) {
     .svg-blinking-cursor {
       height: 1.35em; 
@@ -3142,34 +3199,41 @@ body.loaded #app {
     font-family: 'Caveat', cursive;
     font-size: 3em;
     color: rgb(44, 3, 83);
-    margin: 10px 0;
+    margin: 10px 0 1.5rem;
     display: inline-block;
     position: relative;
     transform-style: preserve-3d;
     perspective: 1000px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     letter-spacing: 2px;
+    z-index: 2;
 }
 
 .greeting-text::before {
-    content: 'Hi There! -And- Welcome to ICUE';
+    content: 'And- Welcome to ICUE';
     position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    display: inline-block;
-    transform: rotateX(60deg) rotateY(0deg) rotateZ(0deg) scale(1, 2.5);
-    transform-origin: 50% 50%;
-    color: rgba(255, 215, 0, 0.4);
+    left: 50%;
+    top: 100%;
+    width: max-content;
+    max-width: 90vw;
+    transform: translateX(-50%) rotate(-4deg);
+    transform-origin: center top;
+    color: rgba(255, 215, 0, 0.75);
+    font-size: 0.55em;
+    line-height: 1.2;
+    white-space: nowrap;
+    pointer-events: none;
     animation: greetingWave 3s ease-in-out infinite;
 }
 
 @keyframes greetingWave {
     0%, 100% {
-        transform: rotateX(60deg) rotateY(0deg) rotateZ(0deg) scale(1, 2.5);
+        transform: translateX(-50%) rotate(-4deg) translateY(0);
+        opacity: 0.85;
     }
     50% {
-        transform: rotateX(65deg) rotateY(5deg) rotateZ(2deg) scale(1, 2.7);
+        transform: translateX(-50%) rotate(-2deg) translateY(-3px);
+        opacity: 1;
     }
 }
 
@@ -4135,6 +4199,39 @@ button:hover {
   background: linear-gradient(135deg, #2a2d35 0%, #1a1d25 50%, #0f1117 100%);
   background-size: cover;
   background-position: center;
+}
+
+/* About Us: static backdrop when background video is disabled or hidden */
+[data-aboutus-bg-video="off"] .about-container .video-bg {
+  display: none !important;
+}
+
+[data-aboutus-bg-video="off"] #content {
+  background-color: #e8e6e3;
+  background-image:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(200, 198, 195, 0.45) 0%, transparent 50%),
+    linear-gradient(145deg, #f0eeeb 0%, #ddd9d4 45%, #cfcbc6 100%);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/*
+ * Keep both sections positioned so their content stacks above the fixed
+ * `.video-bg` (z-index: -9). `.about-container` must NOT take a positive
+ * z-index: it holds the fixed video and would otherwise become a stacking
+ * context that paints the whole video (and itself) over the earlier
+ * `.about-legacy-hero` sibling, hiding the hero. Leaving it at z-index auto
+ * lets the video belong to the root stacking context and sit behind both.
+ */
+.about-legacy-hero {
+  position: relative;
+  z-index: 1;
+}
+
+.about-container {
+  position: relative;
 }
 
 .home-section {
