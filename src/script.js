@@ -1815,6 +1815,15 @@ const AboutUsBackgroundVideoManager = (() => {
 window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
 
 window.loadPage = (page) => {
+  if (page === 'meetOurExperts') {
+    window.location.replace('https://icue.vn/people/experts');
+    return;
+  }
+  if (page === 'coreTeam') {
+    window.location.replace('https://icue.vn/people/core-team');
+    return;
+  }
+
   const content = document.getElementById('content');
   const landing = document.getElementById('landing-page');
   const progressBar = document.querySelector('.progress-bar');
@@ -2042,14 +2051,6 @@ window.loadPage = (page) => {
             }
 
             switch (page) {
-              case 'meetOurExperts':
-                attachProfileEvents_moe();
-                MeetOurExpertsBackgroundVideoManager.bindToggleUI();
-                MeetOurExpertsBackgroundVideoManager.init();
-                break;
-              case 'coreTeam':
-                attachProfileEvents_coreTeam();
-                break;
               case 'Home':
                 initHomeMobileObserver();
                 attachHomeButtonEvents();
@@ -5603,6 +5604,12 @@ function setupLanguageSwitcher() {
     // Use hash-based routing for static pages too
     targetPath = `#/${targetPageName}`;
     console.log('🔧 [DEBUG] Static page - hash path:', targetPath);
+  } else if (targetPageName === 'meetOurExperts') {
+    window.location.href = 'https://icue.vn/people/experts';
+    return;
+  } else if (targetPageName === 'coreTeam') {
+    window.location.href = 'https://icue.vn/people/core-team';
+    return;
   } else {
     // Hash-based routing for main navigation pages
     targetPath = `#/${targetPageName}`;
