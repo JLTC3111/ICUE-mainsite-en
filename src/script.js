@@ -2635,31 +2635,19 @@ window.highlightActiveLink = (page) => {
 }
 
 window.toggleSubmenu = (e) => {
-  e.preventDefault(); // prevent page from jumping
+  if (e) e.preventDefault();
   const submenu = document.getElementById('ourPeopleSubmenu');
-  submenu.classList.toggle('open');
-}
+  if (!submenu) return;
 
-document.addEventListener('DOMContentLoaded', () => {
-  const submenuTrigger = document.querySelector('.has-submenu');
-  const submenu = document.querySelector('.submenu');
-
-  submenuTrigger.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    if (submenu.classList.contains('open')) {
-      // Trigger slide-up animation
-      submenu.classList.remove('open');
-      submenu.classList.add('closing');
-
-      setTimeout(() => {
-        submenu.classList.remove('closing');
-      }, 300); 
-    } else {
-      submenu.classList.add('open');
-    }
-  });
-});
+  if (submenu.classList.contains('open')) {
+    submenu.classList.remove('open');
+    submenu.classList.add('closing');
+    setTimeout(() => submenu.classList.remove('closing'), 300);
+  } else {
+    submenu.classList.remove('closing');
+    submenu.classList.add('open');
+  }
+};
 
 window.OrgStructure = {
   showTab: function(tabName) {
