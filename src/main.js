@@ -1,11 +1,7 @@
-// NOTE: `script.js` is loaded once as a classic deferred <script> in index.html
-// (which keeps its top-level functions on `window` for inline HTML handlers).
-// It must NOT also be imported here, or the whole file would execute twice
-// (duplicate event listeners, observers, timers, etc.).
-import './modules/cardSlider.js';
-// Ensure Vite builds always bundle the full site stylesheet (including About Us
-// rules). Express/static hosting still serves styles.css via index.html as well.
-import '../styles.css';
+// NOTE: `script.js` and `cardSlider.js` are loaded as classic deferred <script>
+// tags in index.html so they work on static hosts without a Vite transform step.
+// Do not import them here or they would execute twice.
+// Site styles are linked from index.html (`styles.css`); Vite hashes that link at build time.
 
 const AOSManager = (() => {
   const originalAOS = new Map();
@@ -465,7 +461,7 @@ footer {
     function autoInjectFooter() {
         
         const injectIfMissing = () => {
-            const allowedPages = ['#/aboutUs', '#/orgStructure', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities'];
+            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/ourWork', '#/pastProjects', '#/News', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities'];
             const currentPage = window.location.hash.trim();
             console.log("Current page:", currentPage);
             const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();
