@@ -1816,11 +1816,11 @@ window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
 
 window.loadPage = (page) => {
   if (page === 'meetOurExperts') {
-    window.location.replace('https://icue.vn/people/experts');
+    window.location.replace('https://icue.vn/people/experts?site=en');
     return;
   }
   if (page === 'coreTeam') {
-    window.location.replace('https://icue.vn/people/core-team');
+    window.location.replace('https://icue.vn/people/core-team?site=en');
     return;
   }
 
@@ -5593,10 +5593,10 @@ function setupLanguageSwitcher() {
     targetPath = `#/${targetPageName}`;
     console.log('🔧 [DEBUG] Static page - hash path:', targetPath);
   } else if (targetPageName === 'meetOurExperts') {
-    window.location.href = 'https://icue.vn/people/experts';
+    window.location.href = 'https://icue.vn/people/experts?site=en';
     return;
   } else if (targetPageName === 'coreTeam') {
-    window.location.href = 'https://icue.vn/people/core-team';
+    window.location.href = 'https://icue.vn/people/core-team?site=en';
     return;
   } else {
     // Hash-based routing for main navigation pages
