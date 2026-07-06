@@ -27,8 +27,8 @@
     "vite": "^6.3.2"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node scripts/restore-dev-index.mjs && vite",
+    "build": "node scripts/prebuild-index.mjs && vite build && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "server": "node server.js",
     "server-dev": "nodemon server.js",

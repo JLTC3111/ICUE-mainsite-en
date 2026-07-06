@@ -1,0 +1,9 @@
+# Silence the browser's default /favicon.ico probe.
+/favicon.ico         /public/logoIcons/favicon.png   200
+
+# Static assets live under /public in the repo root deploy layout.
+/profilePhotos/*     /public/profilePhotos/:splat    200
+/flags/*             /public/flags/:splat            200
+
+# Vite copies public/ to dist root; keep /public/* URLs working in production.
+/public/*            /:splat                         200
