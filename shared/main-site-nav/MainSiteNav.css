@@ -619,6 +619,7 @@
     grid-template-areas:
       "left right"
       "center center";
+    z-index: 30;
   }
 
   .main-site-nav__left {
@@ -635,13 +636,32 @@
     left: 50%;
     top: max(10px, env(safe-area-inset-top));
     transform: translateX(-50%);
-    z-index: 100;
+    z-index: 110;
   }
 
   .main-site-nav .menu-toggle {
     width: 44px;
     height: 44px;
+    color: #111316;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     animation: msn-dropDown 2.5s ease-in-out forwards;
+  }
+
+  .main-site-nav.nav-on-dark .menu-toggle,
+  .main-site-nav .menu-bar.nav-on-dark .menu-toggle {
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.42);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .main-site-nav:has(#drawerMenu.open) .menu-toggle {
+    color: #111316;
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
   .main-site-nav .menu-toggle svg {
@@ -652,6 +672,7 @@
   .main-site-nav .menu-toggle svg rect,
   .main-site-nav #menuIcon rect {
     fill: currentColor !important;
+    stroke: currentColor !important;
   }
 }
 
@@ -700,25 +721,41 @@
   .main-site-nav #drawerMenu a,
   .main-site-nav .has-submenu {
     padding: 1rem;
-    margin-left: 0.5rem;
+    margin-inline: auto;
+    width: fit-content;
+    max-width: calc(100% - 2rem);
+    justify-content: center;
+    border-left: none;
     font-size: clamp(1.15rem, 3vw, 1.75rem);
     text-decoration: none;
-    border-left: 5px solid transparent;
     transition: all 0.3s ease;
   }
 
   .main-site-nav #drawerMenu a:hover,
   .main-site-nav .has-submenu:hover {
-    transform: translateX(20px);
+    transform: none;
+    border-left: none;
+    padding-left: 1rem;
+  }
+
+  .main-site-nav #drawerMenu .submenu {
+    padding-left: 0;
+    align-items: center;
   }
 
   .main-site-nav #drawerMenu .submenu a {
     font-size: clamp(0.95rem, 2.5vw, 1.25rem);
     padding: 0.5rem 1rem;
     padding-top: 0.15rem;
-    left: 0;
+    margin-inline: auto;
+    width: fit-content;
+    left: auto;
     position: relative;
     transition: all 1.5s ease;
+  }
+
+  .main-site-nav .drawer-blur-overlay {
+    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.16), #000 60%);
   }
 
   .main-site-nav .drawer-resize-handle {
