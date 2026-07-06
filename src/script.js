@@ -1,4 +1,33 @@
 console.log('[script.js] Loaded ✅');
+
+const loadExternalScript = (() => {
+  const loaded = new Set();
+
+  return (src, { type, module: isModule } = {}) => {
+    if (loaded.has(src)) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      if (type) script.type = type;
+      if (isModule) script.type = 'module';
+      script.defer = true;
+      script.onload = () => {
+        loaded.add(src);
+        resolve();
+      };
+      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+      document.head.appendChild(script);
+    }).catch((err) => {
+      console.warn(err.message);
+    });
+  };
+})();
+
+const ensureModelViewerLoaded = () => loadExternalScript(
+  'https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js',
+  { module: true }
+);
+
 function isTruelyTouchDevice() {
    
     const isProbablyMac = (() => {
@@ -944,11 +973,27 @@ const HomeBackgroundVideoManager = (() => {
     videoEl.load();
   };
 
-  const persistIndex = (index) => sessionStorage.setItem('home_bg_video_index', String(index));
+  let cachedVideoIndex = -1;
+
+  const persistIndex = (index) => {
+    cachedVideoIndex = index;
+    try {
+      sessionStorage.setItem('home_bg_video_index', String(index));
+    } catch (e) {
+      // ignore blocked storage (e.g. tracking prevention)
+    }
+  };
 
   const nextIndex = () => {
     if (!videoPlaylist.length) return -1;
-    const cached = parseInt(sessionStorage.getItem('home_bg_video_index') ?? '-1', 10);
+    let cached = cachedVideoIndex;
+    if (cached < 0) {
+      try {
+        cached = parseInt(sessionStorage.getItem('home_bg_video_index') ?? '-1', 10);
+      } catch (e) {
+        cached = -1;
+      }
+    }
     if (Number.isInteger(cached) && cached >= 0) {
       return (cached + 1) % videoPlaylist.length;
     }
@@ -959,12 +1004,16 @@ const HomeBackgroundVideoManager = (() => {
     if (!meta) return;
     [meta.desktop, meta.mobile ?? meta.desktop].forEach(src => {
       if (!src || preloadedSources.has(src)) return;
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'video';
-      link.href = src;
-      document.head.appendChild(link);
       preloadedSources.add(src);
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.muted = true;
+      video.playsInline = true;
+      video.src = src;
+      video.setAttribute('aria-hidden', 'true');
+      video.style.cssText = 'position:absolute;width:1px;height:1px;left:-9999px;pointer-events:none;opacity:0;';
+      document.body.appendChild(video);
+      video.load();
     });
   };
 
@@ -2064,6 +2113,7 @@ window.loadPage = (page) => {
                 initMobileNewsSlider();
                 break;
               case 'aboutUs':
+                ensureModelViewerLoaded();
                 initHomeTextSlider();
                 AboutUsBackgroundVideoManager.bindToggleUI();
                 AboutUsBackgroundVideoManager.init();
@@ -2072,6 +2122,7 @@ window.loadPage = (page) => {
                 initPostMethod();
                 break;
               case 'ourWork':
+                ensureModelViewerLoaded();
                 initializeCarousel();
                 break;
               case 'pastProjects':
@@ -2671,7 +2722,12 @@ window.initMainDrawerResize = () => {
   };
 
   const loadSavedWidth = () => {
-    const saved = Number.parseInt(localStorage.getItem(STORAGE_KEY), 10);
+    let saved = DEFAULT_WIDTH;
+    try {
+      saved = Number.parseInt(localStorage.getItem(STORAGE_KEY), 10);
+    } catch (e) {
+      // ignore blocked storage (e.g. tracking prevention)
+    }
     applyWidth(Number.isFinite(saved) ? saved : DEFAULT_WIDTH);
   };
 
@@ -2694,7 +2750,11 @@ window.initMainDrawerResize = () => {
     document.body.style.cursor = '';
     document.body.style.userSelect = '';
     const width = applyWidth(drawer.getBoundingClientRect().width);
-    localStorage.setItem(STORAGE_KEY, String(Math.round(width)));
+    try {
+      localStorage.setItem(STORAGE_KEY, String(Math.round(width)));
+    } catch (e) {
+      // ignore blocked storage (e.g. tracking prevention)
+    }
     if (event?.pointerId != null && handle.hasPointerCapture(event.pointerId)) {
       handle.releasePointerCapture(event.pointerId);
     }
