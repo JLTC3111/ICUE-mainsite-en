@@ -783,6 +783,11 @@ if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calenda
 }}
 
 window.setNavLinkContrast = (useLightLinks = false) => {
+  if (window.__mainSiteNav?.setDarkNav) {
+    window.__mainSiteNav.setDarkNav(!!useLightLinks);
+    return;
+  }
+
   const nav = document.querySelector('.menu-bar');
   const menuToggle = document.querySelector('.menu-toggle');
   const menuIcon = document.getElementById('menuIcon');
@@ -1933,6 +1938,11 @@ window.loadPage = (page) => {
   };
 
   const updateNavVideoToggleVisibility = () => {
+    if (window.__mainSiteNav?.setPage) {
+      window.__mainSiteNav.setPage(page);
+      return;
+    }
+
     const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
 
     if (page === 'Home') {
@@ -2094,7 +2104,9 @@ window.loadPage = (page) => {
             CommunityGallery.init();
             initializeChatbot();
 
-            if (typeof setupLanguageSwitcher === 'function') {
+            if (typeof window.__mainSiteNav?.refreshLanguageSwitcher === 'function') {
+              window.__mainSiteNav.refreshLanguageSwitcher();
+            } else if (typeof setupLanguageSwitcher === 'function') {
               setupLanguageSwitcher();
               console.log('[LoadPage] Language switcher updated for page:', page);
             }
@@ -2189,6 +2201,16 @@ window.loadPage = (page) => {
 };
 
 window.retriggerMenuAnimations = (isFirstLoad = true) => {
+  if (document.getElementById('main-site-nav-root')?.firstElementChild) {
+    window.__mainSiteNav?.playEntranceAnimation?.(isFirstLoad);
+    return;
+  }
+
+  if (window.__mainSiteNav?.playEntranceAnimation) {
+    window.__mainSiteNav.playEntranceAnimation(isFirstLoad);
+    return;
+  }
+
   if (typeof window.gsap === 'undefined') {
     // Fallback: never crash the app if GSAP failed to load.
     // Just make sure elements are visible.
@@ -2598,6 +2620,12 @@ function router() {
 }
 
 window.toggleDrawerMenu = () => {
+  if (window.__mainSiteNav?.setDrawerOpen) {
+    const isOpen = window.__mainSiteNav.getDrawerOpen?.() ?? false;
+    window.__mainSiteNav.setDrawerOpen(!isOpen);
+    return;
+  }
+
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon'); // This now correctly references your <svg> element
   const isOpen = drawerMenu.classList.contains('open');
@@ -2619,6 +2647,11 @@ window.toggleDrawerMenu = () => {
 
 // Simplified window.closeDrawerMenu to work with SVG transformations
 window.closeDrawerMenu = () => {
+  if (window.__mainSiteNav?.setDrawerOpen) {
+    window.__mainSiteNav.setDrawerOpen(false);
+    return;
+  }
+
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon'); // This is your SVG element
 
@@ -2676,6 +2709,11 @@ window.navigateToPage = (page) => {
 
 // Highlight active link
 window.highlightActiveLink = (page) => {
+  if (window.__mainSiteNav?.setPage) {
+    window.__mainSiteNav.setPage(page);
+    return;
+  }
+
   const links = document.querySelectorAll('#drawerMenu a');
   links.forEach(link => {
     link.classList.remove('active');
@@ -2687,6 +2725,7 @@ window.highlightActiveLink = (page) => {
 
 window.toggleSubmenu = (e) => {
   if (e) e.preventDefault();
+  if (window.__mainSiteNav) return;
   const submenu = document.getElementById('ourPeopleSubmenu');
   if (!submenu) return;
 
@@ -2700,16 +2739,17 @@ window.toggleSubmenu = (e) => {
   }
 };
 
-/** User-resizable main-site drawer width (desktop only). */
+/** Legacy drawer resize — handled by React useDrawerResize when nav island is mounted. */
 window.initMainDrawerResize = () => {
+  if (window.__mainSiteNav) return;
   const drawer = document.getElementById('drawerMenu');
   const handle = document.getElementById('drawerResizeHandle');
   if (!drawer || !handle) return;
 
   const STORAGE_KEY = 'icue_main_drawer_width';
-  const MIN_WIDTH = 260;
-  const MAX_WIDTH = 560;
-  const DEFAULT_WIDTH = 300;
+  const MIN_WIDTH = 140;
+  const MAX_WIDTH = 280;
+  const DEFAULT_WIDTH = 180;
   const desktopQuery = window.matchMedia('(min-width: 1441px)');
 
   const clampWidth = (width) => Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, width));
