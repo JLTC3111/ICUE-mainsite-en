@@ -5672,6 +5672,11 @@ function setupLanguageSwitcher() {
     return;
   }
 
+  // React nav island owns the switcher once #main-site-nav-root is present
+  if (document.getElementById('main-site-nav-root')) {
+    return;
+  }
+
   const pageSwitch = document.getElementById("page-switch");
   const langIcon = document.getElementById("langSwitcher");
 
