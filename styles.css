@@ -7,6 +7,8 @@ body {
 
 body:has(.home-hero) {
   background-color: #05070b;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 main {
@@ -69,6 +71,8 @@ p {
   --nav-shadow: 0 2px 6px rgba(0,0,0,0.12);
   --nav-blur-bg: transparent; 
   --drawer-width: 180px;
+  --site-rail-right: clamp(0.5rem, 1.5vw, 1rem);
+  --site-rail-gap: 12px;
 }
 
 /* Nav styles live in shared/main-site-nav/MainSiteNav.css (React island) */
@@ -404,15 +408,81 @@ nav a {
   display: none !important;
 }
 
+.site-right-rail {
+  position: fixed;
+  right: var(--site-rail-right);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--site-rail-gap);
+  z-index: 14;
+  pointer-events: none;
+}
+
+.site-right-rail > * {
+  pointer-events: auto;
+}
+
+.site-right-rail-flag-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.site-right-rail .language-switcher {
+  position: static;
+  top: auto;
+  right: auto;
+  margin: 0;
+  animation: fadeIn 4.5s ease-in-out;
+}
+
+.site-right-rail .flag-link {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 0;
+  transition: transform 0.75s;
+}
+
+.site-right-rail .flag-link:hover {
+  transform: scale(1.05);
+}
+
+.site-right-rail .flag-icon {
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  box-shadow: 2px 4px 12px #fff;
+}
+
+.site-right-rail .flag-icon-gb {
+  background-image: url('/flags/gb.svg');
+}
+
+.site-right-rail .flag-icon-vn {
+  background-image: url('/flags/vn.svg');
+}
+
 .contact-sidebar {
-    position: fixed; 
-    right: 1.5%; 
-    top: 30%; 
-    transform: translateY(-70%); 
+    position: static;
+    right: auto;
+    top: auto;
+    transform: none;
     display: flex;
     flex-direction: column; 
     gap: 12.5px; 
-    z-index: 14; 
     background: rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 0;
@@ -1244,7 +1314,8 @@ body.loading .language-switcher,
 body.loading .menu-toggle,
 body.loading #drawerMenu,
 body.loading .content,
-body.loading .video-bg {visibility: hidden;
+body.loading .video-bg,
+body.loading .site-right-rail {visibility: hidden;
   pointer-events: none;
 }
   
@@ -1803,6 +1874,10 @@ body.loaded #app {
     text-align: left;
   }
 
+  .about-legacy-hero h1 {
+    text-align: center;
+  }
+
   h2 {
     color: rgb(0, 0, 0);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
@@ -1858,11 +1933,6 @@ body.loaded #app {
     font-size: 14px;
   }
 
-  .contact-sidebar {
-    top:28.5%;
-    right:1%;
-  }
-
   .contact-sidebar .contact-item svg {
     width: 25px;
     height: 25px;
@@ -1905,6 +1975,18 @@ body.loaded #app {
     cursor: pointer;
     margin-top: clamp(0.35rem, 1.75vw, 0.4rem);
   }
+
+  .site-right-rail .flag-link {
+    width: clamp(30px, 8vw, 36px);
+    height: clamp(30px, 8vw, 36px);
+    background-color: transparent;
+    margin-top: 0;
+  }
+
+  .site-right-rail .flag-icon {
+    width: clamp(28px, 7.5vw, 34px);
+    height: clamp(28px, 7.5vw, 34px);
+  }
   
   .flag-icon {
     width: 22px;
@@ -1916,6 +1998,10 @@ body.loaded #app {
   margin: 14.5rem 0 -1.5rem 0;
 }
 
+.about-legacy-hero .sub-text {
+  margin: 0;
+}
+
 .hero-body {
   font-size: clamp(16px, 2vw, 22px);
 }
@@ -1924,6 +2010,10 @@ body.loaded #app {
   font-size: clamp(16px, 2vw, 22px);
   line-height: 1.5;
   margin: 10% auto;
+}
+
+.about-legacy-hero .cursive-default {
+  margin: 0 auto;
 }
 
 .slam-container {
@@ -2287,16 +2377,27 @@ body.loaded #app {
 
 .about-legacy-hero .cursive-default {
   color: #000000;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  transform: none;
 }
 
-@media (min-width: 1025px) {
-  .about-legacy-hero .cursive-default {
-    margin-left: 25%;
-  }
+.about-legacy-hero .sub-text {
+  margin: 0;
+  text-align: center;
+  transform: none;
 }
 
 .about-legacy-hero .hero-body {
   color: #000000;
+  margin-top: 0.75rem;
+  text-align: center;
 }
 
 .about-legacy-hero .slam-container {
@@ -2580,13 +2681,20 @@ body.loaded #app {
     margin: 7.5rem auto auto auto;
   }
 
+  .about-legacy-hero .cursive-default {
+    margin: 0 auto;
+  }
+
   .hero-body {
     font-size: clamp(18px, 1.65vw, 24px);
   }
 
   .sub-text {
-    margin-left: -20%;
     font-size: clamp(22px, 2.5vw, 32px);
+  }
+
+  .about-legacy-hero .sub-text {
+    margin-left: 0;
   }
 
   .lets-talk {
@@ -2611,7 +2719,7 @@ body.loaded #app {
   }
 
   .language-switcher{
-    margin-right:.5%;
+    margin-right: 0;
   }
 
   .workPageContainer {
@@ -3213,6 +3321,10 @@ button:hover {
   .flag-link {
     margin-top: clamp(12px, 2.0vw, 14px) !important;
   }
+
+  .site-right-rail .flag-link {
+    margin-top: 0 !important;
+  }
 }
 
 @media (max-width: 1024px) and (min-aspect-ratio: .73/1) {
@@ -3223,6 +3335,10 @@ button:hover {
   }
   .flag-link {
     margin-top: clamp(9px, 2.0vw, 11.5px);
+  }
+
+  .site-right-rail .flag-link {
+    margin-top: 0;
   }
   .text-container{
     left:45%;
@@ -3251,6 +3367,10 @@ button:hover {
   }
   .flag-link {
     margin-top: clamp(6.5px, 5.0vw, 9.5px) !important;
+  }
+
+  .site-right-rail .flag-link {
+    margin-top: 0 !important;
   }
 }
 @media (max-width: 540px) and (max-aspect-ratio: .7299/1) {
@@ -3424,17 +3544,17 @@ button:hover {
   justify-content: center;
   padding: 6rem 8vw 4rem;
   color: #ffffff;
-  overflow: hidden;
+  overflow: visible;
+  touch-action: pan-y;
   isolation: isolate;
   z-index: 1;
 }
 
 .home-hero__media {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  width: auto;
-  height: auto;
-  min-height: 100dvh;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
@@ -3473,6 +3593,12 @@ button:hover {
   max-width: 920px;
   margin-inline: auto;
   text-align: center;
+  pointer-events: none;
+}
+
+.home-hero__content a,
+.home-hero__content button {
+  pointer-events: auto;
 }
 
 .home-banner {
@@ -3993,6 +4119,19 @@ button:hover {
 
 .home-section--alt {
   background: #11151c;
+}
+
+.home-hero .video-bg,
+.home-hero__media .video-bg,
+.home-hero__media video,
+.home-hero__media .home-hero__overlay,
+.home-hero__media::before,
+#bgVideo {
+  pointer-events: none !important;
+  touch-action: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
 }
 
 .home-hero .video-bg {

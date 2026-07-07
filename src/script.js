@@ -929,6 +929,17 @@ const HomeBackgroundVideoManager = (() => {
     }
   };
 
+  const enforceVideoNonInteractive = (el) => {
+    if (!el) return;
+    el.controls = false;
+    el.disablePictureInPicture = true;
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-hidden', 'true');
+    el.style.pointerEvents = 'none';
+    el.style.touchAction = 'none';
+    el.style.userSelect = 'none';
+  };
+
   const ensureVideoElement = () => {
     videoEl = document.getElementById('bgVideo');
     if (!videoEl) {
@@ -937,6 +948,7 @@ const HomeBackgroundVideoManager = (() => {
             videoEl = document.createElement('video');
             videoEl.id = 'bgVideo';
             videoEl.className = 'video-bg';
+            enforceVideoNonInteractive(videoEl);
             const overlay = mediaContainer.querySelector('.home-hero__overlay');
             if (overlay) {
                 mediaContainer.insertBefore(videoEl, overlay);
@@ -954,6 +966,7 @@ const HomeBackgroundVideoManager = (() => {
       videoEl.setAttribute('playsinline', '');
       videoEl.setAttribute('autoplay', '');
       videoEl.setAttribute('webkit-playsinline', '');
+      enforceVideoNonInteractive(videoEl);
     }
     return videoEl;
   };
@@ -1065,7 +1078,8 @@ const HomeBackgroundVideoManager = (() => {
 
   const activateVideo = (meta) => {
     if (!videoEl || !meta) return;
-    
+    enforceVideoNonInteractive(videoEl);
+
     const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
     const chosenSrc = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!chosenSrc) return;

@@ -937,6 +937,7 @@ const HomeBackgroundVideoManager = (() => {
             videoEl = document.createElement('video');
             videoEl.id = 'bgVideo';
             videoEl.className = 'video-bg';
+            videoEl.style.pointerEvents = 'none';
             const overlay = mediaContainer.querySelector('.home-hero__overlay');
             if (overlay) {
                 mediaContainer.insertBefore(videoEl, overlay);

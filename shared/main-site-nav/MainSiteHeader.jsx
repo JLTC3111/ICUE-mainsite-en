@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
 
@@ -14,6 +16,18 @@ export default function MainSiteHeader({
   contactLinkRef,
   flagLinkRef,
 }) {
+  const [flagSlot, setFlagSlot] = useState(null);
+
+  useEffect(() => {
+    setFlagSlot(document.getElementById('site-right-rail-flag-slot'));
+  }, []);
+
+  const railFlagSwitcher = (
+    <div className="language-switcher language-switcher--rail" ref={flagLinkRef}>
+      <LanguageFlagLink />
+    </div>
+  );
+
   return (
     <>
       <div className="main-site-nav__left logo-banner">
@@ -57,33 +71,6 @@ export default function MainSiteHeader({
           showLabel={false}
           visible={showAboutUsVideoToggle}
         />
-
-        <VideoToggle
-          id="homeVideoToggleContainerDesktop"
-          inputId="homeVideoToggleDesktop"
-          variant="nav"
-          showLabel={false}
-          visible={showHomeVideoToggle}
-        />
-
-        <VideoToggle
-          id="moeVideoToggleContainerDesktop"
-          inputId="moeVideoToggleDesktop"
-          variant="nav"
-          type="moe"
-          label="Meet Our Experts background video toggle"
-          showLabel={false}
-          visible={showMoeVideoToggle}
-        />
-
-        <VideoToggle
-          id="aboutUsVideoToggleContainerDesktop"
-          inputId="aboutUsVideoToggleDesktop"
-          variant="nav"
-          label="About Us background video toggle"
-          showLabel={false}
-          visible={showAboutUsVideoToggle}
-        />
       </div>
 
       <div className="main-site-nav__center">
@@ -103,8 +90,6 @@ export default function MainSiteHeader({
             ref={menuIconRef}
             id="menuIcon"
             className={drawerOpen ? 'is-open' : ''}
-            width="60px"
-            height="60px"
             viewBox="0 -0.5 25 25"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -139,10 +124,37 @@ export default function MainSiteHeader({
           </a>
         )}
 
-        <div className="language-switcher" ref={flagLinkRef}>
-          <LanguageFlagLink />
+        <div className="main-site-nav__desktop-toggles">
+          <VideoToggle
+            id="homeVideoToggleContainerDesktop"
+            inputId="homeVideoToggleDesktop"
+            variant="nav"
+            showLabel={false}
+            visible={showHomeVideoToggle}
+          />
+
+          <VideoToggle
+            id="moeVideoToggleContainerDesktop"
+            inputId="moeVideoToggleDesktop"
+            variant="nav"
+            type="moe"
+            label="Meet Our Experts background video toggle"
+            showLabel={false}
+            visible={showMoeVideoToggle}
+          />
+
+          <VideoToggle
+            id="aboutUsVideoToggleContainerDesktop"
+            inputId="aboutUsVideoToggleDesktop"
+            variant="nav"
+            label="About Us background video toggle"
+            showLabel={false}
+            visible={showAboutUsVideoToggle}
+          />
         </div>
       </div>
+
+      {flagSlot ? createPortal(railFlagSwitcher, flagSlot) : null}
     </>
   );
 }

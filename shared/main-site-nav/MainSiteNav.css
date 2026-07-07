@@ -51,7 +51,9 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding-right: clamp(2rem, 5vw, 4.5rem);
+  margin-left: auto;
+  padding-right: var(--site-rail-inset, clamp(0.75rem, 1.5vw, 1.25rem));
+  flex-shrink: 0;
 }
 
 .main-site-nav .logo-content {
@@ -66,13 +68,29 @@
   top: auto;
   right: auto;
   transform: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 9px;
+  margin-left: auto;
+  flex-shrink: 0;
   z-index: 60;
   pointer-events: auto;
   isolation: isolate;
   animation: msn-slideInFromRight 4.5s ease-in-out forwards;
+}
+
+.main-site-nav .language-switcher--rail {
+  position: static;
+  margin-left: 0;
+  animation: none;
+}
+
+.main-site-nav__desktop-toggles {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
 }
 
 .main-site-nav .flag-link {
@@ -123,14 +141,18 @@
   color: inherit;
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 0.35rem;
   border-radius: 50px;
   transition: color 200ms ease, background 200ms ease;
   animation: msn-dropDownCenter 2.5s ease-in-out forwards;
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .main-site-nav .menu-toggle svg {
   display: block;
+  width: clamp(38px, 10vw, 56px);
+  height: clamp(38px, 10vw, 56px);
 }
 
 .main-site-nav .menu-toggle svg rect,
@@ -287,6 +309,25 @@
   transform: translate(1.15rem, -50%);
 }
 
+/* Mobile navbar toggles: track only — no outer label pill */
+.main-site-nav__left .home-video-toggle--navbar .home-video-toggle__label {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  gap: 0;
+}
+
+.main-site-nav__left .home-video-toggle--navbar .home-video-toggle__track {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.main-site-nav__left .home-video-toggle--navbar .home-video-toggle__input:checked + .home-video-toggle__track {
+  background: rgba(29, 183, 255, 0.65);
+  border-color: rgba(29, 183, 255, 0.75);
+}
+
 /* Drawer */
 .main-site-nav #drawerMenu {
   position: fixed;
@@ -313,6 +354,11 @@
 
 .main-site-nav #drawerMenu.open {
   transform: translateX(0);
+  pointer-events: auto;
+}
+
+.main-site-nav #drawerMenu:not(.open) {
+  pointer-events: none;
 }
 
 .main-site-nav .drawer-resize-handle {
@@ -575,25 +621,30 @@
   }
 
   .main-site-nav__right {
-    padding-right: clamp(1.25rem, 4vw, 2.5rem);
+    justify-content: flex-end;
+    padding-right: var(--site-rail-inset, 1.75%);
+  }
+
+  .main-site-nav__desktop-toggles {
+    display: none !important;
   }
 
   .main-site-nav .contact-link {
-    margin-right: auto;
+    margin-right: 0;
     font-size: clamp(14px, 3vw, 18px);
     padding: 0.5rem 1.5rem;
   }
 
   .main-site-nav .flag-link {
-    width: 26px;
-    height: 26px;
-    background-color: #ffffff;
+    width: clamp(30px, 8vw, 36px);
+    height: clamp(30px, 8vw, 36px);
+    background-color: transparent;
     margin-top: 0;
   }
 
   .main-site-nav .flag-icon {
-    width: 24px;
-    height: 24px;
+    width: clamp(28px, 7.5vw, 34px);
+    height: clamp(28px, 7.5vw, 34px);
   }
 }
 
@@ -628,6 +679,7 @@
 
   .main-site-nav__right {
     grid-area: right;
+    justify-content: flex-end;
   }
 
   .main-site-nav__center {
@@ -640,8 +692,11 @@
   }
 
   .main-site-nav .menu-toggle {
-    width: 44px;
-    height: 44px;
+    width: clamp(48px, 12vw, 56px);
+    height: clamp(48px, 12vw, 56px);
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0.25rem;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -664,8 +719,8 @@
   }
 
   .main-site-nav .menu-toggle svg {
-    width: 26px !important;
-    height: 26px !important;
+    width: clamp(36px, 9.5vw, 44px) !important;
+    height: clamp(36px, 9.5vw, 44px) !important;
   }
 
   .main-site-nav .menu-toggle svg rect,
@@ -800,6 +855,7 @@
 
 body.loading .main-site-nav .language-switcher,
 body.loading .main-site-nav .menu-toggle,
-body.loading .main-site-nav #drawerMenu {
+body.loading .main-site-nav #drawerMenu,
+body.loading .site-right-rail {
   visibility: hidden;
 }
