@@ -181,6 +181,26 @@ export default function MainSiteNav() {
     }
   }, [showHomeVideoToggle, showMoeVideoToggle]);
 
+  useEffect(() => {
+    const ids = [
+      'homeVideoToggleContainerDesktop',
+      'homeVideoToggleContainerMobile',
+      'moeVideoToggleContainerDesktop',
+      'moeVideoToggleContainerMobile',
+      'aboutUsVideoToggleContainerDesktop',
+      'aboutUsVideoToggleContainerMobile',
+      'contactLink',
+    ];
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.hidden = false;
+      el.style.removeProperty('display');
+      el.classList.remove('pre-hidden');
+    });
+  }, [showContactLink, showHomeVideoToggle, showMoeVideoToggle, showAboutUsVideoToggle]);
+
   const navClass = ['main-site-nav', darkNav ? 'nav-on-dark' : '', drawerOpen ? 'drawer-open' : '']
     .filter(Boolean)
     .join(' ');

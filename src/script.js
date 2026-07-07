@@ -1930,7 +1930,18 @@ window.loadPage = (page) => {
     });
   };
 
+  const clearNavToggleInlineStyles = () => {
+    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
+    [...homeVideoToggleContainers, ...moeVideoToggleContainers, ...aboutUsVideoToggleContainers].forEach((container) => {
+      container.hidden = false;
+      container.style.removeProperty('display');
+    });
+    if (contactLink) contactLink.style.removeProperty('display');
+  };
+
   const hideAllNavVideoToggles = () => {
+    if (window.__mainSiteNav?.setPage) return;
+
     const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
     showContainers(homeVideoToggleContainers, false);
     showContainers(moeVideoToggleContainers, false);
@@ -1940,6 +1951,7 @@ window.loadPage = (page) => {
 
   const updateNavVideoToggleVisibility = () => {
     if (window.__mainSiteNav?.setPage) {
+      clearNavToggleInlineStyles();
       window.__mainSiteNav.setPage(page);
       return;
     }
