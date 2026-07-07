@@ -71,8 +71,9 @@ p {
   --nav-shadow: 0 2px 6px rgba(0,0,0,0.12);
   --nav-blur-bg: transparent; 
   --drawer-width: 180px;
-  --site-rail-right: clamp(0.5rem, 1.5vw, 1rem);
-  --site-rail-inset: var(--site-rail-right);
+  --site-rail-inset: clamp(0.75rem, 1.5vw, 1.25rem);
+  --site-rail-right: var(--site-rail-inset);
+  --site-rail-width: 50px;
   --site-rail-gap: 12px;
 }
 
@@ -411,12 +412,13 @@ nav a {
 
 .site-right-rail {
   position: fixed;
-  right: var(--site-rail-right);
+  right: var(--site-rail-inset);
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: var(--site-rail-width);
   gap: var(--site-rail-gap);
   z-index: 14;
   pointer-events: none;
@@ -437,7 +439,7 @@ nav a {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 0;
-    width: fit-content;
+    width: 100%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     animation: fadeIn 4.5s ease-in-out;
 }
@@ -2125,6 +2127,15 @@ body.loaded #app {
     animation: slideDownFromTop 3s ease-in-out;
   }
 
+  .about-legacy-hero .model-home {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: clamp(100px, 24vw, 160px);
+    height: clamp(100px, 24vw, 160px);
+    animation: none;
+  }
+
   .model-crane{
     display:none;
   }
@@ -2324,9 +2335,19 @@ body.loaded #app {
 .about-legacy-hero__content {
   max-width: 960px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "hero-title"
+    "hero-model"
+    "hero-slider";
+  gap: clamp(0.75rem, 2.5vh, 1.5rem);
+  align-items: center;
+  justify-items: center;
 }
 
 .about-legacy-hero .cursive-default {
+  grid-area: hero-title;
   color: #000000;
   margin: 0 auto;
   text-align: center;
@@ -2337,6 +2358,29 @@ body.loaded #app {
   width: 100%;
   max-width: 100%;
   transform: none;
+  z-index: 2;
+}
+
+.about-legacy-hero .model-home {
+  grid-area: hero-model;
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  width: clamp(120px, 22vw, 220px);
+  height: clamp(120px, 22vw, 220px);
+  max-width: min(220px, 55vw);
+  margin: 0 auto;
+  animation: none;
+  z-index: 1;
+  pointer-events: auto;
+  justify-self: center;
+}
+
+.about-legacy-hero__slider {
+  grid-area: hero-slider;
+  margin-top: 0;
+  width: 100%;
 }
 
 .about-legacy-hero .sub-text {
@@ -2353,10 +2397,6 @@ body.loaded #app {
 
 .about-legacy-hero .slam-container {
   margin: 2rem auto 1.5rem;
-}
-
-.about-legacy-hero__slider {
-  margin-top: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -2621,6 +2661,15 @@ body.loaded #app {
     width: 225px;
     height: 225px;
     animation: slideInFromRight 3.5s ease-in-out; 
+  }
+
+  .about-legacy-hero .model-home {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: clamp(150px, 16vw, 240px);
+    height: clamp(150px, 16vw, 240px);
+    animation: none;
   }
   .menu-toggle svg{
     width: 58px;
@@ -4296,5 +4345,14 @@ button:hover {
     height: 240px;
     width: 240px;
     animation: slideDownFromTop 3s ease-in-out;
+  }
+
+  .about-legacy-hero .model-home {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: clamp(130px, 20vw, 200px);
+    height: clamp(130px, 20vw, 200px);
+    animation: none;
   }
 }

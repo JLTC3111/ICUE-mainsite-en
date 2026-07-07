@@ -110,7 +110,7 @@ export default function MainSiteHeader({
           </a>
         )}
 
-        <div className="main-site-nav__desktop-toggles">
+        <div className="language-switcher" ref={flagLinkRef}>
           <VideoToggle
             id="homeVideoToggleContainerDesktop"
             inputId="homeVideoToggleDesktop"
@@ -137,9 +137,7 @@ export default function MainSiteHeader({
             showLabel={false}
             visible={showAboutUsVideoToggle}
           />
-        </div>
 
-        <div className="language-switcher" ref={flagLinkRef}>
           <LanguageFlagLink />
         </div>
       </div>

@@ -9,7 +9,7 @@ import MainSiteDrawer from './MainSiteDrawer';
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
-const DARK_NAV_PAGES = ['communityActivities', 'aboutUs'];
+const DARK_NAV_PAGES = ['communityActivities'];
 
 function getPageFromHash() {
   const hash = window.location.hash || '#/Home';
@@ -31,6 +31,7 @@ export default function MainSiteNav() {
   const initialVisibility = getPageVisibility(initialPage);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [activePage, setActivePage] = useState(initialPage);
   const [darkNav, setDarkNav] = useState(initialVisibility.darkNav);
   const [showContactLink, setShowContactLink] = useState(initialVisibility.showContactLink);
   const [showHomeVideoToggle, setShowHomeVideoToggle] = useState(initialVisibility.showHomeVideoToggle);
@@ -46,6 +47,7 @@ export default function MainSiteNav() {
 
   const applyPageState = useCallback((page) => {
     const visibility = getPageVisibility(page);
+    setActivePage(page);
     setShowContactLink(visibility.showContactLink);
     setShowHomeVideoToggle(visibility.showHomeVideoToggle);
     setShowMoeVideoToggle(visibility.showMoeVideoToggle);
@@ -210,7 +212,7 @@ export default function MainSiteNav() {
     .join(' ');
 
   return (
-    <div className={navClass} ref={navRootRef}>
+    <div className={navClass} ref={navRootRef} data-active-page={activePage}>
       <nav className={barClass} aria-label="Site">
         <MainSiteHeader
           drawerOpen={drawerOpen}

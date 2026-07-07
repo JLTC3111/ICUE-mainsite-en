@@ -5611,7 +5611,7 @@ function initAudioVisualizer(
 
   // Function to change hamburger menu icon color based on page background
   function updateHamburgerIcon(page) {
-    const darkBackgroundPages = ['communityActivities', 'aboutUs'];
+    const darkBackgroundPages = ['communityActivities'];
     const useLightNav = darkBackgroundPages.includes(page);
     if (typeof window.setNavLinkContrast === 'function') {
       window.setNavLinkContrast(useLightNav);

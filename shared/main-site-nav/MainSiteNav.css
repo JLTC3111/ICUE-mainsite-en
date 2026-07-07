@@ -16,7 +16,7 @@
   align-items: center;
   gap: 0.75rem;
   min-height: var(--nav-bar-height);
-  padding: 1rem;
+  padding: 1rem var(--site-rail-inset, clamp(0.75rem, 1.5vw, 1.25rem)) 1rem 1rem;
   background: var(--nav-bg, transparent);
   color: var(--nav-text, #000);
   box-sizing: border-box;
@@ -52,7 +52,7 @@
   align-items: center;
   gap: 0.75rem;
   margin-left: auto;
-  padding-right: var(--site-rail-right, clamp(0.5rem, 1.5vw, 1rem));
+  padding-right: 0;
   flex-shrink: 0;
 }
 
@@ -78,19 +78,6 @@
   pointer-events: auto;
   isolation: isolate;
   animation: msn-slideInFromRight 4.5s ease-in-out forwards;
-}
-
-.main-site-nav .language-switcher--rail {
-  position: static;
-  margin-left: 0;
-  animation: none;
-}
-
-.main-site-nav__desktop-toggles {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  flex-shrink: 0;
 }
 
 .main-site-nav .flag-link {
@@ -138,7 +125,7 @@
   justify-content: center;
   cursor: pointer;
   z-index: 9;
-  color: inherit;
+  color: #111111;
   background: transparent;
   border: none;
   padding: 0.35rem;
@@ -205,6 +192,10 @@
 .main-site-nav.nav-on-dark .menu-toggle,
 .main-site-nav .menu-bar.nav-on-dark .menu-toggle {
   color: inherit;
+}
+
+.main-site-nav[data-active-page="aboutUs"] .menu-toggle {
+  color: #111111;
 }
 
 .main-site-nav.nav-on-dark .flag-link,
@@ -622,11 +613,11 @@
 
   .main-site-nav__right {
     justify-content: flex-end;
-    padding-right: var(--site-rail-inset, 1.75%);
+    padding-right: 0;
   }
 
-  .main-site-nav__desktop-toggles {
-    display: none !important;
+  .main-site-nav .language-switcher {
+    margin-left: auto;
   }
 
   .main-site-nav .contact-link {
