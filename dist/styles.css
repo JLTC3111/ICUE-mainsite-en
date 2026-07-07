@@ -7,6 +7,8 @@ body {
 
 body:has(.home-hero) {
   background-color: #05070b;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 main {
@@ -70,6 +72,7 @@ p {
   --nav-blur-bg: transparent; 
   --drawer-width: 180px;
   --site-rail-right: clamp(0.5rem, 1.5vw, 1rem);
+  --site-rail-inset: var(--site-rail-right);
   --site-rail-gap: 12px;
 }
 
@@ -421,56 +424,6 @@ nav a {
 
 .site-right-rail > * {
   pointer-events: auto;
-}
-
-.site-right-rail-flag-slot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.site-right-rail .language-switcher {
-  position: static;
-  top: auto;
-  right: auto;
-  margin: 0;
-  animation: fadeIn 4.5s ease-in-out;
-}
-
-.site-right-rail .flag-link {
-  display: flex;
-  width: 44px;
-  height: 44px;
-  background-color: transparent;
-  justify-content: center;
-  align-items: center;
-  border-radius: 25px;
-  cursor: pointer;
-  margin-top: 0;
-  transition: transform 0.75s;
-}
-
-.site-right-rail .flag-link:hover {
-  transform: scale(1.05);
-}
-
-.site-right-rail .flag-icon {
-  display: inline-block;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  box-shadow: 2px 4px 12px #fff;
-}
-
-.site-right-rail .flag-icon-gb {
-  background-image: url('/flags/gb.svg');
-}
-
-.site-right-rail .flag-icon-vn {
-  background-image: url('/flags/vn.svg');
 }
 
 .contact-sidebar {
@@ -2679,6 +2632,10 @@ body.loaded #app {
     margin: 7.5rem auto auto auto;
   }
 
+  .about-legacy-hero .cursive-default {
+    margin: 0 auto;
+  }
+
   .hero-body {
     font-size: clamp(18px, 1.65vw, 24px);
   }
@@ -3538,17 +3495,17 @@ button:hover {
   justify-content: center;
   padding: 6rem 8vw 4rem;
   color: #ffffff;
-  overflow: hidden;
+  overflow: visible;
+  touch-action: pan-y;
   isolation: isolate;
   z-index: 1;
 }
 
 .home-hero__media {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  width: auto;
-  height: auto;
-  min-height: 100dvh;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
@@ -3587,6 +3544,12 @@ button:hover {
   max-width: 920px;
   margin-inline: auto;
   text-align: center;
+  pointer-events: none;
+}
+
+.home-hero__content a,
+.home-hero__content button {
+  pointer-events: auto;
 }
 
 .home-banner {
@@ -4112,9 +4075,14 @@ button:hover {
 .home-hero .video-bg,
 .home-hero__media .video-bg,
 .home-hero__media video,
+.home-hero__media .home-hero__overlay,
+.home-hero__media::before,
 #bgVideo {
-  pointer-events: none;
-  touch-action: pan-y;
+  pointer-events: none !important;
+  touch-action: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
 }
 
 .home-hero .video-bg {

@@ -72,6 +72,7 @@ p {
   --nav-blur-bg: transparent; 
   --drawer-width: 180px;
   --site-rail-right: clamp(0.5rem, 1.5vw, 1rem);
+  --site-rail-inset: var(--site-rail-right);
   --site-rail-gap: 12px;
 }
 
@@ -423,56 +424,6 @@ nav a {
 
 .site-right-rail > * {
   pointer-events: auto;
-}
-
-.site-right-rail-flag-slot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.site-right-rail .language-switcher {
-  position: static;
-  top: auto;
-  right: auto;
-  margin: 0;
-  animation: fadeIn 4.5s ease-in-out;
-}
-
-.site-right-rail .flag-link {
-  display: flex;
-  width: 44px;
-  height: 44px;
-  background-color: transparent;
-  justify-content: center;
-  align-items: center;
-  border-radius: 25px;
-  cursor: pointer;
-  margin-top: 0;
-  transition: transform 0.75s;
-}
-
-.site-right-rail .flag-link:hover {
-  transform: scale(1.05);
-}
-
-.site-right-rail .flag-icon {
-  display: inline-block;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  box-shadow: 2px 4px 12px #fff;
-}
-
-.site-right-rail .flag-icon-gb {
-  background-image: url('/flags/gb.svg');
-}
-
-.site-right-rail .flag-icon-vn {
-  background-image: url('/flags/vn.svg');
 }
 
 .contact-sidebar {

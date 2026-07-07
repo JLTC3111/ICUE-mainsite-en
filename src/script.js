@@ -1879,6 +1879,14 @@ window.loadPage = (page) => {
     return;
   }
 
+  currentPage = page;
+  window.currentPage = page;
+
+  const expectedHash = `#/${page}`;
+  if (window.location.hash !== expectedHash) {
+    history.replaceState(null, '', `${window.location.pathname}${window.location.search}${expectedHash}`);
+  }
+
   const content = document.getElementById('content');
   const landing = document.getElementById('landing-page');
   const progressBar = document.querySelector('.progress-bar');
@@ -2628,6 +2636,7 @@ function router() {
   
   // Update state and load the page
   currentPage = page;
+  window.currentPage = page;
   isInitialLoad = false;
   window.loadPage(page);
 }
@@ -2715,7 +2724,8 @@ window.removeOverlayListener = () => {
 // Navigation handler + page loader
 window.navigateToPage = (page) => {
   currentPage = page;
-  loadPage(page); // Your existing page loader
+  window.currentPage = page;
+  loadPage(page);
   highlightActiveLink(page);
   closeDrawerMenu();
 }
@@ -5657,6 +5667,11 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupLanguageSwitcher() {
+  if (typeof window.__mainSiteNavRefreshLanguage === 'function') {
+    window.__mainSiteNavRefreshLanguage();
+    return;
+  }
+
   const pageSwitch = document.getElementById("page-switch");
   const langIcon = document.getElementById("langSwitcher");
 
@@ -5710,21 +5725,20 @@ function setupLanguageSwitcher() {
   // Get current page from hash or determine from context
   function getCurrentPage() {
     console.log('[Language Switcher] Detecting current page...');
-    console.log('[Language Switcher] Current hash:', currentHash);
-    console.log('[Language Switcher] Current path:', currentPath);
+    console.log('[Language Switcher] Current hash:', window.location.hash);
+    console.log('[Language Switcher] Current path:', window.location.pathname);
     console.log('[Language Switcher] Current URL:', window.location.href);
-    
-    // Check hash-based routing first (most reliable for SPA)
-    if (currentHash && currentHash.startsWith('#/')) {
-      const hashPage = currentHash.substring(2); // Remove '#/'
-      console.log('[Language Switcher] Detected hash page:', hashPage);
-      return hashPage;
-    }
-    
-    // Check if there's a global currentPage variable
-    if (typeof window.currentPage !== 'undefined' && window.currentPage) {
+
+    if (typeof window.currentPage === 'string' && window.currentPage) {
       console.log('[Language Switcher] Found global currentPage:', window.currentPage);
       return window.currentPage;
+    }
+
+    const liveHash = window.location.hash;
+    if (liveHash && liveHash.startsWith('#/')) {
+      const hashPage = liveHash.substring(2);
+      console.log('[Language Switcher] Detected hash page:', hashPage);
+      return hashPage;
     }
     
     // Try to detect from active navigation elements (data-page attribute)

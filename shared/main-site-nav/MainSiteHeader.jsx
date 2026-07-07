@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
 
@@ -16,18 +14,6 @@ export default function MainSiteHeader({
   contactLinkRef,
   flagLinkRef,
 }) {
-  const [flagSlot, setFlagSlot] = useState(null);
-
-  useEffect(() => {
-    setFlagSlot(document.getElementById('site-right-rail-flag-slot'));
-  }, []);
-
-  const railFlagSwitcher = (
-    <div className="language-switcher language-switcher--rail" ref={flagLinkRef}>
-      <LanguageFlagLink />
-    </div>
-  );
-
   return (
     <>
       <div className="main-site-nav__left logo-banner">
@@ -152,9 +138,11 @@ export default function MainSiteHeader({
             visible={showAboutUsVideoToggle}
           />
         </div>
-      </div>
 
-      {flagSlot ? createPortal(railFlagSwitcher, flagSlot) : null}
+        <div className="language-switcher" ref={flagLinkRef}>
+          <LanguageFlagLink />
+        </div>
+      </div>
     </>
   );
 }
