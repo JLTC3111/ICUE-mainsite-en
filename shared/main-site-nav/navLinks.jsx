@@ -52,7 +52,7 @@ const IconArrow = () => (
 
 export const DRAWER_LINKS = [
   { page: 'Home', href: '#/Home', label: 'Home', icon: IconHome, closeOnly: true },
-  { page: 'orgStructure', href: '#/orgStructure', label: 'Structure', icon: IconOrg, closeOnly: true },
+  { page: 'orgStructure', href: 'https://icue.vn/structure', label: 'Structure', icon: IconOrg, closeOnly: true },
   { page: 'ourWork', href: '#/ourWork', label: 'Our Work', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '#/pastProjects', label: 'Project History', icon: IconProjects, closeOnly: true },
   { page: 'News', href: '#/News', label: 'News', icon: IconNews, closeOnly: true },

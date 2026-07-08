@@ -1378,13 +1378,17 @@ const HomeBackgroundVideoManager = (() => {
       applyNavTheme({ prefersLightNav: true });
     }
 
+    window.dispatchEvent(new CustomEvent('icue:homeVideoEnabled', {
+      detail: { enabled: !!enabled },
+    }));
+
     // Keep both (desktop + mobile) toggles in sync.
     bindToggleUI();
   };
 
   const isEnabled = () => getUserEnabled();
 
-  return { init, destroy, bindToggleUI, setEnabled, isEnabled };
+  return { init, destroy, bindToggleUI, setEnabled, isEnabled, canToggleVideos: canPlayVideosInThisContext };
 })();
 
 window.HomeBackgroundVideoManager = HomeBackgroundVideoManager;
@@ -1859,12 +1863,17 @@ const AboutUsBackgroundVideoManager = (() => {
     syncRootVideoStateAttr();
     if (enabled) init();
     else destroy();
+
+    window.dispatchEvent(new CustomEvent('icue:aboutUsVideoEnabled', {
+      detail: { enabled: !!enabled },
+    }));
+
     bindToggleUI();
   };
 
   const isEnabled = () => getUserEnabled();
 
-  return { init, destroy, bindToggleUI, setEnabled, isEnabled };
+  return { init, destroy, bindToggleUI, setEnabled, isEnabled, canToggleVideos: canPlayVideosInThisContext };
 })();
 
 window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
