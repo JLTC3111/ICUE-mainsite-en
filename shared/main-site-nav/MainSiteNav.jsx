@@ -290,6 +290,7 @@ export default function MainSiteNav() {
       <MainSiteDrawer
         open={drawerOpen}
         onClose={handleCloseDrawer}
+        activePage={activePage}
       />
     </div>
   );
