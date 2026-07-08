@@ -1,3 +1,5 @@
+import AnimatedViewToggle from '@icue/ui/AnimatedViewToggle';
+
 export default function VideoToggle({
   id,
   inputId,
@@ -6,6 +8,10 @@ export default function VideoToggle({
   label = 'Background video toggle',
   showLabel = true,
   visible = true,
+  animated = false,
+  checked = false,
+  onCheckedChange,
+  disabled = false,
 }) {
   if (!visible) return null;
 
@@ -16,6 +22,26 @@ export default function VideoToggle({
   const trackClass = `${baseClass}__track`;
   const thumbClass = `${baseClass}__thumb`;
   const textClass = `${baseClass}__text`;
+
+  if (animated && type === 'home') {
+    return (
+      <div
+        className={`${baseClass} ${variantClass} ${baseClass}--animated`}
+        id={id}
+        aria-label={label}
+      >
+        <AnimatedViewToggle
+          className={`${baseClass}__animated`}
+          checked={checked}
+          onCheckedChange={onCheckedChange}
+          disabled={disabled}
+          ariaLabel={label}
+          duration={450}
+          variant="circle"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={`${baseClass} ${variantClass}`} id={id} aria-label={label}>

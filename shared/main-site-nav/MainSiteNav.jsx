@@ -37,6 +37,10 @@ export default function MainSiteNav() {
   const [showHomeVideoToggle, setShowHomeVideoToggle] = useState(initialVisibility.showHomeVideoToggle);
   const [showMoeVideoToggle, setShowMoeVideoToggle] = useState(initialVisibility.showMoeVideoToggle);
   const [showAboutUsVideoToggle, setShowAboutUsVideoToggle] = useState(initialVisibility.showAboutUsVideoToggle);
+  const [homeVideoEnabled, setHomeVideoEnabled] = useState(true);
+  const [homeVideoToggleDisabled, setHomeVideoToggleDisabled] = useState(false);
+  const [aboutUsVideoEnabled, setAboutUsVideoEnabled] = useState(true);
+  const [aboutUsVideoToggleDisabled, setAboutUsVideoToggleDisabled] = useState(false);
 
   const menuIconRef = useRef(null);
   const menuToggleRef = useRef(null);
@@ -56,6 +60,28 @@ export default function MainSiteNav() {
     window.__mainSiteNavRefreshLanguage?.();
   }, []);
 
+  const handleHomeVideoToggle = useCallback((enabled) => {
+    window.HomeBackgroundVideoManager?.setEnabled?.(enabled);
+  }, []);
+
+  const syncHomeVideoToggleState = useCallback(() => {
+    const manager = window.HomeBackgroundVideoManager;
+    if (!manager) return;
+    setHomeVideoEnabled(!!manager.isEnabled?.());
+    setHomeVideoToggleDisabled(!manager.canToggleVideos?.());
+  }, []);
+
+  const handleAboutUsVideoToggle = useCallback((enabled) => {
+    window.AboutUsBackgroundVideoManager?.setEnabled?.(enabled);
+  }, []);
+
+  const syncAboutUsVideoToggleState = useCallback(() => {
+    const manager = window.AboutUsBackgroundVideoManager;
+    if (!manager) return;
+    setAboutUsVideoEnabled(!!manager.isEnabled?.());
+    setAboutUsVideoToggleDisabled(!manager.canToggleVideos?.());
+  }, []);
+
   const playEntranceAnimation = useCallback((isFirstLoad = true) => {
     if (typeof window.gsap === 'undefined') {
       [menuToggleRef, logoLinkRef, flagLinkRef, contactLinkRef].forEach((ref) => {
@@ -70,7 +96,8 @@ export default function MainSiteNav() {
 
     const targets = [
       { el: menuToggleRef.current, delay: 0 },
-      { el: logoLinkRef.current, delay: -0.3 },
+      { el: logoLinkRef.current?.querySelector('.logo-mark'), delay: -0.3 },
+      { el: logoLinkRef.current?.querySelector('.logo-wordmark'), delay: -0.25 },
       { el: flagLinkRef.current?.querySelector('.flag-link'), delay: -0.3 },
       { el: contactLinkRef.current, delay: -0.3 },
     ].filter((item) => item.el);
@@ -175,13 +202,38 @@ export default function MainSiteNav() {
   }, [playEntranceAnimation]);
 
   useEffect(() => {
-    if (showHomeVideoToggle) {
-      window.HomeBackgroundVideoManager?.bindToggleUI?.();
-    }
+    if (!showHomeVideoToggle) return undefined;
+
+    syncHomeVideoToggleState();
+    window.HomeBackgroundVideoManager?.bindToggleUI?.();
+
+    const onHomeVideoEnabled = () => syncHomeVideoToggleState();
+    window.addEventListener('icue:homeVideoEnabled', onHomeVideoEnabled);
+
+    return () => {
+      window.removeEventListener('icue:homeVideoEnabled', onHomeVideoEnabled);
+    };
+  }, [showHomeVideoToggle, syncHomeVideoToggleState]);
+
+  useEffect(() => {
     if (showMoeVideoToggle) {
       window.MeetOurExpertsBackgroundVideoManager?.bindToggleUI?.();
     }
-  }, [showHomeVideoToggle, showMoeVideoToggle]);
+  }, [showMoeVideoToggle]);
+
+  useEffect(() => {
+    if (!showAboutUsVideoToggle) return undefined;
+
+    syncAboutUsVideoToggleState();
+    window.AboutUsBackgroundVideoManager?.bindToggleUI?.();
+
+    const onAboutUsVideoEnabled = () => syncAboutUsVideoToggleState();
+    window.addEventListener('icue:aboutUsVideoEnabled', onAboutUsVideoEnabled);
+
+    return () => {
+      window.removeEventListener('icue:aboutUsVideoEnabled', onAboutUsVideoEnabled);
+    };
+  }, [showAboutUsVideoToggle, syncAboutUsVideoToggleState]);
 
   useEffect(() => {
     const ids = [
@@ -221,6 +273,12 @@ export default function MainSiteNav() {
           showHomeVideoToggle={showHomeVideoToggle}
           showMoeVideoToggle={showMoeVideoToggle}
           showAboutUsVideoToggle={showAboutUsVideoToggle}
+          homeVideoEnabled={homeVideoEnabled}
+          homeVideoToggleDisabled={homeVideoToggleDisabled}
+          onHomeVideoToggle={handleHomeVideoToggle}
+          aboutUsVideoEnabled={aboutUsVideoEnabled}
+          aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
+          onAboutUsVideoToggle={handleAboutUsVideoToggle}
           menuIconRef={menuIconRef}
           menuToggleRef={menuToggleRef}
           logoLinkRef={logoLinkRef}

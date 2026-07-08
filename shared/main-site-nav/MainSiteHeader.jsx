@@ -1,5 +1,10 @@
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
+import VideoText from '@icue/ui/VideoText';
+import MetallicMenuIcon from './MetallicMenuIcon';
+
+const LOGO_VIDEO_SRC = 'public/bgVideos/video-text-football.mp4';
+const CONTACT_VIDEO_SRC = 'public/bgVideos/blueflow.mp4';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -8,6 +13,12 @@ export default function MainSiteHeader({
   showHomeVideoToggle,
   showMoeVideoToggle,
   showAboutUsVideoToggle,
+  homeVideoEnabled,
+  homeVideoToggleDisabled,
+  onHomeVideoToggle,
+  aboutUsVideoEnabled,
+  aboutUsVideoToggleDisabled,
+  onAboutUsVideoToggle,
   menuIconRef,
   menuToggleRef,
   logoLinkRef,
@@ -21,13 +32,26 @@ export default function MainSiteHeader({
           ref={logoLinkRef}
           href="https://en.icue.vn"
           id="logo-link"
+          className="logo-link"
           aria-label="Go to homepage"
         >
           <img
-            className="logo-content"
-            src="public/logoIcons/logo.png"
-            alt="Company Logo"
+            className="logo-mark"
+            src="public/logoIcons/favicon.png"
+            alt=""
+            aria-hidden="true"
+            decoding="async"
           />
+          <VideoText
+            className="logo-wordmark"
+            src={LOGO_VIDEO_SRC}
+            fontSize="72"
+            fontWeight="700"
+            fontFamily="Poppins, system-ui, sans-serif"
+            as="span"
+          >
+            ICUE
+          </VideoText>
         </a>
 
         <VideoToggle
@@ -37,6 +61,10 @@ export default function MainSiteHeader({
           label="Background video toggle"
           showLabel={false}
           visible={showHomeVideoToggle}
+          animated
+          checked={homeVideoEnabled}
+          onCheckedChange={onHomeVideoToggle}
+          disabled={homeVideoToggleDisabled}
         />
 
         <VideoToggle
@@ -56,6 +84,10 @@ export default function MainSiteHeader({
           label="About Us background video toggle"
           showLabel={false}
           visible={showAboutUsVideoToggle}
+          animated
+          checked={aboutUsVideoEnabled}
+          onCheckedChange={onAboutUsVideoToggle}
+          disabled={aboutUsVideoToggleDisabled}
         />
       </div>
 
@@ -72,19 +104,7 @@ export default function MainSiteHeader({
             onToggleDrawer();
           }}
         >
-          <svg
-            ref={menuIconRef}
-            id="menuIcon"
-            className={drawerOpen ? 'is-open' : ''}
-            viewBox="0 -0.5 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <rect id="top-bar" x="7.834" y="7.75" width="9.333" height="1.5" fill="currentColor" />
-            <rect id="middle-bar" x="5.5" y="11.75" width="14" height="1.5" fill="currentColor" />
-            <rect id="bottom-bar" x="7.834" y="15.75" width="9.333" height="1.5" fill="currentColor" />
-          </svg>
+          <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
         </button>
       </div>
 
@@ -106,7 +126,17 @@ export default function MainSiteHeader({
               }
             }}
           >
-            ABOUT US
+            <VideoText
+              className="contact-link-wordmark"
+              src={CONTACT_VIDEO_SRC}
+              fontSize="64"
+              fontWeight="700"
+              fontFamily="Poppins, system-ui, sans-serif"
+              viewBox="0 0 720 120"
+              as="span"
+            >
+              ABOUT US
+            </VideoText>
           </a>
         )}
 
@@ -117,6 +147,10 @@ export default function MainSiteHeader({
             variant="nav"
             showLabel={false}
             visible={showHomeVideoToggle}
+            animated
+            checked={homeVideoEnabled}
+            onCheckedChange={onHomeVideoToggle}
+            disabled={homeVideoToggleDisabled}
           />
 
           <VideoToggle
@@ -136,6 +170,10 @@ export default function MainSiteHeader({
             label="About Us background video toggle"
             showLabel={false}
             visible={showAboutUsVideoToggle}
+            animated
+            checked={aboutUsVideoEnabled}
+            onCheckedChange={onAboutUsVideoToggle}
+            disabled={aboutUsVideoToggleDisabled}
           />
 
           <LanguageFlagLink />
