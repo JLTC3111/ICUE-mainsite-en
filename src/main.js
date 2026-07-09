@@ -358,8 +358,8 @@ footer {
                         Company
                     </div>
                     <div class="collapsible">
-                        <a href="#/notableAwards" onclick="closeDrawerMenu();" data-page="notableAwards">Notable Awards</a>
-                        <a href="#/communityActivities" onclick="closeDrawerMenu();" data-page="communityActivities">Community Activities</a>
+                        <a href="/src/pages/notableAwards.html" onclick="closeDrawerMenu();" data-page="notableAwards">Notable Awards</a>
+                        <a href="/src/pages/communityActivities.html" onclick="closeDrawerMenu();" data-page="communityActivities">Community Activities</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -367,9 +367,9 @@ footer {
                         Other Pages
                     </div>
                     <div class="collapsible">
-                        <a href="#/FAQs" onclick="closeDrawerMenu();" data-page="FAQs">FAQs</a>
-                        <a href="#/recruitment" onclick="closeDrawerMenu();" data-page="recruitment">Job Opportunities</a>
-                        <a href="#/donations" onclick="closeDrawerMenu();" data-page="donations">Donations</a>
+                        <a href="/src/pages/FAQs.html" onclick="closeDrawerMenu();" data-page="FAQs">FAQs</a>
+                        <a href="/recruitment" onclick="closeDrawerMenu();" data-page="recruitment">Job Opportunities</a>
+                        <a href="/src/pages/donations.html" onclick="closeDrawerMenu();" data-page="donations">Donations</a>
                     </div>
                 </div>
                 <div class="footer-brand">
@@ -403,16 +403,16 @@ footer {
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <a href="#/privacy" onclick="closeDrawerMenu();" data-page="privacy">Privacy</a>
+                    <a href="/src/pages/privacy.html" onclick="closeDrawerMenu();" data-page="privacy">Privacy</a>
                     <span>|</span>
-                    <a href="#/terms" onclick="closeDrawerMenu();" data-page="terms">T&C</a>
+                    <a href="/src/pages/terms.html" onclick="closeDrawerMenu();" data-page="terms">T&C</a>
                     <span>|</span>
-                    <a href="#/gdpr" onclick="closeDrawerMenu();" data-page="gdpr">GDPR</a>
+                    <a href="/src/pages/gdpr.html" onclick="closeDrawerMenu();" data-page="gdpr">GDPR</a>
                     <span>|</span>
-                    <a href="#/cookies" onclick="closeDrawerMenu();" data-page="cookies">Cookies</a>
+                    <a href="/src/pages/cookies.html" onclick="closeDrawerMenu();" data-page="cookies">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
-                    <a href="#/Contact" class="company-deck">
+                    <a href="/contact" class="company-deck">
                         Let's Work Together!
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M7 14l5-5 5 5z"/>
@@ -461,6 +461,11 @@ footer {
     function autoInjectFooter() {
         
         const injectIfMissing = () => {
+            // React home app renders Footer.jsx (icue-footer)
+            if (document.querySelector('.icue-footer') || document.getElementById('root')) {
+                return;
+            }
+
             const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/ourWork', '#/pastProjects', '#/News', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities'];
             const currentPage = window.location.hash.trim();
             console.log("Current page:", currentPage);

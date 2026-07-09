@@ -37,37 +37,96 @@ const STATIC_PAGES = [
   'faqs', 'cookies', 'notableAwards', 'communityActivities',
 ];
 
-function getCurrentPage() {
-  if (typeof window.currentPage === 'string' && window.currentPage) {
+/** Path routes for migrated main-site pages (no hash). */
+export const MIGRATED_PAGE_PATHS = {
+  Home: '/',
+  Contact: '/contact',
+  aboutUs: '/about-us',
+  ourWork: '/our-work',
+  pastProjects: '/past-projects',
+  recruitment: '/recruitment',
+  News: '/newsroom/',
+  meetOurExperts: '/people/experts',
+  coreTeam: '/people/core-team',
+  orgStructure: '/structure/',
+};
+
+const PATH_TO_PAGE = Object.fromEntries(
+  Object.entries(MIGRATED_PAGE_PATHS).map(([page, path]) => [path, page]),
+);
+
+function pageFromHash(hash) {
+  if (hash && hash.startsWith('#/')) {
+    const page = hash.substring(2).replace(/\/$/, '');
+    return page || 'Home';
+  }
+  return null;
+}
+
+export function pageFromPathname(pathname) {
+  if (!pathname) return 'Home';
+  if (PATH_TO_PAGE[pathname]) return PATH_TO_PAGE[pathname];
+  if (pathname === '/') return 'Home';
+
+  const pathSegments = pathname.split('/').filter(Boolean);
+  if (pathSegments.length === 0) return 'Home';
+
+  if (pathSegments[0] === 'people') {
+    if (pathSegments.includes('core-team')) return 'coreTeam';
+    if (pathSegments.includes('experts')) return 'meetOurExperts';
+  }
+  if (pathSegments[0] === 'structure') return 'orgStructure';
+  if (pathSegments[0] === 'newsroom') return 'News';
+
+  const pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
+  if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
+    return pathPage;
+  }
+  return pathPage;
+}
+
+export function getCurrentPage() {
+  const { hash, pathname } = window.location;
+
+  const hashPage = pageFromHash(hash);
+  if (hashPage) return hashPage;
+
+  if (typeof window.currentPage !== 'undefined' && window.currentPage) {
     return window.currentPage;
   }
 
-  const { hash, pathname } = window.location;
-
-  if (hash && hash.startsWith('#/')) {
-    return hash.substring(2);
+  if (typeof window.__mainSiteNav?.getPage === 'function') {
+    const navPage = window.__mainSiteNav.getPage();
+    if (navPage) return navPage;
   }
 
   const activeNavLink = document.querySelector(
-    '#drawerMenu a.active, .drawer-menu a.active, [data-page].active'
+    '.drawer-menu a.active, [data-page].active, #drawerMenu a.active'
   );
   if (activeNavLink) {
     const dataPage = activeNavLink.getAttribute('data-page');
     if (dataPage) return dataPage;
   }
 
-  if (pathname && pathname !== '/') {
-    const pathSegments = pathname.split('/').filter(Boolean);
-    if (pathSegments.length > 0) {
-      let pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
-      if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
-        return pathPage;
-      }
-      return pathPage;
+  return pageFromPathname(pathname);
+}
+
+export function syncHashForPage(page) {
+  if (!page || page === 'meetOurExperts' || page === 'coreTeam' || page === 'orgStructure') return;
+
+  const migratedPath = MIGRATED_PAGE_PATHS[page];
+  if (migratedPath && !window.location.hash) {
+    const url = `${migratedPath}${window.location.search}`;
+    if (window.location.pathname !== migratedPath) {
+      history.replaceState(null, '', url);
     }
+    return;
   }
 
-  return 'Home';
+  const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
+  if (window.location.hash === targetHash) return;
+  const url = `${window.location.pathname}${window.location.search}${targetHash}`;
+  history.replaceState(null, '', url);
 }
 
 function mapPageName(pageName, fromLang, toLang) {
@@ -75,12 +134,21 @@ function mapPageName(pageName, fromLang, toLang) {
   return PAGE_MAPPING[pageName] || pageName;
 }
 
+function buildTargetPath(targetPageName) {
+  if (MIGRATED_PAGE_PATHS[targetPageName]) {
+    return MIGRATED_PAGE_PATHS[targetPageName];
+  }
+  if (STATIC_PAGES.includes(targetPageName)) {
+    return `#/${targetPageName}`;
+  }
+  return targetPageName === 'Home' ? '#/Home' : `#/${targetPageName}`;
+}
+
 export function buildLanguageSwitchTarget() {
   let currentHost = window.location.host;
-  const currentPath = window.location.pathname;
-  const currentHash = window.location.hash;
   const currentSearch = window.location.search;
   const currentProtocol = window.location.protocol;
+  const currentHash = window.location.hash;
 
   if (currentHost.includes('localhost') || currentHost.includes('127.0.0.1')) {
     const isEnglishSite =
@@ -110,22 +178,8 @@ export function buildLanguageSwitchTarget() {
     targetSite.language
   );
 
-  let targetPath = '';
-  if (targetPageName === 'Home') {
-    targetPath = '';
-  } else if (targetPageName === 'meetOurExperts') {
-    targetPath = '/people/experts';
-  } else if (targetPageName === 'coreTeam') {
-    targetPath = '/people/core-team';
-  } else if (STATIC_PAGES.includes(targetPageName)) {
-    targetPath = `#/${targetPageName}`;
-  } else {
-    targetPath = `#/${targetPageName}`;
-  }
-
-  const targetUrl = targetPageName === 'Home'
-    ? `${currentProtocol}//${targetSite.domain}/${currentSearch}`
-    : `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
+  const targetPath = buildTargetPath(targetPageName);
+  const targetUrl = `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
 
   return {
     currentSite,

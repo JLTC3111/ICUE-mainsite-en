@@ -1,9 +1,15 @@
+# Home React app (history routing)
+/contact           /index.html   200
+/about-us          /index.html   200
+/our-work          /index.html   200
+/past-projects     /index.html   200
+/recruitment       /index.html   200
+
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200
 
-# Static assets live under /public in the repo root deploy layout.
+# Static assets
+/zalo-link.js        /public/zalo-link.js            200
 /profilePhotos/*     /public/profilePhotos/:splat    200
 /flags/*             /public/flags/:splat            200
-
-# Vite copies public/ to dist root; keep /public/* URLs working in production.
 /public/*            /:splat                         200

@@ -315,17 +315,17 @@ const html = `
         <div class="footer-section">
             <button class="footer-toggle underline-hover" type="button" aria-expanded="false">Company</button>
             <div class="collapsible">
-                <a href="#/notableAwards">Notable Awards</a>
-                <a href="#/communityActivities">Community Activities</a>
-                <a href="#/News">News</a>
+                <a href="/src/pages/notableAwards.html">Notable Awards</a>
+                <a href="/src/pages/communityActivities.html">Community Activities</a>
+                <a href="https://icue.vn/newsroom/">News</a>
             </div>
         </div>
         <div class="footer-section">
             <button class="footer-toggle underline-hover" type="button" aria-expanded="false">Other Pages</button>
             <div class="collapsible">
-                <a href="#/FAQs">FAQs</a>
-                <a href="#/recruitment">Job Opportunities</a>
-                <a href="#/donations">Donations</a>
+                <a href="/src/pages/FAQs.html">FAQs</a>
+                <a href="/recruitment">Job Opportunities</a>
+                <a href="/src/pages/donations.html">Donations</a>
             </div>
         </div>
         <div class="footer-brand">
@@ -353,16 +353,16 @@ const html = `
     </div>
     <div class="footer-bottom">
         <div class="footer-bottom-left">
-            <a href="#/privacy">Privacy</a>
+            <a href="/src/pages/privacy.html">Privacy</a>
             <span>|</span>
-            <a href="#/terms">T&C</a>
+            <a href="/src/pages/terms.html">T&C</a>
             <span>|</span>
-            <a href="#/gdpr">GDPR</a>
+            <a href="/src/pages/gdpr.html">GDPR</a>
             <span>|</span>
-            <a href="#/cookies">Cookies</a>
+            <a href="/src/pages/cookies.html">Cookies</a>
         </div>
         <div class="footer-bottom-right">
-            <a href="#/Contact" class="company-deck">Let's Work Together!</a>
+            <a href="/contact" class="company-deck">Let's Work Together!</a>
         </div>
     </div>
 </footer>`;

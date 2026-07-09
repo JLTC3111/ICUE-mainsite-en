@@ -52,11 +52,21 @@ const IconArrow = () => (
 
 export const DRAWER_LINKS = [
   { page: 'Home', href: '#/Home', label: 'Home', icon: IconHome, closeOnly: true },
-  { page: 'orgStructure', href: 'https://icue.vn/structure', label: 'Structure', icon: IconOrg, closeOnly: true },
+  { page: 'orgStructure', href: 'https://icue.vn/structure/', label: 'Structure', icon: IconOrg, closeOnly: true },
   { page: 'ourWork', href: '#/ourWork', label: 'Our Work', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '#/pastProjects', label: 'Project History', icon: IconProjects, closeOnly: true },
   { page: 'News', href: '#/News', label: 'News', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '#/aboutUs', label: 'About Us', icon: IconAbout, closeOnly: true },
+];
+
+/** Path-based drawer links for the standalone home React app. */
+export const STANDALONE_DRAWER_LINKS = [
+  { page: 'Home', href: '/', label: 'Home', icon: IconHome, closeOnly: true },
+  { page: 'orgStructure', href: 'https://icue.vn/structure/', label: 'Structure', icon: IconOrg, closeOnly: true },
+  { page: 'ourWork', href: '/our-work', label: 'Our Work', icon: IconWork, closeOnly: true },
+  { page: 'pastProjects', href: '/past-projects', label: 'Project History', icon: IconProjects, closeOnly: true },
+  { page: 'News', href: 'https://icue.vn/newsroom/', label: 'News', icon: IconNews, closeOnly: true },
+  { page: 'aboutUs', href: '/about-us', label: 'About Us', icon: IconAbout, closeOnly: true },
 ];
 
 export const PEOPLE_SUBMENU = {

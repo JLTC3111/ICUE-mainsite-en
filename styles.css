@@ -51,7 +51,8 @@ h3:hover {
   transform: scale(1.02);
 }
 
-p {
+/* Legacy paragraph styling — scoped away from the React home app */
+body:not(:has(.home-page)) p {
   font-size: 24px;
   font-weight: 400;
   color: rgb(0, 0, 0);
@@ -3532,12 +3533,28 @@ button:hover {
 }
 
 /* Home page rebuild */
+.home-page {
+  position: relative;
+  isolation: isolate;
+  --home-z-background: 0;
+  --home-z-beams: 2;
+  --home-z-content: 3;
+}
+
+.home-beam-layer {
+  position: absolute;
+  inset: 0;
+  z-index: var(--home-z-beams);
+  pointer-events: none;
+  overflow: visible;
+}
+
 .home-hero {
   position: relative;
   min-height: 100dvh;
-  box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3545,8 +3562,6 @@ button:hover {
   color: #ffffff;
   overflow: visible;
   touch-action: pan-y;
-  isolation: isolate;
-  z-index: 1;
 }
 
 .home-hero__media {
@@ -3554,18 +3569,19 @@ button:hover {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: var(--home-z-background);
   overflow: hidden;
   pointer-events: none;
 }
 
 /* Static Home hero background (always present under the video).
-   Best practice: ensures fast first paint and graceful fallback when video is disabled
+   Best practice: provides a fast first paint and a graceful fallback when video is disabled
    (mobile, reduced motion, or data-saver). */
 .home-hero__media::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   background:
     radial-gradient(1200px 800px at 18% 20%, rgba(29, 183, 255, 0.32) 0%, rgba(29, 183, 255, 0) 60%),
     radial-gradient(900px 700px at 82% 16%, rgba(31, 210, 128, 0.22) 0%, rgba(31, 210, 128, 0) 55%),
@@ -3577,7 +3593,7 @@ button:hover {
 .home-hero__overlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   width: 100%;
   height: 100%;
   background: radial-gradient(60% 60% at 20% 10%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.2) 60%),
@@ -3587,7 +3603,7 @@ button:hover {
 
 .home-hero__content {
   position: relative;
-  z-index: 2;
+  z-index: var(--home-z-content);
   width: 100%;
   max-width: 920px;
   margin-inline: auto;
@@ -3603,16 +3619,10 @@ button:hover {
 .home-banner {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 1rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  font-family: "Poppins", sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   margin-bottom: 1.5rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
 }
 
 .home-banner a {
@@ -3623,26 +3633,31 @@ button:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.15rem 0.25rem;
 }
 
-.home-banner a:hover {
+.home-banner a:not(.rainbow-button):hover {
   color: #fff2b2;
 }
 
-.home-banner a:focus-visible {
+.home-banner a:not(.rainbow-button):focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 3px;
   border-radius: 999px;
 }
 
 .home-hero__title {
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  color: #ffffff;
+  font-size: clamp(2.4rem, 6vw, 3.5rem);
   margin: 0 0 1rem;
   font-family: "Audiowide", sans-serif;
   letter-spacing: 0.02em;
   text-shadow: 0 6px 18px rgba(0, 10, 156, 0.95);
+}
+
+.home-page p {
+  letter-spacing: normal;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .home-hero__subtitle {
@@ -3650,9 +3665,11 @@ button:hover {
   color: rgba(255, 255, 255, 0.85);
   margin: 0 auto 2rem;
   max-width: 760px;
+  width: 100%;
   line-height: 1.6;
+  letter-spacing: normal;
+  text-align: center;
   text-shadow: 0 4px 14px rgba(255, 255, 255, 0.75);
-  letter-spacing: 0.01em;
 }
 
 .home-hero__actions {
@@ -3727,397 +3744,37 @@ button:hover {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-.home-video-toggle {
-  display: inline-flex;
-  justify-content: center;
-  opacity: 0.7;
-  transition: opacity 200ms ease, transform 200ms ease;
-  position: relative;
-  z-index: 1;
-  pointer-events: auto;
-}
-
-.home-video-toggle:hover {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-.home-video-toggle__label {
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.92);
-  font-family: "Poppins", sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.01em;
-  user-select: none;
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-.home-video-toggle__input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  z-index: 10;
-  cursor: pointer;
-  margin: 0;
-}
-
-.home-video-toggle__track {
-  width: 40px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  position: relative;
-  display: inline-block;
-  transition: background 200ms ease, border-color 200ms ease;
-}
-
-.home-video-toggle__thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  position: absolute;
-  top: 50%;
-  left: 3px;
-  transform: translateY(-50%);
-  transition: transform 200ms ease, background 200ms ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-}
-
-.home-video-toggle__input:checked + .home-video-toggle__track {
-  background: rgba(31, 210, 128, 0.35);
-  border-color: rgba(31, 210, 128, 0.55);
-}
-
-.home-video-toggle__input:checked + .home-video-toggle__track .home-video-toggle__thumb {
-  transform: translate(18px, -50%);
-}
-
-.home-video-toggle__input:focus-visible + .home-video-toggle__track {
-  outline: 2px solid #ffffff;
-  outline-offset: 3px;
-}
-
-.home-video-toggle__input:disabled + .home-video-toggle__track {
-  opacity: 0.55;
-}
-
-.home-video-toggle__input:disabled ~ .home-video-toggle__text {
-  opacity: 0.65;
-}
-
-/* MOE Video Toggle - Separate styling from Home */
-.moe-video-toggle {
-  display: inline-flex;
-  justify-content: center;
-  opacity: 0.7;
-  transition: opacity 200ms ease, transform 200ms ease;
-  position: relative;
-  z-index: 1;
-  pointer-events: auto;
-}
-
-.moe-video-toggle:hover {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-.moe-video-toggle__label {
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.92);
-  font-family: "Poppins", sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.01em;
-  user-select: none;
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-.moe-video-toggle__input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  z-index: 10;
-  cursor: pointer;
-  margin: 0;
-}
-
-.moe-video-toggle__track {
-  width: 40px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  position: relative;
-  display: inline-block;
-  transition: background 200ms ease, border-color 200ms ease;
-}
-
-.moe-video-toggle__thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  position: absolute;
-  top: 50%;
-  left: 3px;
-  transform: translateY(-50%);
-  transition: transform 200ms ease, background 200ms ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-}
-
-.moe-video-toggle__input:checked + .moe-video-toggle__track {
-  background: rgba(31, 210, 128, 0.35);
-  border-color: rgba(31, 210, 128, 0.55);
-}
-
-.moe-video-toggle__input:checked + .moe-video-toggle__track .moe-video-toggle__thumb {
-  transform: translate(18px, -50%);
-}
-
-.moe-video-toggle__input:focus-visible + .moe-video-toggle__track {
-  outline: 2px solid #ffffff;
-  outline-offset: 3px;
-}
-
-.moe-video-toggle__input:disabled + .moe-video-toggle__track {
-  opacity: 0.55;
-}
-
-.moe-video-toggle__input:disabled ~ .moe-video-toggle__text {
-  opacity: 0.65;
-}
-
-/* Responsive placement for MOE toggle: nav toggle on desktop, logo toggle on mobile/tablets */
-@media (max-width: 1024px) {
-  .moe-video-toggle--nav { display: none !important; }
-  .moe-video-toggle--navbar { display: inline-flex !important; margin-top: clamp(4.5px, 2.0vw, 5px); }
-}
-
-@media (min-width: 1025px) {
-  .moe-video-toggle--navbar { display: none !important; }
-  .moe-video-toggle--nav { display: inline-flex !important; }
-}
-
-@media (max-width: 1024px) {
-  .logo-banner #moeVideoToggleContainerMobile.moe-video-toggle--navbar {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 5%;
-    position: relative;
-    z-index: 1001;
-  }
-
-  .logo-banner #moeVideoToggleContainerMobile.moe-video-toggle--navbar .moe-video-toggle__label {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  /* Make About Us navbar toggle match Home/MOE compact/logo styling */
-  .logo-banner #aboutUsVideoToggleContainerMobile.home-video-toggle--navbar {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 5%;
-    position: relative;
-    z-index: 1001;
-  }
-
-  .logo-banner #aboutUsVideoToggleContainerMobile.home-video-toggle--navbar .home-video-toggle__label {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-}
-
-@media (min-width: 1025px) and (max-width: 1440px) {
-  .contact-link {
-    font-size: clamp(16px, 2vw, 20px);
-    padding: 0.5rem 1.75rem;
-    margin: 0 auto;
-  }
-}
-
-/* Responsive placement: nav toggle on desktop, logo toggle on mobile/tablets */
-@media (max-width: 1024px) {
-  .home-video-toggle--nav { display: none !important; }
-  .home-video-toggle--navbar { display: inline-flex !important; margin-top: clamp(4.5px, 2.0vw, 5px); }
-}
-
-@media (min-width: 1025px) {
-  .home-video-toggle--navbar { display: none !important; }
-  .home-video-toggle--nav { display: inline-flex !important; }
-}
-
-@media (max-width: 1024px) {
-  .logo-banner {
-    width: auto;
-    align-items: center;
-  }
-
-  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--navbar {
-    margin-right: 5%;
-    position: relative;
-    z-index: 1001; /* Ensure it is clickable */
-  }
-
-  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--navbar .home-video-toggle__label {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-}
-
-
 [data-home-bg-video="off"] .home-hero .video-bg {
   display: none !important;
 }
 
-/* Meet Our Experts: allow user toggle for background video */
-[data-moe-bg-video="off"] .video-bg-moe {
-  display: none !important;
-}
-
-/* Static background when MOE video is off (video element hides) */
-[data-moe-bg-video="off"] .video-background#video-bg-container {
-  background: linear-gradient(135deg, #2a2d35 0%, #1a1d25 50%, #0f1117 100%);
-  background-size: cover;
-  background-position: center;
-}
-
-/* About Us: static backdrop when background video is disabled or hidden */
-[data-aboutus-bg-video="off"] .about-container .video-bg {
-  display: none !important;
-}
-
-[data-aboutus-bg-video="off"] #content {
-  background-color: #e8e6e3;
-  background-image:
-    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 80%, rgba(200, 198, 195, 0.45) 0%, transparent 50%),
-    linear-gradient(145deg, #f0eeeb 0%, #ddd9d4 45%, #cfcbc6 100%);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-/*
- * Keep both sections positioned so their content stacks above the fixed
- * `.video-bg` (z-index: -9). `.about-container` must NOT take a positive
- * z-index: it holds the fixed video and would otherwise become a stacking
- * context that paints the whole video (and itself) over the earlier
- * `.about-legacy-hero` sibling, hiding the hero. Leaving it at z-index auto
- * lets the video belong to the root stacking context and sit behind both.
- */
-.about-legacy-hero {
-  position: relative;
-  z-index: 1;
-}
-
-.about-container {
-  position: relative;
-}
 
 .home-section {
-  padding: 4.5rem 8vw;
-  background: #0c0f14;
+  padding: 0;
+  background: transparent;
   color: #f5f5f5;
   position: relative;
-  z-index: 2;
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
 }
 
-.home-section__header {
-  opacity: 0;
-  transform: translateX(250px);
-  transition: opacity 2.5s ease, transform 2.5s ease;
+.home-section__bg {
+  position: absolute;
+  inset: 0;
+  z-index: var(--home-z-background);
+  background: #0c0f14;
+  pointer-events: none;
 }
 
-.home-section__header.animate-in {
-  opacity: 1;
-  transform: translateX(0);
-}
-.home-section__header.animate-out {
-  opacity: 0;
-  transform: translateX(-250px);
-}
-
-.home-card__body {
-  text-decoration: none;
-}
-
-.home-card_body a {
-  transition: transform 1.25s ease-in-out;
-  will-change: transform;
-}
-
-.home-card__body a:hover {
-  transform: scale(1.1);
-}
-
-.home-card {
-  padding: 10px;
-  opacity: 0;
-  transform: translateX(300px);
-  transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.home-card a {
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
-}
-
-.home-card a img {
-  transition: transform 4.25s ease-in-out;
-  will-change: transform;
-}
-
-.home-card a:hover img {
-  margin-bottom: 10px;
-  transform: scale(1.25);
-}
-
-.home-card.animate-in-card {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 2.5s ease, transform 2.5s ease;
-}
-
-.home-card.animate-out-card {
-  opacity: 0;
-  transform: translateX(300px);
-  transition: opacity 2.5s ease, transform 2.5s ease;
-}
-
-.home-section--alt {
+.home-section--alt .home-section__bg {
   background: #11151c;
+}
+
+.home-section__inner {
+  position: relative;
+  z-index: var(--home-z-content);
+  padding: 4.5rem 8vw;
 }
 
 .home-hero .video-bg,
@@ -4150,39 +3807,135 @@ button:hover {
 }
 
 .home-section__header {
-  max-width: 1260px;
+  max-width: 760px;
   margin: 0 auto 2.5rem;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+}
+
+.home-section__header {
+  opacity: 0;
+  transform: translateX(250px);
+  transition: opacity 2.5s ease, transform 2.5s ease;
+}
+
+.home-section__header.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+.home-section__header.animate-out {
+  opacity: 0;
+  transform: translateX(-250px);
+}
+
+.home-card__body {
+  display: block;
+  text-decoration: none;
+  padding: 1.35rem 1.5rem 1.65rem;
+}
+
+.home-card_body a {
+  transition: transform 1.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card__body a:hover {
+  transform: scale(1.1);
+}
+
+.home-card {
+  position: relative;
+  opacity: 0;
+  transform: translateX(300px);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  pointer-events: none;
+}
+
+.home-card a {
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-card__surface {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.3s ease;
+}
+
+.home-card__glow.border-glow-card {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.3s ease;
+}
+
+.home-card__glow .border-glow-inner {
+  border-radius: inherit;
+}
+
+.home-card:hover .home-card__glow.border-glow-card {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.home-card:hover .home-card__surface {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.home-card a.home-card__media {
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-card.animate-in-card {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 2.5s ease, transform 2.5s ease;
+  pointer-events: auto;
+}
+
+.home-card.animate-out-card {
+  opacity: 0;
+  transform: translateX(300px);
+  transition: opacity 2.5s ease, transform 2.5s ease;
+  pointer-events: none;
 }
 
 .home-section__header h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   margin-bottom: clamp(0.25rem, 1.5vw, 0.5rem);
   color: #ffffff;
-  letter-spacing: -0.02em;
   font-family: "Poppins", sans-serif;
   width: 100%;
 }
 
 .home-section__header p {
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  letter-spacing: 0;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
-  margin: 0 auto;
-  max-width: 960px;
+  margin-bottom: 1rem;
 }
 
 .home-section__link {
-  align-self: center;
   display: inline-flex;
   color: #a6d4ff;
   text-decoration: none;
   font-weight: 600;
-  margin-top: 1rem;
+  transition: color 0.25s ease, text-decoration 0.25s ease;
+}
+
+.home-section__link:hover {
+  text-decoration: underline;
 }
 
 @keyframes clipPath {
@@ -4199,18 +3952,19 @@ button:hover {
 @keyframes homeFadeInUp {
   from {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateX(150px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }
 
 @supports (animation-timeline: view()) {
   .home-section__header {
     opacity: 0;
-    animation: clipPath 0.8s linear;
+    transform-origin: top;
+    animation: clipPath 2.5s linear both;
     animation-timeline: view();
     animation-range: entry 0% cover 15%;
   }
@@ -4231,75 +3985,45 @@ button:hover {
   }
 }
 
-@media (max-width: 1368px) {
-  .home-section__header {
-    padding: 0 1rem; /* keep some horizontal gutter on small screens */
-  }
-
-  .home-section__header h2,
-  .home-section__header p {
-    width: auto !important;
-    max-width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-    align-self: center !important;
-    box-sizing: border-box;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-}
-
 .home-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 
-.home-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.home-card img {
+.home-card img,
+.home-card .pixel-image {
   width: 100%;
   height: 180px;
   object-fit: cover;
   display: block;
+  padding: 0;
+  margin: 0;
+  transition: transform 4.25s ease-in-out;
+  will-change: transform;
 }
 
-.home-card__body {
-  padding: 1.2rem 1.3rem 1.5rem;
+.home-card:hover .pixel-image,
+.home-card:hover .pixel-image__static {
+  transform: scale(1.25);
 }
 
 .home-card__body h3 {
   margin: 0 0 0.6rem;
   font-family: "Poppins", sans-serif;
-  font-size: clamp(0.8rem , 1.5vw, 1.2rem);
+  font-size: 1.1rem;
   color: #ffffff;
 }
 
 .home-card__body p {
-  font-size: clamp(0.75rem, 1.2vw, 1rem);
   margin: 0;
+  font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.75);
-  letter-spacing: 0;
   line-height: 1.5;
 }
-
-.home-card:hover {
-  transform: translateY(-4px) !important;
-  cursor: pointer;
-  box-shadow: 0 18px 36px rgba(31, 0, 117, 0.75);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
 .home-cta {
   padding: 3.5rem 8vw 5rem;
   background: linear-gradient(135deg, rgba(5, 20, 45, 0.95), rgba(15, 25, 40, 0.9));

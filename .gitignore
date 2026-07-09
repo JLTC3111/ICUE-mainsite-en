@@ -6,3 +6,4 @@ data/*.sqlite-wal
 data/*.sqlite-shm
 data/orders.json
 data/processed-webhooks.json
+node_modules

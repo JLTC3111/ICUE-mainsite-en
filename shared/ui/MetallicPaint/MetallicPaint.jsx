@@ -381,13 +381,18 @@ export default function MetallicPaint({
   }, []);
 
   useEffect(() => {
-    if (!initGL()) return;
+    const glOk = initGL()
+    if (!glOk) return;
 
     const canvas = canvasRef.current;
     const gl = glRef.current;
     if (!canvas || !gl) return;
 
-    const side = 1000 * devicePixelRatio;
+    const isCompact = window.matchMedia('(max-width: 768px)').matches
+      || window.matchMedia('(pointer: coarse)').matches
+    const dprCap = isCompact ? 1.25 : 2
+    const baseSide = isCompact ? 480 : 1000
+    const side = baseSide * Math.min(window.devicePixelRatio || 1, dprCap)
     canvas.width = side;
     canvas.height = side;
     gl.viewport(0, 0, side, side);

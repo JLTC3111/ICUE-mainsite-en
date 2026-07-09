@@ -4,8 +4,7 @@ export default function VideoToggle({
   id,
   inputId,
   variant = 'nav',
-  type = 'home',
-  label = 'Background video toggle',
+  label = 'Bật/tắt video nền',
   showLabel = true,
   visible = true,
   animated = false,
@@ -15,23 +14,18 @@ export default function VideoToggle({
 }) {
   if (!visible) return null;
 
-  const baseClass = type === 'moe' ? 'moe-video-toggle' : 'home-video-toggle';
-  const variantClass = variant === 'navbar' ? `${baseClass}--navbar` : `${baseClass}--nav`;
-  const labelClass = `${baseClass}__label`;
-  const inputClass = `${baseClass}__input`;
-  const trackClass = `${baseClass}__track`;
-  const thumbClass = `${baseClass}__thumb`;
-  const textClass = `${baseClass}__text`;
+  const variantClass =
+    variant === 'navbar' ? 'home-video-toggle--navbar' : 'home-video-toggle--nav';
 
-  if (animated && type === 'home') {
+  if (animated) {
     return (
       <div
-        className={`${baseClass} ${variantClass} ${baseClass}--animated`}
+        className={`home-video-toggle ${variantClass} home-video-toggle--animated`}
         id={id}
         aria-label={label}
       >
         <AnimatedViewToggle
-          className={`${baseClass}__animated`}
+          className="home-video-toggle__animated"
           checked={checked}
           onCheckedChange={onCheckedChange}
           disabled={disabled}
@@ -44,13 +38,17 @@ export default function VideoToggle({
   }
 
   return (
-    <div className={`${baseClass} ${variantClass}`} id={id} aria-label={label}>
-      <label className={labelClass} htmlFor={inputId}>
-        <input id={inputId} className={inputClass} type="checkbox" />
-        <span className={trackClass} aria-hidden="true">
-          <span className={thumbClass} aria-hidden="true" />
+    <div
+      className={`home-video-toggle ${variantClass}`}
+      id={id}
+      aria-label={label}
+    >
+      <label className="home-video-toggle__label" htmlFor={inputId}>
+        <input id={inputId} className="home-video-toggle__input" type="checkbox" />
+        <span className="home-video-toggle__track" aria-hidden="true">
+          <span className="home-video-toggle__thumb" aria-hidden="true" />
         </span>
-        {showLabel && <span className={textClass}>Video</span>}
+        {showLabel && <span className="home-video-toggle__text">Video</span>}
       </label>
     </div>
   );
