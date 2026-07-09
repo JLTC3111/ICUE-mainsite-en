@@ -2046,7 +2046,7 @@ body.loaded #app {
     right: 25%;
   }
 
-  #contactLink {
+  #contactLink:not(.main-site-nav__dock-contact) {
     position: fixed;
     right: 5%;
     margin: auto 7.5%;
@@ -2064,7 +2064,7 @@ body.loaded #app {
     transition: transform 0.3s ease, background-color 0.3s ease;  
   }
 
-  .menu-toggle {
+  .menu-toggle:not(#menuToggle) {
     position: fixed;
     left: 50%;
     top: max(10px, env(safe-area-inset-top));
@@ -2072,6 +2072,14 @@ body.loaded #app {
     animation: none;
     cursor: pointer;
     z-index: 100;
+  }
+
+  #menuToggle.menu-toggle {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    z-index: auto;
   }
 
   .menu-toggle svg{
