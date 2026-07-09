@@ -2102,8 +2102,10 @@ body.loaded #app {
 
   .middle-text {
     font-size: 20px !important;
-    transform: translateX(-15px) !important;
-    margin-left: 60px;
+    transform: none !important;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
   }
 
   .model-home {
@@ -2507,11 +2509,12 @@ body.loaded #app {
 .regular-text {
     font-size: clamp(1em, 2.5vw, 1.5em);
     color: rgb(135, 48, 48);
-    display: inline-block;
+    display: block;
     font-style: italic;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    margin-left: 200px;
-    margin-top: 0px;
+    margin: 0 auto;
+    max-width: 52rem;
+    text-align: center;
 }
 
 .image-grid-top {
@@ -3054,16 +3057,15 @@ body.loaded #app {
 
 .middle-text {
     position: relative;
-    display: inline-block;
-    margin-left: 75px;
-    margin-top: 45px;
+    display: block;
+    margin: 45px auto 0;
+    max-width: 52rem;
     font-family: 'IMB Plex Sans', sans-serif;
     font-size: 36px;
     font-weight: bold;
     color: #cf7e40;
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    transform: translateX(75px);
 }
 
 .contact-text {

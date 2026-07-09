@@ -28,6 +28,17 @@ const ensureModelViewerLoaded = () => loadExternalScript(
   { module: true }
 );
 
+const activateModelViewers = (root) => {
+  if (!root) return;
+  ensureModelViewerLoaded().then(() => {
+    root.querySelectorAll('model-viewer').forEach((el) => {
+      window.customElements.upgrade(el);
+    });
+  });
+};
+
+window.ensureModelViewerLoaded = ensureModelViewerLoaded;
+
 function isTruelyTouchDevice() {
    
     const isProbablyMac = (() => {
@@ -2153,7 +2164,7 @@ window.loadPage = (page) => {
                 initMobileNewsSlider();
                 break;
               case 'aboutUs':
-                ensureModelViewerLoaded();
+                activateModelViewers(content);
                 initHomeTextSlider();
                 AboutUsBackgroundVideoManager.bindToggleUI();
                 AboutUsBackgroundVideoManager.init();
@@ -2162,7 +2173,7 @@ window.loadPage = (page) => {
                 initPostMethod();
                 break;
               case 'ourWork':
-                ensureModelViewerLoaded();
+                activateModelViewers(content);
                 initializeCarousel();
                 break;
               case 'pastProjects':
