@@ -28,6 +28,17 @@ const ensureModelViewerLoaded = () => loadExternalScript(
   { module: true }
 );
 
+const activateModelViewers = (root) => {
+  if (!root) return;
+  ensureModelViewerLoaded().then(() => {
+    root.querySelectorAll('model-viewer').forEach((el) => {
+      window.customElements.upgrade(el);
+    });
+  });
+};
+
+window.ensureModelViewerLoaded = ensureModelViewerLoaded;
+
 function isTruelyTouchDevice() {
    
     const isProbablyMac = (() => {
@@ -1963,7 +1974,7 @@ window.loadPage = (page) => {
     showContainers(homeVideoToggleContainers, false);
     showContainers(moeVideoToggleContainers, false);
     showContainers(aboutUsVideoToggleContainers, false);
-    if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+    if (contactLink) contactLink.style.removeProperty('display');
   };
 
   const updateNavVideoToggleVisibility = () => {
@@ -1979,23 +1990,21 @@ window.loadPage = (page) => {
       showContainers(homeVideoToggleContainers, true);
       showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.removeProperty('display');
     } else if (page === 'meetOurExperts') {
       showContainers(homeVideoToggleContainers, false);
       showContainers(moeVideoToggleContainers, true);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else if (page === 'aboutUs') {
       showContainers(homeVideoToggleContainers, false);
       showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, true);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else {
       showContainers(homeVideoToggleContainers, false);
       showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     }
+
+    if (contactLink) contactLink.style.removeProperty('display');
   };
 
   // Hide all per-page toggles while loading so they don't flash.
@@ -2155,7 +2164,7 @@ window.loadPage = (page) => {
                 initMobileNewsSlider();
                 break;
               case 'aboutUs':
-                ensureModelViewerLoaded();
+                activateModelViewers(content);
                 initHomeTextSlider();
                 AboutUsBackgroundVideoManager.bindToggleUI();
                 AboutUsBackgroundVideoManager.init();
@@ -2164,7 +2173,7 @@ window.loadPage = (page) => {
                 initPostMethod();
                 break;
               case 'ourWork':
-                ensureModelViewerLoaded();
+                activateModelViewers(content);
                 initializeCarousel();
                 break;
               case 'pastProjects':

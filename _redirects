@@ -12,4 +12,6 @@
 /zalo-link.js        /public/zalo-link.js            200
 /profilePhotos/*     /public/profilePhotos/:splat    200
 /flags/*             /public/flags/:splat            200
+/models/*            /public/models/:splat           200
+/aboutUs/*           /public/aboutUs/:splat          200
 /public/*            /:splat                         200

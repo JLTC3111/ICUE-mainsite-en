@@ -1,6 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { cleanupLegacyPage, initLegacyPage } from '../legacy/pageInit'
+import {
+  loadModelViewer,
+  pageUsesModelViewer,
+  upgradeModelViewers,
+} from '../legacy/modelViewer'
 import { LEGACY_PAGE_FILES, pageFromPathname, prepareLegacyHtml } from '../lib/routes'
 
 export default function LegacyHtmlPage() {
@@ -9,6 +14,7 @@ export default function LegacyHtmlPage() {
   const [html, setHtml] = useState('')
   const [legacyBodyClass, setLegacyBodyClass] = useState('')
   const [error, setError] = useState(null)
+  const legacyRootRef = useRef(null)
 
   useEffect(() => {
     if (!pageName) return undefined
@@ -27,6 +33,10 @@ export default function LegacyHtmlPage() {
         if (!response.ok) throw new Error(`Failed to load ${file}`)
         const raw = await response.text()
         if (cancelled) return
+
+        if (pageUsesModelViewer(pageName)) {
+          await loadModelViewer()
+        }
 
         const prepared = prepareLegacyHtml(raw)
         setHtml(prepared.html)
@@ -47,6 +57,11 @@ export default function LegacyHtmlPage() {
     }
   }, [pageName])
 
+  useLayoutEffect(() => {
+    if (!html || !pageUsesModelViewer(pageName)) return
+    upgradeModelViewers(legacyRootRef.current)
+  }, [html, pageName])
+
   if (!pageName) {
     return <p>Page not found.</p>
   }
@@ -57,5 +72,11 @@ export default function LegacyHtmlPage() {
 
   const legacyClassName = ['legacy-page', legacyBodyClass].filter(Boolean).join(' ')
 
-  return <div className={legacyClassName} dangerouslySetInnerHTML={{ __html: html }} />
+  return (
+    <div
+      ref={legacyRootRef}
+      className={legacyClassName}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  )
 }

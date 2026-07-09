@@ -1963,7 +1963,7 @@ window.loadPage = (page) => {
     showContainers(homeVideoToggleContainers, false);
     showContainers(moeVideoToggleContainers, false);
     showContainers(aboutUsVideoToggleContainers, false);
-    if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+    if (contactLink) contactLink.style.removeProperty('display');
   };
 
   const updateNavVideoToggleVisibility = () => {
@@ -1979,23 +1979,21 @@ window.loadPage = (page) => {
       showContainers(homeVideoToggleContainers, true);
       showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.removeProperty('display');
     } else if (page === 'meetOurExperts') {
       showContainers(homeVideoToggleContainers, false);
       showContainers(moeVideoToggleContainers, true);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else if (page === 'aboutUs') {
       showContainers(homeVideoToggleContainers, false);
       showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, true);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else {
       showContainers(homeVideoToggleContainers, false);
       showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     }
+
+    if (contactLink) contactLink.style.removeProperty('display');
   };
 
   // Hide all per-page toggles while loading so they don't flash.
