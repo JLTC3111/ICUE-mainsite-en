@@ -1839,7 +1839,7 @@ body.loaded #app {
     display: flex;
   }
 
-  p {
+  body:not(:has(.home-page)) p {
     font-size: clamp(1rem, 4vw, 1.4rem);
     margin: 2rem 1rem;
     margin-right: 2rem;
@@ -3655,9 +3655,6 @@ button:hover {
 
 .home-page p {
   letter-spacing: normal;
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
 }
 
 .home-hero__subtitle {
@@ -3670,6 +3667,10 @@ button:hover {
   letter-spacing: normal;
   text-align: center;
   text-shadow: 0 4px 14px rgba(255, 255, 255, 0.75);
+}
+
+.home-hero__subtitle span {
+  display: inline-block;
 }
 
 .home-hero__actions {
