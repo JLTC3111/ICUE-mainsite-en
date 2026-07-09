@@ -51,18 +51,6 @@ h3:hover {
   transform: scale(1.02);
 }
 
-/* Legacy paragraph styling — scoped away from the React home app */
-body:not(:has(.home-page)) p {
-  font-size: 24px;
-  font-weight: 400;
-  color: rgb(0, 0, 0);
-  letter-spacing: 7.5px;
-  line-height: 2;
-  margin-top: 5rem;
-  margin-left: 5rem;
-  margin-right: 15rem;
-}
-
 /* Theme Variables */
 :root {
   --nav-bg: transparent;
@@ -1839,15 +1827,6 @@ body.loaded #app {
     display: flex;
   }
 
-  body:not(:has(.home-page)) p {
-    font-size: clamp(1rem, 4vw, 1.4rem);
-    margin: 2rem 1rem;
-    margin-right: 2rem;
-    justify-content: center;
-    line-height: 2;
-    letter-spacing: normal;
-  }
-
   @keyframes slide-progress {
     from {
       width: 0%;
@@ -3189,7 +3168,8 @@ body.loaded #app {
 .balloon:nth-child(14) { background-color: #9b5de5; left: 55%; }
 .balloon:nth-child(15) { background-color: #ff6b6b; left: 65%; }
 
-body.contact-page {
+body.contact-page,
+.legacy-page.contact-page {
   font-family: 'Audiowide', sans-serif;
   background-color: #f4f4f4;
   margin: 0;
@@ -3205,7 +3185,8 @@ body.contact-page {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.11);
 }
 
-body.contact-page h1 { 
+body.contact-page h1,
+.legacy-page.contact-page h1 {
   color: #333; 
   margin-bottom: 20px; 
 }
@@ -3532,6 +3513,21 @@ button:hover {
   }
 }
 
+.home-page p {
+  letter-spacing: normal;
+}
+
+.legacy-page p:not([class]) {
+  letter-spacing: normal;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
 /* Home page rebuild */
 .home-page {
   position: relative;
@@ -3814,21 +3810,6 @@ button:hover {
   position: relative;
 }
 
-.home-section__header {
-  opacity: 0;
-  transform: translateX(250px);
-  transition: opacity 2.5s ease, transform 2.5s ease;
-}
-
-.home-section__header.animate-in {
-  opacity: 1;
-  transform: translateX(0);
-}
-.home-section__header.animate-out {
-  opacity: 0;
-  transform: translateX(-250px);
-}
-
 .home-card__body {
   display: block;
   text-decoration: none;
@@ -3912,19 +3893,21 @@ button:hover {
   pointer-events: none;
 }
 
-.home-section__header h2 {
+.home-section__header-title {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  margin-bottom: clamp(0.25rem, 1.5vw, 0.5rem);
+  margin: 0 0 clamp(0.25rem, 1.5vw, 0.5rem);
   color: #ffffff;
   font-family: "Poppins", sans-serif;
   width: 100%;
 }
 
-.home-section__header p {
+.home-section__header-description {
   font-size: clamp(0.95rem, 2vw, 1.1rem);
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
+  max-width: 760px;
+  width: 100%;
 }
 
 .home-section__link {
@@ -3937,53 +3920,6 @@ button:hover {
 
 .home-section__link:hover {
   text-decoration: underline;
-}
-
-@keyframes clipPath {
-  from {
-    opacity: 0;
-    clip-path: inset(100% 100% 100% 100%);
-  }
-  to {
-    opacity: 1;
-    clip-path: inset(0);
-  }
-}
-
-@keyframes homeFadeInUp {
-  from {
-    opacity: 0;
-    transform: translateX(150px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@supports (animation-timeline: view()) {
-  .home-section__header {
-    opacity: 0;
-    transform-origin: top;
-    animation: clipPath 2.5s linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 15%;
-  }
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    @scroll-timeline home-sections-scroll {
-      source: auto;
-      axis: block;
-    }
-
-    .home-section__header {
-      animation-timeline: home-sections-scroll;
-      animation-range: entry 0% cover 15%;
-      animation-fill-mode: both;
-    }
-  }
 }
 
 .home-grid {

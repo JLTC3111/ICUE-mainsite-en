@@ -7,6 +7,7 @@ export default function LegacyHtmlPage() {
   const { pathname } = useLocation()
   const pageName = pageFromPathname(pathname)
   const [html, setHtml] = useState('')
+  const [legacyBodyClass, setLegacyBodyClass] = useState('')
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export default function LegacyHtmlPage() {
     async function load() {
       setError(null)
       setHtml('')
+      setLegacyBodyClass('')
 
       try {
         const response = await fetch(`/legacy/pages/${file}`, { signal: controller.signal })
@@ -26,7 +28,9 @@ export default function LegacyHtmlPage() {
         const raw = await response.text()
         if (cancelled) return
 
-        setHtml(prepareLegacyHtml(raw))
+        const prepared = prepareLegacyHtml(raw)
+        setHtml(prepared.html)
+        setLegacyBodyClass(prepared.bodyClass)
         await initLegacyPage(pageName)
       } catch (err) {
         if (cancelled || err.name === 'AbortError') return
@@ -51,5 +55,7 @@ export default function LegacyHtmlPage() {
     return <p role="alert">{error}</p>
   }
 
-  return <div className="legacy-page" dangerouslySetInnerHTML={{ __html: html }} />
+  const legacyClassName = ['legacy-page', legacyBodyClass].filter(Boolean).join(' ')
+
+  return <div className={legacyClassName} dangerouslySetInnerHTML={{ __html: html }} />
 }

@@ -75,5 +75,7 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${path}'`)
   }
 
-  return `${styles}${bodyHtml}`
+  const bodyClass = doc.body?.className?.trim() || ''
+
+  return { html: `${styles}${bodyHtml}`, bodyClass }
 }
