@@ -15,7 +15,7 @@ export default defineConfig({
       '@icue/home-layout': path.resolve(__dirname, '../shared/home-layout'),
       '@icue/ui': path.resolve(__dirname, '../shared/ui'),
       '@icue/site-footer': path.resolve(__dirname, '../shared/site-footer'),
-      'motion/react': path.resolve(__dirname, 'node_modules/motion/react'),
+      'motion/react': path.resolve(__dirname, '../node_modules/motion/react'),
     },
   },
   build: {
