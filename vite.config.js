@@ -48,6 +48,15 @@ function publicDevFallback() {
   };
 }
 
+function resolveExistingFile(...candidates) {
+  for (const candidate of candidates) {
+    if (candidate && fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
 function homeDevFallback() {
   const root = process.cwd();
   const appDir = path.resolve(root, 'dist-home');
@@ -56,48 +65,68 @@ function homeDevFallback() {
   return {
     name: 'home-dev-fallback',
     configureServer(server) {
-      server.middlewares.use((req, res, next) => {
-        const urlPath = (req.url || '').split('?')[0];
+      // Pre-middleware: rewrite News archive to the React shell before Vite
+      // can serve the static src/pages/News.html file.
+      return () => {
+        server.middlewares.use((req, res, next) => {
+          const urlPath = (req.url || '').split('?')[0];
 
-        if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
+          if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
 
-        const rel = urlPath.replace(/^\//, '');
-        const filePath = path.join(appDir, rel);
-        const hasExtension = Boolean(rel && path.extname(rel));
+          if (urlPath === '/src/pages/News.html' || urlPath === '/src/pages/News') {
+            req.url = '/index.html';
+            return next();
+          }
 
-        if (hasExtension) {
-          if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+          const rel = urlPath.replace(/^\//, '');
+          const filePath = path.join(appDir, rel);
+          const rootFilePath = path.join(root, rel);
+          const hasExtension = Boolean(rel && path.extname(rel));
+          const indexPath = path.join(appDir, 'index.html');
+
+          if (hasExtension) {
+            const matched = resolveExistingFile(
+              filePath,
+              rootFilePath,
+              urlPath.startsWith('/public/')
+                ? path.join(appDir, rel.replace(/^public\//, ''))
+                : null,
+            );
+            if (matched) {
+              res.statusCode = 200;
+              res.setHeader('Content-Type', MIME[path.extname(matched).toLowerCase()] || 'application/octet-stream');
+              res.end(fs.readFileSync(matched));
+              return;
+            }
+
+            return next();
+          }
+
+          const htmlMatch = resolveExistingFile(
+            `${filePath}.html`,
+            `${rootFilePath}.html`,
+            path.join(appDir, `${rel}.html`),
+            path.join(root, `${rel}.html`),
+          );
+          if (htmlMatch) {
             res.statusCode = 200;
-            res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
-            res.end(fs.readFileSync(filePath));
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.end(fs.readFileSync(htmlMatch));
             return;
           }
 
-          if (urlPath.startsWith('/public/')) {
-            const publicPath = path.join(appDir, rel.replace(/^public\//, ''));
-            if (fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
-              res.statusCode = 200;
-              res.setHeader('Content-Type', MIME[path.extname(publicPath).toLowerCase()] || 'application/octet-stream');
-              res.end(fs.readFileSync(publicPath));
-              return;
-            }
+          if (!fs.existsSync(indexPath)) {
+            res.statusCode = 503;
+            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+            res.end('Home app not built. Run npm run build:home first (or npm run dev, which builds it automatically).');
+            return;
           }
 
-          return next();
-        }
-
-        const indexPath = path.join(appDir, 'index.html');
-        if (!fs.existsSync(indexPath)) {
-          res.statusCode = 503;
-          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-          res.end('Home app not built. Run npm run build:home first (or npm run dev, which builds it automatically).');
-          return;
-        }
-
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.end(fs.readFileSync(indexPath, 'utf-8'));
-      });
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          res.end(fs.readFileSync(indexPath, 'utf-8'));
+        });
+      };
     },
   };
 }

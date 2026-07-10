@@ -50,6 +50,8 @@ function AppShell() {
           <Route path={ROUTE_PATHS.ourWork} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
+          <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
+          <Route path={ROUTE_PATHS.newsArchiveAlt} element={<LegacyHtmlPage />} />
           <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
         </Routes>
       </main>

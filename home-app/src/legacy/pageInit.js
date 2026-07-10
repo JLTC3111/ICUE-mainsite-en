@@ -1,6 +1,8 @@
 let runtimePromise = null
 let pastProjectsSliderApi = null
 let pastProjectsSliderPromise = null
+let newsArchiveSliderApi = null
+let newsArchiveSliderPromise = null
 
 function getPastProjectsSlider() {
   if (!pastProjectsSliderPromise) {
@@ -10,6 +12,16 @@ function getPastProjectsSlider() {
     })
   }
   return pastProjectsSliderPromise
+}
+
+function getNewsArchiveSlider() {
+  if (!newsArchiveSliderPromise) {
+    newsArchiveSliderPromise = import('./newsArchiveSlider').then((api) => {
+      newsArchiveSliderApi = api
+      return api
+    })
+  }
+  return newsArchiveSliderPromise
 }
 
 function loadLegacyRuntime() {
@@ -48,10 +60,12 @@ const PAGE_INIT = {
     window.initializeCarousel?.()
   },
   pastProjects: async () => {
-    // Skip the sluggish custom touch slider in legacy/script.js —
-    // Swiper is initialized from LegacyHtmlPage after HTML is painted.
     const api = await getPastProjectsSlider()
     await api.initPastProjectsSlider()
+  },
+  newsArchive: async () => {
+    const api = await getNewsArchiveSlider()
+    await api.initNewsArchiveSlider()
   },
   recruitment: async () => {
     window.JobBoard?.init?.()
@@ -63,13 +77,18 @@ const PAGE_CLEANUP = {
     window.AboutUsBackgroundVideoManager?.destroy?.()
   },
   pastProjects: () => {
-    // Prefer sync destroy if module already loaded; otherwise load then destroy
-    // so a mid-flight dynamic import cannot leave a dangling Swiper.
     if (pastProjectsSliderApi) {
       pastProjectsSliderApi.destroyPastProjectsSlider()
       return
     }
     void getPastProjectsSlider().then((api) => api.destroyPastProjectsSlider())
+  },
+  newsArchive: () => {
+    if (newsArchiveSliderApi) {
+      newsArchiveSliderApi.destroyNewsArchiveSlider()
+      return
+    }
+    void getNewsArchiveSlider().then((api) => api.destroyNewsArchiveSlider())
   },
 }
 

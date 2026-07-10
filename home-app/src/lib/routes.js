@@ -6,6 +6,8 @@ export const ROUTE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
+  newsArchive: '/src/pages/News.html',
+  newsArchiveAlt: '/src/pages/News',
 }
 
 /** Maps React path -> legacy page id used by script.js init + nav state. */
@@ -16,6 +18,8 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.ourWork]: 'ourWork',
   [ROUTE_PATHS.pastProjects]: 'pastProjects',
   [ROUTE_PATHS.recruitment]: 'recruitment',
+  [ROUTE_PATHS.newsArchive]: 'newsArchive',
+  [ROUTE_PATHS.newsArchiveAlt]: 'newsArchive',
 }
 
 export const PAGE_TO_PATH = Object.fromEntries(
@@ -28,6 +32,7 @@ export const LEGACY_PAGE_FILES = {
   ourWork: 'ourWork.html',
   pastProjects: 'pastProjects.html',
   recruitment: 'recruitment.html',
+  newsArchive: 'News.html',
 }
 
 export function pageFromPathname(pathname) {
@@ -67,7 +72,9 @@ export function prepareLegacyHtml(rawHtml) {
     '#/cookies': staticPage('cookies'),
   }
 
-  bodyHtml = bodyHtml.replace(/\bpublic\//g, '/public/')
+  bodyHtml = bodyHtml
+    .replace(/(["'(=\s])public\//g, '$1/public/')
+    .replace(/(^|[^:/])\/{2,}public\//g, '$1/public/')
   for (const [hash, path] of Object.entries(hashToPath)) {
     bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${path}"`)
     bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)

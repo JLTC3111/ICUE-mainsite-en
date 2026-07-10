@@ -5,6 +5,9 @@
 /past-projects     /index.html   200
 /recruitment       /index.html   200
 
+/src/pages/News.html  /index.html  200!
+/src/pages/News       /index.html  200!
+
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200
 
