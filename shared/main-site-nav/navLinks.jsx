@@ -65,7 +65,7 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'orgStructure', href: 'https://icue.vn/structure/', label: 'Structure', icon: IconOrg, closeOnly: true },
   { page: 'ourWork', href: '/our-work', label: 'Our Work', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '/past-projects', label: 'Project History', icon: IconProjects, closeOnly: true },
-  { page: 'News', href: 'https://icue.vn/newsroom/', label: 'News', icon: IconNews, closeOnly: true },
+  { page: 'News', href: 'https://icue.vn/newsroom/?from=en-news', label: 'News', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'About Us', icon: IconAbout, closeOnly: true },
 ];
 

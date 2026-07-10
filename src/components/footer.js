@@ -317,7 +317,7 @@ const html = `
             <div class="collapsible">
                 <a href="/src/pages/notableAwards.html">Notable Awards</a>
                 <a href="/src/pages/communityActivities.html">Community Activities</a>
-                <a href="https://icue.vn/newsroom/">News</a>
+                <a href="https://icue.vn/newsroom/?from=en-news">News</a>
             </div>
         </div>
         <div class="footer-section open">

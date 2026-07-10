@@ -18,7 +18,7 @@ export const FOOTER_ROUTE_PATHS = {
   terms: staticPage('terms'),
   gdpr: staticPage('gdpr'),
   cookies: staticPage('cookies'),
-  news: `${VN_SITE}/newsroom/`,
+  news: `${VN_SITE}/newsroom/?from=en-news`,
   archive: '/src/pages/News.html',
   orgStructure: `${VN_SITE}/structure/`,
   meetOurExperts: `${VN_SITE}/people/experts?site=en`,

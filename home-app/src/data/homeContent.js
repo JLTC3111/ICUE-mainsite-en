@@ -3,7 +3,7 @@ import { ROUTE_PATHS } from '../lib/routes'
 
 export const HERO = {
   bannerLabel: 'Latest News',
-  bannerHref: 'https://icue.vn/newsroom/',
+  bannerHref: 'https://icue.vn/newsroom/?from=en-news',
   title: 'iCUE Vietnam',
   subtitle:
     'Building impactful research, community initiatives, and real-world solutions that move society forward.',
@@ -87,7 +87,7 @@ export const HOME_SECTIONS = [
     title: 'Latest News',
     description: 'Announcements, events, and insights from iCUE Vietnam.',
     linkLabel: 'Read all news →',
-    linkHref: 'https://icue.vn/newsroom/',
+    linkHref: 'https://icue.vn/newsroom/?from=en-news',
     cards: [
       {
         image: '/news/articles/Card_1.jpg',
