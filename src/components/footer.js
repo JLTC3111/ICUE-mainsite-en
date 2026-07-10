@@ -312,16 +312,16 @@ footer {
 const html = `
 <footer id="${ICUE_FOOTER_ID}" data-icue-footer="true">
     <div class="footer-container">
-        <div class="footer-section">
-            <button class="footer-toggle underline-hover" type="button" aria-expanded="false">Company</button>
+        <div class="footer-section open">
+            <button class="footer-toggle underline-hover" type="button" aria-expanded="true">Company</button>
             <div class="collapsible">
                 <a href="/src/pages/notableAwards.html">Notable Awards</a>
                 <a href="/src/pages/communityActivities.html">Community Activities</a>
                 <a href="https://icue.vn/newsroom/">News</a>
             </div>
         </div>
-        <div class="footer-section">
-            <button class="footer-toggle underline-hover" type="button" aria-expanded="false">Other Pages</button>
+        <div class="footer-section open">
+            <button class="footer-toggle underline-hover" type="button" aria-expanded="true">Other Pages</button>
             <div class="collapsible">
                 <a href="/src/pages/FAQs.html">FAQs</a>
                 <a href="/recruitment">Job Opportunities</a>

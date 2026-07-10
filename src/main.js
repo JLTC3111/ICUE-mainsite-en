@@ -353,8 +353,8 @@ footer {
       const html = `
         <footer>
             <div class="footer-container">
-                <div class="footer-section">
-                    <div class="footer-toggle underline-hover" aria-expanded="false">
+                <div class="footer-section open">
+                    <div class="footer-toggle underline-hover" aria-expanded="true">
                         Company
                     </div>
                     <div class="collapsible">
@@ -362,8 +362,8 @@ footer {
                         <a href="/src/pages/communityActivities.html" onclick="closeDrawerMenu();" data-page="communityActivities">Community Activities</a>
                     </div>
                 </div>
-                <div class="footer-section">
-                    <div class="footer-toggle underline-hover" aria-expanded="false">
+                <div class="footer-section open">
+                    <div class="footer-toggle underline-hover" aria-expanded="true">
                         Other Pages
                     </div>
                     <div class="collapsible">
