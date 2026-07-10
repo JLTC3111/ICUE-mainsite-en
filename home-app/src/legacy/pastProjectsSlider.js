@@ -65,7 +65,10 @@ function enableSwiper() {
     observer: true,
     observeParents: true,
     resistanceRatio: 0.55,
-    threshold: 8,
+    // Ignore tiny horizontal drift during vertical scroll (mobile rubber-band sway).
+    threshold: 12,
+    touchAngle: 30,
+    touchReleaseOnEdges: true,
     grabCursor: true,
     watchOverflow: true,
     initialSlide: readInitialIndex(state.cards.length),

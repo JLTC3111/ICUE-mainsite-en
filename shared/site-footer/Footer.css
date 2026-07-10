@@ -3,6 +3,9 @@
   background: var(--icue-gradient-dark);
   color: #cfd2cc;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  /* Keep padded 100%-width rows from expanding past the viewport (content-box). */
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .icue-footer a {
@@ -99,6 +102,9 @@
 }
 
 .icue-footer__bottom {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
   padding: 18px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
@@ -114,6 +120,7 @@
 .icue-footer__partner:hover { color: var(--icue-accent); text-decoration: underline; }
 
 .icue-container {
+  box-sizing: border-box;
   width: 100%;
   max-width: var(--icue-maxw);
   margin: 0 auto;

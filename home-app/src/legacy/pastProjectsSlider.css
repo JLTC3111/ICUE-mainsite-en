@@ -9,6 +9,10 @@
   min-height: 0 !important;
   height: auto !important;
   padding-bottom: 0.5rem !important;
+  /* Prevent off-screen swiper slides / padded shells from enabling page-level
+     horizontal rubber-banding while the user scrolls vertically on mobile. */
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 main.grid.past-projects-swiper-active {
@@ -19,6 +23,9 @@ main.grid.past-projects-swiper-active {
   gap: 0;
   min-height: 0;
   height: auto;
+  overflow-x: clip;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 550px) {
@@ -29,8 +36,11 @@ main.grid.past-projects-swiper-active {
 
 .past-projects-swiper {
   width: 100%;
+  max-width: 100%;
   height: auto !important;
   overflow: hidden;
+  /* Prefer native vertical scroll; Swiper still owns horizontal swipes via JS. */
+  touch-action: pan-y;
   /* Space reserved under the card for pagination bullets */
   padding-bottom: 4.5rem !important;
   box-sizing: border-box;
