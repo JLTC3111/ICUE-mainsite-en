@@ -5,17 +5,15 @@
   <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
   <meta name="description" content="Official website of ICUE Vietnam — Institute for Construction, Urban and Economic Research." />
 <style> 
-* {
+/* Scope to .legacy-page so embedded News does not clip fixed MainSiteNav/footer
+   (unscoped html/body overflow-x:hidden breaks position:fixed on mobile WebKit). */
+.legacy-page,
+.legacy-page * {
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-body {
+.legacy-page {
   font-family: sans-serif;
   background: #ffffff;
   padding: 5%;
