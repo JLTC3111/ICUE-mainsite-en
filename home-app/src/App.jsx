@@ -28,9 +28,11 @@ function NavSync() {
   return null
 }
 
-export default function App() {
+function AppShell() {
+  const { pathname } = useLocation()
+
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <NavSync />
       <MainSiteNav
@@ -52,7 +54,15 @@ export default function App() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
-      <ContactSidebar />
+      <ContactSidebar contentKey={pathname} />
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
     </BrowserRouter>
   )
 }

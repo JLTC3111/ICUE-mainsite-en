@@ -62,6 +62,16 @@ export default function LegacyHtmlPage() {
     upgradeModelViewers(legacyRootRef.current)
   }, [html, pageName])
 
+  useLayoutEffect(() => {
+    if (!html) return undefined
+    const frameId = requestAnimationFrame(() => {
+      window.dispatchEvent(
+        new CustomEvent('icue:legacy-page-ready', { detail: { pageName } }),
+      )
+    })
+    return () => cancelAnimationFrame(frameId)
+  }, [html, pageName])
+
   if (!pageName) {
     return <p>Page not found.</p>
   }
