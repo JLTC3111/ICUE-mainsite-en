@@ -280,6 +280,31 @@ main.grid.news-cards-swiper-active {
   line-height: 1.6;
 }
 
+@media (min-width: 1025px) {
+  .card:hover .description,
+  .card:hover .location,
+  .card:hover .year,
+  .card:hover .date {
+    color: #ffffff;
+  }
+
+  .card:hover .description {
+    background-color: transparent;
+  }
+
+  .card:hover .card-info h3 {
+    color: #ffffff;
+  }
+
+  .card-info:hover svg,
+  .image-card:hover svg {
+    width: 20px !important;
+    height: 20px !important;
+    stroke: #ffffff !important;
+    stroke-width: 2px !important;
+  }
+}
+
 
 .card-info p {
   margin: 3px 0;

@@ -1,6 +1,20 @@
-/contact    /index.html   200
-/about-us   /index.html   200
-/our-work   /index.html   200
-/past-projects    /index.html   200
-/recruitment      /index.html   200
-/*    /index.html   200
+# Home React app (history routing)
+/contact           /index.html   200
+/about-us          /index.html   200
+/our-work          /index.html   200
+/past-projects     /index.html   200
+/recruitment       /index.html   200
+
+/src/pages/News.html  /index.html  200!
+/src/pages/News       /index.html  200!
+
+# Silence the browser's default /favicon.ico probe.
+/favicon.ico         /public/logoIcons/favicon.png   200
+
+# Static assets
+/zalo-link.js        /public/zalo-link.js            200
+/profilePhotos/*     /public/profilePhotos/:splat    200
+/flags/*             /public/flags/:splat            200
+/models/*            /public/models/:splat           200
+/aboutUs/*           /public/aboutUs/:splat          200
+/public/*            /:splat                         200
