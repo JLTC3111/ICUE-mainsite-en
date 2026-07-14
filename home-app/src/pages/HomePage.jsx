@@ -1,4 +1,5 @@
-import { createRef, useMemo, useRef } from 'react'
+import { createRef, useEffect, useMemo, useRef } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { HERO, HOME_SECTIONS } from '../data/homeContent'
 import HomeHero from '../components/HomeHero'
 import HomeSection from '../components/HomeSection'
@@ -23,6 +24,16 @@ export default function HomePage() {
     () => HOME_SECTIONS.map((section) => section.cards.map(() => createRef())),
     [],
   )
+
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => ScrollTrigger.refresh())
+    const onLoad = () => ScrollTrigger.refresh()
+    window.addEventListener('load', onLoad, { once: true })
+    return () => {
+      cancelAnimationFrame(frameId)
+      window.removeEventListener('load', onLoad)
+    }
+  }, [])
 
   return (
     <div className="home-page" ref={containerRef}>
