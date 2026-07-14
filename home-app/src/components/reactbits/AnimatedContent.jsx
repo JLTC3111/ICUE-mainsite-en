@@ -81,45 +81,15 @@ export default function AnimatedContent({
       ease,
     })
 
-    const playReveal = () => {
-      if (tl.progress() === 0 && !tl.isActive()) {
-        tl.play()
-      }
-    }
-
-    const stConfig = {
+    const st = ScrollTrigger.create({
       trigger: el,
+      scroller: scrollerTarget || window,
       start: `top ${startPct}%`,
       once: true,
-      onEnter: playReveal,
-    }
-    if (scrollerTarget) {
-      stConfig.scroller = scrollerTarget
-    }
-
-    const st = ScrollTrigger.create(stConfig)
-
-    const revealIfNeeded = () => {
-      ScrollTrigger.refresh()
-      if (st.isActive || st.progress > 0) {
-        playReveal()
-        return
-      }
-
-      const rect = el.getBoundingClientRect()
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight
-      if (rect.top < viewportHeight * (startPct / 100) && rect.bottom > 0) {
-        playReveal()
-      }
-    }
-
-    const frameId = requestAnimationFrame(revealIfNeeded)
-    const onLoad = () => revealIfNeeded()
-    window.addEventListener('load', onLoad, { once: true })
+      onEnter: () => tl.play(),
+    })
 
     return () => {
-      cancelAnimationFrame(frameId)
-      window.removeEventListener('load', onLoad)
       st.kill()
       tl.kill()
     }

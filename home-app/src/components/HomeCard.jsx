@@ -1,4 +1,5 @@
 import BorderGlow from '@icue/ui/BorderGlow/BorderGlow'
+import AnimatedContent from './reactbits/AnimatedContent'
 import PixelImage from './magicui/PixelImage'
 
 function HomeCardSurface({
@@ -85,7 +86,9 @@ export default function HomeCard({
 
   return (
     <article className="home-card" ref={beamRef}>
-      {cardContent}
+      <AnimatedContent>
+        {cardContent}
+      </AnimatedContent>
     </article>
   )
 }

@@ -1180,6 +1180,13 @@
     height: clamp(20px, 5.5vw, 24px);
   }
 
+  .main-site-nav .flag-link,
+  .main-site-nav #langSwitcher,
+  .main-site-nav__dock-icon--flag,
+  .main-site-nav__dock-icon--flag .language-switcher {
+    transform: none !important;
+  }
+
   .main-site-nav .menu-toggle {
     min-width: 36px;
     min-height: 36px;
