@@ -1800,7 +1800,8 @@ body.loaded #app {
   /* Avoid overflow-x:hidden on html/body — clips fixed nav on iOS Chrome/WebKit. */
   body, html {
     position: relative;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     overflow-x: visible;
     overflow-y: auto;
   }
