@@ -95,7 +95,7 @@ export default function MainSiteHeader({
                       id="homeVideoToggleContainerMobile"
                       inputId="homeVideoToggleMobile"
                       variant="navbar"
-                      label="Bật/tắt video nền"
+                      label="Toggle background video"
                       showLabel={false}
                       visible
                       animated
@@ -127,7 +127,7 @@ export default function MainSiteHeader({
                       id="aboutUsVideoToggleContainerMobile"
                       inputId="aboutUsVideoToggleMobile"
                       variant="navbar"
-                      label="Bật/tắt video nền (Giới thiệu)"
+                      label="Toggle background video (About Us)"
                       showLabel={false}
                       visible
                       animated
@@ -141,7 +141,7 @@ export default function MainSiteHeader({
                       id="aboutUsVideoToggleContainerDesktop"
                       inputId="aboutUsVideoToggleDesktop"
                       variant="nav"
-                      label="Bật/tắt video nền (Giới thiệu)"
+                      label="Toggle background video (About Us)"
                       showLabel={false}
                       visible
                       animated
@@ -181,7 +181,7 @@ export default function MainSiteHeader({
                     textX="3%"
                     as="span"
                   >
-                    GIỚI THIỆU
+                    About Us
                   </VideoText>
                 </a>
               )}
