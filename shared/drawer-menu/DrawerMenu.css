@@ -1,0 +1,418 @@
+/* Drawer menu mirroring the main icue.vn site: a hamburger that animates to an
+   X, and a left slide-in panel with a blurred dark backdrop. */
+
+.nav-drawer__toggle {
+  position: relative;
+  z-index: 60;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 5px;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+  padding: 9px;
+  border: 1px solid var(--icue-accent-light, var(--icue-blue, #368adf));
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--icue-accent-light, var(--icue-blue, #368adf));
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-drawer__toggle-placeholder {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+}
+
+.nav-drawer__toggle:hover {
+  background: rgba(54, 138, 223, 0.08);
+  border-color: var(--icue-blue, #368adf);
+  color: var(--icue-blue, #368adf);
+}
+
+.nav-drawer__toggle span {
+  display: block;
+  height: 2px;
+  min-height: 2px;
+  width: 100%;
+  min-width: 18px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.35s ease, opacity 0.25s ease, background 0.2s ease;
+  transform-origin: center;
+}
+
+.nav-drawer__toggle:hover span {
+  background: currentColor;
+}
+
+.nav-drawer__toggle.is-open {
+  background: rgba(15, 23, 42, 0.88);
+  border-color: rgba(248, 250, 252, 0.35);
+  color: #f8fafc;
+}
+
+.nav-drawer__toggle.is-open:hover {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.nav-drawer__toggle--floating {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 11px);
+  left: calc(env(safe-area-inset-left, 0px) + 24px);
+  z-index: 99999;
+  margin: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.nav-drawer__close-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: auto;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.nav-drawer__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 12, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  z-index: 1200;
+}
+
+.nav-drawer__overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  height: 100dvh;
+  width: min(380px, 90vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 2rem;
+  background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.22), #05080d 72%);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 4px 0 28px rgba(0, 0, 0, 0.55);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transform: translateX(-100%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1210;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.nav-drawer.is-open {
+  transform: translateX(0);
+}
+
+.nav-drawer__links {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Room for the LineSidebar ruler markers on the left */
+  padding-left: 40px;
+  --nav-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));
+  --nav-hover: var(--nav-accent);
+  --marker-length: 32px;
+  --marker-scale-min: 0.35;
+  --marker-scale-max: 1.65;
+}
+
+/* ReactBits LineSidebar styling: each item exposes --effect (0..1), eased by
+   a rAF loop in JS from cursor proximity. Color, shift, marker scale and
+   background all read the same value, so everything moves in step. */
+.nav-drawer__links > a,
+.nav-drawer__submenu-toggle {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 0.5rem;
+  padding-left: calc(0.6rem + var(--effect, 0) * 12px);
+  color: #fff;
+  font-size: clamp(0.95rem, 2.8vh, 1.15rem);
+  font-weight: 500;
+  text-decoration: none;
+  text-align: left;
+  /* Shorthand on purpose: legacy `button` styles apply a gradient
+     background-image that background-color alone would not clear. */
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* Pointer proximity: lighter blue preview on non-active top-level links */
+.nav-drawer__links > a:not(.is-current) {
+  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), #fff);
+  background: rgba(54, 138, 223, calc(var(--effect, 0) * 0.14));
+}
+
+/* Submenu toggle: open state is neutral; blue only on pointer proximity */
+.nav-drawer__submenu-toggle,
+.nav-drawer__submenu-toggle:hover {
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+}
+
+.nav-drawer__submenu-toggle:not(.is-current),
+.nav-drawer__submenu-toggle:not(.is-current):hover {
+  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), #fff);
+  background: rgba(54, 138, 223, calc(var(--effect, 0) * 0.14));
+}
+
+.nav-drawer__label {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.nav-drawer__label-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.nav-drawer__label-group .nav-drawer__label {
+  flex: 0 1 auto;
+}
+
+.nav-drawer__icon {
+  margin-top: 0.15em;
+}
+
+/* Active page: static blue pill — not driven by proximity */
+.nav-drawer__links > a.is-current,
+.nav-drawer__submenu-inner > a.is-current {
+  color: var(--nav-accent);
+  font-weight: 600;
+  background-color: rgba(54, 138, 223, 0.16);
+  box-shadow: inset 3px 0 0 var(--nav-accent);
+  padding-left: 0.6rem;
+}
+
+.nav-drawer__links > a.is-current .nav-drawer__index,
+.nav-drawer__submenu-inner > a.is-current .nav-drawer__index {
+  opacity: 1;
+  color: var(--nav-accent);
+}
+
+/* Ruler marker: purple on proximity for non-active top-level items */
+.nav-drawer__links > a:not(.is-current)::before,
+.nav-drawer__submenu-toggle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -40px;
+  width: var(--marker-length);
+  height: 1px;
+  background-color: color-mix(
+    in srgb,
+    var(--nav-hover) calc(var(--effect, 0) * 100%),
+    rgba(255, 255, 255, 0.32)
+  );
+  transform-origin: left center;
+  transform: translateY(-50%) scaleX(calc(
+    var(--marker-scale-min) + var(--effect, 0) * (var(--marker-scale-max) - var(--marker-scale-min))
+  ));
+}
+
+/* Active item marker: always-on blue glow (independent of --effect) */
+.nav-drawer__links > a.is-current::before,
+.nav-drawer__submenu-inner > a.is-current::before {
+  height: 2px;
+  background-color: var(--nav-accent);
+  box-shadow: 0 0 10px rgba(54, 138, 223, 0.75);
+  transform: translateY(-50%) scaleX(calc(1 + var(--effect, 0) * 0.25));
+}
+
+/* Short static tick centered between two items (none after the last one) */
+.nav-drawer__links > a::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -40px;
+  width: 14px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-50%);
+}
+
+.nav-drawer__index {
+  flex: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72em;
+  letter-spacing: 0.06em;
+  opacity: calc(0.45 + var(--effect, 0) * 0.55);
+}
+
+.nav-drawer__links > a.is-current .nav-drawer__index {
+  opacity: 1;
+}
+
+.nav-drawer__icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+.nav-drawer__icon-wrap svg {
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+.nav-drawer__icon {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  margin-top: 0.12em;
+}
+
+.nav-drawer__submenu-toggle {
+  align-items: center;
+  padding-right: 0.75rem;
+}
+
+.nav-drawer__submenu-toggle .nav-drawer__icon {
+  margin-top: 0;
+}
+
+.nav-drawer__submenu-toggle .nav-drawer__chevron {
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.nav-drawer__submenu-toggle .nav-drawer__label {
+  flex: 0 1 auto;
+}
+
+.nav-drawer__chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 0.3s ease;
+}
+
+.nav-drawer__submenu-toggle.is-open .nav-drawer__chevron {
+  transform: rotate(180deg);
+}
+
+.nav-drawer__submenu {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding-left: 1rem;
+  opacity: 0;
+  overflow: hidden;
+  transition: grid-template-rows 0.35s ease, opacity 0.35s ease;
+}
+
+.nav-drawer__submenu.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.nav-drawer__submenu-inner {
+  min-height: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-drawer__submenu-inner > a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.5rem;
+  padding-left: calc(0.35rem + var(--effect, 0) * 6px);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Submenu links: purple only on pointer proximity */
+.nav-drawer__submenu-inner > a:not(.is-current) {
+  color: color-mix(
+    in srgb,
+    var(--nav-hover) calc(var(--effect, 0) * 100%),
+    rgba(255, 255, 255, 0.82)
+  );
+  background-color: rgba(54, 138, 223, calc(var(--effect, 0) * 0.12));
+}
+
+.nav-drawer__submenu-inner > a .nav-drawer__icon-wrap {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.nav-drawer__submenu-inner > a .nav-drawer__icon-wrap svg {
+  width: 14px;
+  height: 14px;
+}
+
+.nav-drawer__submenu-inner > a .nav-drawer__icon {
+  width: 14px;
+  height: 14px;
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .nav-drawer__toggle--floating {
+    top: calc(env(safe-area-inset-top, 0px) + 7px);
+    left: calc(env(safe-area-inset-left, 0px) + 24px);
+  }
+
+  .nav-drawer__overlay {
+    background: rgba(2, 6, 12, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .nav-drawer {
+    background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.28), #05080d 78%);
+    backdrop-filter: blur(48px);
+    -webkit-backdrop-filter: blur(48px);
+  }
+}

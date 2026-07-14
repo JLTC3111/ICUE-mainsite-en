@@ -176,12 +176,12 @@ export default function MainSiteHeader({
                     fontSize="64"
                     fontWeight="700"
                     fontFamily="Poppins, system-ui, sans-serif"
-                    viewBox="0 0 400 120"
+                    viewBox="0 0 620 120"
                     textAnchor="start"
-                    textX="4%"
+                    textX="3%"
                     as="span"
                   >
-                    About Us
+                    GIỚI THIỆU
                   </VideoText>
                 </a>
               )}

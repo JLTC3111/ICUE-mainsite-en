@@ -138,6 +138,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@icue/main-site-nav': path.resolve(__dirname, 'shared/main-site-nav'),
+      '@icue/drawer-menu': path.resolve(__dirname, 'shared/drawer-menu'),
       '@icue/home-layout': path.resolve(__dirname, 'shared/home-layout'),
       '@icue/ui': path.resolve(__dirname, 'shared/ui'),
       '@icue/site-footer': path.resolve(__dirname, 'shared/site-footer'),
