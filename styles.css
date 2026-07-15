@@ -77,23 +77,9 @@ h3:hover {
   color: var(--nav-text-contrast);
 }
 
-nav {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  padding: .5rem;
-  background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  position: fixed;
-  top: 0;
-  left:0;
-  right:0;
-  z-index: 1;
-}
-
-nav a {
-  color: rgb(0, 0, 0);
-  text-decoration: none; 
-}
+/* Legacy `nav { … }` / `nav a { … }` rules removed — they also matched the
+   drawer LineSidebar `<nav>` and painted the green/black gradient seen on
+   en.icue.vn. Header styles live in shared/main-site-nav/MainSiteNav.css. */
 
 .svg-blinking-cursor {
   display: inline-block;
@@ -1810,23 +1796,6 @@ body.loaded #app {
     padding: 0;
   }
 
-  nav {
-    position: fixed;
-    top:0;
-    left:0;
-    right:0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  nav a {
-    font-size: 0.85rem;
-    margin: .3rem .8rem;
-    justify-content: center;
-    text-align: center;
-  }
-
   h1 {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     text-align: left;
@@ -1836,7 +1805,7 @@ body.loaded #app {
     text-align: center;
   }
 
-  h2:not(.home-section__header-title) {
+  h2:not(.home-section__header-title):not(.handwritten) {
     color: rgb(0, 0, 0);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     left: 50%;
@@ -1923,6 +1892,12 @@ body.loaded #app {
     border-radius: 25px;
     cursor: pointer;
     margin-top: clamp(0.35rem, 1.75vw, 0.4rem);
+  }
+
+  /* Nav dock flag is laid out by MainSiteNav — don't push it with legacy offsets */
+  .main-site-nav .flag-link,
+  .main-site-nav__dock-icon--flag .flag-link {
+    margin-top: 0 !important;
   }
 
   .site-right-rail .flag-link {
@@ -2331,6 +2306,7 @@ body.loaded #app {
 
 .about-legacy-hero {
   position: relative;
+  z-index: 1;
   padding: 6rem 8vw 4rem;
   text-align: center;
   color: #000000;
@@ -2354,7 +2330,6 @@ body.loaded #app {
 
 .about-legacy-hero .cursive-default {
   grid-area: hero-title;
-  color: #000000;
   margin: 0 auto;
   text-align: center;
   display: flex;
@@ -2365,6 +2340,12 @@ body.loaded #app {
   max-width: 100%;
   transform: none;
   z-index: 2;
+  /* Parent stays neutral — children own their fills */
+  color: #111111;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #111111;
 }
 
 .about-legacy-hero .model-home {
@@ -2389,16 +2370,74 @@ body.loaded #app {
   width: 100%;
 }
 
-.about-legacy-hero .sub-text {
+/* "BETTER TOGETHER" — solid dark (no yellow text-shadow from .sub-text) */
+.about-legacy-hero .sub-text,
+.about-legacy-hero .sub-text span,
+.about-legacy-hero #rainText,
+.about-legacy-hero #rainText span {
   margin: 0;
   text-align: center;
   transform: none;
+  color: #111111;
+  -webkit-text-fill-color: #111111;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  text-shadow: none;
 }
 
+/* "Towards A Better Tomorrow!" — original multi-stop gradient */
 .about-legacy-hero .hero-body {
-  color: #000000;
   margin-top: 0.75rem;
   text-align: center;
+  color: transparent;
+  background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+/* Adaptive title contrast — temporarily unused (AboutUsHeroContrast active={false}) */
+.about-legacy-hero--adaptive-fg {
+  color: var(--about-hero-fg, #111111);
+  transition: color 0.25s ease;
+}
+
+.about-legacy-hero--adaptive-fg .cursive-default,
+.about-legacy-hero--adaptive-fg .sub-text,
+.about-legacy-hero--adaptive-fg .hero-body,
+.about-legacy-hero--adaptive-fg #rainText {
+  color: var(--about-hero-fg, #111111) !important;
+  -webkit-text-fill-color: var(--about-hero-fg, #111111) !important;
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  transition: color 0.25s ease, -webkit-text-fill-color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.about-legacy-hero--adaptive-fg .sub-text,
+.about-legacy-hero--adaptive-fg #rainText {
+  /* Drop the yellow/white decorative shadow so adaptive fg stays readable */
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.22),
+    0 0 14px rgba(255, 255, 255, 0.18);
+}
+
+/* About Us: static backdrop when background video is disabled or hidden */
+[data-aboutus-bg-video="off"] .about-container .video-bg {
+  display: none !important;
+}
+
+[data-aboutus-bg-video="off"] #content {
+  background-color: #e8e6e3;
+  background-image:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(200, 198, 195, 0.45) 0%, transparent 50%),
+    linear-gradient(145deg, #f0eeeb 0%, #ddd9d4 45%, #cfcbc6 100%);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .about-legacy-hero .slam-container {
@@ -2432,14 +2471,20 @@ body.loaded #app {
 .section:nth-child(4) { animation-delay: 0.8s; }
 .section:nth-child(5) { animation-delay: 1s; }
 
-.handwritten {
+.handwritten,
+h2.handwritten {
     font-family: 'Caveat', cursive;
     font-size: 2em;
+    font-weight: 700;
     color: #cf7e40;
     margin: 10px 0 30px;
     transform: rotate(-3deg);
     display: inline-block;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+h2.handwritten:hover {
+    color: #cf7e40;
 }
 
 .email-text {
@@ -2905,9 +2950,16 @@ body.loaded #app {
         font-size: 1.0em;
     }
 
-    .handwritten {
+    .handwritten,
+    h2.handwritten {
+        font-family: 'Caveat', cursive;
         font-size: 1.5em;
+        font-weight: 700;
+        color: #cf7e40;
         margin: 5px 0 15px;
+        display: inline-block;
+        transform: rotate(-3deg);
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
     .fuzzy-text {
@@ -3330,6 +3382,11 @@ button:hover {
     margin-top: clamp(12px, 2.0vw, 14px) !important;
   }
 
+  .main-site-nav .flag-link,
+  .main-site-nav__dock-icon--flag .flag-link {
+    margin-top: 0 !important;
+  }
+
   .site-right-rail .flag-link {
     margin-top: 0 !important;
   }
@@ -3343,6 +3400,11 @@ button:hover {
   }
   .flag-link {
     margin-top: clamp(9px, 2.0vw, 11.5px);
+  }
+
+  .main-site-nav .flag-link,
+  .main-site-nav__dock-icon--flag .flag-link {
+    margin-top: 0 !important;
   }
 
   .site-right-rail .flag-link {
@@ -3375,6 +3437,11 @@ button:hover {
   }
   .flag-link {
     margin-top: clamp(6.5px, 5.0vw, 9.5px) !important;
+  }
+
+  .main-site-nav .flag-link,
+  .main-site-nav__dock-icon--flag .flag-link {
+    margin-top: 0 !important;
   }
 
   .site-right-rail .flag-link {
@@ -4037,5 +4104,4 @@ button:hover {
     height: clamp(130px, 20vw, 200px);
     animation: none;
   }
-}
 }

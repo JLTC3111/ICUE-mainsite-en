@@ -110,21 +110,40 @@ function sampleBitmapAt(bitmap, rect, x, y) {
   }
 }
 
+function isMediaVisible(el) {
+  if (!(el instanceof Element)) return false
+  const style = getComputedStyle(el)
+  if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+    return false
+  }
+  return true
+}
+
 function sampleRenderedMediaAt(x, y) {
   const samples = []
 
   document.querySelectorAll('video.video-bg').forEach((video) => {
     if (!(video instanceof HTMLVideoElement) || video.readyState < 2) return
+    if (!isMediaVisible(video)) return
     const rect = video.getBoundingClientRect()
     if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return
     const sample = sampleBitmapAt(video, rect, x, y)
     if (sample) samples.push(sample)
   })
 
+  document.querySelectorAll('img').forEach((img) => {
+    if (!(img instanceof HTMLImageElement) || !img.complete || img.naturalWidth < 2) return
+    if (!isMediaVisible(img)) return
+    const rect = img.getBoundingClientRect()
+    if (rect.width < 80 || rect.height < 80) return
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return
+    const sample = sampleBitmapAt(img, rect, x, y)
+    if (sample) samples.push(sample)
+  })
+
   document.querySelectorAll('canvas').forEach((canvas) => {
     if (!(canvas instanceof HTMLCanvasElement)) return
-    const style = getComputedStyle(canvas)
-    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return
+    if (!isMediaVisible(canvas)) return
     const rect = canvas.getBoundingClientRect()
     if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return
     const sample = sampleBitmapAt(canvas, rect, x, y)
@@ -135,14 +154,11 @@ function sampleRenderedMediaAt(x, y) {
 }
 
 function readVisibleBackground(x, y, target) {
-  const samples = []
-  const dom = target ? readBackground(target) : null
+  // Prefer live video/image/canvas pixels when present — averaging them with
+  // opaque page CSS (often white body) washes out contrast on About Us / Home.
   const media = sampleRenderedMediaAt(x, y)
-
-  if (dom) samples.push(dom)
-  if (media) samples.push(media)
-
-  return averageRgb(samples)
+  if (media) return media
+  return target ? readBackground(target) : null
 }
 
 function pickIconColor(bgRgb) {
@@ -152,20 +168,74 @@ function pickIconColor(bgRgb) {
   return lum < 0.58 ? '#ffffff' : '#000000'
 }
 
+function pickColorFromSamples(samples) {
+  if (!samples.length) return null
+  // Median luminance resists letterbox / edge outliers (e.g. black video bars).
+  const lums = samples.map(luminance).sort((a, b) => a - b)
+  const mid = Math.floor(lums.length / 2)
+  const lum =
+    lums.length % 2 === 0 ? (lums[mid - 1] + lums[mid]) / 2 : lums[mid]
+  if (lum < 0.42) return '#ffffff'
+  if (lum > 0.82) return '#000000'
+  return lum < 0.58 ? '#ffffff' : '#000000'
+}
+
 function sampleTargetAt(x, y, excludeRoot) {
   const sidebar = excludeRoot?.closest('.contact-sidebar')
-  const prevPointer = sidebar?.style.pointerEvents
+  const hero = excludeRoot?.closest('.about-legacy-hero')
+  const prevSidebar = sidebar?.style.pointerEvents
+  const prevHero = hero?.style.pointerEvents
+  const prevSelf = excludeRoot?.style.pointerEvents
+
   if (sidebar) sidebar.style.pointerEvents = 'none'
+  if (hero) hero.style.pointerEvents = 'none'
+  if (excludeRoot && excludeRoot !== sidebar && excludeRoot !== hero) {
+    excludeRoot.style.pointerEvents = 'none'
+  }
 
   const target = document.elementFromPoint(x, y)
 
-  if (sidebar) sidebar.style.pointerEvents = prevPointer || ''
+  if (sidebar) sidebar.style.pointerEvents = prevSidebar || ''
+  if (hero) hero.style.pointerEvents = prevHero || ''
+  if (excludeRoot && excludeRoot !== sidebar && excludeRoot !== hero) {
+    excludeRoot.style.pointerEvents = prevSelf || ''
+  }
 
   return target
 }
 
-export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
-  const [color, setColor] = useState('#ffffff')
+function samplePointsFor(rect, strategy, viewWidth) {
+  if (strategy === 'fill') {
+    // Stay near the glyph cluster — wide title boxes can spill over video letterboxes.
+    return [
+      [rect.left + rect.width * 0.5, rect.top + rect.height * 0.4],
+      [rect.left + rect.width * 0.42, rect.top + rect.height * 0.55],
+      [rect.left + rect.width * 0.58, rect.top + rect.height * 0.55],
+      [rect.left + rect.width * 0.5, rect.top + rect.height * 0.7],
+    ]
+  }
+
+  const inset = viewWidth < 768 ? 48 : 28
+  return [
+    [rect.left - inset, rect.top + rect.height * 0.35],
+    [rect.left - inset, rect.top + rect.height * 0.65],
+    [rect.left - Math.round(inset * 0.65), rect.top + rect.height * 0.5],
+    [rect.left - inset, rect.top + rect.height * 0.5],
+  ]
+}
+
+/**
+ * Samples the visible background behind / under `ref` and returns a high-contrast
+ * black or white color. Used by music-bars (`strategy: 'sidebar'`) and About Us
+ * hero title text (`strategy: 'fill'`).
+ */
+export function useAdaptiveContrastColor(
+  ref,
+  enabled = true,
+  contentKey = '',
+  { strategy = 'sidebar' } = {},
+) {
+  const [color, setColor] = useState(strategy === 'fill' ? '#000000' : '#ffffff')
 
   const sample = useCallback(() => {
     if (!enabled) return
@@ -180,14 +250,8 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
     const viewHeight = viewport?.height ?? window.innerHeight
     const offsetX = viewport?.offsetLeft ?? 0
     const offsetY = viewport?.offsetTop ?? 0
-    const inset = viewWidth < 768 ? 48 : 28
 
-    const points = [
-      [rect.left - inset, rect.top + rect.height * 0.35],
-      [rect.left - inset, rect.top + rect.height * 0.65],
-      [rect.left - Math.round(inset * 0.65), rect.top + rect.height * 0.5],
-      [rect.left - inset, rect.top + rect.height * 0.5],
-    ]
+    const points = samplePointsFor(rect, strategy, viewWidth)
 
     const samples = points
       .map(([x, y]) => {
@@ -201,8 +265,12 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
       .filter(Boolean)
 
     if (!samples.length) return
-    setColor(pickIconColor(averageRgb(samples)))
-  }, [contentKey, enabled, ref])
+    const next =
+      strategy === 'fill'
+        ? pickColorFromSamples(samples)
+        : pickIconColor(averageRgb(samples))
+    if (next) setColor(next)
+  }, [contentKey, enabled, ref, strategy])
 
   useEffect(() => {
     if (!enabled) return undefined
@@ -218,6 +286,7 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
     window.addEventListener('scroll', sample, { passive: true, capture: true })
     window.addEventListener('resize', sample)
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
+    window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
 
     const viewport = window.visualViewport
     viewport?.addEventListener('resize', sample)
@@ -238,6 +307,7 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
     document.querySelectorAll('video.video-bg').forEach((video) => {
       video.addEventListener('loadeddata', onVideoFrame)
       video.addEventListener('play', onVideoFrame)
+      video.addEventListener('seeked', onVideoFrame)
     })
     const videoObserver = new MutationObserver(() => {
       document.querySelectorAll('video.video-bg').forEach((video) => {
@@ -245,6 +315,7 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
         video.dataset.adaptiveColorBound = '1'
         video.addEventListener('loadeddata', onVideoFrame)
         video.addEventListener('play', onVideoFrame)
+        video.addEventListener('seeked', onVideoFrame)
       })
       scheduleSample()
     })
@@ -257,6 +328,7 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
       window.removeEventListener('scroll', sample, true)
       window.removeEventListener('resize', sample)
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
+      window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
       viewport?.removeEventListener('resize', sample)
       viewport?.removeEventListener('scroll', sample)
       observer?.disconnect()
@@ -264,6 +336,7 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
       document.querySelectorAll('video.video-bg').forEach((video) => {
         video.removeEventListener('loadeddata', onVideoFrame)
         video.removeEventListener('play', onVideoFrame)
+        video.removeEventListener('seeked', onVideoFrame)
         delete video.dataset.adaptiveColorBound
       })
       window.clearInterval(id)
@@ -271,4 +344,14 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
   }, [contentKey, enabled, sample])
 
   return color
+}
+
+/** Music-bars / sidebar icons — samples just left of the icon. */
+export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
+  return useAdaptiveContrastColor(ref, enabled, contentKey, { strategy: 'sidebar' })
+}
+
+/** Overlay text on video/image backgrounds — samples under the text bounds. */
+export function useAdaptiveTextColor(ref, enabled = true, contentKey = '') {
+  return useAdaptiveContrastColor(ref, enabled, contentKey, { strategy: 'fill' })
 }

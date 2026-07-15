@@ -138,6 +138,13 @@
   flex-direction: column;
   /* Room for the LineSidebar ruler markers on the left */
   padding-left: 40px;
+  /* Keep LineSidebar `<nav>` from picking up legacy global `nav` chrome */
+  inset: auto;
+  top: auto;
+  left: auto;
+  right: auto;
+  background: transparent;
+  z-index: auto;
   --nav-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));
   --nav-hover: var(--nav-accent);
   --drawer-icon-col: 22px;

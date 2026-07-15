@@ -7,6 +7,7 @@ import ContactSidebar from '@icue/contact-sidebar'
 import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
+import AboutUsHeroContrast from './components/AboutUsHeroContrast'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
 
 function ScrollToTop() {
@@ -57,6 +58,8 @@ function AppShell() {
       </main>
       <Footer linkMode="standalone" />
       <ContactSidebar contentKey={pathname} />
+      {/* Temporarily disabled — restore adaptive contrast later */}
+      <AboutUsHeroContrast active={false} />
     </>
   )
 }

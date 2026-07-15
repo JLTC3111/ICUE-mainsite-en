@@ -460,8 +460,7 @@ window.makeItRainText = () => {
     el.textContent = text;
     el.style.opacity = "1";
     el.style.visibility = "visible";
-    el.style.webkitTextFillColor = "#111111";
-    el.style.color = "#111111";
+    // Leave color to CSS / adaptive contrast (About Us hero).
     return;
   }
 
@@ -471,8 +470,9 @@ window.makeItRainText = () => {
     span.textContent = char === " " ? "\u00A0" : char;
     span.style.display = "inline-block";
     span.style.opacity = 0;
-    span.style.color = "#111111";
-    span.style.webkitTextFillColor = "#111111";
+    // Inherit from #rainText so adaptive hero contrast can drive fill/color.
+    span.style.color = "inherit";
+    span.style.webkitTextFillColor = "inherit";
     el.appendChild(span);
     spans.push(span);
 
