@@ -117,7 +117,11 @@ const PAGE_CLEANUP = {
 }
 
 export async function initLegacyPage(pageName) {
-  await loadLegacyRuntime()
+  // News archive uses dedicated Swiper modules only — loading legacy/script.js
+  // runs initMobileNewsSlider / ICUEFooter hooks that fight the React shell layout.
+  if (pageName !== 'newsArchive') {
+    await loadLegacyRuntime()
+  }
   window.currentPage = pageName
   window.__mainSiteNav?.setPage?.(pageName)
   const init = PAGE_INIT[pageName]

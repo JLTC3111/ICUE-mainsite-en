@@ -1,6 +1,10 @@
+/*    /index.html   200
 /contact    /index.html   200
 /about-us   /index.html   200
 /our-work   /index.html   200
 /past-projects    /index.html   200
 /recruitment      /index.html   200
-/*    /index.html   200
+
+# Legacy News archive: force React shell (MainSiteNav + footer) over the static HTML file.
+/src/pages/News.html  /index.html  200!
+/news-archive         /src/pages/News.html  301
