@@ -244,8 +244,9 @@ function enableDesktopCoverflow() {
   cardsState.swiperEl = swiperEl
   cardsState.infoEl = info
 
-  const initialIndex = readInitialIndex(cardsState.cards.length)
   const slideCount = cardsState.cards.length
+  const initialIndex = readInitialIndex(slideCount)
+  const useLoop = slideCount > 2
 
   cardsState.swiper = new Swiper(swiperEl, {
     modules: [EffectCoverflow, Pagination],
@@ -254,9 +255,10 @@ function enableDesktopCoverflow() {
     centeredSlides: true,
     slidesPerView: 'auto',
     speed: 520,
-    loop: slideCount > 2,
-    loopAdditionalSlides: slideCount,
-    initialSlide: initialIndex,
+    loop: useLoop,
+    loopAdditionalSlides: 3,
+    watchSlidesProgress: true,
+    initialSlide: useLoop ? 0 : initialIndex,
     coverflowEffect: {
       rotate: 42,
       stretch: -22,
@@ -270,12 +272,19 @@ function enableDesktopCoverflow() {
     },
     on: {
       init(swiper) {
+        if (useLoop && initialIndex > 0) {
+          swiper.slideToLoop(initialIndex, 0, false)
+        }
+        swiper.loopFix()
         updateCoverflowInfo(swiper)
       },
       slideChange(swiper) {
         const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
         localStorage.setItem(STORAGE_KEY, String(index))
         updateCoverflowInfo(swiper)
+      },
+      slideChangeTransitionEnd(swiper) {
+        swiper.loopFix()
       },
     },
   })
