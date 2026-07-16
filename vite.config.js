@@ -62,6 +62,42 @@ function homeDevFallback() {
   const appDir = path.resolve(root, 'dist-home');
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
+  const legacyShellSrcPages = new Set([
+    '/src/pages/News.html',
+    '/src/pages/News',
+    '/src/pages/notableAwards.html',
+    '/src/pages/communityActivities.html',
+    '/src/pages/FAQs.html',
+    '/src/pages/donations.html',
+    '/src/pages/privacy.html',
+    '/src/pages/terms.html',
+    '/src/pages/gdpr.html',
+    '/src/pages/cookies.html',
+  ]);
+
+  const legacyPageRedirects = {
+    '/legacy/pages/News.html': '/src/pages/News.html',
+    '/legacy/pages/notableAwards.html': '/notable-awards',
+    '/legacy/pages/communityActivities.html': '/community-activities',
+    '/legacy/pages/FAQs.html': '/faqs',
+    '/legacy/pages/donations.html': '/donations',
+    '/legacy/pages/privacy.html': '/privacy',
+    '/legacy/pages/terms.html': '/terms',
+    '/legacy/pages/gdpr.html': '/gdpr',
+    '/legacy/pages/cookies.html': '/cookies',
+  };
+
+  const staticSrcRedirects = {
+    '/src/pages/notableAwards.html': '/notable-awards',
+    '/src/pages/communityActivities.html': '/community-activities',
+    '/src/pages/FAQs.html': '/faqs',
+    '/src/pages/donations.html': '/donations',
+    '/src/pages/privacy.html': '/privacy',
+    '/src/pages/terms.html': '/terms',
+    '/src/pages/gdpr.html': '/gdpr',
+    '/src/pages/cookies.html': '/cookies',
+  };
+
   return {
     name: 'home-dev-fallback',
     configureServer(server) {
@@ -73,9 +109,40 @@ function homeDevFallback() {
 
           if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
 
-          if (urlPath === '/src/pages/News.html' || urlPath === '/src/pages/News') {
+          if (legacyShellSrcPages.has(urlPath)) {
             req.url = '/index.html';
             return next();
+          }
+
+          if (staticSrcRedirects[urlPath]) {
+            res.statusCode = 302;
+            res.setHeader('Location', staticSrcRedirects[urlPath]);
+            res.end();
+            return;
+          }
+
+          if (legacyPageRedirects[urlPath]) {
+            const wantsEmbed =
+              req.headers['x-icue-legacy-embed'] === '1' ||
+              req.headers['sec-fetch-dest'] === 'empty' ||
+              req.headers['sec-fetch-mode'] === 'cors';
+
+            if (!wantsEmbed) {
+              res.statusCode = 302;
+              res.setHeader('Location', legacyPageRedirects[urlPath]);
+              res.end();
+              return;
+            }
+
+            const legacyPath = path.join(appDir, urlPath.slice(1));
+            const rootLegacyPath = path.join(root, urlPath.slice(1));
+            const matched = resolveExistingFile(legacyPath, rootLegacyPath);
+            if (matched) {
+              res.statusCode = 200;
+              res.setHeader('Content-Type', 'text/html; charset=utf-8');
+              res.end(fs.readFileSync(matched, 'utf-8'));
+              return;
+            }
           }
 
           const rel = urlPath.replace(/^\//, '');

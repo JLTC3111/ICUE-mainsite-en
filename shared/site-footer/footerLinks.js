@@ -1,7 +1,5 @@
 const VN_SITE = 'https://icue.vn'
 
-const staticPage = (file) => `/src/pages/${file}.html`
-
 /** Canonical path-based routes for footer and cross-site links on en.icue.vn. */
 export const FOOTER_ROUTE_PATHS = {
   home: '/',
@@ -10,14 +8,14 @@ export const FOOTER_ROUTE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  notableAwards: staticPage('notableAwards'),
-  communityActivities: staticPage('communityActivities'),
-  faqs: staticPage('FAQs'),
-  donations: staticPage('donations'),
-  privacy: staticPage('privacy'),
-  terms: staticPage('terms'),
-  gdpr: staticPage('gdpr'),
-  cookies: staticPage('cookies'),
+  notableAwards: '/notable-awards',
+  communityActivities: '/community-activities',
+  faqs: '/faqs',
+  donations: '/donations',
+  privacy: '/privacy',
+  terms: '/terms',
+  gdpr: '/gdpr',
+  cookies: '/cookies',
   news: `${VN_SITE}/newsroom/?from=en-news`,
   archive: '/src/pages/News.html',
   orgStructure: `${VN_SITE}/structure/`,
