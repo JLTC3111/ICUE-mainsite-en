@@ -47,7 +47,7 @@ function Footer({ linkMode = 'hash' }) {
         </div>
       </div>
 
-      <div className="icue-footer__bottom">
+      <div className="icue-footer__bottom icue-container">
         <div className="icue-footer__legal">
           <a href={links.privacy}>{labels.privacy}</a><span>|</span>
           <a href={links.terms}>{labels.terms}</a><span>|</span>
