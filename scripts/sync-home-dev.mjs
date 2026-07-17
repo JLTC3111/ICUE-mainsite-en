@@ -21,12 +21,18 @@ function copyDir(src, dest) {
   }
 }
 
+function removeDir(dir) {
+  if (!fs.existsSync(dir)) return;
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
 if (!fs.existsSync(homeDist)) {
   console.error('[sync-home-dev] dist-home/ not found. Run npm run build:home first.');
   process.exit(1);
 }
 
 copyFile(path.join(homeDist, 'index.html'), path.join(root, 'index.html'));
+removeDir(path.join(root, 'assets'));
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 
 for (const dir of ['aboutUs', 'bgVideos', 'flags', 'legacy', 'logoIcons', 'models', 'news', 'pastProjects', 'recruitment', 'work']) {

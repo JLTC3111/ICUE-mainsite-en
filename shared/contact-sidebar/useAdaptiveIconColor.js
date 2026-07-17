@@ -4,8 +4,7 @@ const COLOR_PROBE = typeof document !== 'undefined' ? document.createElement('sp
 const OPAQUE_ALPHA = 0.72
 const BACKGROUND_LAYER_SELECTOR = [
   '[data-adaptive-bg-layer]',
-  '.home-hero__warp',
-  '.warp-background',
+  '.home-hero__grid-scan',
 ].join(', ')
 const SECTION_MEDIA_SELECTOR = '.home-hero__media, .about-container'
 
@@ -51,15 +50,16 @@ function parseGradientColors(backgroundImage) {
   return averageRgb(colors)
 }
 
-function readCustomPropertyBackground(el) {
-  if (!(el instanceof Element)) return null
-  const style = getComputedStyle(el)
-  const beamBg = style.getPropertyValue('--warp-beam-bg').trim()
-  if (beamBg) {
-    const fromVar = parseGradientColors(beamBg)
-    if (fromVar) return fromVar
-  }
-  return null
+function readGridScanAtPoint(mediaRoot, x, y) {
+  if (!(mediaRoot instanceof Element)) return null
+
+  const gridScan = mediaRoot.querySelector('.home-hero__grid-scan canvas')
+  if (!(gridScan instanceof HTMLCanvasElement) || !isMediaVisible(gridScan)) return null
+
+  const rect = gridScan.getBoundingClientRect()
+  if (!pointInside(rect, x, y)) return null
+
+  return sampleBitmapAt(gridScan, rect, x, y)
 }
 
 function pointInside(rect, x, y) {
@@ -272,21 +272,7 @@ function readMarkedLayers(root) {
 }
 
 function readWarpLayersAtPoint(mediaRoot, x, y) {
-  if (!(mediaRoot instanceof Element)) return null
-  const samples = []
-
-  mediaRoot.querySelectorAll('.warp-background__beam, .warp-background__side').forEach((el) => {
-    if (!isMediaVisible(el)) return
-    if (!pointInside(el.getBoundingClientRect(), x, y)) return
-
-    const customBg = readCustomPropertyBackground(el)
-    if (customBg) samples.push(customBg)
-
-    const surface = readElementSurface(el)
-    if (surface) samples.push(surface)
-  })
-
-  return averageRgb(samples)
+  return readGridScanAtPoint(mediaRoot, x, y)
 }
 
 function readCompositorStackAtPoint(x, y, mediaRoot, excludeRoot) {
@@ -305,9 +291,6 @@ function readCompositorStackAtPoint(x, y, mediaRoot, excludeRoot) {
     if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) {
       continue
     }
-
-    const customBg = readCustomPropertyBackground(el)
-    if (customBg) samples.push(customBg)
 
     const surface = readElementSurface(el)
     if (surface) samples.push(surface)
@@ -568,8 +551,8 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
 
     const unbindVideos = bindVideoSampling(scheduleSample)
     const id = window.setInterval(sample, 500)
-    const warpLoopId = window.setInterval(() => {
-      if (document.querySelector('.home-hero__warp, .warp-background')) sample()
+    const gridScanLoopId = window.setInterval(() => {
+      if (document.querySelector('.home-hero__grid-scan canvas')) sample()
     }, 120)
 
     return () => {
@@ -585,7 +568,7 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
       rootObserver.disconnect()
       unbindVideos()
       window.clearInterval(id)
-      window.clearInterval(warpLoopId)
+      window.clearInterval(gridScanLoopId)
     }
   }, [contentKey, enabled, sample])
 
