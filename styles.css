@@ -3687,6 +3687,27 @@ button:hover {
   transform: translateZ(0);
 }
 
+.home-hero__grid-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.home-hero__grid-scan canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-home-hero-grid-scan="on"] .home-hero__grid-scan {
+    pointer-events: auto;
+  }
+}
+
 .home-hero__overlay {
   position: absolute;
   inset: 0;
@@ -3884,6 +3905,53 @@ button:hover {
 
 [data-home-bg-video="off"] .home-btn--ghost:hover {
   background: rgba(10, 26, 58, 0.06);
+}
+
+[data-home-hero-grid-scan="on"] body:has(.home-hero) {
+  background-color: #05070b;
+}
+
+[data-home-hero-grid-scan="on"] .home-hero {
+  color: #ffffff;
+}
+
+[data-home-hero-grid-scan="on"] .home-hero__media::before {
+  background:
+    radial-gradient(1200px 800px at 18% 20%, rgba(29, 183, 255, 0.18) 0%, rgba(29, 183, 255, 0) 60%),
+    radial-gradient(900px 700px at 82% 16%, rgba(31, 210, 128, 0.12) 0%, rgba(31, 210, 128, 0) 55%),
+    linear-gradient(180deg, #071a24 0%, #081b13 50%, #05070b 100%);
+}
+
+[data-home-hero-grid-scan="on"] .home-hero__overlay {
+  background:
+    radial-gradient(60% 60% at 20% 10%, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.12) 60%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 40%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+[data-home-hero-grid-scan="on"] .home-hero__subtitle {
+  color: rgba(255, 255, 255, 0.88);
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+[data-home-hero-grid-scan="on"] .home-btn--primary {
+  background: #ffffff;
+  color: #0a1a3a;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+[data-home-hero-grid-scan="on"] .home-btn--primary:hover {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-home-hero-grid-scan="on"] .home-btn--ghost {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+[data-home-hero-grid-scan="on"] .home-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 [data-home-bg-video="off"] .home-hero__actions a:hover {

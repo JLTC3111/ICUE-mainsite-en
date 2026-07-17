@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useRainText } from '../hooks/useRainText'
 import RainbowButton from './magicui/RainbowButton'
 import HeroVideoTitle from './HeroVideoTitle'
+import HomeHeroGridScan from './HomeHeroGridScan'
 
 export default function HomeHero({ hero, beamRef }) {
   const subtitleRef = useRef(null)
@@ -10,6 +11,7 @@ export default function HomeHero({ hero, beamRef }) {
   return (
     <section className="home-hero" aria-label="Home hero" ref={beamRef}>
       <div className="home-hero__media" aria-hidden="true">
+        <HomeHeroGridScan />
         <div className="home-hero__overlay" />
       </div>
 

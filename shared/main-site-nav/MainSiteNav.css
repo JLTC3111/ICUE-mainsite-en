@@ -211,7 +211,8 @@
   justify-content: center;
   width: clamp(28px, 7vw, 34px);
   height: clamp(28px, 7vw, 34px);
-  margin: 0;
+  /* Kill leftover global .flag-link { margin-top } rules from styles.css */
+  margin: 0 !important;
 }
 
 .main-site-nav__dock-icon--flag .flag-icon {
@@ -327,8 +328,6 @@
     justify-content: space-between;
   }
 
-  /* Dock icons default to 44px via JS; cap size on tablet/phone so the flag
-     and contact link are not pushed past the viewport edge. */
   .main-site-nav__dock--unified .icue-dock__icon {
     width: clamp(34px, 9vw, 42px) !important;
     height: clamp(34px, 9vw, 42px) !important;
@@ -787,6 +786,16 @@
 
 .main-site-nav #drawerMenu .nav-drawer__links {
   width: 100%;
+  /* Defeat any leftover global `nav { background; position:fixed }` rules */
+  position: relative;
+  inset: auto;
+  top: auto;
+  left: auto;
+  right: auto;
+  display: flex;
+  background: transparent;
+  padding: 0;
+  z-index: auto;
 }
 
 .main-site-nav #drawerMenu .nav-drawer__icon-wrap svg,
@@ -977,7 +986,7 @@
     width: clamp(30px, 8vw, 36px);
     height: clamp(30px, 8vw, 36px);
     background-color: transparent;
-    margin-top: 0;
+    margin-top: 0 !important;
   }
 
   .main-site-nav .flag-icon {
@@ -1133,8 +1142,6 @@
   }
 }
 
-/* iPhone-class widths (e.g. 11 Pro @ 375px): five dock items must fit without
-   clipping the language flag off the right edge. */
 @media (max-width: 390px) {
   .main-site-nav__dock--unified {
     gap: clamp(0.1rem, 0.7vw, 0.25rem);
@@ -1170,12 +1177,15 @@
   .main-site-nav__dock-icon--flag {
     flex-shrink: 0;
     padding-inline-end: max(0.05rem, env(safe-area-inset-right, 0px));
+    /* Optical nudge: circular flag reads slightly low vs About Us / icons */
+    margin-top: -3px !important;
   }
 
   .main-site-nav .flag-link,
   .main-site-nav__dock-icon--flag .flag-link {
     width: clamp(22px, 6vw, 26px);
     height: clamp(22px, 6vw, 26px);
+    margin-top: 0 !important;
   }
 
   .main-site-nav .flag-icon,
