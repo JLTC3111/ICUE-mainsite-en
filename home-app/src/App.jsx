@@ -64,7 +64,7 @@ function AppShell() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
-      <ContactSidebar contentKey={pathname} musicIconColor={isHomePage ? '#0a1a3a' : undefined} />
+      <ContactSidebar contentKey={pathname} adaptiveMusicIconColor={!isHomePage} />
     </>
   )
 }
