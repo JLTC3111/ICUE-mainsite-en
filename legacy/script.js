@@ -447,7 +447,7 @@ const destroyHomeMobileCardObserver = () => {
 
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
-  if (!el) return;
+  if (!el || el.closest('.about-legacy-hero')) return;
 
   const text = el.textContent.trim();
   el.textContent = "";
@@ -1208,8 +1208,7 @@ const HomeBackgroundVideoManager = (() => {
 
     if (shouldKeepStatic()) {
       clearVideoSources();
-      // Static hero background is dark; keep navigation readable.
-      applyNavTheme({ prefersLightNav: true });
+      applyNavTheme({ prefersLightNav: false });
       return;
     }
 
@@ -1411,7 +1410,7 @@ const HomeBackgroundVideoManager = (() => {
       HomeBackgroundVideoManager.init();
     } else {
       HomeBackgroundVideoManager.destroy();
-      applyNavTheme({ prefersLightNav: true });
+      applyNavTheme({ prefersLightNav: false });
     }
 
     window.dispatchEvent(new CustomEvent('icue:homeVideoEnabled', {

@@ -98,12 +98,11 @@ window.addEventListener('DOMContentLoaded', () => {
         try {
             const css = `
 footer {
-    background: #000;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
     display: flex;
     flex-direction: column;
     padding: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
-    color: #cfd2cc;
 }
 .footer-container {
     max-width: 100vw;

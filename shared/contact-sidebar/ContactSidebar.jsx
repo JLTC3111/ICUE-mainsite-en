@@ -90,16 +90,17 @@ function MessengerIcon() {
 }
 
 function ContactSidebar({ musicIconColor, contentKey = '' }) {
+  const sidebarRef = useRef(null)
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
-  const adaptiveColor = useAdaptiveIconColor(musicRef, musicIconColor == null, contentKey)
+  const adaptiveColor = useAdaptiveIconColor(sidebarRef, musicIconColor == null, contentKey)
   const musicColor = musicIconColor ?? adaptiveColor
   const { month, day, time } = useCalendarClock()
   const [calendarOpen, setCalendarOpen] = useState(false)
 
   return (
     <>
-      <aside className="contact-sidebar" aria-label="Quick contact">
+      <aside className="contact-sidebar" ref={sidebarRef} aria-label="Quick contact">
         <button
           type="button"
           className="contact-sidebar__music"

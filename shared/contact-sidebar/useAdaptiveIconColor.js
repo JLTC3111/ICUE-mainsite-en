@@ -2,6 +2,12 @@ import { useCallback, useEffect, useState } from 'react'
 
 const COLOR_PROBE = typeof document !== 'undefined' ? document.createElement('span') : null
 const OPAQUE_ALPHA = 0.72
+const BACKGROUND_LAYER_SELECTOR = [
+  '[data-adaptive-bg-layer]',
+  '.home-hero__warp',
+  '.warp-background',
+].join(', ')
+const SECTION_MEDIA_SELECTOR = '.home-hero__media, .about-container'
 
 function parseColor(color) {
   if (!color || color === 'transparent') return null
@@ -39,10 +45,42 @@ function averageRgb(samples) {
 
 function parseGradientColors(backgroundImage) {
   if (!backgroundImage || backgroundImage === 'none') return null
-  const matches = backgroundImage.match(/#[0-9a-f]{3,8}|rgba?\([^)]+\)/gi)
+  const matches = backgroundImage.match(/#[0-9a-f]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)/gi)
   if (!matches?.length) return null
   const colors = matches.map(parseColor).filter(Boolean)
   return averageRgb(colors)
+}
+
+function readCustomPropertyBackground(el) {
+  if (!(el instanceof Element)) return null
+  const style = getComputedStyle(el)
+  const beamBg = style.getPropertyValue('--warp-beam-bg').trim()
+  if (beamBg) {
+    const fromVar = parseGradientColors(beamBg)
+    if (fromVar) return fromVar
+  }
+  return null
+}
+
+function pointInside(rect, x, y) {
+  if (!rect || rect.width <= 0 || rect.height <= 0) return false
+  return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
+}
+
+function readPseudoBackground(el, pseudo) {
+  if (!(el instanceof Element)) return null
+  const style = getComputedStyle(el, pseudo)
+  const solid = parseColor(style.backgroundColor)
+  if (solid) return solid
+  return parseGradientColors(style.backgroundImage)
+}
+
+function readElementSurface(el) {
+  if (!(el instanceof Element)) return null
+  const style = getComputedStyle(el)
+  const solid = parseColor(style.backgroundColor)
+  if (solid) return solid
+  return parseGradientColors(style.backgroundImage)
 }
 
 function readBackground(el) {
@@ -53,12 +91,14 @@ function readBackground(el) {
       continue
     }
 
-    const style = getComputedStyle(node)
-    const solid = parseColor(style.backgroundColor)
-    if (solid) return solid
+    const surface = readElementSurface(node)
+    if (surface) return surface
 
-    const gradient = parseGradientColors(style.backgroundImage)
-    if (gradient) return gradient
+    const beforeBg = readPseudoBackground(node, '::before')
+    if (beforeBg) return beforeBg
+
+    const afterBg = readPseudoBackground(node, '::after')
+    if (afterBg) return afterBg
 
     node = node.parentElement
   }
@@ -95,13 +135,68 @@ function averageImageData(data) {
   return count ? [r / count, g / count, b / count] : null
 }
 
+function mapCoverPointToSource(video, x, y) {
+  const rect = video.getBoundingClientRect()
+  const vw = video.videoWidth
+  const vh = video.videoHeight
+  if (!vw || !vh) return null
+
+  const fullViewport = coversViewport(rect)
+  const boxWidth = fullViewport ? window.innerWidth : rect.width
+  const boxHeight = fullViewport ? window.innerHeight : rect.height
+  const boxLeft = fullViewport ? 0 : rect.left
+  const boxTop = fullViewport ? 0 : rect.top
+
+  if (boxWidth <= 0 || boxHeight <= 0) return null
+
+  const nx = (x - boxLeft) / boxWidth
+  const ny = (y - boxTop) / boxHeight
+  if (nx < 0 || nx > 1 || ny < 0 || ny > 1) return null
+
+  const elementAR = boxWidth / boxHeight
+  const videoAR = vw / vh
+  let sx
+  let sy
+  let sw
+  let sh
+
+  if (videoAR > elementAR) {
+    sh = vh
+    sw = vh * elementAR
+    sx = (vw - sw) / 2
+    sy = 0
+  } else {
+    sw = vw
+    sh = vw / elementAR
+    sx = 0
+    sy = (vh - sh) / 2
+  }
+
+  return {
+    px: sx + nx * sw,
+    py: sy + ny * sh,
+  }
+}
+
 function sampleBitmapAt(bitmap, rect, x, y) {
   const ctx = getSampleContext()
   if (!ctx || !bitmap || rect.width <= 0 || rect.height <= 0) return null
 
   try {
-    const px = ((x - rect.left) / rect.width) * (bitmap.width || rect.width)
-    const py = ((y - rect.top) / rect.height) * (bitmap.height || rect.height)
+    let px
+    let py
+
+    if (bitmap instanceof HTMLVideoElement) {
+      if (bitmap.readyState < 2) return null
+      const mapped = mapCoverPointToSource(bitmap, x, y)
+      if (!mapped) return null
+      px = mapped.px
+      py = mapped.py
+    } else {
+      px = ((x - rect.left) / rect.width) * (bitmap.width || rect.width)
+      py = ((y - rect.top) / rect.height) * (bitmap.height || rect.height)
+    }
+
     ctx.clearRect(0, 0, 6, 6)
     ctx.drawImage(bitmap, px - 3, py - 3, 6, 6, 0, 0, 6, 6)
     return averageImageData(ctx.getImageData(0, 0, 6, 6).data)
@@ -113,52 +208,226 @@ function sampleBitmapAt(bitmap, rect, x, y) {
 function isMediaVisible(el) {
   if (!(el instanceof Element)) return false
   const style = getComputedStyle(el)
-  if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+  if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) {
     return false
   }
-  return true
+  const rect = el.getBoundingClientRect()
+  return rect.width > 1 && rect.height > 1
 }
 
-function sampleRenderedMediaAt(x, y) {
+function isBackgroundVideo(video) {
+  if (!(video instanceof HTMLVideoElement)) return false
+  if (video.closest('.home-hero__title, .home-hero__title-fill, .home-hero__title-stack')) {
+    return false
+  }
+  return (
+    video.classList.contains('video-bg') ||
+    video.id === 'bgVideo' ||
+    !!video.closest('.about-container')
+  )
+}
+
+function getBackgroundVideos() {
+  const seen = new Set()
+  const videos = []
+
+  document.querySelectorAll('video.video-bg, video#bgVideo, .about-container video').forEach((node) => {
+    if (!(node instanceof HTMLVideoElement) || seen.has(node) || !isBackgroundVideo(node)) return
+    seen.add(node)
+    videos.push(node)
+  })
+
+  return videos
+}
+
+function coversViewport(rect) {
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  return rect.width >= vw * 0.75 && rect.height >= vh * 0.75
+}
+
+function sampleVideoAtPoint(video, x, y) {
+  if (!isMediaVisible(video)) return null
+  const rect = video.getBoundingClientRect()
+  const region = video.closest(SECTION_MEDIA_SELECTOR) || video.closest('.about-container')
+  const regionRect = region?.getBoundingClientRect?.() ?? rect
+  const inRegion =
+    pointInside(regionRect, x, y) ||
+    pointInside(rect, x, y) ||
+    coversViewport(rect)
+  if (!inRegion) return null
+  return sampleBitmapAt(video, rect, x, y)
+}
+
+function readMarkedLayers(root) {
+  if (!(root instanceof Element)) return null
+  const layers = [...root.querySelectorAll(BACKGROUND_LAYER_SELECTOR)]
+  for (let index = layers.length - 1; index >= 0; index -= 1) {
+    const layer = layers[index]
+    if (!isMediaVisible(layer)) continue
+    const surface = readElementSurface(layer)
+    if (surface) return surface
+  }
+  return null
+}
+
+function readWarpLayersAtPoint(mediaRoot, x, y) {
+  if (!(mediaRoot instanceof Element)) return null
   const samples = []
 
-  document.querySelectorAll('video.video-bg').forEach((video) => {
-    if (!(video instanceof HTMLVideoElement) || video.readyState < 2) return
-    if (!isMediaVisible(video)) return
-    const rect = video.getBoundingClientRect()
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return
-    const sample = sampleBitmapAt(video, rect, x, y)
-    if (sample) samples.push(sample)
-  })
+  mediaRoot.querySelectorAll('.warp-background__beam, .warp-background__side').forEach((el) => {
+    if (!isMediaVisible(el)) return
+    if (!pointInside(el.getBoundingClientRect(), x, y)) return
 
-  document.querySelectorAll('img').forEach((img) => {
-    if (!(img instanceof HTMLImageElement) || !img.complete || img.naturalWidth < 2) return
-    if (!isMediaVisible(img)) return
-    const rect = img.getBoundingClientRect()
-    if (rect.width < 80 || rect.height < 80) return
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return
-    const sample = sampleBitmapAt(img, rect, x, y)
-    if (sample) samples.push(sample)
-  })
+    const customBg = readCustomPropertyBackground(el)
+    if (customBg) samples.push(customBg)
 
-  document.querySelectorAll('canvas').forEach((canvas) => {
-    if (!(canvas instanceof HTMLCanvasElement)) return
-    if (!isMediaVisible(canvas)) return
-    const rect = canvas.getBoundingClientRect()
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return
-    const sample = sampleBitmapAt(canvas, rect, x, y)
-    if (sample) samples.push(sample)
+    const surface = readElementSurface(el)
+    if (surface) samples.push(surface)
   })
 
   return averageRgb(samples)
 }
 
-function readVisibleBackground(x, y, target) {
-  // Prefer live video/image/canvas pixels when present — averaging them with
-  // opaque page CSS (often white body) washes out contrast on About Us / Home.
-  const media = sampleRenderedMediaAt(x, y)
-  if (media) return media
-  return target ? readBackground(target) : null
+function readCompositorStackAtPoint(x, y, mediaRoot, excludeRoot) {
+  if (!(mediaRoot instanceof Element)) return null
+  if (!pointInside(mediaRoot.getBoundingClientRect(), x, y)) return null
+
+  const stack = document.elementsFromPoint(x, y)
+  const samples = []
+
+  for (const el of stack) {
+    if (!(el instanceof Element)) continue
+    if (isExcludedElement(el, excludeRoot)) continue
+    if (!mediaRoot.contains(el)) continue
+
+    const style = getComputedStyle(el)
+    if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) {
+      continue
+    }
+
+    const customBg = readCustomPropertyBackground(el)
+    if (customBg) samples.push(customBg)
+
+    const surface = readElementSurface(el)
+    if (surface) samples.push(surface)
+
+    const beforeBg = readPseudoBackground(el, '::before')
+    if (beforeBg) samples.push(beforeBg)
+  }
+
+  return averageRgb(samples)
+}
+
+function readMediaLayersAtPoint(mediaRoot, x, y, sectionRoot = null, excludeRoot = null) {
+  if (!(mediaRoot instanceof Element)) return null
+
+  const mediaRect = mediaRoot.getBoundingClientRect()
+  const sectionRect = sectionRoot?.getBoundingClientRect?.()
+  const inMedia = pointInside(mediaRect, x, y)
+  const inSection = sectionRect ? pointInside(sectionRect, x, y) : inMedia
+  if (!inMedia && !inSection) return null
+
+  for (const video of mediaRoot.querySelectorAll('video')) {
+    if (!isBackgroundVideo(video)) continue
+    const sample = sampleVideoAtPoint(video, x, y)
+    if (sample) return sample
+  }
+
+  const compositorSample = readCompositorStackAtPoint(x, y, mediaRoot, excludeRoot)
+  const warpSample = readWarpLayersAtPoint(mediaRoot, x, y)
+  const layeredSample = averageRgb([compositorSample, warpSample].filter(Boolean))
+  if (layeredSample) return layeredSample
+
+  const markedLayer = readMarkedLayers(mediaRoot)
+  if (markedLayer) return markedLayer
+
+  const beforeBg = readPseudoBackground(mediaRoot, '::before')
+  if (beforeBg) return beforeBg
+
+  return readElementSurface(mediaRoot)
+}
+
+function findSectionAtPoint(x, y) {
+  const hero = document.querySelector('.home-hero')
+  if (hero && pointInside(hero.getBoundingClientRect(), x, y)) {
+    return { kind: 'hero', root: hero, media: hero.querySelector('.home-hero__media') }
+  }
+
+  const about = document.querySelector('.about-container')
+  if (about && pointInside(about.getBoundingClientRect(), x, y)) {
+    return { kind: 'about', root: about, media: about }
+  }
+
+  return null
+}
+
+function readSectionBackgroundAtPoint(target, x, y, excludeRoot = null) {
+  const hero = target?.closest?.('.home-hero')
+  if (hero) {
+    const media = hero.querySelector('.home-hero__media')
+    const sample = readMediaLayersAtPoint(media, x, y, hero, excludeRoot)
+    if (sample) return sample
+  }
+
+  const about = target?.closest?.('.about-container')
+  if (about) {
+    const sample = readMediaLayersAtPoint(about, x, y, about, excludeRoot)
+    if (sample) return sample
+  }
+
+  const section = findSectionAtPoint(x, y)
+  if (section?.media) {
+    return readMediaLayersAtPoint(section.media, x, y, section.root, excludeRoot)
+  }
+
+  return null
+}
+
+function sampleBackgroundVideosAt(x, y) {
+  const samples = getBackgroundVideos()
+    .map((video) => sampleVideoAtPoint(video, x, y))
+    .filter(Boolean)
+
+  return averageRgb(samples)
+}
+
+function isExcludedElement(el, excludeRoot) {
+  if (!(el instanceof Element)) return false
+  if (el.closest('.contact-sidebar, .main-site-nav')) return true
+  if (excludeRoot?.contains(el)) return true
+  return false
+}
+
+function pickBackgroundTarget(x, y, excludeRoot) {
+  const stack = document.elementsFromPoint(x, y)
+  for (const el of stack) {
+    if (isExcludedElement(el, excludeRoot)) continue
+    return el
+  }
+  return null
+}
+
+function sampleBackgroundAt(x, y, excludeRoot) {
+  const target = pickBackgroundTarget(x, y, excludeRoot)
+
+  if (target) {
+    const sectionSample = readSectionBackgroundAtPoint(target, x, y, excludeRoot)
+    if (sectionSample) return sectionSample
+  }
+
+  const section = findSectionAtPoint(x, y)
+  if (section?.media) {
+    const sectionSample = readMediaLayersAtPoint(section.media, x, y, section.root, excludeRoot)
+    if (sectionSample) return sectionSample
+  }
+
+  const videoSample = sampleBackgroundVideosAt(x, y)
+  if (videoSample) return videoSample
+
+  if (target) return readBackground(target)
+
+  return parseColor(getComputedStyle(document.body).backgroundColor) ?? [255, 255, 255]
 }
 
 function pickIconColor(bgRgb) {
@@ -168,74 +437,71 @@ function pickIconColor(bgRgb) {
   return lum < 0.58 ? '#ffffff' : '#000000'
 }
 
-function pickColorFromSamples(samples) {
-  if (!samples.length) return null
-  // Median luminance resists letterbox / edge outliers (e.g. black video bars).
-  const lums = samples.map(luminance).sort((a, b) => a - b)
-  const mid = Math.floor(lums.length / 2)
-  const lum =
-    lums.length % 2 === 0 ? (lums[mid - 1] + lums[mid]) / 2 : lums[mid]
-  if (lum < 0.42) return '#ffffff'
-  if (lum > 0.82) return '#000000'
-  return lum < 0.58 ? '#ffffff' : '#000000'
+function clampSampleCoord(value, max, inset = 8) {
+  if (max <= inset * 2) return max * 0.5
+  return Math.max(inset, Math.min(max - inset, value))
 }
 
-function sampleTargetAt(x, y, excludeRoot) {
-  const sidebar = excludeRoot?.closest('.contact-sidebar')
-  const hero = excludeRoot?.closest('.about-legacy-hero')
-  const prevSidebar = sidebar?.style.pointerEvents
-  const prevHero = hero?.style.pointerEvents
-  const prevSelf = excludeRoot?.style.pointerEvents
+function samplePointsFor(rect) {
+  const viewWidth = window.innerWidth
+  const inset = viewWidth < 768 ? 40 : 24
+  const cx = rect.left + rect.width * 0.5
+  const cy = rect.top + rect.height * 0.5
+  const behindX = clampSampleCoord(rect.left - inset, viewWidth)
+  const behindXMid = clampSampleCoord(rect.left - Math.round(inset * 0.5), viewWidth)
 
-  if (sidebar) sidebar.style.pointerEvents = 'none'
-  if (hero) hero.style.pointerEvents = 'none'
-  if (excludeRoot && excludeRoot !== sidebar && excludeRoot !== hero) {
-    excludeRoot.style.pointerEvents = 'none'
-  }
-
-  const target = document.elementFromPoint(x, y)
-
-  if (sidebar) sidebar.style.pointerEvents = prevSidebar || ''
-  if (hero) hero.style.pointerEvents = prevHero || ''
-  if (excludeRoot && excludeRoot !== sidebar && excludeRoot !== hero) {
-    excludeRoot.style.pointerEvents = prevSelf || ''
-  }
-
-  return target
-}
-
-function samplePointsFor(rect, strategy, viewWidth) {
-  if (strategy === 'fill') {
-    // Stay near the glyph cluster — wide title boxes can spill over video letterboxes.
-    return [
-      [rect.left + rect.width * 0.5, rect.top + rect.height * 0.4],
-      [rect.left + rect.width * 0.42, rect.top + rect.height * 0.55],
-      [rect.left + rect.width * 0.58, rect.top + rect.height * 0.55],
-      [rect.left + rect.width * 0.5, rect.top + rect.height * 0.7],
-    ]
-  }
-
-  const inset = viewWidth < 768 ? 48 : 28
   return [
-    [rect.left - inset, rect.top + rect.height * 0.35],
-    [rect.left - inset, rect.top + rect.height * 0.65],
-    [rect.left - Math.round(inset * 0.65), rect.top + rect.height * 0.5],
-    [rect.left - inset, rect.top + rect.height * 0.5],
+    [behindX, cy],
+    [behindXMid, rect.top + rect.height * 0.35],
+    [behindXMid, rect.top + rect.height * 0.65],
+    [clampSampleCoord(cx, viewWidth), cy],
   ]
 }
 
-/**
- * Samples the visible background behind / under `ref` and returns a high-contrast
- * black or white color. Used by music-bars (`strategy: 'sidebar'`) and About Us
- * hero title text (`strategy: 'fill'`).
- */
-export function useAdaptiveContrastColor(
-  ref,
-  enabled = true,
-  contentKey = '',
-  { strategy = 'sidebar' } = {},
-) {
-  const [color, setColor] = useState(strategy === 'fill' ? '#000000' : '#ffffff')
+function bindVideoSampling(onFrame) {
+  const bound = new WeakSet()
+
+  const bindOne = (video) => {
+    if (!(video instanceof HTMLVideoElement) || bound.has(video) || !isBackgroundVideo(video)) return
+    bound.add(video)
+    video.addEventListener('loadeddata', onFrame)
+    video.addEventListener('loadedmetadata', onFrame)
+    video.addEventListener('play', onFrame)
+    video.addEventListener('seeked', onFrame)
+    video.addEventListener('timeupdate', onFrame)
+
+    if (typeof video.requestVideoFrameCallback === 'function') {
+      const loop = () => {
+        onFrame()
+        if (!video.isConnected) return
+        video.requestVideoFrameCallback(loop)
+      }
+      video.requestVideoFrameCallback(loop)
+    }
+  }
+
+  getBackgroundVideos().forEach(bindOne)
+
+  const observer = new MutationObserver(() => {
+    getBackgroundVideos().forEach(bindOne)
+    onFrame()
+  })
+  observer.observe(document.body, { childList: true, subtree: true })
+
+  return () => {
+    observer.disconnect()
+    getBackgroundVideos().forEach((video) => {
+      video.removeEventListener('loadeddata', onFrame)
+      video.removeEventListener('loadedmetadata', onFrame)
+      video.removeEventListener('play', onFrame)
+      video.removeEventListener('seeked', onFrame)
+      video.removeEventListener('timeupdate', onFrame)
+    })
+  }
+}
+
+export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
+  const [color, setColor] = useState('#ffffff')
 
   const sample = useCallback(() => {
     if (!enabled) return
@@ -245,32 +511,22 @@ export function useAdaptiveContrastColor(
     const rect = el.getBoundingClientRect()
     if (rect.width <= 0 || rect.height <= 0) return
 
-    const viewport = window.visualViewport
-    const viewWidth = viewport?.width ?? window.innerWidth
-    const viewHeight = viewport?.height ?? window.innerHeight
-    const offsetX = viewport?.offsetLeft ?? 0
-    const offsetY = viewport?.offsetTop ?? 0
-
-    const points = samplePointsFor(rect, strategy, viewWidth)
-
-    const samples = points
-      .map(([x, y]) => {
-        const vx = x - offsetX
-        const vy = y - offsetY
-        if (vx <= 0 || vy <= 0 || vx >= viewWidth || vy >= viewHeight) return null
-        const target = sampleTargetAt(x, y, el)
-        if (!target) return null
-        return readVisibleBackground(x, y, target)
-      })
+    const samples = samplePointsFor(rect)
+      .map(([x, y]) => sampleBackgroundAt(x, y, el))
       .filter(Boolean)
 
+    if (!samples.length) {
+      const fallback = sampleBackgroundAt(
+        clampSampleCoord(rect.left - 48, window.innerWidth),
+        rect.top + rect.height * 0.5,
+        el,
+      )
+      if (fallback) samples.push(fallback)
+    }
+
     if (!samples.length) return
-    const next =
-      strategy === 'fill'
-        ? pickColorFromSamples(samples)
-        : pickIconColor(averageRgb(samples))
-    if (next) setColor(next)
-  }, [contentKey, enabled, ref, strategy])
+    setColor(pickIconColor(averageRgb(samples)))
+  }, [contentKey, enabled, ref])
 
   useEffect(() => {
     if (!enabled) return undefined
@@ -278,7 +534,7 @@ export function useAdaptiveContrastColor(
     let debounceId = null
     const scheduleSample = () => {
       if (debounceId) window.clearTimeout(debounceId)
-      debounceId = window.setTimeout(sample, 60)
+      debounceId = window.setTimeout(sample, 48)
     }
 
     sample()
@@ -286,7 +542,8 @@ export function useAdaptiveContrastColor(
     window.addEventListener('scroll', sample, { passive: true, capture: true })
     window.addEventListener('resize', sample)
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
-    window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
+    window.addEventListener('icue:aboutUsVideoEnabled', sample)
+    window.addEventListener('icue:homeVideoEnabled', sample)
 
     const viewport = window.visualViewport
     viewport?.addEventListener('resize', sample)
@@ -303,55 +560,34 @@ export function useAdaptiveContrastColor(
       attributeFilter: ['class', 'style'],
     })
 
-    const onVideoFrame = () => scheduleSample()
-    document.querySelectorAll('video.video-bg').forEach((video) => {
-      video.addEventListener('loadeddata', onVideoFrame)
-      video.addEventListener('play', onVideoFrame)
-      video.addEventListener('seeked', onVideoFrame)
+    const rootObserver = new MutationObserver(scheduleSample)
+    rootObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-home-bg-video', 'data-aboutus-bg-video', 'class'],
     })
-    const videoObserver = new MutationObserver(() => {
-      document.querySelectorAll('video.video-bg').forEach((video) => {
-        if (video.dataset.adaptiveColorBound) return
-        video.dataset.adaptiveColorBound = '1'
-        video.addEventListener('loadeddata', onVideoFrame)
-        video.addEventListener('play', onVideoFrame)
-        video.addEventListener('seeked', onVideoFrame)
-      })
-      scheduleSample()
-    })
-    videoObserver.observe(document.body, { childList: true, subtree: true })
 
-    const id = window.setInterval(sample, 800)
+    const unbindVideos = bindVideoSampling(scheduleSample)
+    const id = window.setInterval(sample, 500)
+    const warpLoopId = window.setInterval(() => {
+      if (document.querySelector('.home-hero__warp, .warp-background')) sample()
+    }, 120)
 
     return () => {
       if (debounceId) window.clearTimeout(debounceId)
       window.removeEventListener('scroll', sample, true)
       window.removeEventListener('resize', sample)
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
-      window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
+      window.removeEventListener('icue:aboutUsVideoEnabled', sample)
+      window.removeEventListener('icue:homeVideoEnabled', sample)
       viewport?.removeEventListener('resize', sample)
       viewport?.removeEventListener('scroll', sample)
       observer?.disconnect()
-      videoObserver.disconnect()
-      document.querySelectorAll('video.video-bg').forEach((video) => {
-        video.removeEventListener('loadeddata', onVideoFrame)
-        video.removeEventListener('play', onVideoFrame)
-        video.removeEventListener('seeked', onVideoFrame)
-        delete video.dataset.adaptiveColorBound
-      })
+      rootObserver.disconnect()
+      unbindVideos()
       window.clearInterval(id)
+      window.clearInterval(warpLoopId)
     }
   }, [contentKey, enabled, sample])
 
   return color
-}
-
-/** Music-bars / sidebar icons — samples just left of the icon. */
-export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
-  return useAdaptiveContrastColor(ref, enabled, contentKey, { strategy: 'sidebar' })
-}
-
-/** Overlay text on video/image backgrounds — samples under the text bounds. */
-export function useAdaptiveTextColor(ref, enabled = true, contentKey = '') {
-  return useAdaptiveContrastColor(ref, enabled, contentKey, { strategy: 'fill' })
 }
