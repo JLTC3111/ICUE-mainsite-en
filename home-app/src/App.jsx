@@ -8,6 +8,7 @@ import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
+import { debugLog } from './lib/debugLog'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -30,6 +31,13 @@ function NavSync() {
 
 function AppShell() {
   const { pathname } = useLocation()
+  const isHomePage = pageFromPathname(pathname) === 'Home'
+
+  useEffect(() => {
+    // #region agent log
+    debugLog('App.jsx:mount', 'App mounted', { pathname: window.location.pathname }, 'B')
+    // #endregion
+  }, [])
 
   return (
     <>
@@ -51,7 +59,6 @@ function AppShell() {
           <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.newsArchiveAlt} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.faqs} element={<LegacyHtmlPage />} />
@@ -64,7 +71,7 @@ function AppShell() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
-      <ContactSidebar contentKey={pathname} />
+      <ContactSidebar contentKey={pathname} musicIconColor={isHomePage ? '#0a1a3a' : undefined} />
     </>
   )
 }

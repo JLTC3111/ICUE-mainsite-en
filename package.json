@@ -20,12 +20,14 @@
     "motion": "^12.42.2",
     "normalize.css": "^8.0.1",
     "ogl": "^1.0.11",
+    "postprocessing": "^6.39.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.0",
     "stripe": "^12.0.0",
     "swiper": "^11.2.10",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "three": "^0.172.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",

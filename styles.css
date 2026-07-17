@@ -3865,6 +3865,10 @@ button:hover {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+[data-home-bg-video="off"] body:has(.home-hero) {
+  background-color: #f8fafc;
+}
+
 [data-home-bg-video="off"] .home-hero .video-bg {
   display: none !important;
 }
@@ -3907,6 +3911,10 @@ button:hover {
   background: rgba(10, 26, 58, 0.06);
 }
 
+[data-home-bg-video="off"] .home-hero__actions a:hover {
+  box-shadow: 0 8px 24px rgba(10, 26, 58, 0.12);
+}
+
 [data-home-hero-grid-scan="on"] body:has(.home-hero) {
   background-color: #05070b;
 }
@@ -3917,9 +3925,8 @@ button:hover {
 
 [data-home-hero-grid-scan="on"] .home-hero__media::before {
   background:
-    radial-gradient(1200px 800px at 18% 20%, rgba(29, 183, 255, 0.18) 0%, rgba(29, 183, 255, 0) 60%),
-    radial-gradient(900px 700px at 82% 16%, rgba(31, 210, 128, 0.12) 0%, rgba(31, 210, 128, 0) 55%),
-    linear-gradient(180deg, #071a24 0%, #081b13 50%, #05070b 100%);
+    radial-gradient(1200px 800px at 18% 20%, rgba(159, 185, 255, 0.08) 0%, rgba(159, 185, 255, 0) 60%),
+    linear-gradient(180deg, #0a0c12 0%, #08090e 50%, #05070b 100%);
 }
 
 [data-home-hero-grid-scan="on"] .home-hero__overlay {
@@ -3952,10 +3959,6 @@ button:hover {
 
 [data-home-hero-grid-scan="on"] .home-btn--ghost:hover {
   background: rgba(255, 255, 255, 0.25);
-}
-
-[data-home-bg-video="off"] .home-hero__actions a:hover {
-  box-shadow: 0 8px 24px rgba(10, 26, 58, 0.12);
 }
 
 
