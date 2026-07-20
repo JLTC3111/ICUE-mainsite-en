@@ -30,7 +30,6 @@ function NavSync() {
 
 function AppShell() {
   const { pathname } = useLocation()
-  const isHomePage = pageFromPathname(pathname) === 'Home'
 
   return (
     <>
@@ -64,7 +63,7 @@ function AppShell() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
-      <ContactSidebar contentKey={pathname} adaptiveMusicIconColor={!isHomePage} />
+      <ContactSidebar contentKey={pathname} />
     </>
   )
 }

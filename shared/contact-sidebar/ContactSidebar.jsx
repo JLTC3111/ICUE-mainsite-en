@@ -2,7 +2,7 @@ import { memo, useId, useRef, useState } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
-import { useAdaptiveIconColor } from './useAdaptiveIconColor'
+import { useMusicBarColor } from './useMusicBarColor'
 import './ContactSidebar.css'
 
 function CalendarSvg({ month, day, time }) {
@@ -89,27 +89,24 @@ function MessengerIcon() {
   )
 }
 
-function ContactSidebar({ musicIconColor, contentKey = '', adaptiveMusicIconColor = true }) {
-  const sidebarRef = useRef(null)
+function ContactSidebar({ musicIconColor, contentKey = '' }) {
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
-  const useAdaptive = adaptiveMusicIconColor && musicIconColor == null
-  const adaptiveColor = useAdaptiveIconColor(sidebarRef, useAdaptive, contentKey)
-  const musicColor = musicIconColor ?? (useAdaptive ? adaptiveColor : null)
-  const musicColorStyle = musicColor ? { color: musicColor } : undefined
+  const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null, contentKey)
+  const musicColor = musicIconColor ?? sampledMusicColor
   const { month, day, time } = useCalendarClock()
   const [calendarOpen, setCalendarOpen] = useState(false)
 
   return (
     <>
-      <aside className="contact-sidebar" ref={sidebarRef} aria-label="Quick contact">
+      <aside className="contact-sidebar" aria-label="Quick contact">
         <button
           type="button"
           className="contact-sidebar__music"
           ref={musicRef}
           onClick={toggleMusic}
           aria-label="Toggle background music"
-          style={musicColorStyle}
+          style={{ color: musicColor }}
         >
           <svg
             width="30"
@@ -117,11 +114,11 @@ function ContactSidebar({ musicIconColor, contentKey = '', adaptiveMusicIconColo
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
-            style={musicColorStyle}
+            style={{ color: musicColor }}
           >
             <path
               fill="currentColor"
-              style={musicColor ? { fill: musicColor } : undefined}
+              style={{ fill: musicColor }}
               d="M42.7,486.7h42.7v-256H42.7V486.7z M469.3,17.3h-42.7v256h42.7V17.3z M85.3,17.3H42.7V60h42.7V17.3z M277.3,17.3h-42.7 v149.3h42.7V17.3z M0,188h128v-85.3H0V188z M21.3,124h85.3v42.7H21.3V124z M234.7,486.7h42.7V337.3h-42.7V486.7z M426.7,486.7h42.7 V444h-42.7V486.7z M384,316v85.3h128V316H384z M490.7,380h-85.3v-42.7h85.3V380z M192,294.7h128v-85.3H192V294.7z M213.3,230.7h85.3 v42.7h-85.3V230.7z"
             />
           </svg>
