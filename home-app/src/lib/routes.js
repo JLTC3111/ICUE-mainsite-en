@@ -117,6 +117,10 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${path}'`)
   }
 
+  bodyHtml = bodyHtml
+    .replaceAll('href="/newsroom/?from=en-news"', `href="${VN}/newsroom/?from=en-news"`)
+    .replaceAll("href='/newsroom/?from=en-news'", `href='${VN}/newsroom/?from=en-news'`)
+
   for (const [pageId, file] of Object.entries(LEGACY_PAGE_FILES)) {
     const route = PAGE_TO_PATH[pageId]
     if (!route) continue
