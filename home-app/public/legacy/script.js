@@ -5523,7 +5523,7 @@ updateCalendarSvgTime();
 setInterval(updateCalendarSvgTime, 60 * 1000);
 
 function initAudioVisualizer(
-    audioSrc = 'public/music/royalty_free.mp3',
+    audioSrc = 'public/music/mixkit-a-very-happy-christmas-897.mp3',
     barSelector = '.music-bars',
     clickTargetSelector = '#visualizer'
   ) {
