@@ -1035,9 +1035,9 @@
     height: clamp(2.35rem, 0.2rem + 2.4vw, 3.25rem);
   }
 
-  .main-site-nav .home-video-toggle--animated.home-video-toggle--nav .home-video-toggle__animated svg {
-    width: clamp(1.1rem, 0.15rem + 1.15vw, 1.5rem);
-    height: clamp(1.1rem, 0.15rem + 1.15vw, 1.5rem);
+  .main-site-nav .home-video-toggle--animated.home-video-toggle--nav .home-video-toggle__animated .animated-view-toggle__icon svg {
+    width: 55%;
+    height: 55%;
   }
 }
 
