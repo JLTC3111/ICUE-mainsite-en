@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { cleanupLegacyPage, initLegacyPage } from '../legacy/pageInit'
 import {
-  loadModelViewer,
+  loadModelViewerWhenVisible,
   pageUsesModelViewer,
   upgradeModelViewers,
 } from '../legacy/modelViewer'
@@ -34,7 +34,7 @@ export default function LegacyHtmlPage() {
       setLegacyBodyClass('')
 
       try {
-        const response = await fetch(`/legacy/pages/${file}`, {
+        const response = await fetch(`/legacy-embed/pages/${file}`, {
           signal: controller.signal,
           headers: { 'X-ICUE-Legacy-Embed': '1' },
         })
@@ -42,14 +42,10 @@ export default function LegacyHtmlPage() {
         const raw = await response.text()
         if (cancelled) return
 
-        if (pageUsesModelViewer(pageName)) {
-          await loadModelViewer()
-        }
-
-        // Only set HTML here — page init runs after paint so querySelectors work.
         const prepared = prepareLegacyHtml(raw)
         setHtml(prepared.html)
         setLegacyBodyClass(prepared.bodyClass)
+
       } catch (err) {
         if (cancelled || err.name === 'AbortError') return
         setError(err.message || 'Failed to load page')
@@ -68,6 +64,13 @@ export default function LegacyHtmlPage() {
   useLayoutEffect(() => {
     if (!html || !pageUsesModelViewer(pageName)) return
     upgradeModelViewers(legacyRootRef.current)
+  }, [html, pageName])
+
+  useEffect(() => {
+    if (!html || !pageUsesModelViewer(pageName)) return undefined
+    return loadModelViewerWhenVisible(legacyRootRef.current, () => {
+      upgradeModelViewers(legacyRootRef.current)
+    })
   }, [html, pageName])
 
   // Init after HTML is committed to the DOM (fixes empty querySelector race).

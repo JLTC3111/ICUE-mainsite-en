@@ -8,7 +8,6 @@
     "@tailwindcss/vite": "^4.1.7",
     "aos": "^2.3.4",
     "better-sqlite3": "^11.10.0",
-    "chroma-js": "^3.2.0",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -43,9 +42,10 @@
     "build:home": "npm run build --prefix home-app",
     "dev:home": "npm run dev --prefix home-app",
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",
-    "preview": "vite preview",
+    "preview": "npm run preview --prefix home-app --",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
-    "db:migrate": "node -e \"require('./server/db/client').initDatabase()\""
+    "db:migrate": "node -e \"require('./server/db/client').initDatabase()\"",
+    "check:routes": "node scripts/check-routes.mjs"
   }
 }

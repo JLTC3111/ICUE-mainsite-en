@@ -1,9 +1,5 @@
 import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './AnimatedContent.css'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export default function AnimatedContent({
   children,
@@ -34,7 +30,9 @@ export default function AnimatedContent({
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion) {
-      gsap.set(el, { opacity: 1, visibility: 'visible', x: 0, y: 0, scale: 1 })
+      el.style.opacity = '1'
+      el.style.visibility = 'visible'
+      el.style.transform = 'none'
       return undefined
     }
 
@@ -45,53 +43,73 @@ export default function AnimatedContent({
 
     const axis = direction === 'horizontal' ? 'x' : 'y'
     const offset = reverse ? -distance : distance
-    const startPct = (1 - threshold) * 100
+    const translate = axis === 'x'
+      ? `translate3d(${offset}px, 0, 0)`
+      : `translate3d(0, ${offset}px, 0)`
+    const exitTranslate = axis === 'x'
+      ? `translate3d(${reverse ? distance : -distance}px, 0, 0)`
+      : `translate3d(0, ${reverse ? distance : -distance}px, 0)`
 
-    gsap.set(el, {
-      [axis]: offset,
-      scale,
-      opacity: animateOpacity ? initialOpacity : 1,
-      visibility: 'visible',
-    })
+    el.style.visibility = 'visible'
+    el.style.opacity = String(animateOpacity ? initialOpacity : 1)
+    el.style.transform = `${translate} scale(${scale})`
 
-    const tl = gsap.timeline({
-      paused: true,
-      delay,
-      onComplete: () => {
+    let entranceAnimation = null
+    let exitAnimation = null
+    let exitTimer = null
+
+    const play = () => {
+      entranceAnimation = el.animate(
+        [
+          { transform: `${translate} scale(${scale})`, opacity: animateOpacity ? initialOpacity : 1 },
+          { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
+        ],
+        {
+          duration: duration * 1000,
+          delay: delay * 1000,
+          easing: ease === 'power3.out' ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
+          fill: 'forwards',
+        },
+      )
+
+      entranceAnimation.finished.then(() => {
         onComplete?.()
-        if (disappearAfter > 0) {
-          gsap.to(el, {
-            [axis]: reverse ? distance : -distance,
-            scale: 0.8,
-            opacity: animateOpacity ? initialOpacity : 0,
-            delay: disappearAfter,
-            duration: disappearDuration,
-            ease: disappearEase,
-            onComplete: () => onDisappearanceComplete?.(),
-          })
-        }
+        if (disappearAfter <= 0) return
+        exitTimer = window.setTimeout(() => {
+          exitAnimation = el.animate(
+            [
+              { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
+              { transform: `${exitTranslate} scale(0.8)`, opacity: animateOpacity ? initialOpacity : 0 },
+            ],
+            {
+              duration: disappearDuration * 1000,
+              easing: disappearEase === 'power3.in' ? 'cubic-bezier(0.7, 0, 0.84, 0)' : 'ease-in',
+              fill: 'forwards',
+            },
+          )
+          exitAnimation.finished.then(() => onDisappearanceComplete?.()).catch(() => {})
+        }, disappearAfter * 1000)
+      }).catch(() => {})
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
+        play()
       },
-    })
-
-    tl.to(el, {
-      [axis]: 0,
-      scale: 1,
-      opacity: 1,
-      duration,
-      ease,
-    })
-
-    const st = ScrollTrigger.create({
-      trigger: el,
-      scroller: scrollerTarget || window,
-      start: `top ${startPct}%`,
-      once: true,
-      onEnter: () => tl.play(),
-    })
+      {
+        root: scrollerTarget instanceof Element ? scrollerTarget : null,
+        threshold: Math.max(0, Math.min(1, threshold)),
+      },
+    )
+    observer.observe(el)
 
     return () => {
-      st.kill()
-      tl.kill()
+      observer.disconnect()
+      entranceAnimation?.cancel()
+      exitAnimation?.cancel()
+      if (exitTimer) window.clearTimeout(exitTimer)
     }
   }, [
     container,

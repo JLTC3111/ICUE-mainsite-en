@@ -5,6 +5,11 @@ function getBaseUrl(req) {
   return `${proto}://${host}`;
 }
 
+function getSiteBaseUrl(req) {
+  if (process.env.SITE_BASE_URL) return process.env.SITE_BASE_URL.replace(/\/$/, '');
+  return getBaseUrl(req);
+}
+
 function isProviderConfigured(provider) {
   switch (provider) {
     case 'paypal':
@@ -30,4 +35,4 @@ function isProviderConfigured(provider) {
   }
 }
 
-module.exports = { getBaseUrl, isProviderConfigured };
+module.exports = { getBaseUrl, getSiteBaseUrl, isProviderConfigured };

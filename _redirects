@@ -1,38 +1,80 @@
-# Home React app (history routing)
-/contact           /index.html   200
-/about-us          /index.html   200
-/our-work          /index.html   200
-/past-projects     /index.html   200
-/recruitment       /index.html   200
-/notable-awards    /index.html   200
-/community-activities  /index.html   200
-/faqs              /index.html   200
-/donations         /index.html   200
-/privacy           /index.html   200
-/terms             /index.html   200
-/gdpr              /index.html   200
-/cookies           /index.html   200
+# Canonical redirects from the retired hash/static site.
+/src/pages/Home.html                /                         301
+/src/pages/Home_OLD.html            /                         301
+/src/pages/Contact.html             /contact                  301
+/src/pages/aboutUs.html             /about-us                 301
+/src/pages/ourWork.html             /our-work                 301
+/src/pages/pastProjects.html        /past-projects            301
+/src/pages/recruitment.html         /recruitment              301
+/src/pages/News.html                /news-archive             301!
+/src/pages/News                     /news-archive             301!
+/src/pages/orgStructure.html        https://icue.vn/structure/ 301
+/src/pages/notableAwards.html       /notable-awards           301
+/src/pages/communityActivities.html /community-activities     301
+/src/pages/FAQs.html                /faqs                     301
+/src/pages/donations.html           /donations                301
+/src/pages/privacy.html             /privacy                  301
+/src/pages/terms.html               /terms                    301
+/src/pages/gdpr.html                /gdpr                     301
+/src/pages/cookies.html             /cookies                  301
 
-/src/pages/News.html  /index.html  200!
-/src/pages/News       /index.html  200!
+/legacy/pages/Home.html                /                         301
+/legacy/pages/Home_OLD.html            /                         301
+/legacy/pages/Contact.html             /contact                  301
+/legacy/pages/aboutUs.html             /about-us                 301
+/legacy/pages/ourWork.html             /our-work                 301
+/legacy/pages/pastProjects.html        /past-projects            301
+/legacy/pages/recruitment.html         /recruitment              301
+/legacy/pages/News.html                /news-archive             301
+/legacy/pages/orgStructure.html        https://icue.vn/structure/ 301
+/legacy/pages/card.html                /src/pages/card.html      301
+/legacy/pages/article_template.html    /src/pages/article_template.html 301
+/legacy/pages/notableAwards.html       /notable-awards           301
+/legacy/pages/communityActivities.html /community-activities     301
+/legacy/pages/FAQs.html                /faqs                     301
+/legacy/pages/donations.html           /donations                301
+/legacy/pages/privacy.html             /privacy                  301
+/legacy/pages/terms.html               /terms                    301
+/legacy/pages/gdpr.html                /gdpr                     301
+/legacy/pages/cookies.html             /cookies                  301
 
-# Redirect old static footer pages to React shell routes.
-/src/pages/notableAwards.html       /notable-awards         301
-/src/pages/communityActivities.html /community-activities   301
-/src/pages/FAQs.html                /faqs                   301
-/src/pages/donations.html           /donations              301
-/src/pages/privacy.html             /privacy                301
-/src/pages/terms.html               /terms                  301
-/src/pages/gdpr.html                /gdpr                   301
-/src/pages/cookies.html             /cookies                301
+# Normalize trailing slashes before serving the history-routed app.
+/contact/              /contact                 301
+/about-us/             /about-us                301
+/our-work/             /our-work                301
+/past-projects/        /past-projects           301
+/recruitment/          /recruitment             301
+/news-archive/         /news-archive            301
+/notable-awards/       /notable-awards          301
+/community-activities/ /community-activities    301
+/faqs/                 /faqs                    301
+/donations/            /donations               301
+/privacy/              /privacy                 301
+/terms/                /terms                   301
+/gdpr/                 /gdpr                    301
+/cookies/              /cookies                 301
 
-# Silence the browser's default /favicon.ico probe.
-/favicon.ico         /public/logoIcons/favicon.png   200
+# React history routes.
+/contact               /index.html              200
+/about-us              /index.html              200
+/our-work              /index.html              200
+/past-projects         /index.html              200
+/recruitment           /index.html              200
+/news-archive          /index.html              200
+/notable-awards        /index.html              200
+/community-activities /index.html              200
+/faqs                  /index.html              200
+/donations             /index.html              200
+/privacy               /index.html              200
+/terms                 /index.html              200
+/gdpr                  /index.html              200
+/cookies               /index.html              200
 
-# Static assets
-/zalo-link.js        /public/zalo-link.js            200
-/profilePhotos/*     /public/profilePhotos/:splat    200
-/flags/*             /public/flags/:splat            200
-/models/*            /public/models/:splat           200
-/aboutUs/*           /public/aboutUs/:splat          200
-/public/*            /:splat                         200
+# Static compatibility paths.
+/favicon.ico           /public/logoIcons/favicon.png 200
+/zalo-link.js          /public/zalo-link.js           200
+/profilePhotos/*       /public/profilePhotos/:splat   200
+/flags/*               /public/flags/:splat           200
+/models/*              /public/models/:splat          200
+/aboutUs/*             /public/aboutUs/:splat         200
+/public/*              /:splat                        200

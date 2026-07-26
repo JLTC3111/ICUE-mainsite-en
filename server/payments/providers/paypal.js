@@ -30,7 +30,7 @@ async function getAccessToken() {
 async function createPayment({ order, baseUrl }) {
   const token = await getAccessToken();
   const returnUrl = `${baseUrl}/donations/return?provider=paypal&orderId=${encodeURIComponent(order.orderId)}`;
-  const cancelUrl = `${baseUrl}/#/donations?cancelled=1`;
+  const cancelUrl = `${process.env.SITE_BASE_URL?.replace(/\/$/, '') || baseUrl}/donations?cancelled=1`;
 
   const res = await fetch(`${getPaypalApiBase()}/v2/checkout/orders`, {
     method: 'POST',

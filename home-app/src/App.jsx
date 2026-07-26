@@ -1,13 +1,42 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
 import Footer from '@icue/site-footer/Footer'
 import ContactSidebar from '@icue/contact-sidebar'
 import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
-import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
-import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
+import { pageFromPathname, pathFromLegacyHash, ROUTE_PATHS } from './lib/routes'
+
+const HomePage = lazy(() => import('./pages/HomePage'))
+
+function RouteFallback() {
+  return <div className="route-loading" role="status" aria-label="Loading page" />
+}
+
+function LegacyHashRedirect() {
+  useLayoutEffect(() => {
+    const target = pathFromLegacyHash(window.location.hash)
+    if (!target) return
+    if (/^https?:\/\//i.test(target)) {
+      window.location.replace(target)
+      return
+    }
+    window.history.replaceState(null, '', target)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+  }, [])
+  return null
+}
+
+function NotFoundPage() {
+  return (
+    <section className="route-not-found" aria-labelledby="route-not-found-title">
+      <h1 id="route-not-found-title">Page not found</h1>
+      <p>The page you requested does not exist or has moved.</p>
+      <a href={ROUTE_PATHS.home}>Return home</a>
+    </section>
+  )
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -34,33 +63,38 @@ function AppShell() {
   return (
     <>
       <ScrollToTop />
+      <LegacyHashRedirect />
       <NavSync />
       <MainSiteNav
         variant="standalone"
         drawerLinks={STANDALONE_DRAWER_LINKS}
         homeHref={ROUTE_PATHS.home}
-        contactHref={ROUTE_PATHS.aboutUs}
+        aboutUsHref={ROUTE_PATHS.aboutUs}
       />
       <HomeLayoutGuard />
       <main id="content">
-        <Routes>
-          <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-          <Route path={ROUTE_PATHS.contact} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.ourWork} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.faqs} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.donations} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.privacy} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.terms} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.gdpr} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.cookies} element={<LegacyHtmlPage />} />
-          <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
-        </Routes>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path={ROUTE_PATHS.home} element={<HomePage />} />
+            <Route path={ROUTE_PATHS.contact} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.ourWork} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.newsArchiveLegacyHtml} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.newsArchiveLegacyAlt} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.faqs} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.donations} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.privacy} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.terms} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.gdpr} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.cookies} element={<LegacyHtmlPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer linkMode="standalone" />
       <ContactSidebar contentKey={pathname} />

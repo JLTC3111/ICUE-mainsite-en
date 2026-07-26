@@ -1,6 +1,6 @@
 # iCUE Vietnam — English main site
 
-Vite SPA with hash routing (`#/donations`, `#/aboutUs`, …) and an Express server for payments and static assets.
+Vite SPA with canonical history routes (`/donations`, `/about-us`, …) and an Express server for payments and static assets. Retired `#/…` bookmarks are converted in the browser.
 
 ## Quick start
 
@@ -17,7 +17,12 @@ npm run server         # terminal 1 — port 3000
 npm run dev            # terminal 2 — Vite proxies /api → 3000
 ```
 
-Open `http://localhost:3000/#/donations` to use the donation form.
+Open `http://localhost:3000/donations` to use the donation form.
+
+For a static frontend deployment such as Netlify, run the Express payment service
+on a persistent host and set `VITE_API_BASE_URL` to that HTTPS origin during the
+frontend build. The API host should set `APP_BASE_URL` to itself and
+`SITE_BASE_URL` to the public frontend origin.
 
 ## Payments
 
@@ -35,7 +40,9 @@ Integrated providers (one-time donations, **VND**):
 
 1. Copy `.env.example` to `.env`.
 2. Fill credentials for each provider you enable (see comments in `.env.example`).
-3. Set `APP_BASE_URL` to your public HTTPS URL in production (required for return URLs and webhooks).
+3. Set `APP_BASE_URL` to the public Express/API HTTPS origin (required for return URLs and webhooks).
+4. Set `SITE_BASE_URL` to the public frontend origin.
+5. If the frontend and API use different origins, set `VITE_API_BASE_URL` during the frontend build.
 
 ### Test vs production
 

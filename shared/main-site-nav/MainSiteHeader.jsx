@@ -11,7 +11,7 @@ export default function MainSiteHeader({
   showHomeVideoToggle,
   showAboutUsVideoToggle,
   homeHref = 'https://icue.vn',
-  contactHref = '#/aboutUs',
+  aboutUsHref = '#/aboutUs',
   isStandalone = false,
   assetPrefix = 'public/',
   homeVideoEnabled,
@@ -61,6 +61,7 @@ export default function MainSiteHeader({
                 textAnchor="start"
                 textX="6%"
                 as="span"
+                defer
               >
                 ICUE
               </VideoText>
@@ -156,7 +157,7 @@ export default function MainSiteHeader({
               {showContactLink && (
                 <a
                   ref={contactLinkRef}
-                  href={contactHref}
+                  href={aboutUsHref}
                   data-page="aboutUs"
                   className="contact-link main-site-nav__dock-contact"
                   id="contactLink"
@@ -180,6 +181,7 @@ export default function MainSiteHeader({
                     textAnchor="start"
                     textX="3%"
                     as="span"
+                    defer
                   >
                     About Us
                   </VideoText>

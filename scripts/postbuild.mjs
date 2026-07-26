@@ -66,6 +66,7 @@ const rootDirsFromHome = [
   'bgVideos',
   'flags',
   'legacy',
+  'legacy-embed',
   'logoIcons',
   'models',
   'news',

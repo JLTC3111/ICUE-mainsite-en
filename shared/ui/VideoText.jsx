@@ -1,4 +1,4 @@
-import { Children, useLayoutEffect, useMemo, useState } from 'react';
+import { Children, useEffect, useMemo, useState } from 'react';
 import './video-text.css';
 
 function buildSvgMask({
@@ -28,7 +28,8 @@ export default function VideoText({
   autoPlay = true,
   muted = true,
   loop = true,
-  preload = 'auto',
+  preload = 'metadata',
+  defer = false,
   fontSize = 20,
   fontWeight = 'bold',
   textAnchor = 'middle',
@@ -39,12 +40,13 @@ export default function VideoText({
   as: Component = 'div',
 }) {
   const content = Children.toArray(children).join('');
-  const [viewportFontSize, setViewportFontSize] = useState(fontSize);
+  const [loadVideo, setLoadVideo] = useState(!defer);
+  const [videoReady, setVideoReady] = useState(false);
 
   const maskOptions = useMemo(
     () => ({
       content,
-      fontSize: viewportFontSize,
+      fontSize,
       fontWeight,
       textAnchor,
       textX,
@@ -52,20 +54,27 @@ export default function VideoText({
       fontFamily,
       viewBox,
     }),
-    [content, viewportFontSize, fontWeight, textAnchor, textX, dominantBaseline, fontFamily, viewBox],
+    [content, fontSize, fontWeight, textAnchor, textX, dominantBaseline, fontFamily, viewBox],
   );
 
   const svgMask = useMemo(() => buildSvgMask(maskOptions), [maskOptions]);
 
-  useLayoutEffect(() => {
-    const updateSvgMask = () => {
-      setViewportFontSize(fontSize);
-    };
+  useEffect(() => {
+    setVideoReady(false);
+    if (!defer) {
+      setLoadVideo(true);
+      return undefined;
+    }
 
-    updateSvgMask();
-    window.addEventListener('resize', updateSvgMask);
-    return () => window.removeEventListener('resize', updateSvgMask);
-  }, [fontSize]);
+    setLoadVideo(false);
+    const start = () => setLoadVideo(true);
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(start, { timeout: 2000 });
+      return () => window.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(start, 1000);
+    return () => window.clearTimeout(id);
+  }, [defer, src]);
 
   const dataUrlMask = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`;
 
@@ -74,7 +83,10 @@ export default function VideoText({
   return (
     <Component className={['video-text', className].filter(Boolean).join(' ')}>
       <div
-        className="video-text__mask"
+        className={[
+          'video-text__mask',
+          videoReady ? 'video-text__mask--video-ready' : '',
+        ].filter(Boolean).join(' ')}
         style={{
           maskImage: dataUrlMask,
           WebkitMaskImage: dataUrlMask,
@@ -86,18 +98,21 @@ export default function VideoText({
           WebkitMaskPosition: maskPosition,
         }}
       >
-        <video
-          autoPlay={autoPlay}
-          muted={muted}
-          loop={loop}
-          preload={preload}
-          playsInline
-          disablePictureInPicture
-          tabIndex={-1}
-          aria-hidden="true"
-        >
-          <source src={src} type="video/mp4" />
-        </video>
+        {loadVideo ? (
+          <video
+            autoPlay={autoPlay}
+            muted={muted}
+            loop={loop}
+            preload={preload}
+            playsInline
+            disablePictureInPicture
+            tabIndex={-1}
+            aria-hidden="true"
+            onCanPlay={() => setVideoReady(true)}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        ) : null}
       </div>
       <span className="video-text__sr-only">{content}</span>
     </Component>

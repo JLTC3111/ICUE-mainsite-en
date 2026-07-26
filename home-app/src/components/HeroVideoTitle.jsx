@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'motion/react'
 import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEnabled'
 import './HeroVideoTitle.css'
@@ -84,6 +84,7 @@ async function buildCanvasMaskFromElement(element) {
 export default function HeroVideoTitle({ text }) {
   const shellRef = useRef(null)
   const labelRef = useRef(null)
+  const videoRef = useRef(null)
   const [maskUrl, setMaskUrl] = useState('')
   const prefersReducedMotion = useReducedMotion()
   const bgVideoEnabled = useHomeBackgroundVideoEnabled()
@@ -126,6 +127,29 @@ export default function HeroVideoTitle({ text }) {
     }
   }, [text, useTitleVideo])
 
+  useEffect(() => {
+    if (!useTitleVideo || !shellRef.current || !videoRef.current) return undefined
+    const video = videoRef.current
+    let inViewport = true
+    const syncPlayback = () => {
+      if (document.hidden || !inViewport) {
+        video.pause()
+      } else {
+        void video.play().catch(() => {})
+      }
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      inViewport = entry.isIntersecting
+      syncPlayback()
+    }, { threshold: 0.05 })
+    observer.observe(shellRef.current)
+    document.addEventListener('visibilitychange', syncPlayback)
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', syncPlayback)
+    }
+  }, [useTitleVideo])
+
   if (!useTitleVideo) {
     return (
       <h1
@@ -158,7 +182,7 @@ export default function HeroVideoTitle({ text }) {
       </span>
       <span className="home-hero__title-stack" aria-hidden="true">
         <span className="home-hero__title-fill" style={maskStyle}>
-          <video autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+          <video ref={videoRef} autoPlay muted loop playsInline preload="auto" aria-hidden="true">
             <source src={HERO_TITLE_VIDEO_SRC} type="video/mp4" />
           </video>
         </span>

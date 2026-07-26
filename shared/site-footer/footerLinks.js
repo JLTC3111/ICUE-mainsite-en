@@ -17,7 +17,7 @@ export const FOOTER_ROUTE_PATHS = {
   gdpr: '/gdpr',
   cookies: '/cookies',
   news: `${VN_SITE}/newsroom/?from=en-news`,
-  archive: '/src/pages/News.html',
+  archive: '/news-archive',
   orgStructure: `${VN_SITE}/structure/`,
   meetOurExperts: `${VN_SITE}/people/experts?site=en`,
   coreTeam: `${VN_SITE}/people/core-team?site=en`,

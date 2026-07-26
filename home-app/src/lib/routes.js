@@ -6,8 +6,9 @@ export const ROUTE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  newsArchive: '/src/pages/News.html',
-  newsArchiveAlt: '/src/pages/News',
+  newsArchive: '/news-archive',
+  newsArchiveLegacyHtml: '/src/pages/News.html',
+  newsArchiveLegacyAlt: '/src/pages/News',
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   faqs: '/faqs',
@@ -27,7 +28,8 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.pastProjects]: 'pastProjects',
   [ROUTE_PATHS.recruitment]: 'recruitment',
   [ROUTE_PATHS.newsArchive]: 'newsArchive',
-  [ROUTE_PATHS.newsArchiveAlt]: 'newsArchive',
+  [ROUTE_PATHS.newsArchiveLegacyHtml]: 'newsArchive',
+  [ROUTE_PATHS.newsArchiveLegacyAlt]: 'newsArchive',
   [ROUTE_PATHS.notableAwards]: 'notableAwards',
   [ROUTE_PATHS.communityActivities]: 'communityActivities',
   [ROUTE_PATHS.faqs]: 'FAQs',
@@ -41,6 +43,7 @@ export const PATH_TO_PAGE = {
 export const PAGE_TO_PATH = Object.fromEntries(
   Object.entries(PATH_TO_PAGE).map(([path, page]) => [page, path]),
 )
+PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 
 export const LEGACY_PAGE_FILES = {
   Contact: 'Contact.html',
@@ -60,7 +63,11 @@ export const LEGACY_PAGE_FILES = {
 }
 
 export function pageFromPathname(pathname) {
-  return PATH_TO_PAGE[pathname] || null
+  if (!pathname) return null
+  const normalized = pathname === '/'
+    ? '/'
+    : `/${pathname.split('/').filter(Boolean).join('/')}`
+  return PATH_TO_PAGE[normalized] || null
 }
 
 export function pathFromPage(page) {
@@ -70,6 +77,18 @@ export function pathFromPage(page) {
 /** Rewrite legacy hash links and public/ asset paths inside injected HTML. */
 export function prepareLegacyHtml(rawHtml) {
   const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
+
+  doc.body?.querySelectorAll('img').forEach((image) => {
+    if (!image.hasAttribute('loading')) image.setAttribute('loading', 'lazy')
+    if (!image.hasAttribute('decoding')) image.setAttribute('decoding', 'async')
+  })
+  doc.body?.querySelectorAll('iframe').forEach((frame) => {
+    if (!frame.hasAttribute('loading')) frame.setAttribute('loading', 'lazy')
+  })
+  doc.body?.querySelectorAll('video:not([autoplay])').forEach((video) => {
+    if (!video.hasAttribute('preload')) video.setAttribute('preload', 'none')
+  })
+
   // Scope document-level selectors so injected page CSS cannot clip fixed nav/footer
   // (mobile WebKit clips position:fixed when html/body have overflow-x:hidden).
   const styles = [...doc.querySelectorAll('style')]
@@ -131,4 +150,42 @@ export function prepareLegacyHtml(rawHtml) {
   const bodyClass = doc.body?.className?.trim() || ''
 
   return { html: `${styles}${bodyHtml}`, bodyClass }
+}
+
+/** Convert bookmarks from the retired hash router into canonical paths. */
+export function pathFromLegacyHash(hash) {
+  if (!hash?.startsWith('#/')) return null
+
+  const raw = hash.slice(2)
+  const queryIndex = raw.indexOf('?')
+  const page = (queryIndex >= 0 ? raw.slice(0, queryIndex) : raw).replace(/\/+$/, '')
+  const search = queryIndex >= 0 ? raw.slice(queryIndex) : ''
+
+  const pagePaths = {
+    Home: ROUTE_PATHS.home,
+    Contact: ROUTE_PATHS.contact,
+    aboutUs: ROUTE_PATHS.aboutUs,
+    ourWork: ROUTE_PATHS.ourWork,
+    pastProjects: ROUTE_PATHS.pastProjects,
+    recruitment: ROUTE_PATHS.recruitment,
+    News: ROUTE_PATHS.newsArchive,
+    newsArchive: ROUTE_PATHS.newsArchive,
+    orgStructure: 'https://icue.vn/structure/',
+    meetOurExperts: 'https://icue.vn/people/experts?site=en',
+    coreTeam: 'https://icue.vn/people/core-team?site=en',
+    notableAwards: ROUTE_PATHS.notableAwards,
+    communityActivities: ROUTE_PATHS.communityActivities,
+    FAQs: ROUTE_PATHS.faqs,
+    faqs: ROUTE_PATHS.faqs,
+    donations: ROUTE_PATHS.donations,
+    privacy: ROUTE_PATHS.privacy,
+    terms: ROUTE_PATHS.terms,
+    gdpr: ROUTE_PATHS.gdpr,
+    cookies: ROUTE_PATHS.cookies,
+  }
+
+  const path = pagePaths[page]
+  if (!path) return null
+  const suffix = search && path.includes('?') ? `&${search.slice(1)}` : search
+  return `${path}${suffix}`
 }

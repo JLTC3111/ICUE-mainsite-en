@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import gsap from 'gsap'
 
 export function useRainText(textRef, text) {
   useEffect(() => {
@@ -28,16 +27,17 @@ export function useRainText(textRef, text) {
       return span
     })
 
-    const tweens = spans.map((span, i) =>
-      gsap.fromTo(
-        span,
-        { x: '-50vw', opacity: 0 },
+    const animations = spans.map((span, index) =>
+      span.animate(
+        [
+          { transform: 'translate3d(-50vw, 0, 0)', opacity: 0 },
+          { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+        ],
         {
-          x: 0,
-          opacity: 1,
-          delay: i * 0.05,
-          duration: 0.75,
-          ease: 'bounce.out',
+          delay: index * 50,
+          duration: 750,
+          easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+          fill: 'forwards',
         },
       ),
     )
@@ -51,7 +51,7 @@ export function useRainText(textRef, text) {
 
     return () => {
       window.clearTimeout(safetyId)
-      tweens.forEach((tween) => tween.kill())
+      animations.forEach((animation) => animation.cancel())
       el.textContent = text
     }
   }, [text, textRef])

@@ -1,5 +1,5 @@
 const OPAQUE_ALPHA = 0.72
-export const BACKGROUND_SAMPLE_SIZE = 200
+export const BACKGROUND_SAMPLE_SIZE = 24
 
 let sampleCanvas = null
 
@@ -440,7 +440,8 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
   const sampleY = rect.top + rect.height * 0.5
 
   return withSidebarHidden(musicEl, () => {
-    const canvas = document.createElement('canvas')
+    const ctx = getSampleContext()
+    const canvas = ctx?.canvas ?? document.createElement('canvas')
     canvas.width = size
     canvas.height = size
 
@@ -495,10 +496,14 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
 
 export function bindBackgroundVideoSampling(onFrame) {
   const bound = new WeakSet()
+  const boundVideos = new Set()
+  const frameCallbackIds = new Map()
+  let active = true
 
   const bindOne = (video) => {
     if (!(video instanceof HTMLVideoElement) || bound.has(video)) return
     bound.add(video)
+    boundVideos.add(video)
     video.addEventListener('loadeddata', onFrame)
     video.addEventListener('loadedmetadata', onFrame)
     video.addEventListener('play', onFrame)
@@ -507,11 +512,11 @@ export function bindBackgroundVideoSampling(onFrame) {
 
     if (typeof video.requestVideoFrameCallback === 'function') {
       const loop = () => {
+        if (!active || !video.isConnected) return
         onFrame()
-        if (!video.isConnected) return
-        video.requestVideoFrameCallback(loop)
+        frameCallbackIds.set(video, video.requestVideoFrameCallback(loop))
       }
-      video.requestVideoFrameCallback(loop)
+      frameCallbackIds.set(video, video.requestVideoFrameCallback(loop))
     }
   }
 
@@ -524,13 +529,20 @@ export function bindBackgroundVideoSampling(onFrame) {
   observer.observe(document.body, { childList: true, subtree: true })
 
   return () => {
+    active = false
     observer.disconnect()
-    getBackgroundVideos().forEach((video) => {
+    boundVideos.forEach((video) => {
       video.removeEventListener('loadeddata', onFrame)
       video.removeEventListener('loadedmetadata', onFrame)
       video.removeEventListener('play', onFrame)
       video.removeEventListener('seeked', onFrame)
       video.removeEventListener('timeupdate', onFrame)
+      const callbackId = frameCallbackIds.get(video)
+      if (callbackId != null && typeof video.cancelVideoFrameCallback === 'function') {
+        video.cancelVideoFrameCallback(callbackId)
+      }
     })
+    boundVideos.clear()
+    frameCallbackIds.clear()
   }
 }

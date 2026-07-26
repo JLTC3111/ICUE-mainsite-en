@@ -3646,6 +3646,34 @@ button:hover {
   overflow: visible;
 }
 
+.home-beam-network-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.route-not-found {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  gap: 0.75rem;
+  padding: 7rem 1.5rem 3rem;
+  text-align: center;
+  background: #0c0f14;
+  color: #f8fafc;
+}
+
+.route-not-found h1,
+.route-not-found p {
+  margin: 0;
+}
+
+.route-not-found a {
+  color: #80ecff;
+  font-weight: 700;
+}
+
 .home-hero {
   position: relative;
   min-height: 100dvh;
@@ -3970,6 +3998,8 @@ button:hover {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
 }
 
 .home-section__bg {
@@ -4150,7 +4180,11 @@ button:hover {
   padding: 0;
   margin: 0;
   transition: transform 4.25s ease-in-out;
-  will-change: transform;
+}
+
+.route-loading {
+  min-height: 100vh;
+  background: #0c0f14;
 }
 
 .home-card:hover .pixel-image,

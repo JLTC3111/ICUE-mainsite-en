@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import './PixelImage.css'
 
 const DEFAULT_GRIDS = {
@@ -14,6 +14,7 @@ export default function PixelImage({
   maxAnimationDelay = 600,
   className = '',
 }) {
+  const [piecesVisible, setPiecesVisible] = useState(false)
   const { rows, cols } = useMemo(() => {
     if (customGrid?.rows >= 1 && customGrid?.cols >= 1) return customGrid
     return DEFAULT_GRIDS[grid] || DEFAULT_GRIDS['6x4']
@@ -40,28 +41,38 @@ export default function PixelImage({
   return (
     <div
       className={`pixel-image ${className}`.trim()}
-      style={{ '--pixel-src': `url("${src}")` }}
+      style={piecesVisible ? { '--pixel-src': `url("${src}")` } : undefined}
+      onPointerEnter={() => setPiecesVisible(true)}
+      onPointerLeave={() => setPiecesVisible(false)}
+      onFocusCapture={() => setPiecesVisible(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setPiecesVisible(false)
+      }}
     >
       <img
         src={src}
         alt={alt}
         className="pixel-image__static"
+        loading="lazy"
         decoding="async"
+        fetchPriority="low"
         draggable={false}
       />
 
-      <div className="pixel-image__grid" aria-hidden="true">
-        {pieces.map((piece, index) => (
-          <div
-            key={index}
-            className="pixel-image__piece"
-            style={{
-              clipPath: piece.clipPath,
-              '--piece-delay': `${piece.delay}ms`,
-            }}
-          />
-        ))}
-      </div>
+      {piecesVisible ? (
+        <div className="pixel-image__grid" aria-hidden="true">
+          {pieces.map((piece, index) => (
+            <div
+              key={index}
+              className="pixel-image__piece"
+              style={{
+                clipPath: piece.clipPath,
+                '--piece-delay': `${piece.delay}ms`,
+              }}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   )
 }

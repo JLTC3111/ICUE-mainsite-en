@@ -5,21 +5,39 @@ import react from '@vitejs/plugin-react'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const LEGACY_SHELL_SRC_PAGES = new Set([
-  '/src/pages/News.html',
-  '/src/pages/News',
-  '/src/pages/notableAwards.html',
-  '/src/pages/communityActivities.html',
-  '/src/pages/FAQs.html',
-  '/src/pages/donations.html',
-  '/src/pages/privacy.html',
-  '/src/pages/terms.html',
-  '/src/pages/gdpr.html',
-  '/src/pages/cookies.html',
-])
+const LEGACY_SOURCE_REDIRECTS = {
+  '/src/pages/Home.html': '/',
+  '/src/pages/Home_OLD.html': '/',
+  '/src/pages/Contact.html': '/contact',
+  '/src/pages/aboutUs.html': '/about-us',
+  '/src/pages/ourWork.html': '/our-work',
+  '/src/pages/pastProjects.html': '/past-projects',
+  '/src/pages/recruitment.html': '/recruitment',
+  '/src/pages/News.html': '/news-archive',
+  '/src/pages/News': '/news-archive',
+  '/src/pages/orgStructure.html': 'https://icue.vn/structure/',
+  '/src/pages/notableAwards.html': '/notable-awards',
+  '/src/pages/communityActivities.html': '/community-activities',
+  '/src/pages/FAQs.html': '/faqs',
+  '/src/pages/donations.html': '/donations',
+  '/src/pages/privacy.html': '/privacy',
+  '/src/pages/terms.html': '/terms',
+  '/src/pages/gdpr.html': '/gdpr',
+  '/src/pages/cookies.html': '/cookies',
+}
 
 const LEGACY_PAGE_REDIRECTS = {
-  '/legacy/pages/News.html': '/src/pages/News.html',
+  '/legacy/pages/Home.html': '/',
+  '/legacy/pages/Home_OLD.html': '/',
+  '/legacy/pages/Contact.html': '/contact',
+  '/legacy/pages/aboutUs.html': '/about-us',
+  '/legacy/pages/ourWork.html': '/our-work',
+  '/legacy/pages/pastProjects.html': '/past-projects',
+  '/legacy/pages/recruitment.html': '/recruitment',
+  '/legacy/pages/News.html': '/news-archive',
+  '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
+  '/legacy/pages/card.html': '/src/pages/card.html',
+  '/legacy/pages/article_template.html': '/src/pages/article_template.html',
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
   '/legacy/pages/FAQs.html': '/faqs',
@@ -40,23 +58,19 @@ export default defineConfig({
         server.middlewares.use((req, res, next) => {
           const urlPath = (req.url || '').split('?')[0]
 
-          if (LEGACY_SHELL_SRC_PAGES.has(urlPath)) {
-            req.url = '/index.html'
-            return next()
+          const sourceRedirect = LEGACY_SOURCE_REDIRECTS[urlPath]
+          if (sourceRedirect) {
+            res.statusCode = 302
+            res.setHeader('Location', sourceRedirect)
+            res.end()
+            return
           }
 
           if (LEGACY_PAGE_REDIRECTS[urlPath]) {
-            const wantsEmbed =
-              req.headers['x-icue-legacy-embed'] === '1' ||
-              req.headers['sec-fetch-dest'] === 'empty' ||
-              req.headers['sec-fetch-mode'] === 'cors'
-
-            if (!wantsEmbed) {
-              res.statusCode = 302
-              res.setHeader('Location', LEGACY_PAGE_REDIRECTS[urlPath])
-              res.end()
-              return
-            }
+            res.statusCode = 302
+            res.setHeader('Location', LEGACY_PAGE_REDIRECTS[urlPath])
+            res.end()
+            return
           }
 
           next()
@@ -84,6 +98,24 @@ export default defineConfig({
     target: 'es2020',
     cssCodeSplit: true,
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined
+          if (
+            id.includes('/react/')
+            || id.includes('/react-dom/')
+            || id.includes('/react-router')
+            || id.includes('/scheduler/')
+          ) {
+            return 'react-vendor'
+          }
+          if (id.includes('/motion/')) return 'motion-vendor'
+          if (id.includes('/gsap/')) return 'gsap-vendor'
+          return undefined
+        }
+      },
+    },
   },
   server: {
     port: 5175,

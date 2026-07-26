@@ -1,8 +1,21 @@
 let runtimePromise = null
+let ourWorkCarouselApi = null
+let ourWorkCarouselPromise = null
 let pastProjectsSliderApi = null
 let pastProjectsSliderPromise = null
 let newsArchiveSliderApi = null
 let newsArchiveSliderPromise = null
+let gsapRuntimePromise = null
+
+const LEGACY_RUNTIME_PAGES = new Set([
+  'Contact',
+  'aboutUs',
+  'recruitment',
+  'FAQs',
+  'donations',
+  'notableAwards',
+  'communityActivities',
+])
 
 function getPastProjectsSlider() {
   if (!pastProjectsSliderPromise) {
@@ -12,6 +25,16 @@ function getPastProjectsSlider() {
     })
   }
   return pastProjectsSliderPromise
+}
+
+function getOurWorkCarousel() {
+  if (!ourWorkCarouselPromise) {
+    ourWorkCarouselPromise = import('./ourWorkCarousel').then((api) => {
+      ourWorkCarouselApi = api
+      return api
+    })
+  }
+  return ourWorkCarouselPromise
 }
 
 let pastProjectsAosApi = null
@@ -37,10 +60,28 @@ function getNewsArchiveSlider() {
   return newsArchiveSliderPromise
 }
 
-function loadLegacyRuntime() {
-  if (window.__icueLegacyRuntimeLoaded) {
-    return Promise.resolve()
+function loadGsapRuntime() {
+  if (window.gsap) return Promise.resolve(window.gsap)
+  if (!gsapRuntimePromise) {
+    gsapRuntimePromise = Promise.all([
+      import('gsap'),
+      import('gsap/ScrollTrigger'),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      const gsap = gsapModule.default
+      gsap.registerPlugin(scrollTriggerModule.ScrollTrigger)
+      window.gsap = gsap
+      return gsap
+    })
   }
+  return gsapRuntimePromise
+}
+
+async function loadLegacyRuntime() {
+  if (window.__icueLegacyRuntimeLoaded) {
+    return
+  }
+
+  await loadGsapRuntime()
 
   if (!runtimePromise) {
     window.__ICUE_SKIP_HASH_ROUTER__ = true
@@ -57,7 +98,7 @@ function loadLegacyRuntime() {
     })
   }
 
-  return runtimePromise
+  await runtimePromise
 }
 
 const PAGE_INIT = {
@@ -70,7 +111,8 @@ const PAGE_INIT = {
     window.AboutUsBackgroundVideoManager?.init?.()
   },
   ourWork: async () => {
-    window.initializeCarousel?.()
+    const carousel = await getOurWorkCarousel()
+    carousel.initOurWorkCarousel()
   },
   pastProjects: async () => {
     // Skip the sluggish custom touch slider in legacy/script.js —
@@ -103,6 +145,9 @@ const PAGE_INIT = {
 }
 
 const PAGE_CLEANUP = {
+  ourWork: () => {
+    ourWorkCarouselApi?.destroyOurWorkCarousel?.()
+  },
   aboutUs: () => {
     window.AboutUsBackgroundVideoManager?.destroy?.()
   },
@@ -129,9 +174,9 @@ const PAGE_CLEANUP = {
 }
 
 export async function initLegacyPage(pageName) {
-  // News archive uses dedicated Swiper modules only — loading legacy/script.js
-  // runs initMobileNewsSlider / ICUEFooter hooks that fight the React shell layout.
-  if (pageName !== 'newsArchive') {
+  // Static/legal pages and the migrated sliders do not need the 305 KB legacy
+  // runtime or its global timers. Load it only for pages with legacy-only init code.
+  if (LEGACY_RUNTIME_PAGES.has(pageName)) {
     await loadLegacyRuntime()
   }
   window.currentPage = pageName

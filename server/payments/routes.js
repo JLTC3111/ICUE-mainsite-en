@@ -1,7 +1,7 @@
 const express = require('express');
 const { PROVIDERS } = require('./constants');
 const { parseAmountVnd, sanitizeDonor, parseProvider } = require('./validate');
-const { getBaseUrl, isProviderConfigured } = require('./config');
+const { getBaseUrl, getSiteBaseUrl, isProviderConfigured } = require('./config');
 const { paymentRateLimit } = require('./rateLimit');
 const { logPaymentAttempt } = require('./logger');
 const { createOrder, updateOrderStatus, getOrder } = require('./orders');
@@ -194,7 +194,7 @@ async function handleDonationReturn(req, res) {
   const orderId = String(req.query.orderId || '');
   const order = orderId ? getOrder(orderId) : null;
   const baseUrl = getBaseUrl(req);
-  const homeLink = `${baseUrl}/#/donations`;
+  const homeLink = `${getSiteBaseUrl(req)}/donations`;
 
   let status = 'pending';
   let message = 'Your payment is being processed.';

@@ -46,7 +46,7 @@ export const MIGRATED_PAGE_PATHS = {
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
   News: '/newsroom/',
-  newsArchive: '/src/pages/News.html',
+  newsArchive: '/news-archive',
   meetOurExperts: '/people/experts',
   coreTeam: '/people/core-team',
   orgStructure: '/structure/',
@@ -74,10 +74,13 @@ function pageFromHash(hash) {
 
 export function pageFromPathname(pathname) {
   if (!pathname) return 'Home';
-  if (PATH_TO_PAGE[pathname]) return PATH_TO_PAGE[pathname];
-  if (pathname === '/') return 'Home';
+  const normalized = pathname === '/'
+    ? '/'
+    : `/${pathname.split('/').filter(Boolean).join('/')}`;
+  if (PATH_TO_PAGE[normalized]) return PATH_TO_PAGE[normalized];
+  if (normalized === '/') return 'Home';
 
-  const pathSegments = pathname.split('/').filter(Boolean);
+  const pathSegments = normalized.split('/').filter(Boolean);
   if (pathSegments.length === 0) return 'Home';
 
   if (pathSegments[0] === 'people') {

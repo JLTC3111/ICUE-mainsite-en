@@ -3468,6 +3468,14 @@ window.DonationForm = (function () {
   let selectedProvider = 'momo';
   let initBound = false;
 
+  function apiUrl(path) {
+    const configured = String(window.__ICUE_API_BASE_URL__ || '').trim();
+    const base = configured && !configured.startsWith('%')
+      ? configured.replace(/\/$/, '')
+      : '';
+    return `${base}${path}`;
+  }
+
   function formatVnd(amount) {
     return Number(amount).toLocaleString('vi-VN');
   }
@@ -3587,7 +3595,7 @@ window.DonationForm = (function () {
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/payments/${provider}/initiate`, {
+      const response = await fetch(apiUrl(`/api/payments/${provider}/initiate`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -3630,7 +3638,7 @@ window.DonationForm = (function () {
     if (!grid) return;
 
     try {
-      const response = await fetch('/api/payments/methods');
+      const response = await fetch(apiUrl('/api/payments/methods'));
       const data = await response.json();
       const configured = new Set((data.methods || []).map((m) => m.id));
 

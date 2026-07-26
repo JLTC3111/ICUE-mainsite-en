@@ -62,21 +62,18 @@ function homeDevFallback() {
   const appDir = path.resolve(root, 'dist-home');
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
-  const legacyShellSrcPages = new Set([
-    '/src/pages/News.html',
-    '/src/pages/News',
-    '/src/pages/notableAwards.html',
-    '/src/pages/communityActivities.html',
-    '/src/pages/FAQs.html',
-    '/src/pages/donations.html',
-    '/src/pages/privacy.html',
-    '/src/pages/terms.html',
-    '/src/pages/gdpr.html',
-    '/src/pages/cookies.html',
-  ]);
-
   const legacyPageRedirects = {
-    '/legacy/pages/News.html': '/src/pages/News.html',
+    '/legacy/pages/Home.html': '/',
+    '/legacy/pages/Home_OLD.html': '/',
+    '/legacy/pages/Contact.html': '/contact',
+    '/legacy/pages/aboutUs.html': '/about-us',
+    '/legacy/pages/ourWork.html': '/our-work',
+    '/legacy/pages/pastProjects.html': '/past-projects',
+    '/legacy/pages/recruitment.html': '/recruitment',
+    '/legacy/pages/News.html': '/news-archive',
+    '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
+    '/legacy/pages/card.html': '/src/pages/card.html',
+    '/legacy/pages/article_template.html': '/src/pages/article_template.html',
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
     '/legacy/pages/FAQs.html': '/faqs',
@@ -88,6 +85,16 @@ function homeDevFallback() {
   };
 
   const staticSrcRedirects = {
+    '/src/pages/Home.html': '/',
+    '/src/pages/Home_OLD.html': '/',
+    '/src/pages/Contact.html': '/contact',
+    '/src/pages/aboutUs.html': '/about-us',
+    '/src/pages/ourWork.html': '/our-work',
+    '/src/pages/pastProjects.html': '/past-projects',
+    '/src/pages/recruitment.html': '/recruitment',
+    '/src/pages/News.html': '/news-archive',
+    '/src/pages/News': '/news-archive',
+    '/src/pages/orgStructure.html': 'https://icue.vn/structure/',
     '/src/pages/notableAwards.html': '/notable-awards',
     '/src/pages/communityActivities.html': '/community-activities',
     '/src/pages/FAQs.html': '/faqs',
@@ -109,11 +116,6 @@ function homeDevFallback() {
 
           if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
 
-          if (legacyShellSrcPages.has(urlPath)) {
-            req.url = '/index.html';
-            return next();
-          }
-
           if (staticSrcRedirects[urlPath]) {
             res.statusCode = 302;
             res.setHeader('Location', staticSrcRedirects[urlPath]);
@@ -122,27 +124,10 @@ function homeDevFallback() {
           }
 
           if (legacyPageRedirects[urlPath]) {
-            const wantsEmbed =
-              req.headers['x-icue-legacy-embed'] === '1' ||
-              req.headers['sec-fetch-dest'] === 'empty' ||
-              req.headers['sec-fetch-mode'] === 'cors';
-
-            if (!wantsEmbed) {
-              res.statusCode = 302;
-              res.setHeader('Location', legacyPageRedirects[urlPath]);
-              res.end();
-              return;
-            }
-
-            const legacyPath = path.join(appDir, urlPath.slice(1));
-            const rootLegacyPath = path.join(root, urlPath.slice(1));
-            const matched = resolveExistingFile(legacyPath, rootLegacyPath);
-            if (matched) {
-              res.statusCode = 200;
-              res.setHeader('Content-Type', 'text/html; charset=utf-8');
-              res.end(fs.readFileSync(matched, 'utf-8'));
-              return;
-            }
+            res.statusCode = 302;
+            res.setHeader('Location', legacyPageRedirects[urlPath]);
+            res.end();
+            return;
           }
 
           const rel = urlPath.replace(/^\//, '');

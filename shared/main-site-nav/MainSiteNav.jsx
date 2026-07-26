@@ -47,7 +47,7 @@ export default function MainSiteNav({
   variant = 'hash',
   drawerLinks,
   homeHref = 'https://icue.vn',
-  contactHref = '#/aboutUs',
+  aboutUsHref = '#/aboutUs',
 }) {
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
@@ -163,7 +163,7 @@ export default function MainSiteNav({
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(max-width: 1024px)').matches;
 
-    if (typeof window.gsap === 'undefined' || reduceMotion || isMobileNav) {
+    if (reduceMotion || isMobileNav || typeof Element.prototype.animate !== 'function') {
       [menuToggleRef, logoLinkRef, flagLinkRef, contactLinkRef].forEach((ref) => {
         reveal(ref.current);
         if (ref === logoLinkRef) {
@@ -178,64 +178,37 @@ export default function MainSiteNav({
     }
 
     const targets = [
-      { el: menuToggleRef.current, delay: 0 },
-      { el: logoLinkRef.current?.querySelector('.logo-mark'), delay: -0.3 },
-      { el: logoLinkRef.current?.querySelector('.logo-wordmark'), delay: -0.25 },
-      { el: flagLinkRef.current?.querySelector('.flag-link'), delay: -0.3 },
-      { el: contactLinkRef.current, delay: -0.3 },
-    ].filter((item) => item.el);
+      menuToggleRef.current,
+      logoLinkRef.current?.querySelector('.logo-mark'),
+      logoLinkRef.current?.querySelector('.logo-wordmark'),
+      flagLinkRef.current?.querySelector('.flag-link'),
+      contactLinkRef.current,
+    ].filter(Boolean);
 
-    const timeline = window.gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.out' } });
-
-    targets.forEach(({ el, delay }) => {
-      if (!el) return;
-      el.classList.add('pre-hidden');
-      el.style.opacity = '0';
-      el.style.visibility = 'hidden';
-
-      timeline.fromTo(
-        el,
-        isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
+    targets.forEach((el, index) => {
+      reveal(el);
+      const animation = el.animate(
+        [
+          {
+            transform: isFirstLoad ? 'translate3d(0, -50px, 0)' : 'translate3d(0, 0, 0)',
+            opacity: 0,
+          },
+          { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+        ],
         {
-          y: 0,
-          opacity: 1,
-          onStart: () => {
-            reveal(el);
-          },
-          onComplete: () => {
-            reveal(el);
-          },
+          duration: 500,
+          delay: index * 35,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          fill: 'both',
         },
-        delay
       );
+      animation.finished.then(() => reveal(el)).catch(() => reveal(el));
     });
 
     // Safety net for flaky mobile WebKit / Chrome iOS animation completion.
     window.setTimeout(() => {
-      targets.forEach(({ el }) => reveal(el));
+      targets.forEach(reveal);
     }, 2500);
-
-    const langIcon = flagLinkRef.current?.querySelector('#langSwitcher');
-    if (langIcon) {
-      langIcon.addEventListener('mouseenter', () => {
-        window.gsap.killTweensOf(langIcon);
-        window.gsap.to(langIcon, { scale: 1.25, duration: 0.3, ease: 'power2.out' });
-      });
-      langIcon.addEventListener('mouseleave', () => {
-        window.gsap.to(langIcon, { scale: 1, duration: 0.3, ease: 'power2.inOut' });
-      });
-    }
-
-    const contact = contactLinkRef.current;
-    if (contact) {
-      contact.addEventListener('mouseenter', () => {
-        window.gsap.killTweensOf(contact);
-        window.gsap.to(contact, { scale: 1.1, duration: 0.3, ease: 'power2.out' });
-      });
-      contact.addEventListener('mouseleave', () => {
-        window.gsap.to(contact, { scale: 1, duration: 0.3, ease: 'power2.inOut' });
-      });
-    }
   }, []);
 
   const handleToggleDrawer = useCallback(() => {
@@ -393,7 +366,7 @@ export default function MainSiteNav({
           showHomeVideoToggle={showHomeVideoToggle}
           showAboutUsVideoToggle={showAboutUsVideoToggle}
           homeHref={homeHref}
-          contactHref={contactHref}
+          aboutUsHref={aboutUsHref}
           isStandalone={isStandalone}
           assetPrefix={isStandalone ? '/' : 'public/'}
           homeVideoEnabled={homeVideoEnabled}

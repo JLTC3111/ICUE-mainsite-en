@@ -84,6 +84,7 @@ const HomeBackgroundVideoManager = (() => {
   let errorSwapAttempted = false;
   let currentIndex = -1;
   let warmupVideo = null;
+  let scheduledWarmupSrc = null;
 
   const logHomeBg = (...args) => console.log('[HomeBackgroundVideo]', ...args);
 
@@ -245,6 +246,24 @@ const HomeBackgroundVideoManager = (() => {
     warmupVideo.load();
   };
 
+  const scheduleNextVideoWarmup = () => {
+    if (videoPlaylist.length <= 1 || currentIndex < 0) return;
+    const expectedIndex = currentIndex;
+    const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
+    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const src = prefersMobile && upcoming.mobile ? upcoming.mobile : upcoming.desktop;
+    if (!src || scheduledWarmupSrc === src || warmupVideo?.getAttribute('data-src') === src) return;
+    scheduledWarmupSrc = src;
+    scheduleIdleTask(() => {
+      if (currentIndex !== expectedIndex || !videoEl?.isConnected) {
+        scheduledWarmupSrc = null;
+        return;
+      }
+      warmVideoForMeta(upcoming);
+      scheduledWarmupSrc = null;
+    });
+  };
+
   const attemptPlay = (label = 'play') => {
     if (!videoEl) return;
     const playPromise = videoEl.play();
@@ -306,12 +325,6 @@ const HomeBackgroundVideoManager = (() => {
       attemptPlay('retry-watchdog');
     }, 1500);
 
-    if (videoPlaylist.length > 1) {
-      const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
-      scheduleIdleTask(() => {
-        warmVideoForMeta(upcoming);
-      });
-    }
   };
 
   const goToIndex = (index) => {
@@ -364,14 +377,6 @@ const HomeBackgroundVideoManager = (() => {
     if (startIndex === -1) return;
     goToIndex(startIndex);
 
-    // Warm the next video as soon as we know what is currently active
-    if (videoPlaylist.length > 1) {
-      const upcoming = videoPlaylist[(startIndex + 1) % videoPlaylist.length];
-      scheduleIdleTask(() => {
-        warmVideoForMeta(upcoming);
-      });
-    }
-
     let lastLogTime = 0;
     const throttleLog = (msg, data) => {
       const now = Date.now();
@@ -380,7 +385,10 @@ const HomeBackgroundVideoManager = (() => {
         lastLogTime = now;
       }
     };
-    playHandler = () => throttleLog('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    playHandler = () => {
+      throttleLog('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+      scheduleNextVideoWarmup();
+    };
     pauseHandler = () => throttleLog('pause', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
     waitingHandler = () => throttleLog('waiting', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
     stalledHandler = () => throttleLog('stalled', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
@@ -512,6 +520,7 @@ const HomeBackgroundVideoManager = (() => {
       warmupVideo.remove();
       warmupVideo = null;
     }
+    scheduledWarmupSrc = null;
     currentIndex = -1;
     videoEl = null;
     applyNavTheme(null);
