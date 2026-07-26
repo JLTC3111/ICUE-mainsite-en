@@ -55,20 +55,20 @@
 /cookies/              /cookies                 301
 
 # React history routes.
-/contact               /index.html              200
-/about-us              /index.html              200
-/our-work              /index.html              200
-/past-projects         /index.html              200
-/recruitment           /index.html              200
-/news-archive          /index.html              200
-/notable-awards        /index.html              200
-/community-activities /index.html              200
-/faqs                  /index.html              200
-/donations             /index.html              200
-/privacy               /index.html              200
-/terms                 /index.html              200
-/gdpr                  /index.html              200
-/cookies               /index.html              200
+/contact               /contact.html               200
+/about-us              /about-us.html              200
+/our-work              /our-work.html              200
+/past-projects         /past-projects.html          200
+/recruitment           /recruitment.html            200
+/news-archive          /news-archive.html           200
+/notable-awards        /notable-awards.html         200
+/community-activities /community-activities.html   200
+/faqs                  /faqs.html                  200
+/donations             /donations.html             200
+/privacy               /privacy.html               200
+/terms                 /terms.html                 200
+/gdpr                  /gdpr.html                  200
+/cookies               /cookies.html               200
 
 # Static compatibility paths.
 /favicon.ico           /public/logoIcons/favicon.png 200
@@ -78,3 +78,6 @@
 /models/*              /public/models/:splat          200
 /aboutUs/*             /public/aboutUs/:splat         200
 /public/*              /:splat                        200
+
+# Final SPA fallback for direct visits and future migrated routes.
+/*                     /index.html                    200

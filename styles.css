@@ -2436,15 +2436,22 @@ body.loaded #app {
   display: none !important;
 }
 
+[data-aboutus-bg-video="off"] body,
 [data-aboutus-bg-video="off"] #content {
-  background-color: #e8e6e3;
+  background-color: #edf4ff;
   background-image:
-    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 80%, rgba(200, 198, 195, 0.45) 0%, transparent 50%),
-    linear-gradient(145deg, #f0eeeb 0%, #ddd9d4 45%, #cfcbc6 100%);
+    radial-gradient(circle at 12% 12%, rgba(86, 216, 255, 0.42) 0%, transparent 38%),
+    radial-gradient(circle at 88% 18%, rgba(176, 128, 255, 0.34) 0%, transparent 42%),
+    radial-gradient(circle at 52% 88%, rgba(174, 255, 205, 0.38) 0%, transparent 45%),
+    linear-gradient(145deg, #f8fbff 0%, #e9e3ff 48%, #dff8f2 100%);
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+}
+
+[data-aboutus-bg-video="off"] .legacy-page,
+[data-aboutus-bg-video="off"] .about-legacy-hero,
+[data-aboutus-bg-video="off"] .about-container {
+  background-color: transparent;
 }
 
 .about-legacy-hero .slam-container {
@@ -4184,6 +4191,13 @@ button:hover {
 
 .route-loading {
   min-height: 100vh;
+  background: #0c0f14;
+}
+
+.route-static-fallback {
+  min-height: 100vh;
+  padding: 8rem 8vw 4rem;
+  color: #f8fafc;
   background: #0c0f14;
 }
 

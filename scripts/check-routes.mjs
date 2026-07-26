@@ -30,8 +30,9 @@ const requiredShellPaths = Object.entries(ROUTE_PATHS)
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  if (!new RegExp(`^${escaped}\\s+/index\\.html\\s+200!?\\s*$`, 'm').test(redirects)) {
-    failures.push(`Missing Netlify SPA rewrite: ${route}`)
+  const shell = `${route}.html`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!new RegExp(`^${escaped}\\s+${shell}\\s+200!?\\s*$`, 'm').test(redirects)) {
+    failures.push(`Missing route-specific Netlify shell rewrite: ${route}`)
   }
 }
 

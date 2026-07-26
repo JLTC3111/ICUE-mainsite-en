@@ -31,3 +31,81 @@
   for = "/index.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Direct visits to React/legacy-migrated routes must return the SPA shell.
+# Existing static files still win because this rewrite is not forced.
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/about-us"
+  to = "/about-us.html"
+  status = 200
+
+[[redirects]]
+  from = "/our-work"
+  to = "/our-work.html"
+  status = 200
+
+[[redirects]]
+  from = "/past-projects"
+  to = "/past-projects.html"
+  status = 200
+
+[[redirects]]
+  from = "/recruitment"
+  to = "/recruitment.html"
+  status = 200
+
+[[redirects]]
+  from = "/news-archive"
+  to = "/news-archive.html"
+  status = 200
+
+[[redirects]]
+  from = "/notable-awards"
+  to = "/notable-awards.html"
+  status = 200
+
+[[redirects]]
+  from = "/community-activities"
+  to = "/community-activities.html"
+  status = 200
+
+[[redirects]]
+  from = "/faqs"
+  to = "/faqs.html"
+  status = 200
+
+[[redirects]]
+  from = "/donations"
+  to = "/donations.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/gdpr"
+  to = "/gdpr.html"
+  status = 200
+
+[[redirects]]
+  from = "/cookies"
+  to = "/cookies.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
