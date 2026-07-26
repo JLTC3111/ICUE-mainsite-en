@@ -1560,7 +1560,6 @@ const MeetOurExpertsBackgroundVideoManager = (() => {
     };
 
     document.addEventListener('change', handler, true);
-    document.addEventListener('input', handler, true);
   };
 
   const bindToggleUI = () => {
@@ -1756,6 +1755,7 @@ const AboutUsBackgroundVideoManager = (() => {
 
   let removeViewportListener = null;
   let visibilityHandler = null;
+  let initialized = false;
 
   const ensureToggleDelegation = () => {
     if (document._aboutUsToggleDelegationBound) return;
@@ -1791,7 +1791,6 @@ const AboutUsBackgroundVideoManager = (() => {
     };
 
     document.addEventListener('change', handler, true);
-    document.addEventListener('input', handler, true);
   };
 
   const bindToggleUI = () => {
@@ -1812,11 +1811,14 @@ const AboutUsBackgroundVideoManager = (() => {
   };
 
   const init = () => {
-    AboutUsBackgroundVideoManager.destroy();
+    if (initialized) AboutUsBackgroundVideoManager.destroy();
     bindToggleUI();
     syncRootVideoStateAttr();
 
-    if (shouldKeepStatic()) return;
+    if (shouldKeepStatic()) {
+      initialized = false;
+      return;
+    }
     const el = getVideoEl();
     if (!el) return;
 
@@ -1869,9 +1871,11 @@ const AboutUsBackgroundVideoManager = (() => {
       else if (!shouldKeepStatic()) attemptPlay(currentEl);
     };
     document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
+    initialized = true;
   };
 
   const destroy = () => {
+    initialized = false;
     const el = getVideoEl();
     if (el) {
       el.pause();
@@ -1893,8 +1897,23 @@ const AboutUsBackgroundVideoManager = (() => {
   const setEnabled = (enabled) => {
     setUserEnabled(!!enabled);
     syncRootVideoStateAttr();
-    if (enabled) init();
-    else destroy();
+
+    const el = getVideoEl();
+    if (!enabled) {
+      // Keep the loaded source warm. Removing it and calling load() here made
+      // the About Us page block for several seconds on every toggle cycle.
+      el?.pause();
+    } else if (!initialized) {
+      init();
+    } else if (el) {
+      el.muted = true;
+      el.playsInline = true;
+      el.setAttribute('muted', '');
+      el.setAttribute('playsinline', '');
+      el.setAttribute('webkit-playsinline', '');
+      setVideoSource(el);
+      attemptPlay(el);
+    }
 
     window.dispatchEvent(new CustomEvent('icue:aboutUsVideoEnabled', {
       detail: { enabled: !!enabled },

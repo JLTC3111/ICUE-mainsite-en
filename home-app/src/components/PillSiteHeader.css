@@ -437,6 +437,21 @@
     width: calc(100vw - 1rem);
   }
 
+  /* Keep the logo mark and ICUE wordmark together in the first tablet
+     capsule. The compact mobile header uses its own video wordmark layout. */
+  .pill-site-header--tablet .pill-site-header__logo {
+    width: auto;
+    min-width: max-content;
+    gap: 0.32rem;
+    padding-inline: 0.42rem 0.68rem;
+    justify-content: flex-start;
+  }
+
+  .pill-site-header--tablet .pill-site-header__brand {
+    display: block;
+    font-size: clamp(0.72rem, 1.4vw, 0.86rem);
+  }
+
   .pill-site-header__nav-wrap,
   .pill-site-header__items {
     min-width: 0;
@@ -495,6 +510,22 @@
 
   .pill-site-header__link.is-active::after {
     display: none;
+  }
+
+  /* Touch browsers can retain :hover after tapping. Keep More neutral at
+     rest on tablets; its expanded and hidden-page-active states remain clear. */
+  .pill-site-header__more:not([aria-expanded='true']):hover {
+    color: var(--pill-nav-text) !important;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .pill-site-header__more.is-active:not([aria-expanded='true']) {
+    color: var(--pill-nav-text) !important;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
   }
 
   .pill-site-header__actions {

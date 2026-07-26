@@ -141,7 +141,20 @@ export default function MainSiteNav({
   }, []);
 
   const handleAboutUsVideoToggle = useCallback((enabled) => {
-    window.AboutUsBackgroundVideoManager?.setEnabled?.(enabled);
+    setAboutUsVideoEnabled(!!enabled);
+    const manager = window.AboutUsBackgroundVideoManager;
+    if (manager?.setEnabled) {
+      manager.setEnabled(enabled);
+      return;
+    }
+
+    // The About Us legacy runtime loads after the shell. Preserve an early
+    // toggle so the first interaction is applied when that manager initializes.
+    try {
+      localStorage.setItem('aboutUs_bg_video_enabled', enabled ? '1' : '0');
+    } catch {
+      // ignore unavailable storage
+    }
   }, []);
 
   const syncAboutUsVideoToggleState = useCallback(() => {
