@@ -50,7 +50,6 @@ const LEGACY_PAGES = [
   'notableAwards.html',
   'communityActivities.html',
   'FAQs.html',
-  'donations.html',
   'privacy.html',
   'terms.html',
   'gdpr.html',

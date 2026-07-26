@@ -326,7 +326,6 @@ const html = `
             <div class="collapsible">
                 <a href="/src/pages/FAQs.html">FAQs</a>
                 <a href="/recruitment">Job Opportunities</a>
-                <a href="/src/pages/donations.html">Donations</a>
             </div>
         </div>
         <div class="footer-brand">

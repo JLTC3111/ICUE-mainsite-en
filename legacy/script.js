@@ -2210,9 +2210,6 @@ window.loadPage = (page) => {
               case 'recruitment':
                 JobBoard.init();
                 break;
-              case 'donations':
-                DonationForm.init();
-                break;
               case 'notableAwards':
                 AwardsPage.init();
                 break;
@@ -3463,251 +3460,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-window.DonationForm = (function () {
-  let selectedAmount = 1000000;
-  let selectedProvider = 'momo';
-  let initBound = false;
-
-  function apiUrl(path) {
-    const configured = String(window.__ICUE_API_BASE_URL__ || '').trim();
-    const base = configured && !configured.startsWith('%')
-      ? configured.replace(/\/$/, '')
-      : '';
-    return `${base}${path}`;
-  }
-
-  function formatVnd(amount) {
-    return Number(amount).toLocaleString('vi-VN');
-  }
-
-  function getMessageEl() {
-    return document.getElementById('donationMessage');
-  }
-
-  function showMessage(text, type) {
-    const el = getMessageEl();
-    if (!el) return;
-    el.textContent = text;
-    el.className = `donation-message visible ${type}`;
-  }
-
-  function clearMessage() {
-    const el = getMessageEl();
-    if (!el) return;
-    el.textContent = '';
-    el.className = 'donation-message';
-  }
-
-  function updateAmountDisplay() {
-    const donateAmountElement = document.getElementById('donateAmount');
-    if (donateAmountElement) {
-      donateAmountElement.textContent = formatVnd(selectedAmount);
-    }
-  }
-
-  function selectAmount(button, amount) {
-    document.querySelectorAll('.amount-btn').forEach((btn) => btn.classList.remove('active'));
-    button.classList.add('active');
-    selectedAmount = Number(amount);
-    updateAmountDisplay();
-    const customAmountInput = document.getElementById('customAmount');
-    if (customAmountInput) customAmountInput.value = '';
-    clearMessage();
-  }
-
-  function updateCustomAmount(input) {
-    const customAmount = parseInt(input.value, 10);
-    if (customAmount && customAmount > 0) {
-      document.querySelectorAll('.amount-btn').forEach((btn) => btn.classList.remove('active'));
-      selectedAmount = customAmount;
-      updateAmountDisplay();
-      clearMessage();
-    }
-  }
-
-  function selectPaymentMethod(labelEl) {
-    document.querySelectorAll('.payment-method').forEach((el) => el.classList.remove('active'));
-    labelEl.classList.add('active');
-    const input = labelEl.querySelector('input[name="paymentMethod"]');
-    if (input) selectedProvider = input.value;
-    const bankPanel = document.getElementById('bankTransferPanel');
-    if (bankPanel) {
-      bankPanel.classList.remove('visible');
-      bankPanel.innerHTML = '';
-    }
-    clearMessage();
-  }
-
-  function setLoading(loading) {
-    const btn = document.getElementById('donateSubmitBtn');
-    if (!btn) return;
-    btn.disabled = loading;
-    btn.classList.toggle('loading', loading);
-  }
-
-  function renderBankDetails(details) {
-    const panel = document.getElementById('bankTransferPanel');
-    if (!panel || !details) return;
-    panel.innerHTML = `
-      <p><strong>Transfer instructions</strong></p>
-      <dl>
-        <dt>Bank</dt><dd>${details.bankName}</dd>
-        <dt>Account name</dt><dd>${details.accountName}</dd>
-        <dt>Account number</dt><dd>${details.accountNumber}</dd>
-        ${details.branch ? `<dt>Branch</dt><dd>${details.branch}</dd>` : ''}
-        <dt>Amount</dt><dd>${formatVnd(details.amountVnd)} ₫</dd>
-        <dt>Transfer reference</dt><dd><strong>${details.transferReference}</strong></dd>
-      </dl>
-      <p>Use the reference exactly so we can match your donation.</p>
-    `;
-    panel.classList.add('visible');
-  }
-
-  async function processDonation(event) {
-    event.preventDefault();
-    clearMessage();
-
-    const form = event.target;
-    const formData = new FormData(form);
-    const providerInput = form.querySelector('input[name="paymentMethod"]:checked');
-    const provider = providerInput ? providerInput.value : selectedProvider;
-
-    const payload = {
-      provider,
-      amountVnd: selectedAmount,
-      firstName: formData.get('firstName'),
-      lastName: formData.get('lastName'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      company: formData.get('company'),
-    };
-
-    if (!payload.firstName || !payload.lastName || !payload.email) {
-      showMessage('Please fill in all required fields.', 'error');
-      return;
-    }
-
-    if (!selectedAmount || selectedAmount < 10000) {
-      showMessage('Minimum donation is 10.000 ₫.', 'error');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await fetch(apiUrl(`/api/payments/${provider}/initiate`), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-
-      if (!response.ok) {
-        showMessage(data.message || 'Could not start payment. Please try again.', 'error');
-        return;
-      }
-
-      if (data.bankDetails) {
-        renderBankDetails(data.bankDetails);
-        showMessage('Please complete the bank transfer using the details below.', 'success');
-        return;
-      }
-
-      if (data.redirectUrl) {
-        window.location.href = data.redirectUrl;
-        return;
-      }
-
-      showMessage('Unexpected response from payment server.', 'error');
-    } catch (err) {
-      console.error('[DonationForm]', err);
-      showMessage('Network error. Check your connection and try again.', 'error');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function bindPaymentMethods() {
-    document.querySelectorAll('.payment-method').forEach((label) => {
-      label.addEventListener('click', () => selectPaymentMethod(label));
-    });
-  }
-
-  async function syncPaymentMethodsFromApi() {
-    const grid = document.getElementById('paymentMethodGrid');
-    if (!grid) return;
-
-    try {
-      const response = await fetch(apiUrl('/api/payments/methods'));
-      const data = await response.json();
-      const configured = new Set((data.methods || []).map((m) => m.id));
-
-      let firstActive = null;
-      grid.querySelectorAll('.payment-method').forEach((label) => {
-        const provider = label.getAttribute('data-provider');
-        const enabled = configured.has(provider);
-        label.style.display = enabled ? '' : 'none';
-        label.classList.remove('active');
-        const input = label.querySelector('input[name="paymentMethod"]');
-        if (input) input.disabled = !enabled;
-        if (enabled && !firstActive) firstActive = label;
-      });
-
-      if (firstActive) {
-        selectPaymentMethod(firstActive);
-        const input = firstActive.querySelector('input[name="paymentMethod"]');
-        if (input) input.checked = true;
-      } else {
-        showMessage('No payment methods are configured on the server. Contact the site administrator.', 'error');
-      }
-    } catch (err) {
-      console.warn('[DonationForm] Could not load payment methods:', err);
-    }
-  }
-
-  function init() {
-    const donateAmountElement = document.getElementById('donateAmount');
-    if (!donateAmountElement) return;
-
-    updateAmountDisplay();
-
-    if (initBound) return;
-    initBound = true;
-    bindPaymentMethods();
-    syncPaymentMethodsFromApi();
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('cancelled') === '1') {
-      showMessage('Payment was cancelled. You can try again when ready.', 'error');
-    }
-  }
-
-  return {
-    selectAmount,
-    updateCustomAmount,
-    processDonation,
-    init,
-  };
-})();
-
-window.selectAmount = function(button, amount) {
-  if (window.DonationForm && window.DonationForm.selectAmount) {
-    window.DonationForm.selectAmount(button, amount);
-  }
-};
-
-window.updateCustomAmount = function(input) {
-  if (window.DonationForm && window.DonationForm.updateCustomAmount) {
-    window.DonationForm.updateCustomAmount(input);
-  }
-};
-
-window.processDonation = function(event) {
-  if (window.DonationForm && window.DonationForm.processDonation) {
-    window.DonationForm.processDonation(event);
-  }
-};
-
 window.AwardsPage = (function () {
     const observerOptions = {
       threshold: 0.1,
@@ -4519,8 +4271,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           ],
           fallback: {
             answer: lang === 'vi'
-              ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Quyên góp / Liên hệ)?'
-              : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Donations / Contact)?'
+              ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Liên hệ)?'
+              : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Contact)?'
           }
         };
       }
@@ -4642,7 +4394,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           'bao','gia','chi','phi','gia','thoi','gian','quy','trinh','hop','tac','doi','tac','bao','chi','truyen','thong'
         ]);
         const enHints = new Set([
-          'what','how','where','when','services','service','projects','project','contact','recruitment','donation','donate',
+          'what','how','where','when','services','service','projects','project','contact','recruitment',
           'privacy','terms','cookies','gdpr','price','pricing','quote','proposal','meeting','schedule','internship','partner','press'
         ]);
 
@@ -5828,7 +5580,6 @@ function setupLanguageSwitcher() {
     'meetOurExperts': 'meetOurExperts',
     'coreTeam': 'coreTeam',
     'Contact': 'Contact',
-    'donations': 'donations',
     'gdpr': 'gdpr',
     'privacy': 'privacy',
     'recruitment': 'recruitment',
@@ -5845,7 +5596,7 @@ function setupLanguageSwitcher() {
   console.log('[Language Switcher] Current page detected:', currentPageName);
   console.log('[Language Switcher] Target page mapped:', targetPageName);
   
-  const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
+  const staticPages = ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
   
   let targetPath = '';
   console.log('🔧 [DEBUG] Building target path for:', targetPageName);
@@ -5965,11 +5716,6 @@ function initializePageFunctions() {
       console.log('[Init] JobBoard initialized globally');
     }
     
-    if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-      DonationForm.init();
-      console.log('[Init] DonationForm initialized globally');
-    }
-    
     if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
       AwardsPage.init();
       console.log('[Init] AwardsPage initialized globally');
@@ -5993,7 +5739,7 @@ function initializePageFunctions() {
     console.log('🔍 [DEBUG] currentHash:', currentHash);
     
     // static page OR hash-routed page
-    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
+    const staticPages = ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
     const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
     
@@ -6022,14 +5768,6 @@ function initializePageFunctions() {
           console.log('[Init] JobBoard initialized');
         } else {
           console.warn('⚠️ [DEBUG] JobBoard not available or no init method');
-        }
-      } else if (pageName === 'donations' || currentPath.includes('donations.html') || currentHash.includes('donations')) {
-        console.log('💰 [DEBUG] Initializing donations page functions...');
-        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-          DonationForm.init();
-          console.log('[Init] DonationForm initialized');
-        } else {
-          console.warn('⚠️ [DEBUG] DonationForm not available or no init method');
         }
       } else if (pageName === 'faqs' || currentPath.includes('faqs.html')) {
         console.log('❓ [DEBUG] Initializing FAQ page functions...');

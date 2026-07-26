@@ -580,7 +580,7 @@
   transition: color 200ms ease, text-shadow 200ms ease;
 }
 
-.main-site-nav .menu-bar a:hover {
+.main-site-nav:not(.main-site-nav--pill) .menu-bar a:hover {
   animation: msn-wiggle 0.25s ease-in-out;
   transform: scale(1.1);
 }
@@ -798,12 +798,8 @@
   z-index: auto;
 }
 
-.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg,
-.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg path,
-.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg circle {
+.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg {
   color: inherit;
-  fill: currentColor;
-  stroke: currentColor;
 }
 
 /* Logo mark + ICUE wordmark above the open drawer (drawer is 1210) */

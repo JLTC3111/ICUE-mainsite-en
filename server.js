@@ -3,13 +3,6 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const { initDatabase } = require('./server/db/client');
-const { apiRouter, pagesRouter } = require('./server/payments/routes');
-const { handlePaypalWebhook } = require('./server/payments/webhooks');
-const paypal = require('./server/payments/providers/paypal');
-
-initDatabase();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
@@ -23,7 +16,6 @@ const SPA_ROUTES = [
   '/notable-awards',
   '/community-activities',
   '/faqs',
-  '/donations',
   '/privacy',
   '/terms',
   '/gdpr',
@@ -43,7 +35,6 @@ const LEGACY_REDIRECTS = {
   '/src/pages/notableAwards.html': '/notable-awards',
   '/src/pages/communityActivities.html': '/community-activities',
   '/src/pages/FAQs.html': '/faqs',
-  '/src/pages/donations.html': '/donations',
   '/src/pages/privacy.html': '/privacy',
   '/src/pages/terms.html': '/terms',
   '/src/pages/gdpr.html': '/gdpr',
@@ -62,31 +53,11 @@ const LEGACY_REDIRECTS = {
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
   '/legacy/pages/FAQs.html': '/faqs',
-  '/legacy/pages/donations.html': '/donations',
   '/legacy/pages/privacy.html': '/privacy',
   '/legacy/pages/terms.html': '/terms',
   '/legacy/pages/gdpr.html': '/gdpr',
   '/legacy/pages/cookies.html': '/cookies',
 };
-
-async function handlePaypalWebhookRoute(req, res) {
-  try {
-    const event = JSON.parse(req.body.toString('utf8'));
-    // Verify signature via PayPal REST endpoint before processing.
-    await paypal.verifyWebhookSignature(req.headers, event);
-    handlePaypalWebhook(event);
-    res.json({ received: true });
-  } catch (err) {
-    console.error('[webhook] PayPal parse error:', err.message);
-    res.status(400).send('Invalid payload');
-  }
-}
-
-app.post(
-  '/api/webhooks/paypal',
-  express.raw({ type: 'application/json' }),
-  handlePaypalWebhookRoute
-);
 
 app.use(cors());
 app.use(express.json());
@@ -132,9 +103,6 @@ app.get('/', (_req, res) => {
   res.sendFile(path.join(ROOT, 'index.html'));
 });
 
-app.use('/api', apiRouter);
-app.use(pagesRouter);
-
 app.use((req, res, next) => {
   if (
     req.method === 'GET' &&
@@ -160,5 +128,4 @@ app.use((_req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Visit http://localhost:${PORT}/donations to donate`);
 });

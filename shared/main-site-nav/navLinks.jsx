@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 
 const IconHome = () => (
-  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" aria-hidden="true">
+  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" stroke="currentColor" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M10 21h4" />
   </svg>
@@ -20,8 +20,8 @@ const IconWork = () => (
 );
 
 const IconProjects = () => (
-  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path fillRule="evenodd" clipRule="evenodd" d="M4 4C4.55228 4 5 4.44772 5 5V11.5858L7.29289 9.29289C7.59725 8.98853 8.06222 8.91308 8.44721 9.10557L11.6576 10.7108L15.1679 5.4453C15.4477 5.02568 15.9961 4.88003 16.4472 5.10557L20.4472 7.10557C20.786 7.27496 21 7.62123 21 8V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V14.0002V5C3 4.44772 3.44772 4 4 4Z" fill="currentColor" />
+  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
   </svg>
 );
 
@@ -35,6 +35,13 @@ const IconAbout = () => (
   <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+  </svg>
+);
+
+const IconContact = () => (
+  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5A2.25 2.25 0 0 1 22.5 7.5v9a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 16.5v-9a2.25 2.25 0 0 1 2.25-2.25Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 6.75 8.384 5.589a2.46 2.46 0 0 0 2.732 0L21.75 6.75" />
   </svg>
 );
 
@@ -57,6 +64,7 @@ export const DRAWER_LINKS = [
   { page: 'pastProjects', href: '#/pastProjects', label: 'Project History', icon: IconProjects, closeOnly: true },
   { page: 'News', href: '#/News', label: 'News', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '#/aboutUs', label: 'About Us', icon: IconAbout, closeOnly: true },
+  { page: 'Contact', href: '#/Contact', label: 'Contact', icon: IconContact, closeOnly: true },
 ];
 
 /** Path-based drawer links for the standalone home React app. */
@@ -67,6 +75,7 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'pastProjects', href: '/past-projects', label: 'Project History', icon: IconProjects, closeOnly: true },
   { page: 'News', href: 'https://icue.vn/newsroom/?from=en-news', label: 'News', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'About Us', icon: IconAbout, closeOnly: true },
+  { page: 'Contact', href: '/contact', label: 'Contact', icon: IconContact, closeOnly: true },
 ];
 
 export const PEOPLE_SUBMENU = {

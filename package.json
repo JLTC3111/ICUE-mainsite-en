@@ -1,13 +1,12 @@
 {
   "name": "icue-main-site-english",
   "version": "1.0.0",
-  "description": "ICUE Website with Stripe Integration",
+  "description": "ICUE Vietnam English website",
   "main": "server.js",
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
     "@tailwindcss/vite": "^4.1.7",
     "aos": "^2.3.4",
-    "better-sqlite3": "^11.10.0",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -25,7 +24,6 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.0",
-    "stripe": "^12.0.0",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.6.0",
     "three": "^0.172.0"
@@ -45,7 +43,6 @@
     "preview": "npm run preview --prefix home-app --",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
-    "db:migrate": "node -e \"require('./server/db/client').initDatabase()\"",
     "check:routes": "node scripts/check-routes.mjs"
   }
 }

@@ -50,7 +50,6 @@ const legacyRedirects = {
   '/src/pages/notableAwards.html': ROUTE_PATHS.notableAwards,
   '/src/pages/communityActivities.html': ROUTE_PATHS.communityActivities,
   '/src/pages/FAQs.html': ROUTE_PATHS.faqs,
-  '/src/pages/donations.html': ROUTE_PATHS.donations,
   '/src/pages/privacy.html': ROUTE_PATHS.privacy,
   '/src/pages/terms.html': ROUTE_PATHS.terms,
   '/src/pages/gdpr.html': ROUTE_PATHS.gdpr,
@@ -92,12 +91,6 @@ for (const copy of ['home-app/public/_redirects', 'dist-home/_redirects']) {
   }
 }
 
-for (const file of [
-  'server/payments/routes.js',
-  'server/payments/providers/paypal.js',
-]) {
-  if (read(file).includes('/#/')) failures.push(`Retired hash route remains in ${file}`)
-}
 
 if (read('src/pages/article_template.html').includes('href="/youtube"')) {
   failures.push('Broken local /youtube link remains in article_template.html')

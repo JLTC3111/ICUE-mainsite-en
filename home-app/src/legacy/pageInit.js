@@ -12,7 +12,6 @@ const LEGACY_RUNTIME_PAGES = new Set([
   'aboutUs',
   'recruitment',
   'FAQs',
-  'donations',
   'notableAwards',
   'communityActivities',
 ])
@@ -58,6 +57,11 @@ function getNewsArchiveSlider() {
     })
   }
   return newsArchiveSliderPromise
+}
+
+export function preloadLegacyPage(pageName) {
+  if (pageName === 'newsArchive') return getNewsArchiveSlider()
+  return Promise.resolve()
 }
 
 function loadGsapRuntime() {
@@ -132,9 +136,6 @@ const PAGE_INIT = {
   },
   FAQs: async () => {
     window.initFrequentlyAskedQuestions?.()
-  },
-  donations: async () => {
-    window.DonationForm?.init?.()
   },
   notableAwards: async () => {
     window.AwardsPage?.init?.()

@@ -6,7 +6,7 @@
       "id": "greeting",
       "keywords": ["xin chào", "chào", "hello", "hi", "alo", "chào bạn"],
       "phrases": ["xin chào", "chào bạn", "hello"],
-      "answer": "Xin chào! Mình có thể giúp bạn tìm thông tin về dịch vụ, dự án, quy trình, chi phí, tuyển dụng, quyên góp, chính sách và cách liên hệ ICUE. Bạn đang quan tâm mục nào?"
+      "answer": "Xin chào! Mình có thể giúp bạn tìm thông tin về dịch vụ, dự án, quy trình, chi phí, tuyển dụng, chính sách và cách liên hệ ICUE. Bạn đang quan tâm mục nào?"
     },
     {
       "id": "services",
@@ -204,15 +204,6 @@
       ]
     },
     {
-      "id": "donations",
-      "keywords": ["quyên góp", "donate", "ủng hộ", "donation"],
-      "phrases": ["cách quyên góp", "donate"],
-      "answer": "Bạn có thể xem trang Quyên góp để biết các hình thức ủng hộ. Nói mình biết bạn muốn ủng hộ hoạt động nào, mình sẽ hướng dẫn nhanh.",
-      "links": [
-        {"label": "Quyên góp", "url": "#/donations"}
-      ]
-    },
-    {
       "id": "schedule_meeting",
       "keywords": ["hẹn", "lịch", "cuộc gọi", "tư vấn", "meeting"],
       "phrases": ["hẹn lịch tư vấn", "đặt lịch"],
@@ -253,6 +244,6 @@
     }
   ],
   "fallback": {
-    "answer": "Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn 1 chút không (ví dụ: bạn đang hỏi về Dịch vụ, Dự án, Tuyển dụng, Quyên góp, hay Liên hệ)?"
+    "answer": "Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn 1 chút không (ví dụ: bạn đang hỏi về Dịch vụ, Dự án, Tuyển dụng hay Liên hệ)?"
   }
 }

@@ -369,7 +369,6 @@ footer {
                     <div class="collapsible">
                         <a href="/src/pages/FAQs.html" onclick="closeDrawerMenu();" data-page="FAQs">FAQs</a>
                         <a href="/recruitment" onclick="closeDrawerMenu();" data-page="recruitment">Job Opportunities</a>
-                        <a href="/src/pages/donations.html" onclick="closeDrawerMenu();" data-page="donations">Donations</a>
                     </div>
                 </div>
                 <div class="footer-brand">
@@ -466,7 +465,7 @@ footer {
                 return;
             }
 
-            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/ourWork', '#/pastProjects', '#/News', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities'];
+            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/ourWork', '#/pastProjects', '#/News', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/notableAwards', '#/communityActivities'];
             const currentPage = window.location.hash.trim();
             console.log("Current page:", currentPage);
             const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();

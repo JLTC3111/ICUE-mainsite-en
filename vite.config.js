@@ -77,7 +77,6 @@ function homeDevFallback() {
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
     '/legacy/pages/FAQs.html': '/faqs',
-    '/legacy/pages/donations.html': '/donations',
     '/legacy/pages/privacy.html': '/privacy',
     '/legacy/pages/terms.html': '/terms',
     '/legacy/pages/gdpr.html': '/gdpr',
@@ -98,7 +97,6 @@ function homeDevFallback() {
     '/src/pages/notableAwards.html': '/notable-awards',
     '/src/pages/communityActivities.html': '/community-activities',
     '/src/pages/FAQs.html': '/faqs',
-    '/src/pages/donations.html': '/donations',
     '/src/pages/privacy.html': '/privacy',
     '/src/pages/terms.html': '/terms',
     '/src/pages/gdpr.html': '/gdpr',
@@ -195,12 +193,6 @@ export default defineConfig({
       '@icue/home-layout': path.resolve(__dirname, 'shared/home-layout'),
       '@icue/ui': path.resolve(__dirname, 'shared/ui'),
       '@icue/site-footer': path.resolve(__dirname, 'shared/site-footer'),
-    },
-  },
-  server: {
-    proxy: {
-      '/api': 'http://localhost:3000',
-      '/donations': 'http://localhost:3000',
     },
   },
 });

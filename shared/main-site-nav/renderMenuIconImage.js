@@ -31,8 +31,11 @@ export function renderMenuIconImage(isOpen = false, size = 512) {
   };
 
   if (isOpen) {
-    drawBar(7.834, 7.75, 9.333, 1.5, { translateY: 2.75, rotateDeg: -47.5 });
-    drawBar(7.834, 15.75, 9.333, 1.5, { translateY: -2.75, rotateDeg: 47.5 });
+    // Draw the close mark around one shared center. Translating after rotating
+    // moved both legacy bars sideways in their rotated coordinate systems,
+    // which made one edge appear clipped in the compact Pill menu button.
+    drawBar(6.5, 11.75, 12, 1.5, { rotateDeg: -45 });
+    drawBar(6.5, 11.75, 12, 1.5, { rotateDeg: 45 });
   } else {
     drawBar(7.834, 7.75, 9.333, 1.5);
     drawBar(5.5, 11.75, 14, 1.5);

@@ -8,7 +8,6 @@ export const FOOTER_LABELS = {
   archive: 'Archive',
   faqs: 'FAQs',
   recruitment: 'Recruitment',
-  donations: 'Donations',
   privacy: 'Privacy',
   terms: 'Terms',
   gdpr: 'GDPR',

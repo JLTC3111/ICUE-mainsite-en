@@ -6,7 +6,7 @@
       "id": "greeting",
       "keywords": ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"],
       "phrases": ["hello", "hi", "hey there"],
-      "answer": "Hi! I can help you find info about ICUE’s services, projects, recruitment, donations, policies, and contact details. What are you looking for?"
+      "answer": "Hi! I can help you find info about ICUE’s services, projects, recruitment, policies, and contact details. What are you looking for?"
     },
     {
       "id": "services",
@@ -204,15 +204,6 @@
       ]
     },
     {
-      "id": "donations",
-      "keywords": ["donate", "donation", "support", "contribute"],
-      "phrases": ["how to donate", "donate"],
-      "answer": "You can find donation/support options on the Donations page. Tell me what you want to support and I’ll guide you to the best option.",
-      "links": [
-        {"label": "Donations", "url": "#/donations"}
-      ]
-    },
-    {
       "id": "schedule_meeting",
       "keywords": ["meeting", "call", "appointment", "schedule", "consultation"],
       "phrases": ["can we schedule a call", "book a meeting"],
@@ -253,6 +244,6 @@
     }
   ],
   "fallback": {
-    "answer": "I’m not fully sure I understood. Could you clarify what you’re asking about (Services, Projects, Recruitment, Donations, Contact, or Policies)?"
+    "answer": "I’m not fully sure I understood. Could you clarify what you’re asking about (Services, Projects, Recruitment, Contact, or Policies)?"
   }
 }

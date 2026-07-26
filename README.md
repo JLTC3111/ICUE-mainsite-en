@@ -1,100 +1,20 @@
 # iCUE Vietnam — English main site
 
-Vite SPA with canonical history routes (`/donations`, `/about-us`, …) and an Express server for payments and static assets. Retired `#/…` bookmarks are converted in the browser.
+Vite SPA with canonical history routes such as `/about-us`, `/our-work`, and
+`/news-archive`. Retired `#/…` bookmarks are converted in the browser.
 
 ## Quick start
 
 ```bash
 npm install
-cp .env.example .env   # add provider credentials
-npm run server         # http://localhost:3000
+npm run dev
 ```
 
-For frontend-only dev with API proxy:
+Use `npm run server` to serve the production-style Express app on port 3000.
+
+## Build and verify
 
 ```bash
-npm run server         # terminal 1 — port 3000
-npm run dev            # terminal 2 — Vite proxies /api → 3000
+npm run build
+npm run check:routes
 ```
-
-Open `http://localhost:3000/donations` to use the donation form.
-
-For a static frontend deployment such as Netlify, run the Express payment service
-on a persistent host and set `VITE_API_BASE_URL` to that HTTPS origin during the
-frontend build. The API host should set `APP_BASE_URL` to itself and
-`SITE_BASE_URL` to the public frontend origin.
-
-## Payments
-
-Integrated providers (one-time donations, **VND**):
-
-| Provider | Role |
-|----------|------|
-| **MoMo** | E-wallet redirect + IPN webhook |
-| **ZaloPay** | E-wallet redirect + callback webhook |
-| **VNPay** | Card/bank redirect + IPN webhook |
-| **PayPal** | International cards/wallets (VND) + webhook |
-| **Bank transfer** | Manual instructions (no automatic capture) |
-
-### Configuration
-
-1. Copy `.env.example` to `.env`.
-2. Fill credentials for each provider you enable (see comments in `.env.example`).
-3. Set `APP_BASE_URL` to the public Express/API HTTPS origin (required for return URLs and webhooks).
-4. Set `SITE_BASE_URL` to the public frontend origin.
-5. If the frontend and API use different origins, set `VITE_API_BASE_URL` during the frontend build.
-
-### Test vs production
-
-| Provider | Sandbox / test | Production |
-|----------|----------------|------------|
-| MoMo | `MOMO_ENV=test`, host `test-payment.momo.vn` | `MOMO_ENV=production` |
-| ZaloPay | `ZALOPAY_ENV=sandbox` | `ZALOPAY_ENV=production` |
-| VNPay | `VNPAY_ENV=sandbox` | `VNPAY_ENV=production` |
-| PayPal | `PAYPAL_MODE=sandbox` | `PAYPAL_MODE=live` |
-
-Only methods with complete env vars are returned from `GET /api/payments/methods`; the donations UI hides unconfigured providers.
-
-### Database (SQLite)
-
-Donations are stored in **`data/icue-payments.sqlite`** (override with `DATABASE_PATH` in `.env`).
-
-| Table | Purpose |
-|-------|---------|
-| `donors` | Email, name, phone, company (upserted by email) |
-| `orders` | Amount, provider, status, provider transaction IDs |
-| `payment_events` | Audit log (created, status changes, webhooks) |
-| `webhook_receipts` | Idempotency keys for provider callbacks |
-
-Migrations run automatically on server start. To apply manually:
-
-```bash
-npm run db:migrate
-```
-
-Inspect locally: `sqlite3 data/icue-payments.sqlite` → `SELECT * FROM orders;`
-
-For production at scale, point `DATABASE_PATH` at a persistent volume or migrate the schema to PostgreSQL.
-
-### API
-
-- `GET /api/payments/methods` — configured methods + endpoint metadata
-- `GET /api/payments/config` — provider API bases (sandbox vs production)
-- `GET /api/payments/orders/:orderId` — order + donor status
-- `POST /api/payments/{provider}/initiate` — start payment (rate-limited)
-  - `provider`: `paypal | momo | zalopay | vnpay | bank_transfer`
-- `POST /api/payments/create` — generic initiation (backward compatible)
-- `GET /donations/return` — user return after redirect
-- Webhooks: `/api/webhooks/momo`, `/api/webhooks/zalopay`, `/api/webhooks/vnpay`, `/api/webhooks/paypal`
-
-### Known limitations
-
-- **VNPay / MoMo** — merchant registration and URL whitelisting required.
-- **PayPal** — account must support VND; business verification may apply.
-- **Bank transfer** — donations stay `awaiting_transfer` until confirmed manually.
-
-See [docs/PAYMENTS-TESTING.md](docs/PAYMENTS-TESTING.md) for sandbox test steps.
-
-## Legacy Stripe
-
-The previous Stripe Checkout flow (`README-STRIPE.md`) is replaced by the VN payment stack. Stripe env vars remain in `.env.example` for reference only.

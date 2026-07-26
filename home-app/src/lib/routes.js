@@ -12,7 +12,6 @@ export const ROUTE_PATHS = {
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   faqs: '/faqs',
-  donations: '/donations',
   privacy: '/privacy',
   terms: '/terms',
   gdpr: '/gdpr',
@@ -33,7 +32,6 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.notableAwards]: 'notableAwards',
   [ROUTE_PATHS.communityActivities]: 'communityActivities',
   [ROUTE_PATHS.faqs]: 'FAQs',
-  [ROUTE_PATHS.donations]: 'donations',
   [ROUTE_PATHS.privacy]: 'privacy',
   [ROUTE_PATHS.terms]: 'terms',
   [ROUTE_PATHS.gdpr]: 'gdpr',
@@ -55,7 +53,6 @@ export const LEGACY_PAGE_FILES = {
   notableAwards: 'notableAwards.html',
   communityActivities: 'communityActivities.html',
   FAQs: 'FAQs.html',
-  donations: 'donations.html',
   privacy: 'privacy.html',
   terms: 'terms.html',
   gdpr: 'gdpr.html',
@@ -78,6 +75,10 @@ export function pathFromPage(page) {
 export function prepareLegacyHtml(rawHtml) {
   const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
 
+  doc.body?.querySelectorAll('.news-logo-swiper img').forEach((image) => {
+    image.setAttribute('loading', 'eager')
+    image.setAttribute('decoding', 'async')
+  })
   doc.body?.querySelectorAll('img').forEach((image) => {
     if (!image.hasAttribute('loading')) image.setAttribute('loading', 'lazy')
     if (!image.hasAttribute('decoding')) image.setAttribute('decoding', 'async')
@@ -119,7 +120,6 @@ export function prepareLegacyHtml(rawHtml) {
     '#/communityActivities': ROUTE_PATHS.communityActivities,
     '#/FAQs': ROUTE_PATHS.faqs,
     '#/faqs': ROUTE_PATHS.faqs,
-    '#/donations': ROUTE_PATHS.donations,
     '#/privacy': ROUTE_PATHS.privacy,
     '#/terms': ROUTE_PATHS.terms,
     '#/gdpr': ROUTE_PATHS.gdpr,
@@ -177,7 +177,6 @@ export function pathFromLegacyHash(hash) {
     communityActivities: ROUTE_PATHS.communityActivities,
     FAQs: ROUTE_PATHS.faqs,
     faqs: ROUTE_PATHS.faqs,
-    donations: ROUTE_PATHS.donations,
     privacy: ROUTE_PATHS.privacy,
     terms: ROUTE_PATHS.terms,
     gdpr: ROUTE_PATHS.gdpr,

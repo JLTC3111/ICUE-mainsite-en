@@ -12,7 +12,6 @@
 /src/pages/notableAwards.html       /notable-awards           301
 /src/pages/communityActivities.html /community-activities     301
 /src/pages/FAQs.html                /faqs                     301
-/src/pages/donations.html           /donations                301
 /src/pages/privacy.html             /privacy                  301
 /src/pages/terms.html               /terms                    301
 /src/pages/gdpr.html                /gdpr                     301
@@ -32,7 +31,6 @@
 /legacy/pages/notableAwards.html       /notable-awards           301
 /legacy/pages/communityActivities.html /community-activities     301
 /legacy/pages/FAQs.html                /faqs                     301
-/legacy/pages/donations.html           /donations                301
 /legacy/pages/privacy.html             /privacy                  301
 /legacy/pages/terms.html               /terms                    301
 /legacy/pages/gdpr.html                /gdpr                     301
@@ -48,7 +46,6 @@
 /notable-awards/       /notable-awards          301
 /community-activities/ /community-activities    301
 /faqs/                 /faqs                    301
-/donations/            /donations               301
 /privacy/              /privacy                 301
 /terms/                /terms                   301
 /gdpr/                 /gdpr                    301
@@ -64,7 +61,6 @@
 /notable-awards        /notable-awards.html         200
 /community-activities /community-activities.html   200
 /faqs                  /faqs.html                  200
-/donations             /donations.html             200
 /privacy               /privacy.html               200
 /terms                 /terms.html                 200
 /gdpr                  /gdpr.html                  200

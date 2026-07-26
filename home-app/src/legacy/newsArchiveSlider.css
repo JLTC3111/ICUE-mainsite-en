@@ -5,6 +5,8 @@
   margin: 1.25rem auto 1rem;
   z-index: 7;
   height: auto;
+  min-height: 142px;
+  overflow: hidden;
 }
 
 .legacy-page .news-logo-swiper {
@@ -13,6 +15,13 @@
   overflow: hidden;
   padding: 4px 0 1.75rem;
   mask-image: linear-gradient(to right, transparent, #000 8% 92%, transparent);
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+.legacy-page .news-logo-swiper-wrap[data-news-logo-state="pending"] .news-logo-swiper {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .legacy-page .news-logo-swiper .swiper-wrapper {
@@ -76,6 +85,7 @@
 @media (max-width: 1024px) {
   .legacy-page .news-logo-swiper-wrap {
     margin-top: 1.5rem;
+    min-height: 112px;
   }
   .legacy-page .news-logo-swiper .swiper-slide {
     width: 160px;
@@ -90,6 +100,7 @@
   .legacy-page .news-logo-swiper-wrap {
     margin-top: 1rem;
     margin-bottom: 0.75rem;
+    min-height: 95px;
   }
   .legacy-page .news-logo-swiper {
     padding-bottom: 1.5rem;

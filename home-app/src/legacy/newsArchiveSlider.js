@@ -169,6 +169,8 @@ function detachCoverflowKeyboard() {
 function initLogoSwiper(generation) {
   const el = findLogoEl()
   if (!el || generation !== logoState.generation) return
+  const wrap = el.closest('.news-logo-swiper-wrap')
+  wrap?.setAttribute('data-news-logo-state', 'pending')
 
   if (logoState.swiper) {
     logoState.swiper.destroy(true, true)
@@ -197,6 +199,19 @@ function initLogoSwiper(generation) {
       0: { spaceBetween: 16 },
       551: { spaceBetween: 22 },
       1025: { spaceBetween: 36 },
+    },
+    on: {
+      init(swiper) {
+        requestAnimationFrame(() => {
+          if (generation !== logoState.generation || swiper.destroyed) return
+          swiper.update()
+          requestAnimationFrame(() => {
+            if (generation === logoState.generation && !swiper.destroyed) {
+              wrap?.setAttribute('data-news-logo-state', 'ready')
+            }
+          })
+        })
+      },
     },
   })
 }

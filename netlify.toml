@@ -80,11 +80,6 @@
   status = 200
 
 [[redirects]]
-  from = "/donations"
-  to = "/donations.html"
-  status = 200
-
-[[redirects]]
   from = "/privacy"
   to = "/privacy.html"
   status = 200

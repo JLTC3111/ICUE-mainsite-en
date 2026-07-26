@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import Menu from 'lucide-react/dist/esm/icons/menu';
-import X from 'lucide-react/dist/esm/icons/x';
 import MetallicPaint from '@icue/ui/MetallicPaint/MetallicPaint';
-import { renderCloseIconFallback, renderLucideIconImage } from './renderLucideIconImage';
+import { renderMenuIconImage } from './renderMenuIconImage';
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined'
@@ -47,20 +45,11 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
   const reducedMotion = prefersReducedMotion();
 
   useEffect(() => {
-    let cancelled = false;
-
-    Promise.all([
-      renderLucideIconImage(Menu, 512, 2.25),
-      renderLucideIconImage(X, 512, 4),
-    ]).then(([menuSrc, closeSrc]) => {
-      if (cancelled) return;
-      setMenuImageSrc(menuSrc);
-      setCloseImageSrc(closeSrc || renderCloseIconFallback());
-    });
-
-    return () => {
-      cancelled = true;
-    };
+    // Generate masks directly on canvas. The previous implementation mounted
+    // temporary React roots to serialize Lucide SVGs; a queued retry could run
+    // after its timeout unmounted the root, causing React production error #409.
+    setMenuImageSrc(renderMenuIconImage(false, 512));
+    setCloseImageSrc(renderMenuIconImage(true, 512));
   }, []);
 
   const speed = reducedMotion ? 0 : 0.5;

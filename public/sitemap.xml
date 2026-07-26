@@ -46,11 +46,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://en.icue.vn/donations</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://en.icue.vn/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

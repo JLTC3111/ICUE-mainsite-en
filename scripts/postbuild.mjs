@@ -53,11 +53,6 @@ const routeShells = [
     description: 'Find answers to frequently asked questions about ICUE Vietnam, our services, projects, and partnerships.',
   },
   {
-    slug: 'donations',
-    title: 'Donations | ICUE Vietnam',
-    description: 'Support ICUE Vietnam’s community programmes and sustainable urban-development initiatives.',
-  },
-  {
     slug: 'privacy',
     title: 'Privacy Policy | ICUE Vietnam',
     description: 'Read the ICUE Vietnam privacy policy and learn how personal information is handled.',

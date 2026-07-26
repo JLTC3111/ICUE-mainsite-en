@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { cleanupLegacyPage, initLegacyPage } from '../legacy/pageInit'
+import { cleanupLegacyPage, initLegacyPage, preloadLegacyPage } from '../legacy/pageInit'
 import {
   loadModelViewerWhenVisible,
   pageUsesModelViewer,
@@ -27,6 +27,9 @@ export default function LegacyHtmlPage() {
     const file = LEGACY_PAGE_FILES[pageName]
     let cancelled = false
     const controller = new AbortController()
+
+    // Fetch route-specific behavior and legacy markup concurrently.
+    void preloadLegacyPage(pageName).catch(() => {})
 
     async function load() {
       setError(null)

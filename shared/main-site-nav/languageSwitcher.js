@@ -22,7 +22,6 @@ const PAGE_MAPPING = {
   coreTeam: 'coreTeam',
   Contact: 'Contact',
   FAQs: 'FAQs',
-  donations: 'donations',
   gdpr: 'gdpr',
   privacy: 'privacy',
   recruitment: 'recruitment',
@@ -33,7 +32,7 @@ const PAGE_MAPPING = {
 };
 
 const STATIC_PAGES = [
-  'donations', 'gdpr', 'privacy', 'recruitment', 'terms',
+  'gdpr', 'privacy', 'recruitment', 'terms',
   'faqs', 'cookies', 'notableAwards', 'communityActivities',
 ];
 
@@ -53,7 +52,6 @@ export const MIGRATED_PAGE_PATHS = {
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   FAQs: '/faqs',
-  donations: '/donations',
   privacy: '/privacy',
   terms: '/terms',
   gdpr: '/gdpr',
