@@ -560,8 +560,8 @@ nav a:hover {
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-grid">
-      <div class="footer-section">
-         <button class="footer-heading footer-toggle footer-heading underline-hover" aria-expanded="false">
+      <div class="footer-section open">
+         <button class="footer-heading footer-toggle footer-heading underline-hover" aria-expanded="true">
           Follow Us <span class="arrow"><svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
         </svg></span>
@@ -604,8 +604,8 @@ nav a:hover {
         </ul>
       </div>
 
-      <div class="footer-section">
-        <button class="footer-heading footer-toggle footer-heading underline-hover" aria-expanded="false">
+      <div class="footer-section open">
+        <button class="footer-heading footer-toggle footer-heading underline-hover" aria-expanded="true">
           Other Pages <span class="arrow"><svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
         </svg></span>
@@ -618,8 +618,8 @@ nav a:hover {
         </ul>
       </div>
 
-      <div class="footer-section">
-        <button class="footer-heading footer-toggle footer-heading underline-hover" aria-expanded="false">
+      <div class="footer-section open">
+        <button class="footer-heading footer-toggle footer-heading underline-hover" aria-expanded="true">
           Contact Us <span class="arrow"><svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
         </svg>
@@ -687,7 +687,7 @@ nav a:hover {
     }
 
     // Build target URL for card template with preserved card ID
-    const targetUrl = `${currentProtocol}//${targetSite.domain}/src/pages/card.html?id=${cardId}`;
+    const targetUrl = `${currentProtocol}//${targetSite.domain}/legacy/pages/card.html?id=${cardId}`;
 
     console.log('[Card Language Switcher] Current site:', currentSite.language);
     console.log('[Card Language Switcher] Target site:', targetSite.language);
@@ -786,7 +786,7 @@ nav a:hover {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script src="../card.js"></script>
+  <script src="/legacy/card.js"></script>
   <script>
   // Get cardId from URL
   const params = new URLSearchParams(window.location.search);

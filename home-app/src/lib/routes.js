@@ -7,8 +7,8 @@ export const ROUTE_PATHS = {
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
   newsArchive: '/news-archive',
-  newsArchiveLegacyHtml: '/src/pages/News.html',
-  newsArchiveLegacyAlt: '/src/pages/News',
+  newsArchiveLegacyHtml: '/legacy/pages/News.html',
+  newsArchiveLegacyAlt: '/legacy/pages/News',
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   faqs: '/faqs',
@@ -147,8 +147,8 @@ export function prepareLegacyHtml(rawHtml) {
   for (const [pageId, file] of Object.entries(LEGACY_PAGE_FILES)) {
     const route = PAGE_TO_PATH[pageId]
     if (!route) continue
-    bodyHtml = bodyHtml.replaceAll(`href="/src/pages/${file}"`, `href="${route}"`)
-    bodyHtml = bodyHtml.replaceAll(`href='/src/pages/${file}'`, `href='${route}'`)
+    bodyHtml = bodyHtml.replaceAll(`href="/legacy/pages/${file}"`, `href="${route}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${route}'`)
   }
 
   const bodyClass = doc.body?.className?.trim() || ''

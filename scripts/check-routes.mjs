@@ -19,8 +19,13 @@ for (const key of Object.keys(ROUTE_PATHS)) {
 }
 
 for (const file of Object.values(LEGACY_PAGE_FILES)) {
-  if (!fs.existsSync(path.join(root, 'src/pages', file))) {
-    failures.push(`Missing legacy source page: src/pages/${file}`)
+  if (!fs.existsSync(path.join(root, 'legacy/pages', file))) {
+    failures.push(`Missing legacy source page: legacy/pages/${file}`)
+  }
+}
+for (const file of ['card.html', 'article_template.html']) {
+  if (!fs.existsSync(path.join(root, 'legacy/pages', file))) {
+    failures.push(`Missing legacy source page: legacy/pages/${file}`)
   }
 }
 
@@ -92,7 +97,7 @@ for (const copy of ['home-app/public/_redirects', 'dist-home/_redirects']) {
 }
 
 
-if (read('src/pages/article_template.html').includes('href="/youtube"')) {
+if (read('legacy/pages/article_template.html').includes('href="/youtube"')) {
   failures.push('Broken local /youtube link remains in article_template.html')
 }
 

@@ -26,8 +26,6 @@
 /legacy/pages/recruitment.html         /recruitment              301
 /legacy/pages/News.html                /news-archive             301
 /legacy/pages/orgStructure.html        https://icue.vn/structure/ 301
-/legacy/pages/card.html                /src/pages/card.html      301
-/legacy/pages/article_template.html    /src/pages/article_template.html 301
 /legacy/pages/notableAwards.html       /notable-awards           301
 /legacy/pages/communityActivities.html /community-activities     301
 /legacy/pages/FAQs.html                /faqs                     301

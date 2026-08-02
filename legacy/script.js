@@ -2146,7 +2146,7 @@ window.loadPage = (page) => {
     }
   };
 
-  fetch(`/src/pages/${pageToFetch}.html`, fetchOptions)
+  fetch(`/legacy/pages/${pageToFetch}.html`, fetchOptions)
     .then((response) => response.text())
     .then((data) => {
       markFetchDoneIfCurrent();

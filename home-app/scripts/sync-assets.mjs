@@ -54,6 +54,8 @@ const LEGACY_PAGES = [
   'terms.html',
   'gdpr.html',
   'cookies.html',
+  'card.html',
+  'article_template.html',
 ]
 
 for (const rel of ASSET_DIRS) {
@@ -61,16 +63,18 @@ for (const rel of ASSET_DIRS) {
 }
 
 for (const file of LEGACY_PAGES) {
-  const source = path.join(siteRoot, 'src/pages', file)
+  const source = path.join(siteRoot, 'legacy/pages', file)
   copyFile(source, path.join(appRoot, 'public/legacy/pages', file))
   copyFile(source, path.join(appRoot, 'public/legacy-embed/pages', file))
 }
 
-copyFile(path.join(siteRoot, 'src/script.js'), path.join(appRoot, 'public/legacy/script.js'))
+copyFile(path.join(siteRoot, 'legacy/script.js'), path.join(appRoot, 'public/legacy/script.js'))
+copyFile(path.join(siteRoot, 'legacy/card.js'), path.join(appRoot, 'public/legacy/card.js'))
+copyFile(path.join(siteRoot, 'legacy/article.js'), path.join(appRoot, 'public/legacy/article.js'))
 copyFile(path.join(siteRoot, '_redirects'), path.join(appRoot, 'public/_redirects'))
 copyFile(
   path.join(siteRoot, 'public/logoIcons/favicon.png'),
   path.join(appRoot, 'public/logoIcons/favicon.png'),
 )
 
-console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, legacy pages, redirects, script.js`)
+console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, legacy pages, redirects, script.js, card.js, article.js`)

@@ -189,7 +189,7 @@ body,
 </style>
 <body>
   <main class="grid">
-    <a href="src/pages/card.html?id=1" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=1" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_1.jpg" loading="lazy">
       </div>
@@ -201,7 +201,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=2" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=2" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_2.jpg" loading="lazy">
       </div>
@@ -213,7 +213,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=3" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=3" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_3.jpg" loading="lazy">
       </div>
@@ -225,7 +225,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=4" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=4" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_4.jpg" loading="lazy">
       </div>
@@ -237,7 +237,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=5" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=5" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_5.jpg" loading="lazy">
       </div>
@@ -249,7 +249,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=6" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=6" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_6.jpg" loading="lazy">
       </div>
@@ -261,7 +261,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=7" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=7" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_7.jpg" loading="lazy">
       </div>
@@ -273,7 +273,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=8" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=8" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_8.jpg" loading="lazy">
       </div>
@@ -285,7 +285,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=9" class="card image-card" data-aos="fade-up">
+    <a href="legacy/pages/card.html?id=9" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_9.jpg" loading="lazy">
       </div>

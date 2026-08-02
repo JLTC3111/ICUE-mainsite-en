@@ -72,8 +72,6 @@ function homeDevFallback() {
     '/legacy/pages/recruitment.html': '/recruitment',
     '/legacy/pages/News.html': '/news-archive',
     '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
-    '/legacy/pages/card.html': '/src/pages/card.html',
-    '/legacy/pages/article_template.html': '/src/pages/article_template.html',
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
     '/legacy/pages/FAQs.html': '/faqs',
@@ -107,7 +105,7 @@ function homeDevFallback() {
     name: 'home-dev-fallback',
     configureServer(server) {
       // Pre-middleware: rewrite News archive to the React shell before Vite
-      // can serve the static src/pages/News.html file.
+      // can serve the static legacy/pages/News.html file.
       return () => {
         server.middlewares.use((req, res, next) => {
           const urlPath = (req.url || '').split('?')[0];

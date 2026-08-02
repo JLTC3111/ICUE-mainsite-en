@@ -152,7 +152,7 @@ function buildRouteShell(indexHtml, route) {
       url: `${siteOrigin}/`,
     },
   }).replaceAll('<', '\\u003c');
-  const pageSourcePath = path.join(root, 'src/pages', route.pageFile);
+  const pageSourcePath = path.join(root, 'legacy/pages', route.pageFile);
   const pageSource = fs.readFileSync(pageSourcePath, 'utf8');
   const embeddedPageSource = JSON.stringify(pageSource).replaceAll('<', '\\u003c');
 
@@ -205,7 +205,6 @@ if (!fs.existsSync(homeDist)) {
   process.exit(1);
 }
 
-copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
 for (const file of ['robots.txt', 'sitemap.xml']) {
@@ -261,7 +260,6 @@ for (const dir of rootDirsFromHome) {
   copyDir(from, path.join(root, dir));
 }
 
-copyDir(path.join(homeDist, 'src/pages'), path.join(root, 'src/pages'));
 copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
 
 console.log('[postbuild] Synced home-app production build to repo root for Netlify deploy.');

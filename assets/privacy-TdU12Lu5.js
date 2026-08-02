@@ -375,7 +375,7 @@ const n=`<!DOCTYPE html>
                     <li>Provide relevant content and ads</li>
                 </ul>
                 
-                <div>You can manage cookies in your browser settings or <a href="/src/pages/cookies.html" style="color: #1e40af; text-decoration: underline;">view detailed cookies policy</a>.</div>
+                <div>You can manage cookies in your browser settings or <a href="/legacy/pages/cookies.html" style="color: #1e40af; text-decoration: underline;">view detailed cookies policy</a>.</div>
             </div>
         </div>
 
