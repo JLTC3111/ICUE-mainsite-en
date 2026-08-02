@@ -22,23 +22,6 @@ const SPA_ROUTES = [
   '/cookies',
 ];
 const LEGACY_REDIRECTS = {
-  '/src/pages/Home.html': '/',
-  '/src/pages/Home_OLD.html': '/',
-  '/src/pages/Contact.html': '/contact',
-  '/src/pages/aboutUs.html': '/about-us',
-  '/src/pages/ourWork.html': '/our-work',
-  '/src/pages/pastProjects.html': '/past-projects',
-  '/src/pages/recruitment.html': '/recruitment',
-  '/src/pages/News.html': '/news-archive',
-  '/src/pages/News': '/news-archive',
-  '/src/pages/orgStructure.html': 'https://icue.vn/structure/',
-  '/src/pages/notableAwards.html': '/notable-awards',
-  '/src/pages/communityActivities.html': '/community-activities',
-  '/src/pages/FAQs.html': '/faqs',
-  '/src/pages/privacy.html': '/privacy',
-  '/src/pages/terms.html': '/terms',
-  '/src/pages/gdpr.html': '/gdpr',
-  '/src/pages/cookies.html': '/cookies',
   '/legacy/pages/Home.html': '/',
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': '/contact',
@@ -71,7 +54,6 @@ app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
 });
 
 app.use('/public', express.static(path.join(ROOT, 'public'), staticOpts));
-app.use('/src', express.static(path.join(ROOT, 'src'), staticOpts));
 app.use(
   '/legacy-embed',
   express.static(path.join(ROOT, 'legacy-embed'), staticOpts),

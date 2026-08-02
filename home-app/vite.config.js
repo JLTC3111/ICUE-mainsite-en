@@ -5,26 +5,6 @@ import react from '@vitejs/plugin-react'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const LEGACY_SOURCE_REDIRECTS = {
-  '/src/pages/Home.html': '/',
-  '/src/pages/Home_OLD.html': '/',
-  '/src/pages/Contact.html': '/contact',
-  '/src/pages/aboutUs.html': '/about-us',
-  '/src/pages/ourWork.html': '/our-work',
-  '/src/pages/pastProjects.html': '/past-projects',
-  '/src/pages/recruitment.html': '/recruitment',
-  '/src/pages/News.html': '/news-archive',
-  '/src/pages/News': '/news-archive',
-  '/src/pages/orgStructure.html': 'https://icue.vn/structure/',
-  '/src/pages/notableAwards.html': '/notable-awards',
-  '/src/pages/communityActivities.html': '/community-activities',
-  '/src/pages/FAQs.html': '/faqs',
-  '/src/pages/privacy.html': '/privacy',
-  '/src/pages/terms.html': '/terms',
-  '/src/pages/gdpr.html': '/gdpr',
-  '/src/pages/cookies.html': '/cookies',
-}
-
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Home.html': '/',
   '/legacy/pages/Home_OLD.html': '/',
@@ -53,14 +33,6 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const urlPath = (req.url || '').split('?')[0]
-
-          const sourceRedirect = LEGACY_SOURCE_REDIRECTS[urlPath]
-          if (sourceRedirect) {
-            res.statusCode = 302
-            res.setHeader('Location', sourceRedirect)
-            res.end()
-            return
-          }
 
           if (LEGACY_PAGE_REDIRECTS[urlPath]) {
             res.statusCode = 302

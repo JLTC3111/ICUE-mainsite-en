@@ -1,104 +1,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ROUTE_META } from '../home-app/src/lib/routeMeta.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const homeDist = path.join(root, 'dist-home');
 const siteOrigin = 'https://en.icue.vn';
 
-const routeShells = [
-  {
-    slug: 'contact',
-    pageName: 'Contact',
-    pageFile: 'Contact.html',
-    title: 'Contact ICUE Vietnam',
-    description: 'Contact ICUE Vietnam for urban planning, construction, climate resilience, research, and partnership enquiries.',
-  },
-  {
-    slug: 'about-us',
-    pageName: 'aboutUs',
-    pageFile: 'aboutUs.html',
-    title: 'About Us | ICUE Vietnam',
-    description: 'Learn about ICUE Vietnam, our urban-development expertise, values, mission, and people.',
-  },
-  {
-    slug: 'our-work',
-    pageName: 'ourWork',
-    pageFile: 'ourWork.html',
-    title: 'Our Work | ICUE Vietnam',
-    description: 'Explore ICUE Vietnam’s work in urban planning, construction, climate resilience, research, and sustainable development.',
-  },
-  {
-    slug: 'past-projects',
-    pageName: 'pastProjects',
-    pageFile: 'pastProjects.html',
-    title: 'Project History | ICUE Vietnam',
-    description: 'Explore selected past projects and the project history of ICUE Vietnam.',
-  },
-  {
-    slug: 'recruitment',
-    pageName: 'recruitment',
-    pageFile: 'recruitment.html',
-    title: 'Careers | ICUE Vietnam',
-    description: 'Explore career and recruitment opportunities with ICUE Vietnam.',
-  },
-  {
-    slug: 'news-archive',
-    pageName: 'newsArchive',
-    pageFile: 'News.html',
-    title: 'News Archive | ICUE Vietnam',
-    description: 'Read news, research updates, project stories, and announcements from ICUE Vietnam.',
-  },
-  {
-    slug: 'notable-awards',
-    pageName: 'notableAwards',
-    pageFile: 'notableAwards.html',
-    title: 'Awards and Recognition | ICUE Vietnam',
-    description: 'Discover notable awards, certifications, and professional recognition received by ICUE Vietnam.',
-  },
-  {
-    slug: 'community-activities',
-    pageName: 'communityActivities',
-    pageFile: 'communityActivities.html',
-    title: 'Community Activities | ICUE Vietnam',
-    description: 'Explore ICUE Vietnam’s workshops, community programmes, partnerships, and public-interest activities.',
-  },
-  {
-    slug: 'faqs',
-    pageName: 'FAQs',
-    pageFile: 'FAQs.html',
-    title: 'Frequently Asked Questions | ICUE Vietnam',
-    description: 'Find answers to frequently asked questions about ICUE Vietnam, our services, projects, and partnerships.',
-  },
-  {
-    slug: 'privacy',
-    pageName: 'privacy',
-    pageFile: 'privacy.html',
-    title: 'Privacy Policy | ICUE Vietnam',
-    description: 'Read the ICUE Vietnam privacy policy and learn how personal information is handled.',
-  },
-  {
-    slug: 'terms',
-    pageName: 'terms',
-    pageFile: 'terms.html',
-    title: 'Terms of Use | ICUE Vietnam',
-    description: 'Read the terms governing use of the ICUE Vietnam website and services.',
-  },
-  {
-    slug: 'gdpr',
-    pageName: 'gdpr',
-    pageFile: 'gdpr.html',
-    title: 'GDPR Rights | ICUE Vietnam',
-    description: 'Learn about GDPR data-protection rights and how to exercise them with ICUE Vietnam.',
-  },
-  {
-    slug: 'cookies',
-    pageName: 'cookies',
-    pageFile: 'cookies.html',
-    title: 'Cookie Policy | ICUE Vietnam',
-    description: 'Read the ICUE Vietnam cookie policy and learn how website cookies are used.',
-  },
-];
+// Route title/description/pageFile metadata now lives in
+// home-app/src/lib/routeMeta.js (shared with the client-side RouteHead
+// component, so the two can never drift apart again).
+const routeShells = ROUTE_META;
 
 function copyFile(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
