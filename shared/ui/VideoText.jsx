@@ -1,5 +1,17 @@
-import { Children, useEffect, useMemo, useState } from 'react';
+import { Children, useEffect, useMemo, useRef, useState } from 'react';
 import './video-text.css';
+
+/** Data Saver or an explicit reduced-motion preference means: never loop the video. */
+function prefersStillVideo() {
+  if (typeof window === 'undefined') return false;
+  const connection = navigator.connection
+    || navigator.mozConnection
+    || navigator.webkitConnection;
+  if (connection?.saveData) return true;
+  if (/(slow-2g|2g)/i.test(connection?.effectiveType || '')) return true;
+  return typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 
 function buildSvgMask({
   content,
@@ -42,6 +54,8 @@ export default function VideoText({
   const content = Children.toArray(children).join('');
   const [loadVideo, setLoadVideo] = useState(!defer);
   const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef(null);
+  const maskRef = useRef(null);
 
   const maskOptions = useMemo(
     () => ({
@@ -76,6 +90,51 @@ export default function VideoText({
     return () => window.clearTimeout(id);
   }, [defer, src]);
 
+  // Only decode video while the wordmark is actually on screen and the tab is
+  // visible. Otherwise the header keeps a decoder + compositor layer alive on
+  // every route for a decoration nobody is looking at.
+  useEffect(() => {
+    const video = videoRef.current;
+    const mask = maskRef.current;
+    if (!video || !mask) return undefined;
+
+    if (prefersStillVideo()) {
+      video.pause();
+      return undefined;
+    }
+
+    let onScreen = true;
+
+    const sync = () => {
+      if (onScreen && !document.hidden) {
+        const played = video.play();
+        if (played?.catch) played.catch(() => {});
+      } else {
+        video.pause();
+      }
+    };
+
+    let observer = null;
+    if (typeof IntersectionObserver === 'function') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting;
+          sync();
+        },
+        { rootMargin: '96px' },
+      );
+      observer.observe(mask);
+    }
+
+    document.addEventListener('visibilitychange', sync, { passive: true });
+    sync();
+
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+    };
+  }, [loadVideo, src]);
+
   const dataUrlMask = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`;
 
   const maskPosition = textAnchor === 'start' ? 'left center' : 'center';
@@ -83,6 +142,7 @@ export default function VideoText({
   return (
     <Component className={['video-text', className].filter(Boolean).join(' ')}>
       <div
+        ref={maskRef}
         className={[
           'video-text__mask',
           videoReady ? 'video-text__mask--video-ready' : '',
@@ -100,6 +160,7 @@ export default function VideoText({
       >
         {loadVideo ? (
           <video
+            ref={videoRef}
             autoPlay={autoPlay}
             muted={muted}
             loop={loop}

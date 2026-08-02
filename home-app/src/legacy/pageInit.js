@@ -8,12 +8,7 @@ let newsArchiveSliderPromise = null
 let gsapRuntimePromise = null
 
 const LEGACY_RUNTIME_PAGES = new Set([
-  'Contact',
   'aboutUs',
-  'recruitment',
-  'FAQs',
-  'notableAwards',
-  'communityActivities',
 ])
 
 function getPastProjectsSlider() {
@@ -61,6 +56,15 @@ function getNewsArchiveSlider() {
 
 export function preloadLegacyPage(pageName) {
   if (pageName === 'newsArchive') return getNewsArchiveSlider()
+  if (pageName === 'ourWork') return getOurWorkCarousel()
+  if (pageName === 'pastProjects') {
+    return Promise.all([getPastProjectsSlider(), getPastProjectsAos()])
+  }
+  if (pageName === 'Contact') return import('./contactForm')
+  if (pageName === 'recruitment') return import('./jobBoard')
+  if (pageName === 'FAQs') return import('./faqPage')
+  if (pageName === 'notableAwards') return import('./awardsPage')
+  if (pageName === 'communityActivities') return import('./communityPage')
   return Promise.resolve()
 }
 
@@ -107,7 +111,8 @@ async function loadLegacyRuntime() {
 
 const PAGE_INIT = {
   Contact: async () => {
-    window.initPostMethod?.()
+    const contact = await import('./contactForm')
+    contact.initContactForm()
   },
   aboutUs: async () => {
     window.initHomeTextSlider?.()
@@ -132,20 +137,39 @@ const PAGE_INIT = {
     await api.initNewsArchiveSlider()
   },
   recruitment: async () => {
-    window.JobBoard?.init?.()
+    const jobs = await import('./jobBoard')
+    jobs.initJobBoard()
   },
   FAQs: async () => {
-    window.initFrequentlyAskedQuestions?.()
+    const faq = await import('./faqPage')
+    faq.initFaqPage()
   },
   notableAwards: async () => {
-    window.AwardsPage?.init?.()
+    const awards = await import('./awardsPage')
+    awards.initAwardsPage()
   },
   communityActivities: async () => {
-    window.CommunityPage?.init?.()
+    const community = await import('./communityPage')
+    community.initCommunityPage()
   },
 }
 
 const PAGE_CLEANUP = {
+  Contact: () => {
+    void import('./contactForm').then((contact) => contact.destroyContactForm())
+  },
+  notableAwards: () => {
+    void import('./awardsPage').then((awards) => awards.destroyAwardsPage())
+  },
+  communityActivities: () => {
+    void import('./communityPage').then((community) => community.destroyCommunityPage())
+  },
+  recruitment: () => {
+    void import('./jobBoard').then((jobs) => jobs.destroyJobBoard())
+  },
+  FAQs: () => {
+    void import('./faqPage').then((faq) => faq.destroyFaqPage())
+  },
   ourWork: () => {
     ourWorkCarouselApi?.destroyOurWorkCarousel?.()
   },

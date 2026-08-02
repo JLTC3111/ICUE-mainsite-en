@@ -5292,11 +5292,9 @@ window.updateCalendarSvgTime = () => {
     console.log(`Updated calendar SVG: ${month} ${day}, ${timeString}`);
 }
 
-// Initial update when the page loads
-updateCalendarSvgTime();
-
-// Update the time every minute (60,000 milliseconds)
-setInterval(updateCalendarSvgTime, 60 * 1000);
+// The shared React contact sidebar owns its calendar clock. Keep this helper
+// available for truly legacy documents, but do not leave a global timer running
+// after this compatibility runtime is loaded into the SPA shell.
 
 function initAudioVisualizer(
     audioSrc = 'public/music/mixkit-a-very-happy-christmas-897.mp3',

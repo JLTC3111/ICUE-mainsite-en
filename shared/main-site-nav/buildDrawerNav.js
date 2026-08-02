@@ -1,14 +1,30 @@
 import { DRAWER_LINKS, PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from './navLinks';
+import {
+  getSameOriginNavigationTarget,
+  isUnmodifiedPrimaryActivation,
+} from './navigation';
 
-export function navigateDrawerLink(link, onClose) {
-  onClose();
+export function navigateDrawerLink(event, link, onClose, onNavigate) {
+  if (!isUnmodifiedPrimaryActivation(event)) return;
 
   if (link.href.startsWith('#/')) {
+    event.preventDefault();
+    onClose();
     window.location.hash = link.href;
     return;
   }
 
-  window.location.assign(link.href);
+  const target = getSameOriginNavigationTarget(link.href);
+  if (target && typeof onNavigate === 'function') {
+    event.preventDefault();
+    onClose();
+    onNavigate(target);
+    return;
+  }
+
+  // Let the browser handle external links and same-origin links when no SPA
+  // navigator is available. This preserves modifier-click and link semantics.
+  onClose();
 }
 
 export function buildMainSiteDrawerNav({
@@ -18,6 +34,7 @@ export function buildMainSiteDrawerNav({
   peopleSubmenu = PEOPLE_SUBMENU,
   peopleOpen,
   onPeopleToggle,
+  onNavigate,
 }) {
   const navLinks = links.map((link, index) => ({
     key: link.page,
@@ -28,8 +45,7 @@ export function buildMainSiteDrawerNav({
     icon: link.icon,
     isCurrent: link.page === activePage,
     onClick: (e) => {
-      e.preventDefault();
-      navigateDrawerLink(link, onClose);
+      navigateDrawerLink(e, link, onClose, onNavigate);
     },
   }));
 
@@ -51,8 +67,7 @@ export function buildMainSiteDrawerNav({
       icon: item.icon,
       isCurrent: item.page === activePage,
       onClick: (e) => {
-        e.preventDefault();
-        navigateDrawerLink(item, onClose);
+        navigateDrawerLink(e, item, onClose, onNavigate);
       },
     })),
   };

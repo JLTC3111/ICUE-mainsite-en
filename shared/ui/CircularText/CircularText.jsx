@@ -1,29 +1,10 @@
-import { useEffect, useState } from 'react'
-import { motion, useAnimation, useMotionValue } from 'motion/react'
-import MetallicPaint from '../MetallicPaint/MetallicPaint'
-import { renderCircularTextImage } from './renderCircularTextImage'
+import { useId } from 'react'
 import './CircularText.css'
 
-const getRotationTransition = (duration, from, loop = true) => ({
-  from,
-  to: from + 360,
-  ease: 'linear',
-  duration,
-  type: 'tween',
-  repeat: loop ? Infinity : 0,
-})
-
-const getTransition = (duration, from) => ({
-  rotate: getRotationTransition(duration, from),
-  scale: {
-    type: 'spring',
-    damping: 20,
-    stiffness: 300,
-  },
-})
-
-function prefersReducedMotion() {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const HOVER_SPEED = {
+  slowDown: 2,
+  speedUp: 0.25,
+  goBonkers: 0.05,
 }
 
 export default function CircularText({
@@ -34,127 +15,49 @@ export default function CircularText({
   lightColor = '#ffffff',
   darkColor = '#ffffff',
   tintColor = '#ffffff',
-  brightness = 1.28,
-  contrast = 0.52,
 }) {
-  const letters = Array.from(text)
-  const controls = useAnimation()
-  const rotation = useMotionValue(0)
-  const reducedMotion = prefersReducedMotion()
-  const [imageSrc, setImageSrc] = useState(null)
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return undefined
-
-    const isCompact = window.matchMedia('(max-width: 768px)').matches
-      || window.matchMedia('(pointer: coarse)').matches
-    const imageSize = isCompact ? 224 : 512
-
-    try {
-      const src = renderCircularTextImage(text, imageSize)
-      setImageSrc(src)
-    } catch (error) {
-      console.error('[CircularText] failed to render metallic image', error)
-    }
-
-    return undefined
-  }, [text])
-
-  useEffect(() => {
-    if (reducedMotion) return undefined
-    const start = rotation.get()
-    controls.start({
-      rotate: start + 360,
-      scale: 1,
-      transition: getTransition(spinDuration, start),
-    })
-    return undefined
-  }, [spinDuration, text, onHover, controls, reducedMotion, rotation])
-
-  const handleHoverStart = () => {
-    if (reducedMotion || !onHover) return
-    const start = rotation.get()
-
-    if (onHover === 'pause') {
-      controls.stop()
-      return
-    }
-
-    let transitionConfig
-    let scaleVal = 1
-
-    switch (onHover) {
-      case 'slowDown':
-        transitionConfig = getTransition(spinDuration * 2, start)
-        break
-      case 'speedUp':
-        transitionConfig = getTransition(spinDuration / 4, start)
-        break
-      case 'goBonkers':
-        transitionConfig = getTransition(spinDuration / 20, start)
-        scaleVal = 0.8
-        break
-      default:
-        transitionConfig = getTransition(spinDuration, start)
-    }
-
-    controls.start({
-      rotate: start + 360,
-      scale: scaleVal,
-      transition: transitionConfig,
-    })
-  }
-
-  const handleHoverEnd = () => {
-    if (reducedMotion) return
-    const start = rotation.get()
-    controls.start({
-      rotate: start + 360,
-      scale: 1,
-      transition: getTransition(spinDuration, start),
-    })
-  }
+  const pathId = `circular-text-path-${useId().replace(/:/g, '')}`
+  const gradientId = `circular-text-gradient-${useId().replace(/:/g, '')}`
+  const hoverDuration = spinDuration * (HOVER_SPEED[onHover] || 1)
 
   return (
-    <motion.div
-      className={`circular-text ${className}`.trim()}
-      style={{ rotate: rotation }}
-      initial={{ rotate: 0 }}
-      animate={controls}
-      onMouseEnter={handleHoverStart}
-      onMouseLeave={handleHoverEnd}
+    <div
+      className={`circular-text circular-text--hover-${onHover || 'none'} ${className}`.trim()}
+      style={{
+        '--circular-text-duration': `${spinDuration}s`,
+        '--circular-text-hover-duration': `${hoverDuration}s`,
+        '--circular-text-light': lightColor,
+        '--circular-text-dark': darkColor,
+        '--circular-text-tint': tintColor,
+      }}
       aria-hidden="true"
     >
-      {imageSrc ? (
-        <MetallicPaint
-          className="circular-text__metallic"
-          imageSrc={imageSrc}
-          seed={200}
-          scale={5}
-          speed={reducedMotion ? 0 : 0.05}
-          blur={0.1}
-          mouseAnimation={false}
-          lightColor={lightColor}
-          darkColor={darkColor}
-          tintColor={tintColor}
-          brightness={brightness}
-          contrast={contrast}
-        />
-      ) : (
-        letters.map((letter, i) => {
-          const rotationDeg = (360 / letters.length) * i
-          const factor = Math.PI / letters.length
-          const x = factor * i
-          const y = factor * i
-          const transform = `rotateZ(${rotationDeg}deg) translate3d(${x}px, ${y}px, 0)`
-
-          return (
-            <span key={`${letter}-${i}`} style={{ transform, WebkitTransform: transform }}>
-              {letter}
-            </span>
-          )
-        })
-      )}
-    </motion.div>
+      <svg className="circular-text__svg" viewBox="0 0 100 100" focusable="false">
+        <defs>
+          <path
+            id={pathId}
+            d="M 50,50 m -39,0 a 39,39 0 1,1 78,0 a 39,39 0 1,1 -78,0"
+          />
+          <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="var(--circular-text-dark)" />
+            <stop offset="0.28" stopColor="var(--circular-text-light)" />
+            <stop offset="0.52" stopColor="var(--circular-text-tint)" />
+            <stop offset="0.75" stopColor="var(--circular-text-light)" />
+            <stop offset="1" stopColor="var(--circular-text-dark)" />
+          </linearGradient>
+        </defs>
+        <text className="circular-text__label" fill={`url(#${gradientId})`}>
+          <textPath
+            href={`#${pathId}`}
+            startOffset="50%"
+            textAnchor="middle"
+            textLength="238"
+            lengthAdjust="spacing"
+          >
+            {text}
+          </textPath>
+        </text>
+      </svg>
+    </div>
   )
 }

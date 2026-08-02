@@ -34,7 +34,7 @@ const ASSET_DIRS = [
   'models',
   'pastProjects',
   'work',
-  'news/articles',
+  'news',
   'recruitment',
   'logoIcons',
   'flags',

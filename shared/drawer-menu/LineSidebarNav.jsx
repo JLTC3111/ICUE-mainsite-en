@@ -22,11 +22,14 @@ function LineSidebarNav({
   onPointerMove,
   onPointerLeave,
   ariaLabel = 'Site',
+  active = true,
 }) {
   const peopleLabelRef = useRef(null)
   const submenuRowRef = useRef(null)
 
   useLayoutEffect(() => {
+    if (!active) return undefined
+
     const label = peopleLabelRef.current
     const row = submenuRowRef.current
     if (!label || !row) return undefined
@@ -46,7 +49,7 @@ function LineSidebarNav({
       window.removeEventListener('resize', syncLabelWidth)
       observer?.disconnect()
     }
-  }, [people?.label, people?.open])
+  }, [active, people?.label, people?.open])
 
   return (
     <nav

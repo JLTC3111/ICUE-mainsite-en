@@ -3,7 +3,7 @@ import { useReducedMotion } from 'motion/react'
 import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEnabled'
 import './HeroVideoTitle.css'
 
-const HERO_TITLE_VIDEO_SRC = '/bgVideos/video-text-fifa2026.mp4'
+const HERO_TITLE_VIDEO_SRC = '/public/bgVideos/video-text-fifa2026.mp4'
 
 function getWrappedLines(element) {
   const textNode = element.firstChild

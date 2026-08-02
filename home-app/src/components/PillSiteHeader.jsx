@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { DockIcon } from '@icue/ui/Dock';
 import VideoText from '@icue/ui/VideoText';
 import LanguageFlagLink from '@icue/main-site-nav/LanguageFlagLink';
 import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
+import { handleSpaNavigation } from '@icue/main-site-nav/navigation';
 import './PillSiteHeader.css';
 
-const INTERNAL_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'aboutUs']);
 const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
 const COMPACT_LABELS = {
   Home: 'Home',
@@ -43,7 +42,6 @@ function useResponsiveMode() {
 
 function PillLink({ item, active, linkRef, onNavigate }) {
   const label = COMPACT_LABELS[item.page] || item.label;
-  const internal = INTERNAL_PAGES.has(item.page);
 
   return (
     <a
@@ -53,12 +51,7 @@ function PillLink({ item, active, linkRef, onNavigate }) {
       data-page={item.page}
       aria-current={active ? 'page' : undefined}
       aria-label={item.label}
-      onClick={internal && onNavigate
-        ? (event) => {
-            event.preventDefault();
-            onNavigate(item.href);
-          }
-        : undefined}
+      onClick={(event) => handleSpaNavigation(event, item.href, onNavigate)}
     >
       <span className="pill-site-header__label-stack">
         <span className="pill-site-header__label">{label}</span>
@@ -138,10 +131,7 @@ export default function PillSiteHeader({
 
   const handleOverflowLink = (event, item) => {
     setOverflowOpen(false);
-    if (INTERNAL_PAGES.has(item.page) && onNavigate) {
-      event.preventDefault();
-      onNavigate(item.href);
-    }
+    handleSpaNavigation(event, item.href, onNavigate);
   };
 
   return (
@@ -151,12 +141,7 @@ export default function PillSiteHeader({
         href={homeHref}
         className="pill-site-header__logo"
         aria-label="Go to homepage"
-        onClick={onNavigate
-          ? (event) => {
-              event.preventDefault();
-              onNavigate(homeHref);
-            }
-          : undefined}
+        onClick={(event) => handleSpaNavigation(event, homeHref, onNavigate)}
       >
         <img src={logoMarkSrc} alt="" aria-hidden="true" decoding="async" />
         {isMobile ? (
@@ -273,18 +258,13 @@ export default function PillSiteHeader({
           <LanguageFlagLink />
         </div>
 
-        <DockIcon
-          className="pill-site-header__menu-icon"
-          size={42}
-          magnification={42}
-          disableMagnification
-        >
+        <span className="pill-site-header__menu-icon">
           <button
             ref={menuToggleRef}
             type="button"
             className="menu-toggle pill-site-header__menu"
             id="menuToggle"
-            aria-label="Open full navigation menu"
+            aria-label={drawerOpen ? 'Close full navigation menu' : 'Open full navigation menu'}
             aria-expanded={drawerOpen}
             onClick={(event) => {
               event.stopPropagation();
@@ -293,7 +273,7 @@ export default function PillSiteHeader({
           >
             <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
           </button>
-        </DockIcon>
+        </span>
       </div>
     </div>
   );

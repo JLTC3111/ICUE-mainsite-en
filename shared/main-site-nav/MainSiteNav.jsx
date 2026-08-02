@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -6,7 +8,6 @@ import {
   useState,
 } from 'react';
 import DrawerMenuPanel from '@icue/drawer-menu/DrawerMenuPanel.jsx';
-import DrawerMenuToggle from '@icue/drawer-menu/DrawerMenuToggle.jsx';
 import { registerMainSiteNavBridge } from './bridge';
 import { pageFromPathname } from './languageSwitcher';
 import {
@@ -14,8 +15,9 @@ import {
   DRAWER_LINKS,
   STANDALONE_DRAWER_LINKS,
 } from './buildDrawerNav';
-import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
+
+const DefaultMainSiteHeader = lazy(() => import('./MainSiteHeader'));
 
 const DARK_NAV_PAGES = ['communityActivities'];
 const DOCK_EXPAND_SCROLL_THRESHOLD = 48;
@@ -245,8 +247,9 @@ export default function MainSiteNav({
       links: drawerLinkConfig,
       peopleOpen,
       onPeopleToggle: () => setPeopleOpen((open) => !open),
+      onNavigate,
     }),
-    [activePage, drawerLinkConfig, handleCloseDrawer, peopleOpen],
+    [activePage, drawerLinkConfig, handleCloseDrawer, onNavigate, peopleOpen],
   );
 
   const drawerOpenRef = useRef(drawerOpen);
@@ -294,25 +297,52 @@ export default function MainSiteNav({
 
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP_DOCK_MQ);
+    let frameId = null;
+    let listeningForScroll = false;
 
-    const syncDockExpansion = () => {
-      setDockExpanded(shouldExpandDock(window.scrollY));
+    const commitDockExpansion = () => {
+      frameId = null;
+      const nextExpanded = mq.matches && window.scrollY <= DOCK_EXPAND_SCROLL_THRESHOLD;
+      setDockExpanded((current) => (current === nextExpanded ? current : nextExpanded));
     };
 
-    syncDockExpansion();
-    window.addEventListener('scroll', syncDockExpansion, { passive: true });
-    mq.addEventListener('change', syncDockExpansion);
+    const requestDockExpansionSync = () => {
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(commitDockExpansion);
+    };
+
+    const syncScrollSubscription = () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId);
+        frameId = null;
+      }
+      if (mq.matches && !listeningForScroll) {
+        window.addEventListener('scroll', requestDockExpansionSync, { passive: true });
+        listeningForScroll = true;
+      } else if (!mq.matches && listeningForScroll) {
+        window.removeEventListener('scroll', requestDockExpansionSync);
+        listeningForScroll = false;
+      }
+      commitDockExpansion();
+    };
+
+    syncScrollSubscription();
+    mq.addEventListener('change', syncScrollSubscription);
 
     return () => {
-      window.removeEventListener('scroll', syncDockExpansion);
-      mq.removeEventListener('change', syncDockExpansion);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+      if (listeningForScroll) {
+        window.removeEventListener('scroll', requestDockExpansionSync);
+      }
+      mq.removeEventListener('change', syncScrollSubscription);
     };
-  }, [usePillNav]);
+  }, []);
 
   useEffect(() => {
+    if (!usePillNav || !PillHeaderComponent) return undefined;
     const timer = window.setTimeout(() => playEntranceAnimation(true), 50);
     return () => window.clearTimeout(timer);
-  }, [playEntranceAnimation]);
+  }, [PillHeaderComponent, playEntranceAnimation, usePillNav]);
 
   useEffect(() => {
     if (!showHomeVideoToggle) return undefined;
@@ -377,34 +407,59 @@ export default function MainSiteNav({
   return (
     <div className={navClass} ref={navRootRef} data-active-page={activePage}>
       <nav className={barClass} aria-label="Site">
-        <MainSiteHeader
-          drawerOpen={drawerOpen}
-          onToggleDrawer={handleToggleDrawer}
-          showContactLink={showContactLink}
-          showHomeVideoToggle={showHomeVideoToggle}
-          showAboutUsVideoToggle={showAboutUsVideoToggle}
-          homeHref={homeHref}
-          aboutUsHref={aboutUsHref}
-          isStandalone={isStandalone}
-          assetPrefix={isStandalone ? '/' : 'public/'}
-          homeVideoEnabled={homeVideoEnabled}
-          homeVideoToggleDisabled={homeVideoToggleDisabled}
-          onHomeVideoToggle={handleHomeVideoToggle}
-          aboutUsVideoEnabled={aboutUsVideoEnabled}
-          aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
-          onAboutUsVideoToggle={handleAboutUsVideoToggle}
-          menuIconRef={menuIconRef}
-          menuToggleRef={menuToggleRef}
-          logoLinkRef={logoLinkRef}
-          contactLinkRef={contactLinkRef}
-          flagLinkRef={flagLinkRef}
-          usePillNav={usePillNav}
-          activePage={activePage}
-          pillItems={drawerLinkConfig}
-          onNavigate={onNavigate}
-          PillHeaderComponent={PillHeaderComponent}
-          pillOverflowItems={pillOverflowItems}
-        />
+        {usePillNav && PillHeaderComponent ? (
+          <PillHeaderComponent
+            activePage={activePage}
+            items={drawerLinkConfig}
+            homeHref={homeHref}
+            logoMarkSrc={`${isStandalone ? '/' : 'public/'}logoIcons/favicon.png`}
+            logoVideoSrc={`${isStandalone ? '/' : 'public/'}bgVideos/video-text-football.mp4`}
+            drawerOpen={drawerOpen}
+            onToggleDrawer={handleToggleDrawer}
+            showHomeVideoToggle={showHomeVideoToggle}
+            showAboutUsVideoToggle={showAboutUsVideoToggle}
+            homeVideoEnabled={homeVideoEnabled}
+            homeVideoToggleDisabled={homeVideoToggleDisabled}
+            onHomeVideoToggle={handleHomeVideoToggle}
+            aboutUsVideoEnabled={aboutUsVideoEnabled}
+            aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
+            onAboutUsVideoToggle={handleAboutUsVideoToggle}
+            menuIconRef={menuIconRef}
+            menuToggleRef={menuToggleRef}
+            logoLinkRef={logoLinkRef}
+            contactLinkRef={contactLinkRef}
+            flagLinkRef={flagLinkRef}
+            onNavigate={onNavigate}
+            overflowItems={pillOverflowItems}
+          />
+        ) : (
+          <Suspense fallback={<div className="main-site-nav__dock-wrap" aria-hidden="true" />}>
+            <DefaultMainSiteHeader
+              drawerOpen={drawerOpen}
+              onToggleDrawer={handleToggleDrawer}
+              showContactLink={showContactLink}
+              showHomeVideoToggle={showHomeVideoToggle}
+              showAboutUsVideoToggle={showAboutUsVideoToggle}
+              homeHref={homeHref}
+              aboutUsHref={aboutUsHref}
+              isStandalone={isStandalone}
+              assetPrefix={isStandalone ? '/' : 'public/'}
+              homeVideoEnabled={homeVideoEnabled}
+              homeVideoToggleDisabled={homeVideoToggleDisabled}
+              onHomeVideoToggle={handleHomeVideoToggle}
+              aboutUsVideoEnabled={aboutUsVideoEnabled}
+              aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
+              onAboutUsVideoToggle={handleAboutUsVideoToggle}
+              menuIconRef={menuIconRef}
+              menuToggleRef={menuToggleRef}
+              logoLinkRef={logoLinkRef}
+              contactLinkRef={contactLinkRef}
+              flagLinkRef={flagLinkRef}
+              onNavigate={onNavigate}
+              onReady={playEntranceAnimation}
+            />
+          </Suspense>
+        )}
       </nav>
 
       <DrawerMenuPanel

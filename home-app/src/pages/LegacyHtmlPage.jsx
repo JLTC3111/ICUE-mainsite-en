@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { cleanupLegacyPage, initLegacyPage, preloadLegacyPage } from '../legacy/pageInit'
+import {
+  loadLegacyPageSource,
+  readEmbeddedLegacyPageSource,
+} from '../legacy/pageHtml'
 import {
   loadModelViewerWhenVisible,
   pageUsesModelViewer,
@@ -10,9 +14,13 @@ import { LEGACY_PAGE_FILES, pageFromPathname, prepareLegacyHtml } from '../lib/r
 
 export default function LegacyHtmlPage() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const pageName = pageFromPathname(pathname)
-  const [html, setHtml] = useState('')
-  const [legacyBodyClass, setLegacyBodyClass] = useState('')
+  const [pageContent, setPageContent] = useState(() => {
+    const raw = readEmbeddedLegacyPageSource(pageName)
+    if (!raw) return null
+    return { pageName, ...prepareLegacyHtml(raw) }
+  })
   const [error, setError] = useState(null)
   const legacyRootRef = useRef(null)
   const pageNameRef = useRef(pageName)
@@ -26,32 +34,28 @@ export default function LegacyHtmlPage() {
 
     const file = LEGACY_PAGE_FILES[pageName]
     let cancelled = false
-    const controller = new AbortController()
 
-    // Fetch route-specific behavior and legacy markup concurrently.
+    // Load route-specific behavior and route-split markup concurrently. Direct
+    // visits use the source embedded by postbuild, avoiding a second HTML request.
     void preloadLegacyPage(pageName).catch(() => {})
 
     async function load() {
       setError(null)
-      setHtml('')
-      setLegacyBodyClass('')
+
+      if (pageContent?.pageName === pageName) return
+      setPageContent(null)
 
       try {
-        const response = await fetch(`/legacy-embed/pages/${file}`, {
-          signal: controller.signal,
-          headers: { 'X-ICUE-Legacy-Embed': '1' },
-        })
-        if (!response.ok) throw new Error(`Failed to load ${file}`)
-        const raw = await response.text()
+        const raw = readEmbeddedLegacyPageSource(pageName)
+          || await loadLegacyPageSource(pageName)
         if (cancelled) return
 
         const prepared = prepareLegacyHtml(raw)
-        setHtml(prepared.html)
-        setLegacyBodyClass(prepared.bodyClass)
+        setPageContent({ pageName, ...prepared })
 
       } catch (err) {
-        if (cancelled || err.name === 'AbortError') return
-        setError(err.message || 'Failed to load page')
+        if (cancelled) return
+        setError(err.message || `Failed to load ${file}`)
       }
     }
 
@@ -59,10 +63,14 @@ export default function LegacyHtmlPage() {
 
     return () => {
       cancelled = true
-      controller.abort()
       cleanupLegacyPage(pageName)
     }
   }, [pageName])
+
+  const html = pageContent?.pageName === pageName ? pageContent.html : ''
+  const legacyBodyClass = pageContent?.pageName === pageName
+    ? pageContent.bodyClass
+    : ''
 
   useLayoutEffect(() => {
     if (!html || !pageUsesModelViewer(pageName)) return
@@ -109,10 +117,30 @@ export default function LegacyHtmlPage() {
 
   const legacyClassName = ['legacy-page', legacyBodyClass].filter(Boolean).join(' ')
 
+  const getInternalDestination = (event) => {
+    const anchor = event.target.closest?.('a[href]')
+    if (!anchor || anchor.target || anchor.hasAttribute('download')) return null
+
+    const destination = new URL(anchor.href, window.location.href)
+    if (destination.origin !== window.location.origin) return null
+    if (!pageFromPathname(destination.pathname)) return null
+    return destination
+  }
+
+  const handleLinkClick = (event) => {
+    if (event.defaultPrevented || event.button !== 0) return
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    const destination = getInternalDestination(event)
+    if (!destination) return
+    event.preventDefault()
+    navigate(`${destination.pathname}${destination.search}${destination.hash}`)
+  }
+
   return (
     <div
       ref={legacyRootRef}
       className={legacyClassName}
+      onClick={handleLinkClick}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )

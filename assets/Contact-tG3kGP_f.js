@@ -1,0 +1,47 @@
+const n=`<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+</head>
+<body class="contact-page">
+  <div class="contact-container">
+    <h1 class="contact-header">Write to Us</h1>
+    
+    <form name="contact" method="POST" data-netlify="true" id="contactForm">
+      <input type="hidden" name="form-name" value="contact">
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-button">Send Message</button>
+    </form>
+
+    <div id="thankYouMessage" style="display: none; margin-top: 20px; color: green; font-weight: bold;">
+      🎉 Thank you! Your message has been sent.
+    </div>
+
+
+    <div class="contact-info">
+      <h2>Other Ways to Reach Us</h2>
+      <p><strong>Email:</strong><a href="mailto:info@icue.vn" aria-label="Send email to info@icue.vn"> info@icue.vn</a></p>
+      <p><strong>Phone:</strong> +84 (24) 3772 8485</p>
+      <p><strong>Address:</strong> No. 20, Valley 114, Hoàng Ngân, Trung Hoà, Cầu Giấy, HN</p>
+    </div>
+  </div>
+
+</body>
+</html>
+
+`;export{n as default};

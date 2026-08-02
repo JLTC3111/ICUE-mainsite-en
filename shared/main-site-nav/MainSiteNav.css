@@ -342,11 +342,14 @@
   .main-site-nav--dock-contracted .main-site-nav__dock--unified.icue-dock,
   .main-site-nav--dock-expanded .main-site-nav__dock--unified.icue-dock,
   .main-site-nav .main-site-nav__dock--unified.icue-dock {
-    background: rgba(32, 35, 41, 0.92);
+    /* Opaque instead of blurred: a fixed backdrop-filter repaints the region
+       behind the bar on every scroll frame, which is the single biggest
+       scroll cost on mobile. */
+    background: rgba(32, 35, 41, 0.97);
     border-color: rgba(255, 255, 255, 0.06);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   /* Zones and the actions group dissolve so every item is a direct flex

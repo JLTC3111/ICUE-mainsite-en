@@ -4,36 +4,57 @@
   border-radius: 50%;
   width: 200px;
   height: 200px;
-  font-weight: 900;
   color: #fff;
-  text-align: center;
   cursor: pointer;
   transform-origin: 50% 50%;
-  -webkit-transform-origin: 50% 50%;
   flex-shrink: 0;
   overflow: visible;
 }
 
-.circular-text__metallic {
-  position: absolute;
-  inset: 0;
+.circular-text__svg {
+  display: block;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  pointer-events: none;
+  overflow: visible;
+  transform-origin: 50% 50%;
+  animation: circular-text-spin var(--circular-text-duration, 20s) linear infinite;
+  will-change: transform;
 }
 
-.circular-text span {
-  position: absolute;
-  display: inline-block;
-  inset: 0;
-  font-size: 24px;
-  line-height: 1;
-  transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+.circular-text__label {
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--circular-text-tint, #fff) 45%, transparent));
+}
+
+.circular-text--hover-pause:hover .circular-text__svg {
+  animation-play-state: paused;
+}
+
+.circular-text--hover-slowDown:hover .circular-text__svg,
+.circular-text--hover-speedUp:hover .circular-text__svg,
+.circular-text--hover-goBonkers:hover .circular-text__svg {
+  animation-duration: var(--circular-text-hover-duration, 20s);
+}
+
+.circular-text--hover-goBonkers:hover .circular-text__svg {
+  scale: 0.8;
+}
+
+@keyframes circular-text-spin {
+  to { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .circular-text {
     cursor: default;
+  }
+
+  .circular-text__svg {
+    animation: none;
+    will-change: auto;
   }
 }

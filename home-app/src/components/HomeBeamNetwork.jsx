@@ -148,13 +148,11 @@ export default function HomeBeamNetwork({
     })
     nodes.forEach((node) => node && observer.observe(node))
     window.addEventListener('resize', schedule)
-    window.addEventListener('scroll', schedule, { passive: true })
     schedule()
     return () => {
       cancelAnimationFrame(frameId)
       observer.disconnect()
       window.removeEventListener('resize', schedule)
-      window.removeEventListener('scroll', schedule)
     }
   }, [allowMotion, containerRef, ready, visibleConnections])
 

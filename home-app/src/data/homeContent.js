@@ -23,7 +23,7 @@ export const HOME_SECTIONS = [
     linkHref: ROUTE_PATHS.pastProjects,
     cards: [
       {
-        image: '/pastProjects/pp_1.jpg',
+        image: '/public/pastProjects/pp_1.jpg',
         imageAlt: 'Project preview 1',
         href: projectCardUrl(1),
         title: 'Master Plan Adjustment for Lao Cai City',
@@ -31,7 +31,7 @@ export const HOME_SECTIONS = [
           '28,162.64 ha master plan targeting 2045 with optimized land use and upgraded infrastructure.',
       },
       {
-        image: '/pastProjects/pp_3.jpg',
+        image: '/public/pastProjects/pp_3.jpg',
         imageAlt: 'Project preview 2',
         href: projectCardUrl(3),
         title: 'Subdivision Planning Area 6B (Nguyen Ai Quoc Ward)',
@@ -39,7 +39,7 @@ export const HOME_SECTIONS = [
           'Over 1,100 ha plan focused on integrated infrastructure and expanded green urban space.',
       },
       {
-        image: '/pastProjects/pp_5.jpg',
+        image: '/public/pastProjects/pp_5.jpg',
         imageAlt: 'Project preview 3',
         href: projectCardUrl(5),
         title: 'General Planning for Dong Yen Urban Area, Bac Giang District',
@@ -57,7 +57,7 @@ export const HOME_SECTIONS = [
     linkHref: ROUTE_PATHS.ourWork,
     cards: [
       {
-        image: '/work/ourWork_img1.jpg',
+        image: '/public/work/ourWork_img1.jpg',
         imageAlt: 'Our work preview 1',
         href: ROUTE_PATHS.ourWork,
         title: 'Evaluation & Reports',
@@ -65,7 +65,7 @@ export const HOME_SECTIONS = [
           'Design and evaluation of data networks for reliable digital infrastructure.',
       },
       {
-        image: '/work/ourWork_img2.jpg',
+        image: '/public/work/ourWork_img2.jpg',
         imageAlt: 'Our work preview 2',
         href: ROUTE_PATHS.ourWork,
         title: 'Quantity Surveying',
@@ -73,7 +73,7 @@ export const HOME_SECTIONS = [
           'Specialized services supporting infrastructure projects from QS to BIM.',
       },
       {
-        image: '/work/ourWork_img3.jpg',
+        image: '/public/work/ourWork_img3.jpg',
         imageAlt: 'Our work preview 3',
         href: ROUTE_PATHS.ourWork,
         title: 'Infrastructure Gap Analysis',
@@ -90,7 +90,7 @@ export const HOME_SECTIONS = [
     linkHref: 'https://icue.vn/newsroom/?from=en-news',
     cards: [
       {
-        image: '/news/articles/Card_1.jpg',
+        image: '/public/news/articles/Card_1.jpg',
         imageAlt: 'News preview 1',
         href: articleUrl(1),
         title: 'IKI-GIZ-ICUE Completion Ceremony',
@@ -98,7 +98,7 @@ export const HOME_SECTIONS = [
           'Completion ceremony and handover of Au Co Park in Hoi An with provincial leaders in attendance.',
       },
       {
-        image: '/news/articles/Card_2.jpg',
+        image: '/public/news/articles/Card_2.jpg',
         imageAlt: 'News preview 2',
         href: articleUrl(2),
         title: '8th Asia Regional Conservation Forum Opens in Thailand',
@@ -106,7 +106,7 @@ export const HOME_SECTIONS = [
           'RCF 2024 opened in Bangkok with nearly 600 conservation leaders across the region.',
       },
       {
-        image: '/news/articles/Card_3.jpg',
+        image: '/public/news/articles/Card_3.jpg',
         imageAlt: 'News preview 3',
         href: articleUrl(3),
         title: 'Aiding People & Areas Affected by Yagi Storm',
@@ -124,7 +124,7 @@ export const HOME_SECTIONS = [
     linkHref: ROUTE_PATHS.recruitment,
     cards: [
       {
-        image: '/recruitment/office.jpg',
+        image: '/public/recruitment/office.jpg',
         imageAlt: 'Recruitment preview 1',
         href: ROUTE_PATHS.recruitment,
         title: 'Collaborative Culture',
@@ -132,7 +132,7 @@ export const HOME_SECTIONS = [
         imageOnly: true,
       },
       {
-        image: '/recruitment/event.jpg',
+        image: '/public/recruitment/event.jpg',
         imageAlt: 'Recruitment preview 2',
         href: ROUTE_PATHS.recruitment,
         title: 'Learning & Growth',
@@ -140,7 +140,7 @@ export const HOME_SECTIONS = [
         imageOnly: true,
       },
       {
-        image: '/recruitment/survey.jpg',
+        image: '/public/recruitment/survey.jpg',
         imageAlt: 'Recruitment preview 3',
         href: ROUTE_PATHS.recruitment,
         title: 'Make an Impact',

@@ -70,23 +70,24 @@ function DrawerMenuPanel({
   })
 
   useEffect(() => {
+    if (!open) return undefined
+
     const onKey = (e) => {
-      if (e.key === 'Escape' && open) close()
+      if (e.key === 'Escape') close()
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [close, open])
 
   useEffect(() => {
-    if (portal) {
-      document.body.style.overflow = open ? 'hidden' : ''
-      document.body.classList.toggle('nav-drawer-open', open)
-      return () => {
-        document.body.style.overflow = ''
-        document.body.classList.remove('nav-drawer-open')
-      }
+    if (!portal || !open) return undefined
+
+    document.body.style.overflow = 'hidden'
+    document.body.classList.add('nav-drawer-open')
+    return () => {
+      document.body.style.overflow = ''
+      document.body.classList.remove('nav-drawer-open')
     }
-    return undefined
   }, [open, portal])
 
   useEffect(() => {
@@ -138,6 +139,7 @@ function DrawerMenuPanel({
         className={drawerPanelClass}
         id={drawerId}
         aria-hidden={!open}
+        inert={open ? undefined : ''}
       >
         <LineSidebarNav
           links={links}
@@ -145,6 +147,7 @@ function DrawerMenuPanel({
           navRef={navRef}
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
+          active={open}
         />
 
         {resizable ? (

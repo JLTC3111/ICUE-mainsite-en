@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Link, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
@@ -6,6 +6,8 @@ import Footer from '@icue/site-footer/Footer'
 import ContactSidebar from '@icue/contact-sidebar'
 import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import PillSiteHeader from './components/PillSiteHeader'
+import { preloadLegacyPageSource } from './legacy/pageHtml'
+import { preloadLegacyPage } from './legacy/pageInit'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, pathFromLegacyHash, ROUTE_PATHS } from './lib/routes'
 
@@ -34,7 +36,7 @@ function NotFoundPage() {
     <section className="route-not-found" aria-labelledby="route-not-found-title">
       <h1 id="route-not-found-title">Page not found</h1>
       <p>The page you requested does not exist or has moved.</p>
-      <a href={ROUTE_PATHS.home}>Return home</a>
+      <Link to={ROUTE_PATHS.home}>Return home</Link>
     </section>
   )
 }
@@ -58,6 +60,29 @@ function NavSync() {
   return null
 }
 
+function RoutePrefetch() {
+  useEffect(() => {
+    const prefetch = (event) => {
+      const anchor = event.target.closest?.('a[href]')
+      if (!anchor) return
+      const destination = new URL(anchor.href, window.location.href)
+      if (destination.origin !== window.location.origin) return
+      const pageName = pageFromPathname(destination.pathname)
+      if (!pageName || pageName === 'Home') return
+      void preloadLegacyPageSource(pageName).catch(() => {})
+      void preloadLegacyPage(pageName).catch(() => {})
+    }
+
+    document.addEventListener('pointerover', prefetch, { passive: true })
+    document.addEventListener('focusin', prefetch)
+    return () => {
+      document.removeEventListener('pointerover', prefetch)
+      document.removeEventListener('focusin', prefetch)
+    }
+  }, [])
+  return null
+}
+
 function AppShell() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -67,6 +92,7 @@ function AppShell() {
       <ScrollToTop />
       <LegacyHashRedirect />
       <NavSync />
+      <RoutePrefetch />
       <MainSiteNav
         variant="standalone"
         usePillNav
@@ -101,7 +127,7 @@ function AppShell() {
           </Routes>
         </Suspense>
       </main>
-      <Footer linkMode="standalone" />
+      <Footer linkMode="standalone" onNavigate={navigate} />
       <ContactSidebar contentKey={pathname} />
     </>
   )

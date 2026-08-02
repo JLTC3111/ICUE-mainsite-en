@@ -75,10 +75,14 @@ export function pathFromPage(page) {
 export function prepareLegacyHtml(rawHtml) {
   const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
 
-  doc.body?.querySelectorAll('.news-logo-swiper img').forEach((image) => {
-    image.setAttribute('loading', 'eager')
-    image.setAttribute('decoding', 'async')
-  })
+  // Scripts injected through innerHTML never execute. Remove that dead payload
+  // and the standalone Swiper stylesheet; migrated routes load behavior and CSS
+  // through their route-specific modules instead.
+  doc.body?.querySelectorAll('script').forEach((script) => script.remove())
+  doc.body
+    ?.querySelectorAll('link[rel="stylesheet"][href*="swiper"]')
+    .forEach((link) => link.remove())
+
   doc.body?.querySelectorAll('img').forEach((image) => {
     if (!image.hasAttribute('loading')) image.setAttribute('loading', 'lazy')
     if (!image.hasAttribute('decoding')) image.setAttribute('decoding', 'async')

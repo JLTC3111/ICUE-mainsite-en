@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
 import VideoText from '@icue/ui/VideoText';
 import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
+import { handleSpaNavigation, isUnmodifiedPrimaryActivation } from './navigation';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -25,12 +27,8 @@ export default function MainSiteHeader({
   logoLinkRef,
   contactLinkRef,
   flagLinkRef,
-  usePillNav = false,
-  activePage,
-  pillItems = [],
   onNavigate,
-  PillHeaderComponent,
-  pillOverflowItems = [],
+  onReady,
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
@@ -38,35 +36,11 @@ export default function MainSiteHeader({
 
   const showActionsGroup = showHomeVideoToggle || showAboutUsVideoToggle || showContactLink;
 
-  if (usePillNav && PillHeaderComponent) {
-    const ResponsivePillHeader = PillHeaderComponent;
-    return (
-      <ResponsivePillHeader
-        activePage={activePage}
-        items={pillItems}
-        homeHref={homeHref}
-        logoMarkSrc={logoMarkSrc}
-        logoVideoSrc={logoVideoSrc}
-        drawerOpen={drawerOpen}
-        onToggleDrawer={onToggleDrawer}
-        showHomeVideoToggle={showHomeVideoToggle}
-        showAboutUsVideoToggle={showAboutUsVideoToggle}
-        homeVideoEnabled={homeVideoEnabled}
-        homeVideoToggleDisabled={homeVideoToggleDisabled}
-        onHomeVideoToggle={onHomeVideoToggle}
-        aboutUsVideoEnabled={aboutUsVideoEnabled}
-        aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
-        onAboutUsVideoToggle={onAboutUsVideoToggle}
-        menuIconRef={menuIconRef}
-        menuToggleRef={menuToggleRef}
-        logoLinkRef={logoLinkRef}
-        contactLinkRef={contactLinkRef}
-        flagLinkRef={flagLinkRef}
-        onNavigate={onNavigate}
-        overflowItems={pillOverflowItems}
-      />
-    );
-  }
+  useEffect(() => {
+    if (typeof onReady !== 'function') return undefined;
+    const timer = window.setTimeout(() => onReady(true), 50);
+    return () => window.clearTimeout(timer);
+  }, [onReady]);
 
   return (
     <div className="main-site-nav__dock-wrap">
@@ -79,6 +53,7 @@ export default function MainSiteHeader({
               id="logo-link"
               className="logo-link"
               aria-label="Go to homepage"
+              onClick={(event) => handleSpaNavigation(event, homeHref, onNavigate)}
             >
               <img
                 className="logo-mark"
@@ -198,7 +173,10 @@ export default function MainSiteHeader({
                   className="contact-link main-site-nav__dock-contact"
                   id="contactLink"
                   onClick={(e) => {
-                    if (!isStandalone) {
+                    if (!isUnmodifiedPrimaryActivation(e)) return;
+
+                    const handledBySpa = handleSpaNavigation(e, aboutUsHref, onNavigate);
+                    if (!handledBySpa && !isStandalone) {
                       e.preventDefault();
                       window.location.hash = '#/aboutUs';
                     }

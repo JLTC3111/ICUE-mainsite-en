@@ -42,26 +42,26 @@ const HomeBackgroundVideoManager = (() => {
   const videoPlaylist = [
     {
       id: 'momentum',
-      desktop: '/bgVideos/home_bg_1.mp4',
-      mobile: '/bgVideos/home_bg_1_mobile.mp4',
+      desktop: '/public/bgVideos/home_bg_1.mp4',
+      mobile: '/public/bgVideos/home_bg_1_mobile.mp4',
       prefersLightNav: true
     },
     {
       id: 'harmony',
-      desktop: '/bgVideos/home_bg_2.mp4',
-      mobile: '/bgVideos/home_bg_2_mobile.mp4',
+      desktop: '/public/bgVideos/home_bg_2.mp4',
+      mobile: '/public/bgVideos/home_bg_2_mobile.mp4',
       prefersLightNav: true
     },
     {
       id: 'luminous',
-      desktop: '/bgVideos/home_bg_3.mp4',
-      mobile: '/bgVideos/home_bg_3_mobile.mp4',
+      desktop: '/public/bgVideos/home_bg_3.mp4',
+      mobile: '/public/bgVideos/home_bg_3_mobile.mp4',
       prefersLightNav: true
     },
     {
       id: 'kaleidoscope',
-      desktop: '/bgVideos/home_bg_4.mp4',
-      mobile: '/bgVideos/home_bg_4_mobile.mp4',
+      desktop: '/public/bgVideos/home_bg_4.mp4',
+      mobile: '/public/bgVideos/home_bg_4_mobile.mp4',
       prefersLightNav: true
     },
   ];
@@ -85,6 +85,8 @@ const HomeBackgroundVideoManager = (() => {
   let currentIndex = -1;
   let warmupVideo = null;
   let scheduledWarmupSrc = null;
+  let heroVisibilityObserver = null;
+  let heroInViewport = true;
 
   const logHomeBg = (...args) => console.log('[HomeBackgroundVideo]', ...args);
 
@@ -353,9 +355,30 @@ const HomeBackgroundVideoManager = (() => {
     if (!videoEl) return;
     if (document.hidden) {
       videoEl.pause();
-    } else if (!shouldKeepStatic()) {
+    } else if (heroInViewport && !shouldKeepStatic()) {
       videoEl.play().catch(() => {});
     }
+  };
+
+  const observeHeroVisibility = () => {
+    heroVisibilityObserver?.disconnect();
+    heroVisibilityObserver = null;
+    heroInViewport = true;
+
+    const hero = document.querySelector('.home-hero');
+    if (!hero || typeof IntersectionObserver !== 'function') return;
+
+    heroVisibilityObserver = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (!entry || !videoEl) return;
+      heroInViewport = entry.isIntersecting;
+      if (!heroInViewport) {
+        videoEl.pause();
+      } else if (!document.hidden && !shouldKeepStatic()) {
+        attemptPlay('hero-visible');
+      }
+    }, { rootMargin: '100px 0px', threshold: 0.01 });
+    heroVisibilityObserver.observe(hero);
   };
 
   const init = () => {
@@ -376,6 +399,7 @@ const HomeBackgroundVideoManager = (() => {
     const startIndex = nextIndex();
     if (startIndex === -1) return;
     goToIndex(startIndex);
+    observeHeroVisibility();
 
     let lastLogTime = 0;
     const throttleLog = (msg, data) => {
@@ -514,6 +538,9 @@ const HomeBackgroundVideoManager = (() => {
       document.removeEventListener('visibilitychange', visibilityHandler);
       visibilityHandler = null;
     }
+    heroVisibilityObserver?.disconnect();
+    heroVisibilityObserver = null;
+    heroInViewport = true;
     if (warmupVideo) {
       warmupVideo.removeAttribute('src');
       warmupVideo.load();

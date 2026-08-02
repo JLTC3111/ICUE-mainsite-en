@@ -1,5 +1,7 @@
 import HomeCard from './HomeCard'
 import TextAnimate from './magicui/TextAnimate'
+import { handleSpaNavigation } from '@icue/main-site-nav/navigation'
+import { useNavigate } from 'react-router-dom'
 
 export default function HomeSection({
   id,
@@ -13,6 +15,7 @@ export default function HomeSection({
   cardBeamRefs = [],
   enableCardGlow = false,
 }) {
+  const navigate = useNavigate()
   const sectionClass = ['home-section', alt ? 'home-section--alt' : ''].filter(Boolean).join(' ')
 
   return (
@@ -41,7 +44,11 @@ export default function HomeSection({
           >
             {description}
           </TextAnimate>
-          <a className="home-section__link" href={linkHref}>
+          <a
+            className="home-section__link"
+            href={linkHref}
+            onClick={(event) => handleSpaNavigation(event, linkHref, navigate)}
+          >
             {linkLabel}
           </a>
         </div>

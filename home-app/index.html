@@ -31,10 +31,23 @@
     <meta name="twitter:image" content="https://en.icue.vn/preview.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Only families actually referenced by the compiled CSS are requested here.
+      IBM Plex Sans, Noto Sans Symbols and Press Start 2P were dropped (unused).
+      Loaded non-render-blocking; display=swap already implies a fallback-first paint.
+    -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Caveat:wght@700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Montserrat:wght@400;600&family=Noto+Sans+Symbols:wght@400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;500;600;700&family=Press+Start+2P&family=Roboto:wght@400;500;700&family=Rubik:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Caveat:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Rubik:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      media="print"
+      onload="this.media='all';this.onload=null"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Audiowide&family=Caveat:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Rubik:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      />
+    </noscript>
     <title>ICUE Vietnam</title>
   </head>
   <body>

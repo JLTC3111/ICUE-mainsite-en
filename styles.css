@@ -1550,6 +1550,15 @@ body.loaded #app {
     z-index: 1;
 }
 
+/* Only the active slide's copy is shown. Every .work-item is absolutely
+   positioned at inset:0, so without this the other three slides' titles and
+   buttons paint on top of each other until the active image finishes loading
+   and covers them — the flash of stacked text on first render. */
+.work-carousel .work-list .work-item:not(:nth-child(1)) .work-content{
+    opacity: 0;
+    visibility: hidden;
+}
+
 /* animation text in first item */
 
 .work-carousel .work-list .work-item:nth-child(1) .work-content .work-author,
@@ -2081,7 +2090,7 @@ body.loaded #app {
     z-index: auto;
   }
 
-  .menu-toggle svg{
+  .menu-toggle svg:not(.menu-icon-metallic__static){
     width: 26px;
     height: 26px;
   }
@@ -2737,7 +2746,7 @@ h2.handwritten:hover {
     height: clamp(150px, 16vw, 240px);
     animation: none;
   }
-  .menu-toggle svg{
+  .menu-toggle svg:not(.menu-icon-metallic__static){
     width: 58px;
     height: 58px;
   }

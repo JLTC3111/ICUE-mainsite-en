@@ -1,4 +1,6 @@
 import BorderGlow from '@icue/ui/BorderGlow/BorderGlow'
+import { handleSpaNavigation } from '@icue/main-site-nav/navigation'
+import { useNavigate } from 'react-router-dom'
 import AnimatedContent from './reactbits/AnimatedContent'
 import PixelImage from './magicui/PixelImage'
 
@@ -10,6 +12,7 @@ function HomeCardSurface({
   description,
   imageOnly,
   compactGrid,
+  onLinkClick,
 }) {
   return (
     <div className="home-card__surface">
@@ -20,7 +23,7 @@ function HomeCardSurface({
           customGrid={compactGrid}
         />
       ) : (
-        <a href={href} aria-label={title} className="home-card__media">
+        <a href={href} onClick={onLinkClick} aria-label={title} className="home-card__media">
           <PixelImage
             src={image}
             alt={imageAlt}
@@ -28,7 +31,7 @@ function HomeCardSurface({
           />
         </a>
       )}
-      <a className="home-card__body" href={href} aria-label={title}>
+      <a className="home-card__body" href={href} onClick={onLinkClick} aria-label={title}>
         <h3>{title}</h3>
         <p>{description}</p>
       </a>
@@ -46,6 +49,10 @@ export default function HomeCard({
   beamRef,
   enableGlow = false,
 }) {
+  const navigate = useNavigate()
+  const handleLinkClick = (event) => {
+    handleSpaNavigation(event, href, navigate)
+  }
   const pixelGrid = enableGlow
     ? { rows: 4, cols: 6 }
     : { rows: 3, cols: 4 }
@@ -70,6 +77,7 @@ export default function HomeCard({
         description={description}
         imageOnly={imageOnly}
         compactGrid={pixelGrid}
+        onLinkClick={handleLinkClick}
       />
     </BorderGlow>
   ) : (
@@ -81,6 +89,7 @@ export default function HomeCard({
       description={description}
       imageOnly={imageOnly}
       compactGrid={pixelGrid}
+      onLinkClick={handleLinkClick}
     />
   )
 

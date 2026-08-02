@@ -1,5 +1,5 @@
 /* Drawer menu mirroring the main icue.vn site: a hamburger that animates to an
-   X, and a left slide-in panel with a blurred dark backdrop. */
+   X, and a left slide-in panel with a dark backdrop. */
 
 .nav-drawer__toggle {
   position: relative;
@@ -92,8 +92,6 @@
   position: fixed;
   inset: 0;
   background: rgba(2, 6, 12, 0.65);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -117,8 +115,6 @@
   justify-content: center;
   padding: 6rem 2rem;
   background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.22), #05080d 72%);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
   box-shadow: 4px 0 28px rgba(0, 0, 0, 0.55);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   transform: translateX(-100%);
@@ -492,13 +488,9 @@
 
   .nav-drawer__overlay {
     background: rgba(2, 6, 12, 0.72);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
   }
 
   .nav-drawer {
     background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.28), #05080d 78%);
-    backdrop-filter: blur(48px);
-    -webkit-backdrop-filter: blur(48px);
   }
 }
