@@ -14,7 +14,12 @@ const appSource = read('home-app/src/App.jsx')
 const mountedKeys = new Set(
   [...appSource.matchAll(/<Route path=\{ROUTE_PATHS\.(\w+)\}/g)].map((match) => match[1]),
 )
+// ourWork is a path this site links to but does not render: Netlify sends it to
+// the shared Our Work app on icue.vn. It stays in ROUTE_PATHS so every link
+// keeps one source of truth.
+const EXTERNALLY_SERVED_ROUTES = new Set(['ourWork'])
 for (const key of Object.keys(ROUTE_PATHS)) {
+  if (EXTERNALLY_SERVED_ROUTES.has(key)) continue
   if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
 }
 
@@ -31,7 +36,9 @@ for (const file of ['card.html', 'article_template.html']) {
 
 const redirects = read('_redirects')
 const requiredShellPaths = Object.entries(ROUTE_PATHS)
-  .filter(([key]) => !['home', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
+  // ourWork is served by the shared Our Work app on icue.vn, not by a local
+  // shell — it is asserted as an external redirect below instead.
+  .filter(([key]) => !['home', 'ourWork', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -46,7 +53,7 @@ const legacyRedirects = {
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': ROUTE_PATHS.contact,
   '/legacy/pages/aboutUs.html': ROUTE_PATHS.aboutUs,
-  '/legacy/pages/ourWork.html': ROUTE_PATHS.ourWork,
+  '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
   '/legacy/pages/pastProjects.html': ROUTE_PATHS.pastProjects,
   '/legacy/pages/recruitment.html': ROUTE_PATHS.recruitment,
   '/legacy/pages/News.html': ROUTE_PATHS.newsArchive,

@@ -3,7 +3,6 @@ export const FOOTER_LABELS = {
   company: 'Company',
   otherPages: 'Other Pages',
   awards: 'Notable Awards',
-  community: 'Community Activities',
   news: 'Newsletter',
   archive: 'Archive',
   faqs: 'FAQs',

@@ -30,14 +30,6 @@ export const ROUTE_META = [
     description: 'Learn about ICUE Vietnam, our urban-development expertise, values, mission, and people.',
   },
   {
-    slug: 'our-work',
-    path: '/our-work',
-    pageName: 'ourWork',
-    pageFile: 'ourWork.html',
-    title: 'Our Work | ICUE Vietnam',
-    description: 'Explore ICUE Vietnam’s work in urban planning, construction, climate resilience, research, and sustainable development.',
-  },
-  {
     slug: 'past-projects',
     path: '/past-projects',
     pageName: 'pastProjects',

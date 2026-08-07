@@ -46,7 +46,6 @@ PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 export const LEGACY_PAGE_FILES = {
   Contact: 'Contact.html',
   aboutUs: 'aboutUs.html',
-  ourWork: 'ourWork.html',
   pastProjects: 'pastProjects.html',
   recruitment: 'recruitment.html',
   newsArchive: 'News.html',

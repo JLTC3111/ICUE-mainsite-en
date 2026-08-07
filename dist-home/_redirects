@@ -3,7 +3,7 @@
 /legacy/pages/Home_OLD.html            /                         301
 /legacy/pages/Contact.html             /contact                  301
 /legacy/pages/aboutUs.html             /about-us                 301
-/legacy/pages/ourWork.html             /our-work                 301
+/legacy/pages/ourWork.html             https://icue.vn/our-work?site=en   301
 /legacy/pages/pastProjects.html        /past-projects            301
 /legacy/pages/recruitment.html         /recruitment              301
 /legacy/pages/News.html                /news-archive             301
@@ -19,7 +19,7 @@
 # Normalize trailing slashes before serving the history-routed app.
 /contact/              /contact                 301
 /about-us/             /about-us                301
-/our-work/             /our-work                301
+/our-work/             https://icue.vn/our-work?site=en   301
 /past-projects/        /past-projects           301
 /recruitment/          /recruitment             301
 /news-archive/         /news-archive            301
@@ -34,7 +34,9 @@
 # React history routes.
 /contact               /contact.html               200
 /about-us              /about-us.html              200
-/our-work              /our-work.html              200
+# Our Work is one React app for both sites, hosted on icue.vn. ?site=en keeps
+# the page in English and sends its chrome links back to en.icue.vn.
+/our-work              https://icue.vn/our-work?site=en   301
 /past-projects         /past-projects.html          200
 /recruitment           /recruitment.html            200
 /news-archive          /news-archive.html           200

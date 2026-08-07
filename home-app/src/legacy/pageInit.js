@@ -1,6 +1,4 @@
 let runtimePromise = null
-let ourWorkCarouselApi = null
-let ourWorkCarouselPromise = null
 let pastProjectsSliderApi = null
 let pastProjectsSliderPromise = null
 let newsArchiveSliderApi = null
@@ -19,16 +17,6 @@ function getPastProjectsSlider() {
     })
   }
   return pastProjectsSliderPromise
-}
-
-function getOurWorkCarousel() {
-  if (!ourWorkCarouselPromise) {
-    ourWorkCarouselPromise = import('./ourWorkCarousel').then((api) => {
-      ourWorkCarouselApi = api
-      return api
-    })
-  }
-  return ourWorkCarouselPromise
 }
 
 let pastProjectsAosApi = null
@@ -56,7 +44,6 @@ function getNewsArchiveSlider() {
 
 export function preloadLegacyPage(pageName) {
   if (pageName === 'newsArchive') return getNewsArchiveSlider()
-  if (pageName === 'ourWork') return getOurWorkCarousel()
   if (pageName === 'pastProjects') {
     return Promise.all([getPastProjectsSlider(), getPastProjectsAos()])
   }
@@ -119,10 +106,6 @@ const PAGE_INIT = {
     window.AboutUsBackgroundVideoManager?.bindToggleUI?.()
     window.AboutUsBackgroundVideoManager?.init?.()
   },
-  ourWork: async () => {
-    const carousel = await getOurWorkCarousel()
-    carousel.initOurWorkCarousel()
-  },
   pastProjects: async () => {
     // Skip the sluggish custom touch slider in legacy/script.js —
     // Swiper is initialized from LegacyHtmlPage after HTML is painted.
@@ -169,9 +152,6 @@ const PAGE_CLEANUP = {
   },
   FAQs: () => {
     void import('./faqPage').then((faq) => faq.destroyFaqPage())
-  },
-  ourWork: () => {
-    ourWorkCarouselApi?.destroyOurWorkCarousel?.()
   },
   aboutUs: () => {
     window.AboutUsBackgroundVideoManager?.destroy?.()

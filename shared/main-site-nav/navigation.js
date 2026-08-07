@@ -9,12 +9,20 @@ export function isUnmodifiedPrimaryActivation(event) {
   return true;
 }
 
+/**
+ * Same-origin paths that are NOT routes of this SPA — Netlify redirects them to
+ * an app hosted elsewhere. Handing one to the router would land on the
+ * catch-all instead of navigating, so they must stay real link activations.
+ */
+const EXTERNAL_APP_PATHS = new Set(['/our-work']);
+
 export function getSameOriginNavigationTarget(href) {
   if (!href || typeof window === 'undefined' || href.startsWith('#')) return null;
 
   try {
     const url = new URL(href, window.location.href);
     if (url.origin !== window.location.origin) return null;
+    if (EXTERNAL_APP_PATHS.has(url.pathname.replace(/\/$/, ''))) return null;
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {
     return null;

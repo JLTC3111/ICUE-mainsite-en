@@ -1,7 +1,6 @@
 const PAGE_SOURCE_LOADERS = {
   Contact: () => import('../../../legacy/pages/Contact.html?raw'),
   aboutUs: () => import('../../../legacy/pages/aboutUs.html?raw'),
-  ourWork: () => import('../../../legacy/pages/ourWork.html?raw'),
   pastProjects: () => import('../../../legacy/pages/pastProjects.html?raw'),
   recruitment: () => import('../../../legacy/pages/recruitment.html?raw'),
   newsArchive: () => import('../../../legacy/pages/News.html?raw'),

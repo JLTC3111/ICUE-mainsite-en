@@ -26,7 +26,7 @@ const LEGACY_REDIRECTS = {
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': '/contact',
   '/legacy/pages/aboutUs.html': '/about-us',
-  '/legacy/pages/ourWork.html': '/our-work',
+  '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
   '/legacy/pages/pastProjects.html': '/past-projects',
   '/legacy/pages/recruitment.html': '/recruitment',
   '/legacy/pages/News.html': '/news-archive',

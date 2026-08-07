@@ -33,7 +33,6 @@ function Footer({ linkMode = 'hash', onNavigate }) {
         <div className="icue-footer__col">
           <h4>{labels.company}</h4>
           <a href={links.notableAwards} onClick={navigate}>{labels.awards}</a>
-          <a href={links.communityActivities} onClick={navigate}>{labels.community}</a>
           <a href={links.news}>{labels.news}</a>
           <a href={links.archive} onClick={navigate}>{labels.archive}</a>
         </div>

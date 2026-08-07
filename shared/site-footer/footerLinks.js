@@ -26,7 +26,6 @@ function buildFooterLinks() {
   const p = FOOTER_ROUTE_PATHS
   return {
     notableAwards: p.notableAwards,
-    communityActivities: p.communityActivities,
     news: p.news,
     archive: p.archive,
     faqs: p.faqs,
