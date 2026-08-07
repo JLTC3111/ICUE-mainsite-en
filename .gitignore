@@ -1,9 +1,29 @@
 .DS_Store
 **/.DS_Store
-.env
 data/*.sqlite
 data/*.sqlite-wal
 data/*.sqlite-shm
 data/orders.json
 data/processed-webhooks.json
 node_modules
+dist
+dist-ssr
+*.local
+
+# Environment (secrets — never commit)
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+!public/fonts/.gitkeep
