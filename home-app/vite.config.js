@@ -9,6 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // repo). /contact is redirected here as well as at the legacy URL so the
 // home-app dev server matches production.
 const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
+const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
 
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Home.html': '/',
@@ -16,8 +17,10 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/contact': CONTACT_APP_URL,
   '/contact/': CONTACT_APP_URL,
+  '/our-work': OUR_WORK_APP_URL,
+  '/our-work/': OUR_WORK_APP_URL,
   '/legacy/pages/aboutUs.html': '/about-us',
-  '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
+  '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': '/past-projects',
   '/legacy/pages/recruitment.html': '/recruitment',
   '/legacy/pages/News.html': '/news-archive',

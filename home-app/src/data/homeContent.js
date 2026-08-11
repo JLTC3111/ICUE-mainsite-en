@@ -1,5 +1,5 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
-import { ROUTE_PATHS } from '../lib/routes'
+import { OUR_WORK_APP_URL, ROUTE_PATHS } from '../lib/routes'
 
 export const HERO = {
   bannerLabel: 'Latest News',
@@ -54,12 +54,12 @@ export const HOME_SECTIONS = [
     title: 'Our Work',
     description: 'Research, product development, and experiences built with purpose.',
     linkLabel: 'Explore our work →',
-    linkHref: ROUTE_PATHS.ourWork,
+    linkHref: OUR_WORK_APP_URL,
     cards: [
       {
         image: '/public/work/ourWork_img1.jpg',
         imageAlt: 'Our work preview 1',
-        href: ROUTE_PATHS.ourWork,
+        href: OUR_WORK_APP_URL,
         title: 'Evaluation & Reports',
         description:
           'Design and evaluation of data networks for reliable digital infrastructure.',
@@ -67,7 +67,7 @@ export const HOME_SECTIONS = [
       {
         image: '/public/work/ourWork_img2.jpg',
         imageAlt: 'Our work preview 2',
-        href: ROUTE_PATHS.ourWork,
+        href: OUR_WORK_APP_URL,
         title: 'Quantity Surveying',
         description:
           'Specialized services supporting infrastructure projects from QS to BIM.',
@@ -75,7 +75,7 @@ export const HOME_SECTIONS = [
       {
         image: '/public/work/ourWork_img3.jpg',
         imageAlt: 'Our work preview 3',
-        href: ROUTE_PATHS.ourWork,
+        href: OUR_WORK_APP_URL,
         title: 'Infrastructure Gap Analysis',
         description:
           'Cost estimation, budget control, and standards-based structural assessment.',

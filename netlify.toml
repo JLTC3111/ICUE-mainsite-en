@@ -60,10 +60,8 @@
   to = "/about-us.html"
   status = 200
 
-[[redirects]]
-  from = "/our-work"
-  to = "/our-work.html"
-  status = 200
+# /our-work is not a route of this site: _redirects 301s it to the shared Our
+# Work app on icue.vn. No shell rewrite here — there is no our-work.html.
 
 [[redirects]]
   from = "/past-projects"

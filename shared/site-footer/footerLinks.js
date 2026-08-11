@@ -7,7 +7,7 @@ export const FOOTER_ROUTE_PATHS = {
   // ?site=en keeps it in English and points its chrome back at en.icue.vn.
   contact: `${VN_SITE}/contact?site=en`,
   aboutUs: '/about-us',
-  ourWork: '/our-work',
+  ourWork: `${VN_SITE}/our-work?site=en`,
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
   notableAwards: '/notable-awards',

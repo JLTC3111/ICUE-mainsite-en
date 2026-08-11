@@ -10,13 +10,15 @@ const ROOT = __dirname;
 // repo), so it is redirected rather than rendered here. ?site=en keeps the page
 // in English and sends its chrome links back to en.icue.vn.
 const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
+const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en';
 const EXTERNAL_ROUTES = {
   '/contact': CONTACT_APP_URL,
   '/contact/': CONTACT_APP_URL,
+  '/our-work': OUR_WORK_APP_URL,
+  '/our-work/': OUR_WORK_APP_URL,
 };
 const SPA_ROUTES = [
   '/about-us',
-  '/our-work',
   '/past-projects',
   '/recruitment',
   '/news-archive',
@@ -33,7 +35,7 @@ const LEGACY_REDIRECTS = {
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/legacy/pages/aboutUs.html': '/about-us',
-  '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
+  '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': '/past-projects',
   '/legacy/pages/recruitment.html': '/recruitment',
   '/legacy/pages/News.html': '/news-archive',

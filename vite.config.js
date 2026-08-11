@@ -66,6 +66,7 @@ function homeDevFallback() {
   // site. Redirect them in dev too so the dev server cannot serve a stale
   // local shell for a route production sends away.
   const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
+  const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en';
 
   const legacyPageRedirects = {
     '/legacy/pages/Home.html': '/',
@@ -73,8 +74,10 @@ function homeDevFallback() {
     '/legacy/pages/Contact.html': CONTACT_APP_URL,
     '/contact': CONTACT_APP_URL,
     '/contact/': CONTACT_APP_URL,
+    '/our-work': OUR_WORK_APP_URL,
+    '/our-work/': OUR_WORK_APP_URL,
     '/legacy/pages/aboutUs.html': '/about-us',
-    '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
+    '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
     '/legacy/pages/pastProjects.html': '/past-projects',
     '/legacy/pages/recruitment.html': '/recruitment',
     '/legacy/pages/News.html': '/news-archive',
