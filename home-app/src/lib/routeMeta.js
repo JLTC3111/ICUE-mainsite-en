@@ -12,15 +12,12 @@
  *
  * Keep pageFile in sync with LEGACY_PAGE_FILES in ./routes.js.
  */
+// Contact has no entry here on purpose: /contact redirects to the shared
+// Contact app on icue.vn, which carries its own title, description and
+// structured data. Building a shell for it would put a static contact.html back
+// in the publish directory, and Netlify serves that file in preference to the
+// redirect.
 export const ROUTE_META = [
-  {
-    slug: 'contact',
-    path: '/contact',
-    pageName: 'Contact',
-    pageFile: 'Contact.html',
-    title: 'Contact ICUE Vietnam',
-    description: 'Contact ICUE Vietnam for urban planning, construction, climate resilience, research, and partnership enquiries.',
-  },
   {
     slug: 'about-us',
     path: '/about-us',

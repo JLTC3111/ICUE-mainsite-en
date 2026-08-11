@@ -6,8 +6,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
+// Contact is served by the shared Contact app on icue.vn (contact-app in the vn
+// repo), so it is redirected rather than rendered here. ?site=en keeps the page
+// in English and sends its chrome links back to en.icue.vn.
+const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
+const EXTERNAL_ROUTES = {
+  '/contact': CONTACT_APP_URL,
+  '/contact/': CONTACT_APP_URL,
+};
 const SPA_ROUTES = [
-  '/contact',
   '/about-us',
   '/our-work',
   '/past-projects',
@@ -24,7 +31,7 @@ const SPA_ROUTES = [
 const LEGACY_REDIRECTS = {
   '/legacy/pages/Home.html': '/',
   '/legacy/pages/Home_OLD.html': '/',
-  '/legacy/pages/Contact.html': '/contact',
+  '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/legacy/pages/aboutUs.html': '/about-us',
   '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
   '/legacy/pages/pastProjects.html': '/past-projects',
@@ -51,6 +58,10 @@ const staticOpts = {
 };
 app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
   res.redirect(301, LEGACY_REDIRECTS[req.path]);
+});
+
+app.get(Object.keys(EXTERNAL_ROUTES), (req, res) => {
+  res.redirect(301, EXTERNAL_ROUTES[req.path]);
 });
 
 app.use('/public', express.static(path.join(ROOT, 'public'), staticOpts));

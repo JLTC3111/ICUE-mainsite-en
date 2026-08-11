@@ -4285,7 +4285,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
               answer: lang === 'vi'
                 ? 'Bạn có thể xem trang Liên hệ để biết email/số điện thoại/biểu mẫu.'
                 : 'Please check the Contact page for email/phone/form details.',
-              links: [{ label: 'Contact', url: '#/Contact' }]
+              links: [{ label: 'Contact', url: 'https://icue.vn/contact?site=en' }]
             }
           ],
           fallback: {
@@ -4374,7 +4374,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             : 'I’m not fully sure I understood. Could you clarify your question?'),
           links: [
             { label: detectedLang === 'vi' ? 'FAQ' : 'FAQs', url: '#/faqs' },
-            { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: '#/Contact' }
+            { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: detectedLang === 'vi' ? 'https://icue.vn/contact' : 'https://icue.vn/contact?site=en' }
           ]
         };
       }

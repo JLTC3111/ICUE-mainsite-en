@@ -75,7 +75,9 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'pastProjects', href: '/past-projects', label: 'Project History', icon: IconProjects, closeOnly: true },
   { page: 'News', href: 'https://icue.vn/newsroom/?from=en-news', label: 'News', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'About Us', icon: IconAbout, closeOnly: true },
-  { page: 'Contact', href: '/contact', label: 'Contact', icon: IconContact, closeOnly: true },
+  // Contact is the shared Contact app on icue.vn — linked directly so the click
+  // does not pay for the /contact -> icue.vn redirect hop.
+  { page: 'Contact', href: 'https://icue.vn/contact?site=en', label: 'Contact', icon: IconContact, closeOnly: true },
 ];
 
 export const PEOPLE_SUBMENU = {

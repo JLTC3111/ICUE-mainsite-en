@@ -1,3 +1,14 @@
+/**
+ * Contact is served by the shared Contact app on icue.vn (contact-app in the vn
+ * repo, built to /contact) — the same arrangement as Our Work. ?site=en keeps
+ * the page in English and sends its chrome links back to en.icue.vn.
+ *
+ * ROUTE_PATHS.contact stays as the canonical /contact path so nav state and the
+ * redirect rules keep one source of truth, but nothing mounts it: every link
+ * that a reader can click points straight at the app URL below.
+ */
+export const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
+
 /** Path routes for migrated main-site pages. */
 export const ROUTE_PATHS = {
   home: '/',
@@ -44,7 +55,6 @@ export const PAGE_TO_PATH = Object.fromEntries(
 PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 
 export const LEGACY_PAGE_FILES = {
-  Contact: 'Contact.html',
   aboutUs: 'aboutUs.html',
   pastProjects: 'pastProjects.html',
   recruitment: 'recruitment.html',
@@ -112,7 +122,7 @@ export function prepareLegacyHtml(rawHtml) {
 
   const hashToPath = {
     '#/Home': ROUTE_PATHS.home,
-    '#/Contact': ROUTE_PATHS.contact,
+    '#/Contact': CONTACT_APP_URL,
     '#/aboutUs': ROUTE_PATHS.aboutUs,
     '#/ourWork': ROUTE_PATHS.ourWork,
     '#/pastProjects': ROUTE_PATHS.pastProjects,
@@ -150,6 +160,12 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${route}'`)
   }
 
+  // Contact has no local page to rewrite to — send its legacy links straight to
+  // the app on icue.vn rather than through the /contact redirect.
+  bodyHtml = bodyHtml
+    .replaceAll('href="/legacy/pages/Contact.html"', `href="${CONTACT_APP_URL}"`)
+    .replaceAll("href='/legacy/pages/Contact.html'", `href='${CONTACT_APP_URL}'`)
+
   const bodyClass = doc.body?.className?.trim() || ''
 
   return { html: `${styles}${bodyHtml}`, bodyClass }
@@ -166,7 +182,7 @@ export function pathFromLegacyHash(hash) {
 
   const pagePaths = {
     Home: ROUTE_PATHS.home,
-    Contact: ROUTE_PATHS.contact,
+    Contact: CONTACT_APP_URL,
     aboutUs: ROUTE_PATHS.aboutUs,
     ourWork: ROUTE_PATHS.ourWork,
     pastProjects: ROUTE_PATHS.pastProjects,

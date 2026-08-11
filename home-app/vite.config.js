@@ -5,10 +5,17 @@ import react from '@vitejs/plugin-react'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+// Contact is served by the shared Contact app on icue.vn (contact-app in the vn
+// repo). /contact is redirected here as well as at the legacy URL so the
+// home-app dev server matches production.
+const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
+
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Home.html': '/',
   '/legacy/pages/Home_OLD.html': '/',
-  '/legacy/pages/Contact.html': '/contact',
+  '/legacy/pages/Contact.html': CONTACT_APP_URL,
+  '/contact': CONTACT_APP_URL,
+  '/contact/': CONTACT_APP_URL,
   '/legacy/pages/aboutUs.html': '/about-us',
   '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
   '/legacy/pages/pastProjects.html': '/past-projects',

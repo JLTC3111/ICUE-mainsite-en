@@ -16,7 +16,7 @@
       "links": [
         {"label": "Công việc / Dịch vụ", "url": "#/ourWork"},
         {"label": "FAQ", "url": "#/faqs"},
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -26,7 +26,7 @@
       "answer": "Có — tùy theo nhu cầu dự án, ICUE có thể hỗ trợ các bước quy hoạch/thiết kế. Bạn cho mình biết địa điểm, mục tiêu và giai đoạn hiện tại (ý tưởng / sơ bộ / chi tiết) để mình gợi ý quy trình phù hợp.",
       "links": [
         {"label": "Công việc", "url": "#/ourWork"},
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -35,7 +35,7 @@
       "phrases": ["có quản lý dự án không", "hỗ trợ quản lý dự án"],
       "answer": "ICUE có thể hỗ trợ quản lý dự án/điều phối tùy phạm vi. Bạn cho mình biết timeline, bên liên quan và đầu ra mong muốn để mình gợi ý cách tổ chức công việc.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -44,7 +44,7 @@
       "phrases": ["có giám sát thi công không", "giám sát hiện trường"],
       "answer": "Hỗ trợ giám sát/theo dõi phụ thuộc loại dự án và địa điểm. Bạn cho mình biết dự án ở đâu và đang ở giai đoạn nào (thiết kế/đấu thầu/thi công) để mình tư vấn cách làm phù hợp.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -54,7 +54,7 @@
       "answer": "ICUE có thể hỗ trợ thủ tục/hồ sơ tùy dự án. Bạn cho mình biết tỉnh/thành và loại dự án, mình sẽ gợi ý các bước và nhóm giấy tờ thường gặp.",
       "links": [
         {"label": "FAQ", "url": "#/faqs"},
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -63,7 +63,7 @@
       "phrases": ["cần giấy tờ gì", "cần hồ sơ gì"],
       "answer": "Những thứ hay cần lúc bắt đầu: thông tin khu đất/địa điểm, mục tiêu phạm vi, bản vẽ hiện trạng (nếu có) và các giấy tờ pháp lý liên quan (nếu áp dụng). Bạn nói bạn đang có gì rồi, mình sẽ chỉ phần còn thiếu.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"},
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"},
         {"label": "FAQ", "url": "#/faqs"}
       ]
     },
@@ -73,7 +73,7 @@
       "phrases": ["chi phí bao nhiêu", "xin báo giá", "báo giá"],
       "answer": "Chi phí phụ thuộc phạm vi, thời gian và độ phức tạp. Bạn gửi giúp mình brief ngắn (loại dự án, địa điểm, quy mô, deadline, và bạn cần đầu ra gì) để ICUE có thể ước tính sát hơn.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -82,7 +82,7 @@
       "phrases": ["có thanh toán theo đợt không", "điều khoản thanh toán"],
       "answer": "Thông thường có thể chia theo mốc công việc (ý tưởng → bản nháp → hoàn thiện). Bạn cho mình biết timeline và đầu ra, mình sẽ gợi ý cách chia mốc hợp lý.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -100,7 +100,7 @@
       "phrases": ["mất bao lâu", "thời gian thực hiện"],
       "answer": "Thời gian phụ thuộc phạm vi và thủ tục phê duyệt. Bạn cho mình deadline + đầu ra cần bàn giao (ý tưởng hay trọn gói) để mình gợi ý timeline và các mốc kiểm tra.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -136,7 +136,7 @@
       "phrases": ["icue ở đâu", "có làm ở tỉnh khác không"],
       "answer": "Bạn cho mình biết dự án ở tỉnh/thành nào và bạn muốn hỗ trợ từ xa hay trực tiếp, mình sẽ tư vấn cách làm việc phù hợp.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -191,7 +191,7 @@
       "phrases": ["muốn hợp tác", "cơ hội hợp tác"],
       "answer": "ICUE sẵn sàng trao đổi hợp tác nếu phù hợp mục tiêu và phạm vi. Bạn cho mình biết bạn là ai, đề xuất gì và mong muốn đầu ra nào, mình sẽ giúp bạn soạn tin nhắn liên hệ rõ ràng.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -200,7 +200,7 @@
       "phrases": ["liên hệ truyền thông", "yêu cầu báo chí"],
       "answer": "Nếu bạn cần làm việc về truyền thông/báo chí, hãy liên hệ và nêu rõ deadline, chủ đề và nhu cầu (trích dẫn/phỏng vấn/diễn giả). Mình cũng có thể giúp bạn soạn nội dung yêu cầu ngắn gọn.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -209,7 +209,7 @@
       "phrases": ["hẹn lịch tư vấn", "đặt lịch"],
       "answer": "Được nhé — bạn cho mình khung giờ mong muốn, múi giờ và nội dung cần trao đổi. Khi nhắn qua trang Liên hệ, bạn ghi các thông tin này để xử lý nhanh hơn.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {
@@ -218,7 +218,7 @@
       "phrases": ["xin proposal", "gửi đề xuất"],
       "answer": "Bạn gửi giúp mình mô tả phạm vi (mục tiêu, đầu ra, timeline, ngân sách dự kiến nếu có) để ICUE có thể phản hồi cấu trúc đề xuất và bước tiếp theo.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {"label": "Liên hệ", "url": "https://icue.vn/contact"}
       ]
     },
     {

@@ -110,7 +110,8 @@ function AppShell() {
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-            <Route path={ROUTE_PATHS.contact} element={<LegacyHtmlPage />} />
+            {/* No /contact route: it is redirected to the shared Contact app on
+                icue.vn before it ever reaches the router. */}
             <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />

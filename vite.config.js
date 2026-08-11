@@ -62,10 +62,17 @@ function homeDevFallback() {
   const appDir = path.resolve(root, 'dist-home');
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
+  // Contact and Our Work are served by shared apps on icue.vn, not by this
+  // site. Redirect them in dev too so the dev server cannot serve a stale
+  // local shell for a route production sends away.
+  const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
+
   const legacyPageRedirects = {
     '/legacy/pages/Home.html': '/',
     '/legacy/pages/Home_OLD.html': '/',
-    '/legacy/pages/Contact.html': '/contact',
+    '/legacy/pages/Contact.html': CONTACT_APP_URL,
+    '/contact': CONTACT_APP_URL,
+    '/contact/': CONTACT_APP_URL,
     '/legacy/pages/aboutUs.html': '/about-us',
     '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
     '/legacy/pages/pastProjects.html': '/past-projects',

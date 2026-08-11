@@ -1,5 +1,6 @@
+// Keep in sync with LEGACY_PAGE_FILES in ../lib/routes.js. Contact is absent
+// from both: it is served by the Contact app on icue.vn, not injected here.
 const PAGE_SOURCE_LOADERS = {
-  Contact: () => import('../../../legacy/pages/Contact.html?raw'),
   aboutUs: () => import('../../../legacy/pages/aboutUs.html?raw'),
   pastProjects: () => import('../../../legacy/pages/pastProjects.html?raw'),
   recruitment: () => import('../../../legacy/pages/recruitment.html?raw'),

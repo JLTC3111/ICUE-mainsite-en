@@ -34,10 +34,26 @@
 
 # Direct visits to React/legacy-migrated routes must return the SPA shell.
 # Existing static files still win because this rewrite is not forced.
+# Contact is served by the shared Contact app on icue.vn (contact-app in the vn
+# repo), not by a local shell. ?site=en keeps it in English and points its
+# chrome back at en.icue.vn.
 [[redirects]]
   from = "/contact"
-  to = "/contact.html"
-  status = 200
+  to = "https://icue.vn/contact?site=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact/"
+  to = "https://icue.vn/contact?site=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legacy/pages/Contact.html"
+  to = "https://icue.vn/contact?site=en"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/about-us"

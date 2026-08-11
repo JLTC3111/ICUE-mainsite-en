@@ -3,7 +3,9 @@ const VN_SITE = 'https://icue.vn'
 /** Canonical path-based routes for footer and cross-site links on en.icue.vn. */
 export const FOOTER_ROUTE_PATHS = {
   home: '/',
-  contact: '/contact',
+  // Contact is the shared Contact app on icue.vn (contact-app in the vn repo).
+  // ?site=en keeps it in English and points its chrome back at en.icue.vn.
+  contact: `${VN_SITE}/contact?site=en`,
   aboutUs: '/about-us',
   ourWork: '/our-work',
   pastProjects: '/past-projects',

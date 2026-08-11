@@ -2,9 +2,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
+  CONTACT_APP_URL,
   LEGACY_PAGE_FILES,
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
+import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const failures = []
@@ -14,10 +16,10 @@ const appSource = read('home-app/src/App.jsx')
 const mountedKeys = new Set(
   [...appSource.matchAll(/<Route path=\{ROUTE_PATHS\.(\w+)\}/g)].map((match) => match[1]),
 )
-// ourWork is a path this site links to but does not render: Netlify sends it to
-// the shared Our Work app on icue.vn. It stays in ROUTE_PATHS so every link
-// keeps one source of truth.
-const EXTERNALLY_SERVED_ROUTES = new Set(['ourWork'])
+// ourWork and contact are paths this site links to but does not render: Netlify
+// sends them to the shared apps on icue.vn. They stay in ROUTE_PATHS so every
+// link keeps one source of truth.
+const EXTERNALLY_SERVED_ROUTES = new Set(['ourWork', 'contact'])
 for (const key of Object.keys(ROUTE_PATHS)) {
   if (EXTERNALLY_SERVED_ROUTES.has(key)) continue
   if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
@@ -36,9 +38,9 @@ for (const file of ['card.html', 'article_template.html']) {
 
 const redirects = read('_redirects')
 const requiredShellPaths = Object.entries(ROUTE_PATHS)
-  // ourWork is served by the shared Our Work app on icue.vn, not by a local
-  // shell — it is asserted as an external redirect below instead.
-  .filter(([key]) => !['home', 'ourWork', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
+  // ourWork and contact are served by the shared apps on icue.vn, not by local
+  // shells — they are asserted as external redirects below instead.
+  .filter(([key]) => !['home', 'ourWork', 'contact', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -51,7 +53,7 @@ for (const route of requiredShellPaths) {
 const legacyRedirects = {
   '/legacy/pages/Home.html': '/',
   '/legacy/pages/Home_OLD.html': '/',
-  '/legacy/pages/Contact.html': ROUTE_PATHS.contact,
+  '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/legacy/pages/aboutUs.html': ROUTE_PATHS.aboutUs,
   '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
   '/legacy/pages/pastProjects.html': ROUTE_PATHS.pastProjects,
@@ -86,6 +88,36 @@ for (const [file, source] of Object.entries(runtimeRouteSources)) {
       failures.push(`Legacy redirect missing from ${file}: ${from} -> ${to}`)
     }
   }
+}
+
+// Routes this site links to but does not render. Every layer that can answer a
+// request for one — Netlify (_redirects and netlify.toml), Express, and both
+// dev servers — has to send it to the app on icue.vn. A local shell left behind
+// in any of them wins over the redirect and serves a dead page.
+const escapeRe = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const externalRoutes = {
+  [ROUTE_PATHS.contact]: CONTACT_APP_URL,
+  [`${ROUTE_PATHS.contact}/`]: CONTACT_APP_URL,
+}
+const netlifyToml = read('netlify.toml')
+for (const [from, to] of Object.entries(externalRoutes)) {
+  if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
+    failures.push(`Missing external app redirect in _redirects: ${from} -> ${to}`)
+  }
+  if (!new RegExp(`from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"`, 'm').test(netlifyToml)) {
+    failures.push(`Missing external app redirect in netlify.toml: ${from} -> ${to}`)
+  }
+  for (const [file, source] of Object.entries(runtimeRouteSources)) {
+    if (!source.includes(`'${from}'`) || !source.includes(to)) {
+      failures.push(`External app redirect missing from ${file}: ${from} -> ${to}`)
+    }
+  }
+}
+if (new RegExp(`to = "${escapeRe(ROUTE_PATHS.contact)}\\.html"`).test(netlifyToml)) {
+  failures.push('netlify.toml still rewrites /contact to a local shell')
+}
+if (ROUTE_META.some((route) => route.path === ROUTE_PATHS.contact)) {
+  failures.push('routeMeta.js still builds a /contact shell, which shadows the redirect')
 }
 
 const serverSource = runtimeRouteSources['server.js']

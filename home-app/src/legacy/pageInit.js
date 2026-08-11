@@ -47,7 +47,6 @@ export function preloadLegacyPage(pageName) {
   if (pageName === 'pastProjects') {
     return Promise.all([getPastProjectsSlider(), getPastProjectsAos()])
   }
-  if (pageName === 'Contact') return import('./contactForm')
   if (pageName === 'recruitment') return import('./jobBoard')
   if (pageName === 'FAQs') return import('./faqPage')
   if (pageName === 'notableAwards') return import('./awardsPage')
@@ -97,10 +96,6 @@ async function loadLegacyRuntime() {
 }
 
 const PAGE_INIT = {
-  Contact: async () => {
-    const contact = await import('./contactForm')
-    contact.initContactForm()
-  },
   aboutUs: async () => {
     window.initHomeTextSlider?.()
     window.AboutUsBackgroundVideoManager?.bindToggleUI?.()
@@ -138,9 +133,6 @@ const PAGE_INIT = {
 }
 
 const PAGE_CLEANUP = {
-  Contact: () => {
-    void import('./contactForm').then((contact) => contact.destroyContactForm())
-  },
   notableAwards: () => {
     void import('./awardsPage').then((awards) => awards.destroyAwardsPage())
   },

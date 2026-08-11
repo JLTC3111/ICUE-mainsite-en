@@ -1,7 +1,7 @@
 # Canonical redirects from the retired hash/static site.
 /legacy/pages/Home.html                /                         301
 /legacy/pages/Home_OLD.html            /                         301
-/legacy/pages/Contact.html             /contact                  301
+/legacy/pages/Contact.html             https://icue.vn/contact?site=en    301
 /legacy/pages/aboutUs.html             /about-us                 301
 /legacy/pages/ourWork.html             https://icue.vn/our-work?site=en   301
 /legacy/pages/pastProjects.html        /past-projects            301
@@ -17,7 +17,7 @@
 /legacy/pages/cookies.html             /cookies                  301
 
 # Normalize trailing slashes before serving the history-routed app.
-/contact/              /contact                 301
+/contact/              https://icue.vn/contact?site=en    301
 /about-us/             /about-us                301
 /our-work/             https://icue.vn/our-work?site=en   301
 /past-projects/        /past-projects           301
@@ -32,7 +32,10 @@
 /cookies/              /cookies                 301
 
 # React history routes.
-/contact               /contact.html               200
+# Contact is one React app for both sites, hosted on icue.vn (contact-app in the
+# vn repo, built to /contact). ?site=en keeps the page in English and sends its
+# chrome links back to en.icue.vn — same arrangement as Our Work below.
+/contact               https://icue.vn/contact?site=en    301
 /about-us              /about-us.html              200
 # Our Work is one React app for both sites, hosted on icue.vn. ?site=en keeps
 # the page in English and sends its chrome links back to en.icue.vn.
