@@ -1,20 +1,23 @@
 /**
- * Contact is served by the shared Contact app on icue.vn (contact-app in the vn
- * repo, built to /contact) — the same arrangement as Our Work. ?site=en keeps
+ * Contact and Our Work are served by shared apps on icue.vn (contact-app and
+ * ourwork-app in the vn repo, built to /contact and /our-work). ?site=en keeps
  * the page in English and sends its chrome links back to en.icue.vn.
  *
- * ROUTE_PATHS.contact stays as the canonical /contact path so nav state and the
- * redirect rules keep one source of truth, but nothing mounts it: every link
- * that a reader can click points straight at the app URL below.
+ * Neither has a route here. ROUTE_PATHS keeps /contact only because nav state
+ * and the redirect rules read it; Our Work has no entry at all. Link to the
+ * URLs below rather than to a bare /our-work or /contact path — those only
+ * reach the app through a server redirect, which a client-side navigation
+ * never triggers. /our-work and /contact still 301 at the edge so old inbound
+ * links keep working.
  */
 export const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
+export const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
 
 /** Path routes for migrated main-site pages. */
 export const ROUTE_PATHS = {
   home: '/',
   contact: '/contact',
   aboutUs: '/about-us',
-  ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
   newsArchive: '/news-archive',
@@ -34,7 +37,6 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.home]: 'Home',
   [ROUTE_PATHS.contact]: 'Contact',
   [ROUTE_PATHS.aboutUs]: 'aboutUs',
-  [ROUTE_PATHS.ourWork]: 'ourWork',
   [ROUTE_PATHS.pastProjects]: 'pastProjects',
   [ROUTE_PATHS.recruitment]: 'recruitment',
   [ROUTE_PATHS.newsArchive]: 'newsArchive',
@@ -124,7 +126,7 @@ export function prepareLegacyHtml(rawHtml) {
     '#/Home': ROUTE_PATHS.home,
     '#/Contact': CONTACT_APP_URL,
     '#/aboutUs': ROUTE_PATHS.aboutUs,
-    '#/ourWork': ROUTE_PATHS.ourWork,
+    '#/ourWork': OUR_WORK_APP_URL,
     '#/pastProjects': ROUTE_PATHS.pastProjects,
     '#/recruitment': ROUTE_PATHS.recruitment,
     '#/News': `${VN}/newsroom/?from=en-news`,
@@ -184,7 +186,7 @@ export function pathFromLegacyHash(hash) {
     Home: ROUTE_PATHS.home,
     Contact: CONTACT_APP_URL,
     aboutUs: ROUTE_PATHS.aboutUs,
-    ourWork: ROUTE_PATHS.ourWork,
+    ourWork: OUR_WORK_APP_URL,
     pastProjects: ROUTE_PATHS.pastProjects,
     recruitment: ROUTE_PATHS.recruitment,
     News: ROUTE_PATHS.newsArchive,

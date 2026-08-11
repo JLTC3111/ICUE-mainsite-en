@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import {
   CONTACT_APP_URL,
   LEGACY_PAGE_FILES,
+  OUR_WORK_APP_URL,
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
 import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
@@ -16,10 +17,10 @@ const appSource = read('home-app/src/App.jsx')
 const mountedKeys = new Set(
   [...appSource.matchAll(/<Route path=\{ROUTE_PATHS\.(\w+)\}/g)].map((match) => match[1]),
 )
-// ourWork and contact are paths this site links to but does not render: Netlify
-// sends them to the shared apps on icue.vn. They stay in ROUTE_PATHS so every
-// link keeps one source of truth.
-const EXTERNALLY_SERVED_ROUTES = new Set(['ourWork', 'contact'])
+// contact is a path this site links to but does not render: Netlify sends it to
+// the shared Contact app on icue.vn. It stays in ROUTE_PATHS because nav state
+// and the redirect rules read it. ourWork has no ROUTE_PATHS entry at all.
+const EXTERNALLY_SERVED_ROUTES = new Set(['contact'])
 for (const key of Object.keys(ROUTE_PATHS)) {
   if (EXTERNALLY_SERVED_ROUTES.has(key)) continue
   if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
@@ -38,9 +39,9 @@ for (const file of ['card.html', 'article_template.html']) {
 
 const redirects = read('_redirects')
 const requiredShellPaths = Object.entries(ROUTE_PATHS)
-  // ourWork and contact are served by the shared apps on icue.vn, not by local
-  // shells — they are asserted as external redirects below instead.
-  .filter(([key]) => !['home', 'ourWork', 'contact', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
+  // contact is served by the shared app on icue.vn, not by a local shell — it
+  // is asserted as an external redirect below instead.
+  .filter(([key]) => !['home', 'contact', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -55,7 +56,7 @@ const legacyRedirects = {
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/legacy/pages/aboutUs.html': ROUTE_PATHS.aboutUs,
-  '/legacy/pages/ourWork.html': 'https://icue.vn/our-work?site=en',
+  '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': ROUTE_PATHS.pastProjects,
   '/legacy/pages/recruitment.html': ROUTE_PATHS.recruitment,
   '/legacy/pages/News.html': ROUTE_PATHS.newsArchive,
@@ -95,29 +96,37 @@ for (const [file, source] of Object.entries(runtimeRouteSources)) {
 // dev servers — has to send it to the app on icue.vn. A local shell left behind
 // in any of them wins over the redirect and serves a dead page.
 const escapeRe = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const netlifyToml = read('netlify.toml')
 const externalRoutes = {
   [ROUTE_PATHS.contact]: CONTACT_APP_URL,
   [`${ROUTE_PATHS.contact}/`]: CONTACT_APP_URL,
+  '/our-work': OUR_WORK_APP_URL,
+  '/our-work/': OUR_WORK_APP_URL,
 }
-const netlifyToml = read('netlify.toml')
 for (const [from, to] of Object.entries(externalRoutes)) {
   if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
     failures.push(`Missing external app redirect in _redirects: ${from} -> ${to}`)
-  }
-  if (!new RegExp(`from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"`, 'm').test(netlifyToml)) {
-    failures.push(`Missing external app redirect in netlify.toml: ${from} -> ${to}`)
   }
   for (const [file, source] of Object.entries(runtimeRouteSources)) {
     if (!source.includes(`'${from}'`) || !source.includes(to)) {
       failures.push(`External app redirect missing from ${file}: ${from} -> ${to}`)
     }
   }
+  // A shell rewrite for one of these wins over the redirect and serves a dead
+  // page, so netlify.toml must not claim the path at all.
+  if (new RegExp(`from = "${escapeRe(from)}"\\s+to = "(?!https:)`, 'm').test(netlifyToml)) {
+    failures.push(`netlify.toml rewrites ${from} to a local shell`)
+  }
 }
-if (new RegExp(`to = "${escapeRe(ROUTE_PATHS.contact)}\\.html"`).test(netlifyToml)) {
-  failures.push('netlify.toml still rewrites /contact to a local shell')
+// Contact is the one path netlify.toml redirects itself, because a stale
+// contact.html once shadowed the _redirects rule.
+if (!new RegExp(`from = "${escapeRe(ROUTE_PATHS.contact)}"\\s+to = "${escapeRe(CONTACT_APP_URL)}"`, 'm').test(netlifyToml)) {
+  failures.push(`Missing external app redirect in netlify.toml: ${ROUTE_PATHS.contact} -> ${CONTACT_APP_URL}`)
 }
-if (ROUTE_META.some((route) => route.path === ROUTE_PATHS.contact)) {
-  failures.push('routeMeta.js still builds a /contact shell, which shadows the redirect')
+for (const [path, label] of [[ROUTE_PATHS.contact, 'contact'], ['/our-work', 'our-work']]) {
+  if (ROUTE_META.some((route) => route.path === path)) {
+    failures.push(`routeMeta.js still builds a ${label} shell, which shadows the redirect`)
+  }
 }
 
 const serverSource = runtimeRouteSources['server.js']
