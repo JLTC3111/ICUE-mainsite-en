@@ -1,0 +1,160 @@
+{
+  "instituteName": "建設・都市・経済研究所",
+  "lang": {
+    "label": "ページの言語"
+  },
+  "nav": {
+    "pages": {
+      "Home": "ホーム",
+      "orgStructure": "組織",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト実績",
+      "News": "ニュース",
+      "aboutUs": "私たちについて",
+      "Contact": "お問い合わせ",
+      "ourPeople": "人材",
+      "meetOurExperts": "専門家紹介",
+      "coreTeam": "中核メンバー"
+    },
+    "compact": {
+      "Home": "ホーム",
+      "orgStructure": "組織",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト",
+      "News": "ニュース",
+      "aboutUs": "紹介"
+    },
+    "aria": {
+      "nav": "サイトナビゲーション",
+      "home": "ホームへ移動",
+      "more": "その他のナビゲーション項目を開く",
+      "moreLabel": "その他",
+      "overflow": "その他のナビゲーション項目",
+      "openMenu": "ナビゲーションメニューをすべて開く",
+      "toggleMenu": "ナビゲーションメニューの開閉",
+      "closeMenu": "ナビゲーションメニューを閉じる",
+      "resizeMenu": "ナビゲーションメニューの幅を変更",
+      "resizeMenuTitle": "ドラッグしてメニューの幅を変更",
+      "homeVideo": "背景動画のオン/オフ",
+      "aboutUsVideo": "背景動画のオン/オフ（私たちについて）"
+    },
+    "contactWordmark": "私たちについて"
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "ホームのメインビジュアル",
+      "bannerLabel": "最新のニュース",
+      "title": "iCUE Vietnam",
+      "subtitle": "社会を前に進める調査研究、地域の取り組み、そして実際に使える解決策をかたちにします。",
+      "actions": {
+        "contact": "お問い合わせ",
+        "pastProjects": "これまでのプロジェクト"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "これまでのプロジェクト",
+        "description": "分野を横断した協働と、地域から立ち上がった取り組みの中から主なものを紹介します。",
+        "linkLabel": "すべてのプロジェクトを見る →",
+        "cards": {
+          "laoCai": {
+            "title": "ラオカイ市都市マスタープランの改定",
+            "description": "28,162.64haのマスタープラン。2045年を目標年次に、土地利用の最適化とインフラの更新を図ります。",
+            "imageAlt": "ラオカイ市都市マスタープラン"
+          },
+          "subdivision6b": {
+            "title": "第6B地区計画（グエン・アイ・クオック地区）",
+            "description": "1,100haを超える計画で、インフラの一体整備と都市緑地の拡充に重点を置いています。",
+            "imageAlt": "グエン・アイ・クオック地区の第6B地区計画"
+          },
+          "dongYen": {
+            "title": "バクザン県ドンイエン都市マスタープラン",
+            "description": "約4,500ha。2050年を見据えたスマートな衛星都市を構想します。",
+            "imageAlt": "バクザン県ドンイエン都市マスタープラン"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "業務内容",
+        "description": "目的をもって取り組む調査研究、開発、そしてその成果です。",
+        "linkLabel": "業務を詳しく見る →",
+        "cards": {
+          "evaluation": {
+            "title": "評価・報告",
+            "description": "信頼できるデジタル基盤のためのデータネットワークの設計と評価です。",
+            "imageAlt": "評価・報告の業務"
+          },
+          "quantitySurveying": {
+            "title": "積算・数量調査",
+            "description": "積算からBIMまで、インフラ事業を支える専門サービスです。",
+            "imageAlt": "現場での数量調査"
+          },
+          "gapAnalysis": {
+            "title": "インフラのギャップ分析",
+            "description": "概算、予算管理、そして基準に基づく構造評価を行います。",
+            "imageAlt": "インフラのギャップ分析"
+          }
+        }
+      },
+      "news": {
+        "title": "最新のニュース",
+        "description": "iCUE Vietnamからのお知らせ、イベント、視点をお届けします。",
+        "linkLabel": "すべてのニュースを読む →",
+        "cards": {
+          "auCoPark": {
+            "title": "IKI-GIZ-ICUE 竣工式",
+            "description": "ホイアンのアウコー公園の竣工・引渡し式が、省の幹部が出席するなかで行われました。",
+            "imageAlt": "アウコー公園の竣工・引渡し式"
+          },
+          "conservationForum": {
+            "title": "第8回アジア地域保全フォーラム、タイで開幕",
+            "description": "RCF 2024がバンコクで開幕し、域内の保全分野からおよそ600名が参加しました。",
+            "imageAlt": "バンコクで開かれたアジア地域保全フォーラム"
+          },
+          "yagi": {
+            "title": "台風ヤギの被災者・被災地への支援",
+            "description": "ICUEは職員、パートナー、支援者に対し、台風ヤギの被害を受けた地域への支援を呼びかけました。",
+            "imageAlt": "台風ヤギの被災地域への支援活動"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "採用",
+        "description": "革新と社会への貢献を軸に据えたチームに加わりませんか。",
+        "linkLabel": "募集中の職種を見る →",
+        "cards": {
+          "culture": {
+            "title": "協働する文化",
+            "description": "研究者、デザイナー、地域をつくる人たちと肩を並べて働きます。",
+            "imageAlt": "ICUEのオフィス"
+          },
+          "growth": {
+            "title": "学びと成長",
+            "description": "ワークショップとメンタリングを通じて学び続けます。",
+            "imageAlt": "ICUEの社内ワークショップ"
+          },
+          "impact": {
+            "title": "変化を生む",
+            "description": "実際の変化を生む事業に携わります。",
+            "imageAlt": "現地調査を行うICUEの職員"
+          }
+        }
+      }
+    }
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "受賞歴",
+    "news": "ニュースルーム",
+    "archive": "アーカイブ",
+    "faqs": "FAQ",
+    "recruitment": "採用",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "Cookie",
+    "partner": "一緒に取り組みましょう！",
+    "rights": "著作権はICUEに帰属します。"
+  }
+}

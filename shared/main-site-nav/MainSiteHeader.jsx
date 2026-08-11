@@ -5,6 +5,7 @@ import VideoText from '@icue/ui/VideoText';
 import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
 import { handleSpaNavigation, isUnmodifiedPrimaryActivation } from './navigation';
+import { NAV_LABELS } from './navContent';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -29,6 +30,10 @@ export default function MainSiteHeader({
   flagLinkRef,
   onNavigate,
   onReady,
+  /* Both already resolved by MainSiteNav; the defaults only matter when this
+     header is rendered on its own. */
+  LanguageControl = LanguageFlagLink,
+  labels = NAV_LABELS,
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
@@ -52,7 +57,7 @@ export default function MainSiteHeader({
               href={homeHref}
               id="logo-link"
               className="logo-link"
-              aria-label="Go to homepage"
+              aria-label={labels.aria.home}
               onClick={(event) => handleSpaNavigation(event, homeHref, onNavigate)}
             >
               <img
@@ -85,7 +90,7 @@ export default function MainSiteHeader({
               type="button"
               className="menu-toggle"
               id="menuToggle"
-              aria-label="Toggle navigation menu"
+              aria-label={labels.aria.toggleMenu}
               aria-expanded={drawerOpen}
               onClick={(e) => {
                 e.stopPropagation();
@@ -107,7 +112,7 @@ export default function MainSiteHeader({
                       id="homeVideoToggleContainerMobile"
                       inputId="homeVideoToggleMobile"
                       variant="navbar"
-                      label="Toggle background video"
+                      label={labels.aria.homeVideo}
                       showLabel={false}
                       visible
                       animated
@@ -121,6 +126,7 @@ export default function MainSiteHeader({
                       id="homeVideoToggleContainerDesktop"
                       inputId="homeVideoToggleDesktop"
                       variant="nav"
+                      label={labels.aria.homeVideo}
                       showLabel={false}
                       visible
                       animated
@@ -139,7 +145,7 @@ export default function MainSiteHeader({
                       id="aboutUsVideoToggleContainerMobile"
                       inputId="aboutUsVideoToggleMobile"
                       variant="navbar"
-                      label="Toggle background video (About Us)"
+                      label={labels.aria.aboutUsVideo}
                       showLabel={false}
                       visible
                       animated
@@ -153,7 +159,7 @@ export default function MainSiteHeader({
                       id="aboutUsVideoToggleContainerDesktop"
                       inputId="aboutUsVideoToggleDesktop"
                       variant="nav"
-                      label="Toggle background video (About Us)"
+                      label={labels.aria.aboutUsVideo}
                       showLabel={false}
                       visible
                       animated
@@ -197,7 +203,7 @@ export default function MainSiteHeader({
                     as="span"
                     defer
                   >
-                    About Us
+                    {labels.contactWordmark}
                   </VideoText>
                 </a>
               )}
@@ -206,7 +212,7 @@ export default function MainSiteHeader({
 
           <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--flag">
             <div className="language-switcher" ref={flagLinkRef}>
-              <LanguageFlagLink />
+              <LanguageControl />
             </div>
           </DockIcon>
         </div>

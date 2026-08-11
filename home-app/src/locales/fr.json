@@ -1,0 +1,160 @@
+{
+  "instituteName": "Institut de recherche sur la construction, l'urbain et l'économie",
+  "lang": {
+    "label": "Langue de la page"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Accueil",
+      "orgStructure": "Structure",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Historique des projets",
+      "News": "Actualités",
+      "aboutUs": "À propos",
+      "Contact": "Contact",
+      "ourPeople": "Équipe",
+      "meetOurExperts": "Nos experts",
+      "coreTeam": "Équipe permanente"
+    },
+    "compact": {
+      "Home": "Accueil",
+      "orgStructure": "Structure",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets",
+      "News": "Actualités",
+      "aboutUs": "À propos"
+    },
+    "aria": {
+      "nav": "Navigation du site",
+      "home": "Retour à l'accueil",
+      "more": "Ouvrir les autres liens de navigation",
+      "moreLabel": "Plus",
+      "overflow": "Autres liens de navigation",
+      "openMenu": "Ouvrir le menu de navigation complet",
+      "toggleMenu": "Afficher ou masquer le menu de navigation",
+      "closeMenu": "Fermer le menu de navigation complet",
+      "resizeMenu": "Redimensionner le menu de navigation",
+      "resizeMenuTitle": "Faire glisser pour redimensionner le menu",
+      "homeVideo": "Activer ou désactiver la vidéo d'arrière-plan",
+      "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)"
+    },
+    "contactWordmark": "À propos"
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Ouverture de la page d'accueil",
+      "bannerLabel": "Dernières actualités",
+      "title": "iCUE Vietnam",
+      "subtitle": "Une recherche utile, des initiatives portées par les territoires et des solutions concrètes qui font avancer la société.",
+      "actions": {
+        "contact": "Nous contacter",
+        "pastProjects": "Projets passés"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Projets passés",
+        "description": "Extraits de collaborations pluridisciplinaires et d'initiatives nées des territoires eux-mêmes.",
+        "linkLabel": "Voir tous les projets →",
+        "cards": {
+          "laoCai": {
+            "title": "Révision du plan directeur de la ville de Lào Cai",
+            "description": "Un périmètre de 28 162,64 ha à l'horizon 2045, avec un usage du sol optimisé et des infrastructures renforcées.",
+            "imageAlt": "Plan directeur de la ville de Lào Cai"
+          },
+          "subdivision6b": {
+            "title": "Plan de secteur 6B (quartier Nguyễn Ái Quốc)",
+            "description": "Plus de 1 100 ha, axés sur des infrastructures intégrées et l'extension des espaces verts urbains.",
+            "imageAlt": "Plan de secteur 6B, quartier Nguyễn Ái Quốc"
+          },
+          "dongYen": {
+            "title": "Plan directeur de la ville de Đông Yên, district de Bắc Giang",
+            "description": "Près de 4 500 ha, avec pour horizon 2050 une ville satellite intelligente.",
+            "imageAlt": "Plan directeur de la ville de Đông Yên, district de Bắc Giang"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Nos travaux",
+        "description": "Recherche, développement et réalisations conçus avec une intention claire.",
+        "linkLabel": "Découvrir nos travaux →",
+        "cards": {
+          "evaluation": {
+            "title": "Évaluation et rapports",
+            "description": "Conception et évaluation de réseaux de données au service d'une infrastructure numérique fiable.",
+            "imageAlt": "Travaux d'évaluation et de rapport"
+          },
+          "quantitySurveying": {
+            "title": "Métrés et économie de la construction",
+            "description": "Des prestations spécialisées pour les projets d'infrastructure, du métré au BIM.",
+            "imageAlt": "Métrés effectués sur le terrain"
+          },
+          "gapAnalysis": {
+            "title": "Analyse des carences d'infrastructure",
+            "description": "Estimation des coûts, maîtrise du budget et évaluation structurelle selon les normes.",
+            "imageAlt": "Analyse des carences d'infrastructure"
+          }
+        }
+      },
+      "news": {
+        "title": "Dernières actualités",
+        "description": "Annonces, événements et points de vue d'iCUE Vietnam.",
+        "linkLabel": "Lire toutes les actualités →",
+        "cards": {
+          "auCoPark": {
+            "title": "Cérémonie de clôture IKI-GIZ-ICUE",
+            "description": "Inauguration et remise du parc Âu Cơ à Hội An, en présence des responsables de la province.",
+            "imageAlt": "Inauguration et remise du parc Âu Cơ"
+          },
+          "conservationForum": {
+            "title": "Le 8e forum régional asiatique de la conservation s'ouvre en Thaïlande",
+            "description": "Le RCF 2024 s'est ouvert à Bangkok avec près de 600 responsables de la conservation venus de toute la région.",
+            "imageAlt": "Forum régional asiatique de la conservation à Bangkok"
+          },
+          "yagi": {
+            "title": "Aide aux populations et aux zones touchées par le typhon Yagi",
+            "description": "ICUE a invité son personnel, ses partenaires et ses donateurs à soutenir les populations touchées par le typhon Yagi.",
+            "imageAlt": "Action de soutien aux populations touchées par le typhon Yagi"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Recrutement",
+        "description": "Rejoignez une équipe engagée, tournée vers l'innovation et l'utilité sociale.",
+        "linkLabel": "Voir les postes ouverts →",
+        "cards": {
+          "culture": {
+            "title": "Une culture de la collaboration",
+            "description": "Travaillez aux côtés de chercheurs, de concepteurs et d'acteurs de terrain.",
+            "imageAlt": "Les bureaux d'ICUE"
+          },
+          "growth": {
+            "title": "Apprentissage & progression",
+            "description": "Se former en continu, par des ateliers et le mentorat.",
+            "imageAlt": "Atelier interne chez ICUE"
+          },
+          "impact": {
+            "title": "Avoir un impact",
+            "description": "Contribuez à des programmes qui produisent un changement réel.",
+            "imageAlt": "Personnel d'ICUE en relevé de terrain"
+          }
+        }
+      }
+    }
+  },
+  "footer": {
+    "company": "Entreprise",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "news": "Salle de presse",
+    "archive": "Archives",
+    "faqs": "FAQ",
+    "recruitment": "Recrutement",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Travaillons ensemble !",
+    "rights": "Tous droits réservés, ICUE."
+  }
+}

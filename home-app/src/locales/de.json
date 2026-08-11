@@ -1,0 +1,160 @@
+{
+  "instituteName": "Institut für Bau-, Stadt- und Wirtschaftsforschung",
+  "lang": {
+    "label": "Seitensprache"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Startseite",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekthistorie",
+      "News": "News",
+      "aboutUs": "Über uns",
+      "Contact": "Kontakt",
+      "ourPeople": "Personal",
+      "meetOurExperts": "Unsere Fachleute",
+      "coreTeam": "Kernteam"
+    },
+    "compact": {
+      "Home": "Start",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte",
+      "News": "News",
+      "aboutUs": "Über uns"
+    },
+    "aria": {
+      "nav": "Seitennavigation",
+      "home": "Zur Startseite",
+      "more": "Weitere Navigationspunkte öffnen",
+      "moreLabel": "Mehr",
+      "overflow": "Weitere Navigationspunkte",
+      "openMenu": "Vollständiges Navigationsmenü öffnen",
+      "toggleMenu": "Navigationsmenü umschalten",
+      "closeMenu": "Vollständiges Navigationsmenü schließen",
+      "resizeMenu": "Navigationsmenü in der Größe ändern",
+      "resizeMenuTitle": "Zum Ändern der Breite ziehen",
+      "homeVideo": "Hintergrundvideo ein-/ausschalten",
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+    },
+    "contactWordmark": "Über uns"
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Einstieg der Startseite",
+      "bannerLabel": "Aktuelle Nachrichten",
+      "title": "iCUE Vietnam",
+      "subtitle": "Wirksame Forschung, Initiativen für das Gemeinwesen und praxistaugliche Lösungen, die die Gesellschaft voranbringen.",
+      "actions": {
+        "contact": "Kontakt",
+        "pastProjects": "Frühere Projekte"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Frühere Projekte",
+        "description": "Höhepunkte aus fachübergreifenden Kooperationen und Vorhaben, die aus den Gemeinden selbst entstanden sind.",
+        "linkLabel": "Alle Projekte ansehen →",
+        "cards": {
+          "laoCai": {
+            "title": "Fortschreibung des Flächennutzungsplans der Stadt Lào Cai",
+            "description": "Planungsgebiet von 28.162,64 ha mit Zielhorizont 2045, optimierter Flächennutzung und ertüchtigter Infrastruktur.",
+            "imageAlt": "Flächennutzungsplan der Stadt Lào Cai"
+          },
+          "subdivision6b": {
+            "title": "Teilgebietsplanung 6B (Stadtteil Nguyễn Ái Quốc)",
+            "description": "Über 1.100 ha, ausgerichtet auf eine durchgängige Infrastruktur und mehr zusammenhängende Grünflächen.",
+            "imageAlt": "Teilgebietsplanung 6B im Stadtteil Nguyễn Ái Quốc"
+          },
+          "dongYen": {
+            "title": "Rahmenplan für die Stadt Đông Yên, Kreis Bắc Giang",
+            "description": "Knapp 4.500 ha, mit dem Leitbild einer smarten Satellitenstadt bis 2050.",
+            "imageAlt": "Rahmenplan für die Stadt Đông Yên, Kreis Bắc Giang"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Unsere Arbeit",
+        "description": "Forschung, Produktentwicklung und Anwendungen, die einem Zweck folgen.",
+        "linkLabel": "Unsere Arbeit ansehen →",
+        "cards": {
+          "evaluation": {
+            "title": "Prüfung & Berichte",
+            "description": "Planung und Bewertung von Datennetzen für eine verlässliche digitale Infrastruktur.",
+            "imageAlt": "Prüfung und Berichterstattung"
+          },
+          "quantitySurveying": {
+            "title": "Mengenermittlung",
+            "description": "Fachleistungen für Infrastrukturvorhaben, von der Mengenermittlung bis zu BIM.",
+            "imageAlt": "Mengenermittlung vor Ort"
+          },
+          "gapAnalysis": {
+            "title": "Analyse von Infrastrukturlücken",
+            "description": "Kostenschätzung, Budgetkontrolle und normbasierte Bauwerksbewertung.",
+            "imageAlt": "Analyse von Infrastrukturlücken"
+          }
+        }
+      },
+      "news": {
+        "title": "Aktuelle Nachrichten",
+        "description": "Mitteilungen, Veranstaltungen und Einblicke von iCUE Vietnam.",
+        "linkLabel": "Alle Nachrichten lesen →",
+        "cards": {
+          "auCoPark": {
+            "title": "Abschlussfeier IKI-GIZ-ICUE",
+            "description": "Einweihung und Übergabe des Âu-Cơ-Parks in Hội An, in Anwesenheit der Provinzspitze.",
+            "imageAlt": "Einweihung und Übergabe des Âu-Cơ-Parks"
+          },
+          "conservationForum": {
+            "title": "8. Regionalforum für Naturschutz in Asien eröffnet in Thailand",
+            "description": "Das RCF 2024 wurde in Bangkok mit fast 600 führenden Fachleuten des Naturschutzes aus der Region eröffnet.",
+            "imageAlt": "Regionalforum für Naturschutz in Asien in Bangkok"
+          },
+          "yagi": {
+            "title": "Hilfe für die vom Taifun Yagi betroffenen Menschen und Gebiete",
+            "description": "ICUE rief Mitarbeitende, Partner und Förderer dazu auf, die vom Taifun Yagi betroffenen Gemeinden zu unterstützen.",
+            "imageAlt": "Hilfsaktion für die vom Taifun Yagi betroffenen Gemeinden"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Karriere",
+        "description": "Kommen Sie in ein Team mit klarer Aufgabe – Innovation und gesellschaftliche Wirkung.",
+        "linkLabel": "Offene Stellen ansehen →",
+        "cards": {
+          "culture": {
+            "title": "Kultur der Zusammenarbeit",
+            "description": "Arbeiten Sie Seite an Seite mit Forschenden, Gestaltenden und Menschen, die Gemeinwesen aufbauen.",
+            "imageAlt": "Büroräume von ICUE"
+          },
+          "growth": {
+            "title": "Lernen & Entwicklung",
+            "description": "Kontinuierliches Lernen durch Workshops und Mentoring.",
+            "imageAlt": "Interner Workshop bei ICUE"
+          },
+          "impact": {
+            "title": "Wirkung erzielen",
+            "description": "Wirken Sie an Programmen mit, die echte Veränderung schaffen.",
+            "imageAlt": "ICUE-Mitarbeitende bei einer Erhebung vor Ort"
+          }
+        }
+      }
+    }
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "news": "Newsroom",
+    "archive": "Archiv",
+    "faqs": "FAQ",
+    "recruitment": "Karriere",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Arbeiten wir zusammen!",
+    "rights": "Alle Rechte vorbehalten, ICUE."
+  }
+}

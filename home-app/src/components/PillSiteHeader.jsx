@@ -4,17 +4,10 @@ import LanguageFlagLink from '@icue/main-site-nav/LanguageFlagLink';
 import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
 import { handleSpaNavigation } from '@icue/main-site-nav/navigation';
+import { NAV_LABELS } from '@icue/main-site-nav/navContent';
 import './PillSiteHeader.css';
 
 const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
-const COMPACT_LABELS = {
-  Home: 'Home',
-  orgStructure: 'Structure',
-  ourWork: 'Our Work',
-  pastProjects: 'Projects',
-  News: 'News',
-  aboutUs: 'About',
-};
 
 function getResponsiveMode() {
   if (window.matchMedia('(max-width: 768px)').matches) return 'mobile';
@@ -40,8 +33,8 @@ function useResponsiveMode() {
   return mode;
 }
 
-function PillLink({ item, active, linkRef, onNavigate }) {
-  const label = COMPACT_LABELS[item.page] || item.label;
+function PillLink({ item, active, linkRef, onNavigate, compactLabels }) {
+  const label = compactLabels[item.page] || item.label;
 
   return (
     <a
@@ -86,7 +79,17 @@ export default function PillSiteHeader({
   flagLinkRef,
   onNavigate,
   overflowItems = [],
+  /* Defaults to the icue.vn <-> en.icue.vn flag link every main-site page uses.
+     An app that carries its own UI languages passes a control of its own here
+     instead — see SiteLanguageMenu, which swaps in the five-language flag menu
+     and keeps the Vietnamese flag as the crossing to icue.vn. */
+  LanguageControl = LanguageFlagLink,
+  /* Resolved upstream by MainSiteNav. The default keeps this header usable on
+     its own and matches what en.icue.vn showed before it took copy as a prop. */
+  labels = NAV_LABELS,
 }) {
+  const compactLabels = labels.compact;
+  const aria = labels.aria;
   const mode = useResponsiveMode();
   const [overflowOpen, setOverflowOpen] = useState(false);
   const overflowRootRef = useRef(null);
@@ -140,7 +143,7 @@ export default function PillSiteHeader({
         ref={logoLinkRef}
         href={homeHref}
         className="pill-site-header__logo"
-        aria-label="Go to homepage"
+        aria-label={aria.home}
         onClick={(event) => handleSpaNavigation(event, homeHref, onNavigate)}
       >
         <img src={logoMarkSrc} alt="" aria-hidden="true" decoding="async" />
@@ -177,6 +180,7 @@ export default function PillSiteHeader({
                       active={active}
                       linkRef={item.page === 'aboutUs' ? contactLinkRef : undefined}
                       onNavigate={onNavigate}
+                      compactLabels={compactLabels}
                     />
                   </li>
                 );
@@ -187,12 +191,12 @@ export default function PillSiteHeader({
                     ref={moreButtonRef}
                     type="button"
                     className={`pill-site-header__link pill-site-header__more${hiddenItemIsActive ? ' is-active' : ''}`}
-                    aria-label="Open additional navigation"
+                    aria-label={aria.more}
                     aria-expanded={overflowOpen}
                     aria-controls="pillSiteTabletOverflow"
                     onClick={() => setOverflowOpen((open) => !open)}
                   >
-                    <span className="pill-site-header__more-label">More</span>
+                    <span className="pill-site-header__more-label">{aria.moreLabel}</span>
                   </button>
                 </li>
               )}
@@ -204,7 +208,7 @@ export default function PillSiteHeader({
               id="pillSiteTabletOverflow"
               className={`pill-site-header__overflow${overflowOpen ? ' is-open' : ''}`}
               role="menu"
-              aria-label="Additional navigation"
+              aria-label={aria.overflow}
               aria-hidden={!overflowOpen}
             >
               {tabletOverflowItems.map((item) => (
@@ -215,7 +219,7 @@ export default function PillSiteHeader({
                   className={`pill-site-header__overflow-link${item.page === activePage ? ' is-active' : ''}`}
                   onClick={(event) => handleOverflowLink(event, item)}
                 >
-                  {COMPACT_LABELS[item.page] || item.label}
+                  {compactLabels[item.page] || item.label}
                 </a>
               ))}
             </div>
@@ -229,7 +233,7 @@ export default function PillSiteHeader({
             id={`homeVideoToggleContainer${toggleSuffix}`}
             inputId={`homeVideoToggle${toggleSuffix}`}
             variant={isMobile ? 'navbar' : 'nav'}
-            label="Toggle background video"
+            label={aria.homeVideo}
             showLabel={false}
             visible
             animated
@@ -244,7 +248,7 @@ export default function PillSiteHeader({
             id={`aboutUsVideoToggleContainer${toggleSuffix}`}
             inputId={`aboutUsVideoToggle${toggleSuffix}`}
             variant={isMobile ? 'navbar' : 'nav'}
-            label="Toggle background video on About Us"
+            label={aria.aboutUsVideo}
             showLabel={false}
             visible
             animated
@@ -255,7 +259,7 @@ export default function PillSiteHeader({
         )}
 
         <div className="pill-site-header__language" ref={flagLinkRef}>
-          <LanguageFlagLink />
+          <LanguageControl />
         </div>
 
         <span className="pill-site-header__menu-icon">
@@ -264,7 +268,7 @@ export default function PillSiteHeader({
             type="button"
             className="menu-toggle pill-site-header__menu"
             id="menuToggle"
-            aria-label={drawerOpen ? 'Close full navigation menu' : 'Open full navigation menu'}
+            aria-label={drawerOpen ? aria.closeMenu : aria.openMenu}
             aria-expanded={drawerOpen}
             onClick={(event) => {
               event.stopPropagation();

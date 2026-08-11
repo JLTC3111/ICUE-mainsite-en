@@ -292,6 +292,8 @@ export const GridScan = ({
   enableGyro = false,
   scanOnClick = false,
   snapBackDelay = 250,
+  maxPixelRatio = 2,
+  maxFps = 0,
   className,
   style
 }) => {
@@ -406,9 +408,15 @@ export const GridScan = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    // No MSAA: the scene is one screen-filling quad, so there are no geometry
+    // edges for it to smooth — every line here is antialiased analytically in
+    // the fragment shader. Leaving it on only bought a multisampled buffer the
+    // shader never benefits from.
+    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
     rendererRef.current = renderer;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // Fragment cost scales with the square of this. A soft grid does not repay
+    // a 2x device ratio the way text or a photo does, so callers can cap it.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, Math.max(0.5, maxPixelRatio)));
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.NoToneMapping;
@@ -458,29 +466,45 @@ export const GridScan = ({
     const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
     scene.add(quad);
 
+    // Each effect is only built when it would actually change a pixel. Bloom is
+    // the expensive one — a full mip pyramid of downsample/upsample passes every
+    // frame — and at opacity 0 it produced exactly nothing. If nothing survives
+    // the filter the composer is skipped altogether and the quad renders
+    // straight to the screen, which is one pass instead of several.
+    const wantsBloom = bloomIntensity > 0;
+    const wantsChroma = Math.abs(chromaticAberration) > 0;
+
     let composer = null;
-    if (enablePost) {
+    if (enablePost && (wantsBloom || wantsChroma)) {
       composer = new EffectComposer(renderer);
       composerRef.current = composer;
       const renderPass = new RenderPass(scene, camera);
       composer.addPass(renderPass);
 
-      const bloom = new BloomEffect({
-        intensity: 1.0,
-        luminanceThreshold: bloomThreshold,
-        luminanceSmoothing: bloomSmoothing
-      });
-      bloom.blendMode.opacity.value = Math.max(0, bloomIntensity);
-      bloomRef.current = bloom;
+      const effects = [];
 
-      const chroma = new ChromaticAberrationEffect({
-        offset: new THREE.Vector2(chromaticAberration, chromaticAberration),
-        radialModulation: true,
-        modulationOffset: 0.0
-      });
-      chromaRef.current = chroma;
+      if (wantsBloom) {
+        const bloom = new BloomEffect({
+          intensity: 1.0,
+          luminanceThreshold: bloomThreshold,
+          luminanceSmoothing: bloomSmoothing
+        });
+        bloom.blendMode.opacity.value = Math.max(0, bloomIntensity);
+        bloomRef.current = bloom;
+        effects.push(bloom);
+      }
 
-      const effectPass = new EffectPass(camera, bloom, chroma);
+      if (wantsChroma) {
+        const chroma = new ChromaticAberrationEffect({
+          offset: new THREE.Vector2(chromaticAberration, chromaticAberration),
+          radialModulation: true,
+          modulationOffset: 0.0
+        });
+        chromaRef.current = chroma;
+        effects.push(chroma);
+      }
+
+      const effectPass = new EffectPass(camera, ...effects);
       effectPass.renderToScreen = true;
       composer.addPass(effectPass);
     }
@@ -493,8 +517,17 @@ export const GridScan = ({
     window.addEventListener('resize', onResize);
 
     let last = performance.now();
+    const minFrameMs = maxFps > 0 ? 1000 / maxFps - 1 : 0;
+    let lastDraw = 0;
     const tick = () => {
+      rafRef.current = requestAnimationFrame(tick);
+
       const now = performance.now();
+      // Frame cap. rAF still fires at display rate; we simply decline most of
+      // them, which costs nothing and skips the whole fragment pass.
+      if (minFrameMs && now - lastDraw < minFrameMs) return;
+      lastDraw = now;
+
       const dt = Math.max(0, Math.min(0.1, (now - last) / 1000));
       last = now;
 
@@ -530,18 +563,58 @@ export const GridScan = ({
       material.uniforms.uYaw.value = THREE.MathUtils.clamp(yawCurrent.current * yawScale, -0.6, 0.6);
 
       material.uniforms.iTime.value = now / 1000;
-      renderer.clear(true, true, true);
+      // Depth and stencil are never written — depthTest and depthWrite are both
+      // off on the material — so clearing them each frame was wasted bandwidth.
+      renderer.clear(true, false, false);
       if (composerRef.current) {
         composerRef.current.render(dt);
       } else {
         renderer.render(scene, camera);
       }
+    };
+
+    // The hero is one screen of a long page, and this shader is the most
+    // expensive thing on it. Once it scrolls away there is nothing to look at,
+    // so the loop stops entirely rather than painting a canvas nobody can see.
+    // (rAF already idles on a hidden tab; a backgrounded *window* on macOS does
+    // not always count as hidden, hence the explicit check as well.)
+    let onScreen = true;
+    let running = false;
+
+    const stop = () => {
+      running = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    };
+
+    const start = () => {
+      if (running || !onScreen || document.hidden) return;
+      running = true;
+      last = performance.now();
+      lastDraw = 0;
       rafRef.current = requestAnimationFrame(tick);
     };
-    rafRef.current = requestAnimationFrame(tick);
+
+    const sync = () => {
+      if (onScreen && !document.hidden) start();
+      else stop();
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        sync();
+      },
+      { rootMargin: '150px' }
+    );
+    observer.observe(container);
+    document.addEventListener('visibilitychange', sync);
+    start();
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      stop();
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', sync);
       window.removeEventListener('resize', onResize);
       material.dispose();
       quad.geometry.dispose();
@@ -550,11 +623,15 @@ export const GridScan = ({
         composerRef.current.dispose();
         composerRef.current = null;
       }
+      bloomRef.current = null;
+      chromaRef.current = null;
       renderer.dispose();
       renderer.forceContextLoss();
       container.removeChild(renderer.domElement);
     };
   }, [
+    maxFps,
+    maxPixelRatio,
     sensitivity,
     lineThickness,
     linesColor,

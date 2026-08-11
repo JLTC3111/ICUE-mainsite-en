@@ -1,0 +1,160 @@
+{
+  "instituteName": "Institute for Construction, Urban and Economic Research",
+  "lang": {
+    "label": "Page language"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Project History",
+      "News": "News",
+      "aboutUs": "About Us",
+      "Contact": "Contact",
+      "ourPeople": "Personnel",
+      "meetOurExperts": "Meet Our Experts",
+      "coreTeam": "Core Team"
+    },
+    "compact": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects",
+      "News": "News",
+      "aboutUs": "About"
+    },
+    "aria": {
+      "nav": "Site navigation",
+      "home": "Go to homepage",
+      "more": "Open additional navigation",
+      "moreLabel": "More",
+      "overflow": "Additional navigation",
+      "openMenu": "Open full navigation menu",
+      "toggleMenu": "Toggle navigation menu",
+      "closeMenu": "Close full navigation menu",
+      "resizeMenu": "Resize navigation menu",
+      "resizeMenuTitle": "Drag to resize menu",
+      "homeVideo": "Toggle background video",
+      "aboutUsVideo": "Toggle background video (About Us)"
+    },
+    "contactWordmark": "About Us"
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Home hero",
+      "bannerLabel": "Latest News",
+      "title": "iCUE Vietnam",
+      "subtitle": "Building impactful research, community initiatives, and real-world solutions that move society forward.",
+      "actions": {
+        "contact": "Contact Us",
+        "pastProjects": "Past Projects"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Past Projects",
+        "description": "Highlights from cross-disciplinary collaborations and community-driven initiatives.",
+        "linkLabel": "View all projects →",
+        "cards": {
+          "laoCai": {
+            "title": "Master Plan Adjustment for Lao Cai City",
+            "description": "28,162.64 ha master plan targeting 2045 with optimized land use and upgraded infrastructure.",
+            "imageAlt": "Master plan for Lao Cai City"
+          },
+          "subdivision6b": {
+            "title": "Subdivision Planning Area 6B (Nguyen Ai Quoc Ward)",
+            "description": "Over 1,100 ha plan focused on integrated infrastructure and expanded green urban space.",
+            "imageAlt": "Subdivision plan for Area 6B, Nguyen Ai Quoc Ward"
+          },
+          "dongYen": {
+            "title": "General Planning for Dong Yen Urban Area, Bac Giang District",
+            "description": "Nearly 4,500 ha with a 2050 vision for a smart satellite city.",
+            "imageAlt": "General plan for Dong Yen urban area, Bac Giang District"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Our Work",
+        "description": "Research, product development, and experiences built with purpose.",
+        "linkLabel": "Explore our work →",
+        "cards": {
+          "evaluation": {
+            "title": "Evaluation & Reports",
+            "description": "Design and evaluation of data networks for reliable digital infrastructure.",
+            "imageAlt": "Evaluation and reporting work"
+          },
+          "quantitySurveying": {
+            "title": "Quantity Surveying",
+            "description": "Specialized services supporting infrastructure projects from QS to BIM.",
+            "imageAlt": "Quantity surveying on site"
+          },
+          "gapAnalysis": {
+            "title": "Infrastructure Gap Analysis",
+            "description": "Cost estimation, budget control, and standards-based structural assessment.",
+            "imageAlt": "Infrastructure gap analysis"
+          }
+        }
+      },
+      "news": {
+        "title": "Latest News",
+        "description": "Announcements, events, and insights from iCUE Vietnam.",
+        "linkLabel": "Read all news →",
+        "cards": {
+          "auCoPark": {
+            "title": "IKI-GIZ-ICUE Completion Ceremony",
+            "description": "Completion ceremony and handover of Au Co Park in Hoi An with provincial leaders in attendance.",
+            "imageAlt": "Completion ceremony and handover of Au Co Park"
+          },
+          "conservationForum": {
+            "title": "8th Asia Regional Conservation Forum Opens in Thailand",
+            "description": "RCF 2024 opened in Bangkok with nearly 600 conservation leaders across the region.",
+            "imageAlt": "Asia Regional Conservation Forum in Bangkok"
+          },
+          "yagi": {
+            "title": "Aiding People & Areas Affected by Yagi Storm",
+            "description": "ICUE called on staff, partners, and benefactors to support communities affected by Typhoon Yagi.",
+            "imageAlt": "Relief effort for communities affected by Typhoon Yagi"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Recruitment",
+        "description": "Join a mission-driven team focused on innovation and social impact.",
+        "linkLabel": "See open roles →",
+        "cards": {
+          "culture": {
+            "title": "Collaborative Culture",
+            "description": "Work alongside researchers, designers, and community builders.",
+            "imageAlt": "The ICUE office"
+          },
+          "growth": {
+            "title": "Learning & Growth",
+            "description": "Continuous learning through workshops and mentorship.",
+            "imageAlt": "An internal workshop at ICUE"
+          },
+          "impact": {
+            "title": "Make an Impact",
+            "description": "Contribute to programs that create real change.",
+            "imageAlt": "ICUE staff on a field survey"
+          }
+        }
+      }
+    }
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "Newsroom",
+    "archive": "Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Let's Work Together!",
+    "rights": "All rights reserved to ICUE."
+  }
+}

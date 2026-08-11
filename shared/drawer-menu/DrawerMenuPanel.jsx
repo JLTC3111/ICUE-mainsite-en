@@ -36,6 +36,9 @@ function DrawerMenuPanel({
   drawerClassName = '',
   menuLabel = 'Menu',
   closeLabel = 'Close',
+  navLabel = 'Site',
+  resizeLabel = 'Resize navigation menu',
+  resizeTitle = 'Drag to resize menu',
 }) {
   const [internalOpen, setInternalOpen] = useState(false)
   const drawerRef = useRef(null)
@@ -148,6 +151,7 @@ function DrawerMenuPanel({
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
           active={open}
+          ariaLabel={navLabel}
         />
 
         {resizable ? (
@@ -156,8 +160,8 @@ function DrawerMenuPanel({
             type="button"
             className="drawer-resize-handle"
             id="drawerResizeHandle"
-            aria-label="Resize navigation menu"
-            title="Drag to resize menu"
+            aria-label={resizeLabel}
+            title={resizeTitle}
           />
         ) : null}
       </aside>

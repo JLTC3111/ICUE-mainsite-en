@@ -12,6 +12,8 @@
  */
 export const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
 export const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
+/** The newsroom is the same arrangement — one app on icue.vn, entered with a hint. */
+export const NEWSROOM_URL = 'https://icue.vn/newsroom/?from=en-news'
 
 /** Path routes for migrated main-site pages. */
 export const ROUTE_PATHS = {

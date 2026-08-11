@@ -97,7 +97,12 @@ footer.icue-footer,
   text-transform: uppercase;
 }
 
-.icue-footer__bottom {
+/* Scoped to beat .icue-container, which this element also carries: that rule
+   sits later in this file at equal specificity, so its `padding: 0 24px` was
+   winning and the bar rendered 19px tall with its text jammed against the
+   border. Only desktop showed it — the 768px block below restates the padding
+   and already sits after .icue-container. */
+.icue-footer .icue-footer__bottom {
   padding: 18px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;

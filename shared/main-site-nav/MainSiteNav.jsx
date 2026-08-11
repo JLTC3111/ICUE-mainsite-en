@@ -13,8 +13,14 @@ import { pageFromPathname } from './languageSwitcher';
 import {
   buildMainSiteDrawerNav,
   DRAWER_LINKS,
+  PEOPLE_SUBMENU,
   STANDALONE_DRAWER_LINKS,
 } from './buildDrawerNav';
+import {
+  localizeNavLinks,
+  localizePeopleSubmenu,
+  resolveNavLabels,
+} from './navContent';
 import './MainSiteNav.css';
 
 const DefaultMainSiteHeader = lazy(() => import('./MainSiteHeader'));
@@ -54,6 +60,14 @@ export default function MainSiteNav({
   onNavigate,
   PillHeaderComponent,
   pillOverflowItems = [],
+  /* Optional replacement for the flag link. Left undefined, each header keeps
+     the icue.vn <-> en.icue.vn switch it has always had. */
+  LanguageControl,
+  /* Chrome copy. Left undefined the nav speaks English, which is what every
+     page on en.icue.vn that has not been localized still wants. An app with UI
+     languages of its own passes its current translation here — see
+     navContent.js for the shape. */
+  labels: labelOverrides,
 }) {
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
@@ -238,18 +252,35 @@ export default function MainSiteNav({
     setDrawerOpen(false);
   }, []);
 
-  const drawerLinkConfig = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
+  const labels = useMemo(() => resolveNavLabels(labelOverrides), [labelOverrides]);
+
+  const sourceLinks = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
+  const drawerLinkConfig = useMemo(
+    () => localizeNavLinks(sourceLinks, labels),
+    [labels, sourceLinks],
+  );
+  const peopleSubmenu = useMemo(
+    () => localizePeopleSubmenu(PEOPLE_SUBMENU, labels),
+    [labels],
+  );
+  // The pill's tablet overflow is usually the Personnel pair, which the caller
+  // reads off the untranslated export — re-label it here too.
+  const localizedOverflowItems = useMemo(
+    () => localizeNavLinks(pillOverflowItems, labels),
+    [labels, pillOverflowItems],
+  );
 
   const { navLinks, people } = useMemo(
     () => buildMainSiteDrawerNav({
       activePage,
       onClose: handleCloseDrawer,
       links: drawerLinkConfig,
+      peopleSubmenu,
       peopleOpen,
       onPeopleToggle: () => setPeopleOpen((open) => !open),
       onNavigate,
     }),
-    [activePage, drawerLinkConfig, handleCloseDrawer, onNavigate, peopleOpen],
+    [activePage, drawerLinkConfig, handleCloseDrawer, onNavigate, peopleOpen, peopleSubmenu],
   );
 
   const drawerOpenRef = useRef(drawerOpen);
@@ -406,7 +437,7 @@ export default function MainSiteNav({
 
   return (
     <div className={navClass} ref={navRootRef} data-active-page={activePage}>
-      <nav className={barClass} aria-label="Site">
+      <nav className={barClass} aria-label={labels.aria.nav}>
         {usePillNav && PillHeaderComponent ? (
           <PillHeaderComponent
             activePage={activePage}
@@ -430,7 +461,9 @@ export default function MainSiteNav({
             contactLinkRef={contactLinkRef}
             flagLinkRef={flagLinkRef}
             onNavigate={onNavigate}
-            overflowItems={pillOverflowItems}
+            overflowItems={localizedOverflowItems}
+            labels={labels}
+            {...(LanguageControl ? { LanguageControl } : {})}
           />
         ) : (
           <Suspense fallback={<div className="main-site-nav__dock-wrap" aria-hidden="true" />}>
@@ -457,6 +490,8 @@ export default function MainSiteNav({
               flagLinkRef={flagLinkRef}
               onNavigate={onNavigate}
               onReady={playEntranceAnimation}
+              labels={labels}
+              {...(LanguageControl ? { LanguageControl } : {})}
             />
           </Suspense>
         )}
@@ -475,8 +510,11 @@ export default function MainSiteNav({
         overlayId="mainSiteDrawerOverlay"
         menuToggleId="menuToggle"
         drawerClassName="main-site-drawer"
-        menuLabel="Toggle navigation menu"
-        closeLabel="Close navigation menu"
+        menuLabel={labels.aria.toggleMenu}
+        closeLabel={labels.aria.closeMenu}
+        navLabel={labels.aria.nav}
+        resizeLabel={labels.aria.resizeMenu}
+        resizeTitle={labels.aria.resizeMenuTitle}
       />
     </div>
   );
