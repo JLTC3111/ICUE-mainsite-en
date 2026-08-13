@@ -1,0 +1,1 @@
+const logoMarkSrc = `${assetPrefix}logoIcons/original_logo.png`;
