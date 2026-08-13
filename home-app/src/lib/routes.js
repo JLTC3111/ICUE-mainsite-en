@@ -28,10 +28,16 @@ export const ROUTE_PATHS = {
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   faqs: '/faqs',
-  privacy: '/privacy',
-  terms: '/terms',
-  gdpr: '/gdpr',
-  cookies: '/cookies',
+  /*
+   * Legal documents live under /legal/* to match icue.vn, where the four are
+   * served by a single consolidated app. This site still renders them from its
+   * own English legacy HTML through the shell below — only the URLs moved. The
+   * bare /privacy, /terms, /gdpr and /cookies paths 301 to these at the edge.
+   */
+  privacy: '/legal/privacy',
+  terms: '/legal/terms',
+  gdpr: '/legal/gdpr',
+  cookies: '/legal/cookies',
 }
 
 /** Maps React path -> legacy page id used by script.js init + nav state. */

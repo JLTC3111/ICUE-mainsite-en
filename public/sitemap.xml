@@ -41,22 +41,22 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://en.icue.vn/privacy</loc>
+    <loc>https://en.icue.vn/legal/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://en.icue.vn/terms</loc>
+    <loc>https://en.icue.vn/legal/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://en.icue.vn/gdpr</loc>
+    <loc>https://en.icue.vn/legal/gdpr</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://en.icue.vn/cookies</loc>
+    <loc>https://en.icue.vn/legal/cookies</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

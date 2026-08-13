@@ -28,10 +28,10 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
   '/legacy/pages/FAQs.html': '/faqs',
-  '/legacy/pages/privacy.html': '/privacy',
-  '/legacy/pages/terms.html': '/terms',
-  '/legacy/pages/gdpr.html': '/gdpr',
-  '/legacy/pages/cookies.html': '/cookies',
+  '/legacy/pages/privacy.html': '/legal/privacy',
+  '/legacy/pages/terms.html': '/legal/terms',
+  '/legacy/pages/gdpr.html': '/legal/gdpr',
+  '/legacy/pages/cookies.html': '/legal/cookies',
 }
 
 export default defineConfig({

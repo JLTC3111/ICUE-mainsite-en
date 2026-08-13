@@ -140,10 +140,10 @@ if (!fs.existsSync(builtIndex)) {
 
 const builtIndexHtml = fs.readFileSync(builtIndex, 'utf8');
 for (const route of routeShells) {
-  fs.writeFileSync(
-    path.join(homeDist, `${route.slug}.html`),
-    buildRouteShell(builtIndexHtml, route),
-  );
+  // Slugs may contain a directory (legal/privacy), so make the parent first.
+  const shellPath = path.join(homeDist, `${route.slug}.html`);
+  fs.mkdirSync(path.dirname(shellPath), { recursive: true });
+  fs.writeFileSync(shellPath, buildRouteShell(builtIndexHtml, route));
 }
 
 copyFile(builtIndex, path.join(root, 'index.html'));

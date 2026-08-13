@@ -11,10 +11,10 @@
 /legacy/pages/notableAwards.html       /notable-awards           301
 /legacy/pages/communityActivities.html /community-activities     301
 /legacy/pages/FAQs.html                /faqs                     301
-/legacy/pages/privacy.html             /privacy                  301
-/legacy/pages/terms.html               /terms                    301
-/legacy/pages/gdpr.html                /gdpr                     301
-/legacy/pages/cookies.html             /cookies                  301
+/legacy/pages/privacy.html             /legal/privacy            301
+/legacy/pages/terms.html               /legal/terms              301
+/legacy/pages/gdpr.html                /legal/gdpr               301
+/legacy/pages/cookies.html             /legal/cookies            301
 
 # Normalize trailing slashes before serving the history-routed app.
 /contact/              https://icue.vn/contact?site=en    301
@@ -26,10 +26,10 @@
 /notable-awards/       /notable-awards          301
 /community-activities/ /community-activities    301
 /faqs/                 /faqs                    301
-/privacy/              /privacy                 301
-/terms/                /terms                   301
-/gdpr/                 /gdpr                    301
-/cookies/              /cookies                 301
+/legal/privacy/        /legal/privacy           301
+/legal/terms/          /legal/terms             301
+/legal/gdpr/           /legal/gdpr              301
+/legal/cookies/        /legal/cookies           301
 
 # React history routes.
 # Contact is one React app for both sites, hosted on icue.vn (contact-app in the
@@ -46,10 +46,21 @@
 /notable-awards        /notable-awards.html         200
 /community-activities /community-activities.html   200
 /faqs                  /faqs.html                  200
-/privacy               /privacy.html               200
-/terms                 /terms.html                 200
-/gdpr                  /gdpr.html                  200
-/cookies               /cookies.html               200
+
+# Legal documents. The URLs match icue.vn/legal/* so a reader switching sites
+# lands on the same document; unlike icue.vn these are still this site's own
+# English legacy pages rendered through the shell, not the consolidated app.
+/legal/privacy         /legal/privacy.html         200
+/legal/terms           /legal/terms.html           200
+/legal/gdpr            /legal/gdpr.html            200
+/legal/cookies         /legal/cookies.html         200
+/legal                 /legal/privacy              301
+
+# Former legal-page URLs permanently move under /legal.
+/privacy               /legal/privacy              301
+/terms                 /legal/terms                301
+/gdpr                  /legal/gdpr                 301
+/cookies               /legal/cookies              301
 
 # Static compatibility paths.
 /favicon.ico           /public/logoIcons/favicon.png 200
