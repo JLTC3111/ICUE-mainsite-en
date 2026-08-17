@@ -2,7 +2,7 @@
 /legacy/pages/Home.html                /                         301
 /legacy/pages/Home_OLD.html            /                         301
 /legacy/pages/Contact.html             https://icue.vn/contact?site=en    301
-/legacy/pages/aboutUs.html             /about-us                 301
+/legacy/pages/aboutUs.html             https://icue.vn/about-us?site=en   301
 /legacy/pages/ourWork.html             https://icue.vn/our-work?site=en   301
 /legacy/pages/pastProjects.html        /past-projects            301
 /legacy/pages/recruitment.html         /recruitment              301
@@ -18,7 +18,7 @@
 
 # Normalize trailing slashes before serving the history-routed app.
 /contact/              https://icue.vn/contact?site=en    301
-/about-us/             /about-us                301
+/about-us/             https://icue.vn/about-us?site=en   301
 /our-work/             https://icue.vn/our-work?site=en   301
 /past-projects/        /past-projects           301
 /recruitment/          /recruitment             301
@@ -36,7 +36,13 @@
 # vn repo, built to /contact). ?site=en keeps the page in English and sends its
 # chrome links back to en.icue.vn — same arrangement as Our Work below.
 /contact               https://icue.vn/contact?site=en    301
-/about-us              /about-us.html              200
+# About Us is now one page for both sites, hosted on icue.vn, which renders all
+# six UI languages — same arrangement as Contact above and Our Work below.
+# ?site=en selects English and sends its chrome links back to en.icue.vn.
+# The `!` is required here and not on the two neighbours: about-us.html is still
+# produced by this build, and without it Netlify serves that file instead of
+# following the redirect. Drop the `!` once the page stops being built.
+/about-us              https://icue.vn/about-us?site=en   301!
 # Our Work is one React app for both sites, hosted on icue.vn. ?site=en keeps
 # the page in English and sends its chrome links back to en.icue.vn.
 /our-work              https://icue.vn/our-work?site=en   301
