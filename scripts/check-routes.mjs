@@ -3,10 +3,22 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   CONTACT_APP_URL,
+  FAQ_APP_URL,
   LEGACY_PAGE_FILES,
   OUR_WORK_APP_URL,
+  RECRUITMENT_APP_URL,
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
+
+/*
+ * About Us is half-migrated and has been since 2026-08: _redirects sends
+ * /about-us to icue.vn with a forced 301, but the React route, the shell and
+ * the Express SPA entry are all still here — which is why that redirect needs
+ * the `!`. The assertions below describe that reality rather than the
+ * fully-migrated shape, so the audit passes; finishing the migration means
+ * giving it the same treatment as contact, our-work, faqs and recruitment.
+ */
+const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
 import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -20,7 +32,7 @@ const mountedKeys = new Set(
 // contact is a path this site links to but does not render: Netlify sends it to
 // the shared Contact app on icue.vn. It stays in ROUTE_PATHS because nav state
 // and the redirect rules read it. ourWork has no ROUTE_PATHS entry at all.
-const EXTERNALLY_SERVED_ROUTES = new Set(['contact'])
+const EXTERNALLY_SERVED_ROUTES = new Set(['contact', 'faqs', 'recruitment'])
 for (const key of Object.keys(ROUTE_PATHS)) {
   if (EXTERNALLY_SERVED_ROUTES.has(key)) continue
   if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
@@ -41,7 +53,10 @@ const redirects = read('_redirects')
 const requiredShellPaths = Object.entries(ROUTE_PATHS)
   // contact is served by the shared app on icue.vn, not by a local shell — it
   // is asserted as an external redirect below instead.
-  .filter(([key]) => !['home', 'contact', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
+  // aboutUs, faqs and recruitment are redirected at the edge instead of being
+  // rewritten to a local shell, so none of them has a `<route>.html` rule.
+  .filter(([key]) => !['home', 'contact', 'aboutUs', 'faqs', 'recruitment',
+    'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -55,15 +70,15 @@ const legacyRedirects = {
   '/legacy/pages/Home.html': '/',
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': CONTACT_APP_URL,
-  '/legacy/pages/aboutUs.html': ROUTE_PATHS.aboutUs,
+  '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
   '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': ROUTE_PATHS.pastProjects,
-  '/legacy/pages/recruitment.html': ROUTE_PATHS.recruitment,
+  '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
   '/legacy/pages/News.html': ROUTE_PATHS.newsArchive,
   '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
   '/legacy/pages/notableAwards.html': ROUTE_PATHS.notableAwards,
   '/legacy/pages/communityActivities.html': ROUTE_PATHS.communityActivities,
-  '/legacy/pages/FAQs.html': ROUTE_PATHS.faqs,
+  '/legacy/pages/FAQs.html': FAQ_APP_URL,
   '/legacy/pages/privacy.html': ROUTE_PATHS.privacy,
   '/legacy/pages/terms.html': ROUTE_PATHS.terms,
   '/legacy/pages/gdpr.html': ROUTE_PATHS.gdpr,
@@ -102,6 +117,10 @@ const externalRoutes = {
   [`${ROUTE_PATHS.contact}/`]: CONTACT_APP_URL,
   '/our-work': OUR_WORK_APP_URL,
   '/our-work/': OUR_WORK_APP_URL,
+  [ROUTE_PATHS.faqs]: FAQ_APP_URL,
+  [`${ROUTE_PATHS.faqs}/`]: FAQ_APP_URL,
+  [ROUTE_PATHS.recruitment]: RECRUITMENT_APP_URL,
+  [`${ROUTE_PATHS.recruitment}/`]: RECRUITMENT_APP_URL,
 }
 for (const [from, to] of Object.entries(externalRoutes)) {
   if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
@@ -123,7 +142,12 @@ for (const [from, to] of Object.entries(externalRoutes)) {
 if (!new RegExp(`from = "${escapeRe(ROUTE_PATHS.contact)}"\\s+to = "${escapeRe(CONTACT_APP_URL)}"`, 'm').test(netlifyToml)) {
   failures.push(`Missing external app redirect in netlify.toml: ${ROUTE_PATHS.contact} -> ${CONTACT_APP_URL}`)
 }
-for (const [path, label] of [[ROUTE_PATHS.contact, 'contact'], ['/our-work', 'our-work']]) {
+for (const [path, label] of [
+  [ROUTE_PATHS.contact, 'contact'],
+  ['/our-work', 'our-work'],
+  [ROUTE_PATHS.faqs, 'faqs'],
+  [ROUTE_PATHS.recruitment, 'recruitment'],
+]) {
   if (ROUTE_META.some((route) => route.path === path)) {
     failures.push(`routeMeta.js still builds a ${label} shell, which shadows the redirect`)
   }

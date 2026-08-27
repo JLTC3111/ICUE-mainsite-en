@@ -5,12 +5,12 @@
 /legacy/pages/aboutUs.html             https://icue.vn/about-us?site=en   301
 /legacy/pages/ourWork.html             https://icue.vn/our-work?site=en   301
 /legacy/pages/pastProjects.html        /past-projects            301
-/legacy/pages/recruitment.html         /recruitment              301
+/legacy/pages/recruitment.html         https://icue.vn/recruitment?site=en  301
 /legacy/pages/News.html                /news-archive             301
 /legacy/pages/orgStructure.html        https://icue.vn/structure/ 301
 /legacy/pages/notableAwards.html       /notable-awards           301
 /legacy/pages/communityActivities.html /community-activities     301
-/legacy/pages/FAQs.html                /faqs                     301
+/legacy/pages/FAQs.html                https://icue.vn/faqs?site=en         301
 /legacy/pages/privacy.html             /legal/privacy            301
 /legacy/pages/terms.html               /legal/terms              301
 /legacy/pages/gdpr.html                /legal/gdpr               301
@@ -21,11 +21,11 @@
 /about-us/             https://icue.vn/about-us?site=en   301
 /our-work/             https://icue.vn/our-work?site=en   301
 /past-projects/        /past-projects           301
-/recruitment/          /recruitment             301
+/recruitment/          https://icue.vn/recruitment?site=en  301
 /news-archive/         /news-archive            301
 /notable-awards/       /notable-awards          301
 /community-activities/ /community-activities    301
-/faqs/                 /faqs                    301
+/faqs/                 https://icue.vn/faqs?site=en         301
 /legal/privacy/        /legal/privacy           301
 /legal/terms/          /legal/terms             301
 /legal/gdpr/           /legal/gdpr              301
@@ -47,11 +47,18 @@
 # the page in English and sends its chrome links back to en.icue.vn.
 /our-work              https://icue.vn/our-work?site=en   301
 /past-projects         /past-projects.html          200
-/recruitment           /recruitment.html            200
+# FAQs and Recruitment are single apps for both sites now, hosted on icue.vn
+# (faq-app and recruitment-app in the vn repo), each rendering all six UI
+# languages. ?site=en selects English and points their chrome back here.
+# Forced with `!` on purpose. This build no longer produces recruitment.html or
+# faqs.html — routeMeta.js stopped listing them — but it did until this change,
+# so a copy left in a cached or previously-published deploy would win over an
+# unforced 301 and quietly keep serving the retired English page.
+/recruitment           https://icue.vn/recruitment?site=en  301!
 /news-archive          /news-archive.html           200
 /notable-awards        /notable-awards.html         200
 /community-activities /community-activities.html   200
-/faqs                  /faqs.html                  200
+/faqs                  https://icue.vn/faqs?site=en         301!
 
 # Legal documents. The URLs match icue.vn/legal/* so a reader switching sites
 # lands on the same document; unlike icue.vn these are still this site's own

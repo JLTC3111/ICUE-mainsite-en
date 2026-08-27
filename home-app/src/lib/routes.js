@@ -12,6 +12,13 @@
  */
 export const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
 export const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
+/*
+ * FAQs and Recruitment joined them in 2026-08. Both used to exist twice, once
+ * per host; icue.vn now renders all six UI languages of each, so this site
+ * redirects rather than keeping a second English copy that would drift.
+ */
+export const FAQ_APP_URL = 'https://icue.vn/faqs?site=en'
+export const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
 /** The newsroom is the same arrangement — one app on icue.vn, entered with a hint. */
 export const NEWSROOM_URL = 'https://icue.vn/newsroom/?from=en-news'
 
@@ -64,14 +71,15 @@ export const PAGE_TO_PATH = Object.fromEntries(
 )
 PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 
+// recruitment.html and FAQs.html are deliberately absent: both routes are
+// served by their own apps on icue.vn now, the same as Contact.html. The
+// files stay in legacy/pages/ as the source those apps were built from.
 export const LEGACY_PAGE_FILES = {
   aboutUs: 'aboutUs.html',
   pastProjects: 'pastProjects.html',
-  recruitment: 'recruitment.html',
   newsArchive: 'News.html',
   notableAwards: 'notableAwards.html',
   communityActivities: 'communityActivities.html',
-  FAQs: 'FAQs.html',
   privacy: 'privacy.html',
   terms: 'terms.html',
   gdpr: 'gdpr.html',

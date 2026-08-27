@@ -68,10 +68,9 @@
   to = "/past-projects.html"
   status = 200
 
-[[redirects]]
-  from = "/recruitment"
-  to = "/recruitment.html"
-  status = 200
+# /recruitment is not a route of this site: _redirects 301s it to the shared
+# recruitment app on icue.vn. No shell rewrite here — one would win over the
+# redirect and serve a dead page.
 
 [[redirects]]
   from = "/news-archive"
@@ -88,10 +87,8 @@
   to = "/community-activities.html"
   status = 200
 
-[[redirects]]
-  from = "/faqs"
-  to = "/faqs.html"
-  status = 200
+# /faqs is not a route of this site either — same arrangement as /recruitment
+# and /our-work above.
 
 [[redirects]]
   from = "/privacy"

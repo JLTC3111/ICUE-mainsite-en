@@ -67,6 +67,9 @@ function homeDevFallback() {
   // local shell for a route production sends away.
   const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
   const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en';
+  const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en';
+const FAQ_APP_URL = 'https://icue.vn/faqs?site=en';
+const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en';
 
   const legacyPageRedirects = {
     '/legacy/pages/Home.html': '/',
@@ -76,15 +79,19 @@ function homeDevFallback() {
     '/contact/': CONTACT_APP_URL,
     '/our-work': OUR_WORK_APP_URL,
     '/our-work/': OUR_WORK_APP_URL,
-    '/legacy/pages/aboutUs.html': '/about-us',
+    '/faqs': FAQ_APP_URL,
+    '/faqs/': FAQ_APP_URL,
+    '/recruitment': RECRUITMENT_APP_URL,
+    '/recruitment/': RECRUITMENT_APP_URL,
+    '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
     '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
     '/legacy/pages/pastProjects.html': '/past-projects',
-    '/legacy/pages/recruitment.html': '/recruitment',
+    '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
     '/legacy/pages/News.html': '/news-archive',
     '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
-    '/legacy/pages/FAQs.html': '/faqs',
+    '/legacy/pages/FAQs.html': FAQ_APP_URL,
     '/legacy/pages/privacy.html': '/legal/privacy',
     '/legacy/pages/terms.html': '/legal/terms',
     '/legacy/pages/gdpr.html': '/legal/gdpr',

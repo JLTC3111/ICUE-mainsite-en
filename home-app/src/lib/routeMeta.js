@@ -35,14 +35,6 @@ export const ROUTE_META = [
     description: 'Explore selected past projects and the project history of ICUE Vietnam.',
   },
   {
-    slug: 'recruitment',
-    path: '/recruitment',
-    pageName: 'recruitment',
-    pageFile: 'recruitment.html',
-    title: 'Careers | ICUE Vietnam',
-    description: 'Explore career and recruitment opportunities with ICUE Vietnam.',
-  },
-  {
     slug: 'news-archive',
     path: '/news-archive',
     pageName: 'newsArchive',
@@ -65,14 +57,6 @@ export const ROUTE_META = [
     pageFile: 'communityActivities.html',
     title: 'Community Activities | ICUE Vietnam',
     description: 'Explore ICUE Vietnam’s workshops, community programmes, partnerships, and public-interest activities.',
-  },
-  {
-    slug: 'faqs',
-    path: '/faqs',
-    pageName: 'FAQs',
-    pageFile: 'FAQs.html',
-    title: 'Frequently Asked Questions | ICUE Vietnam',
-    description: 'Find answers to frequently asked questions about ICUE Vietnam, our services, projects, and partnerships.',
   },
   {
     slug: 'legal/privacy',
