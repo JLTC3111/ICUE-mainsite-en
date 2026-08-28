@@ -3,6 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   CONTACT_APP_URL,
+  COMMUNITY_ACTIVITIES_APP_URL,
   FAQ_APP_URL,
   LEGACY_PAGE_FILES,
   OUR_WORK_APP_URL,
@@ -32,7 +33,7 @@ const mountedKeys = new Set(
 // contact is a path this site links to but does not render: Netlify sends it to
 // the shared Contact app on icue.vn. It stays in ROUTE_PATHS because nav state
 // and the redirect rules read it. ourWork has no ROUTE_PATHS entry at all.
-const EXTERNALLY_SERVED_ROUTES = new Set(['contact', 'faqs', 'recruitment'])
+const EXTERNALLY_SERVED_ROUTES = new Set(['contact', 'faqs', 'recruitment', 'communityActivities'])
 for (const key of Object.keys(ROUTE_PATHS)) {
   if (EXTERNALLY_SERVED_ROUTES.has(key)) continue
   if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
@@ -56,7 +57,7 @@ const requiredShellPaths = Object.entries(ROUTE_PATHS)
   // aboutUs, faqs and recruitment are redirected at the edge instead of being
   // rewritten to a local shell, so none of them has a `<route>.html` rule.
   .filter(([key]) => !['home', 'contact', 'aboutUs', 'faqs', 'recruitment',
-    'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
+    'communityActivities', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -77,7 +78,7 @@ const legacyRedirects = {
   '/legacy/pages/News.html': ROUTE_PATHS.newsArchive,
   '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
   '/legacy/pages/notableAwards.html': ROUTE_PATHS.notableAwards,
-  '/legacy/pages/communityActivities.html': ROUTE_PATHS.communityActivities,
+  '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
   '/legacy/pages/FAQs.html': FAQ_APP_URL,
   '/legacy/pages/privacy.html': ROUTE_PATHS.privacy,
   '/legacy/pages/terms.html': ROUTE_PATHS.terms,
@@ -121,6 +122,8 @@ const externalRoutes = {
   [`${ROUTE_PATHS.faqs}/`]: FAQ_APP_URL,
   [ROUTE_PATHS.recruitment]: RECRUITMENT_APP_URL,
   [`${ROUTE_PATHS.recruitment}/`]: RECRUITMENT_APP_URL,
+  [ROUTE_PATHS.communityActivities]: COMMUNITY_ACTIVITIES_APP_URL,
+  [`${ROUTE_PATHS.communityActivities}/`]: COMMUNITY_ACTIVITIES_APP_URL,
 }
 for (const [from, to] of Object.entries(externalRoutes)) {
   if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
@@ -147,6 +150,7 @@ for (const [path, label] of [
   ['/our-work', 'our-work'],
   [ROUTE_PATHS.faqs, 'faqs'],
   [ROUTE_PATHS.recruitment, 'recruitment'],
+  [ROUTE_PATHS.communityActivities, 'community-activities'],
 ]) {
   if (ROUTE_META.some((route) => route.path === path)) {
     failures.push(`routeMeta.js still builds a ${label} shell, which shadows the redirect`)

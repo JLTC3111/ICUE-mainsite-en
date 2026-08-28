@@ -164,7 +164,7 @@
       "phrases": ["hoạt động cộng đồng", "sự kiện"],
       "answer": "ICUE có các hoạt động/chương trình cộng đồng. Bạn xem mục Hoạt động cộng đồng để biết thêm.",
       "links": [
-        {"label": "Hoạt động cộng đồng", "url": "#/communityActivities"}
+        {"label": "Hoạt động cộng đồng", "url": "https://icue.vn/community-activities?site=en"}
       ]
     },
     {

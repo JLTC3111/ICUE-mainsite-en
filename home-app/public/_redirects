@@ -9,7 +9,7 @@
 /legacy/pages/News.html                /news-archive             301
 /legacy/pages/orgStructure.html        https://icue.vn/structure/ 301
 /legacy/pages/notableAwards.html       /notable-awards           301
-/legacy/pages/communityActivities.html /community-activities     301
+/legacy/pages/communityActivities.html https://icue.vn/community-activities?site=en 301
 /legacy/pages/FAQs.html                https://icue.vn/faqs?site=en         301
 /legacy/pages/privacy.html             /legal/privacy            301
 /legacy/pages/terms.html               /legal/terms              301
@@ -24,7 +24,7 @@
 /recruitment/          https://icue.vn/recruitment?site=en  301
 /news-archive/         /news-archive            301
 /notable-awards/       /notable-awards          301
-/community-activities/ /community-activities    301
+/community-activities/ https://icue.vn/community-activities?site=en 301
 /faqs/                 https://icue.vn/faqs?site=en         301
 /legal/privacy/        /legal/privacy           301
 /legal/terms/          /legal/terms             301
@@ -57,7 +57,12 @@
 /recruitment           https://icue.vn/recruitment?site=en  301!
 /news-archive          /news-archive.html           200
 /notable-awards        /notable-awards.html         200
-/community-activities /community-activities.html   200
+# Community Activities is a single app for both sites now, hosted on icue.vn
+# (community-activities-app in the vn repo), rendering all six UI languages.
+# ?site=en selects English and points its chrome back here. Forced with `!` on
+# purpose: a cached community-activities.html from an older deploy would win
+# over an unforced 301 and quietly keep serving the retired English page.
+/community-activities  https://icue.vn/community-activities?site=en 301!
 /faqs                  https://icue.vn/faqs?site=en         301!
 
 # Legal documents. The URLs match icue.vn/legal/* so a reader switching sites

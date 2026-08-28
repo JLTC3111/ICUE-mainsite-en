@@ -11,7 +11,7 @@ export const FOOTER_ROUTE_PATHS = {
   pastProjects: '/past-projects',
   recruitment: `${VN_SITE}/recruitment?site=en`,
   notableAwards: '/notable-awards',
-  communityActivities: '/community-activities',
+  communityActivities: `${VN_SITE}/community-activities?site=en`,
   faqs: `${VN_SITE}/faqs?site=en`,
   privacy: '/legal/privacy',
   terms: '/legal/terms',

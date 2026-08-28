@@ -16,7 +16,7 @@
 // Contact app on icue.vn, which carries its own title, description and
 // structured data. Building a shell for it would put a static contact.html back
 // in the publish directory, and Netlify serves that file in preference to the
-// redirect.
+// redirect. Same for /community-activities, /faqs and /recruitment.
 export const ROUTE_META = [
   {
     slug: 'about-us',
@@ -49,14 +49,6 @@ export const ROUTE_META = [
     pageFile: 'notableAwards.html',
     title: 'Awards and Recognition | ICUE Vietnam',
     description: 'Discover notable awards, certifications, and professional recognition received by ICUE Vietnam.',
-  },
-  {
-    slug: 'community-activities',
-    path: '/community-activities',
-    pageName: 'communityActivities',
-    pageFile: 'communityActivities.html',
-    title: 'Community Activities | ICUE Vietnam',
-    description: 'Explore ICUE Vietnam’s workshops, community programmes, partnerships, and public-interest activities.',
   },
   {
     slug: 'legal/privacy',

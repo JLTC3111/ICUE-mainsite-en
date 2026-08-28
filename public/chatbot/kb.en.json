@@ -164,7 +164,7 @@
       "phrases": ["community activities", "events"],
       "answer": "ICUE also runs/participates in community activities and programs. Check the Community Activities page for more.",
       "links": [
-        {"label": "Community Activities", "url": "#/communityActivities"}
+        {"label": "Community Activities", "url": "https://icue.vn/community-activities?site=en"}
       ]
     },
     {

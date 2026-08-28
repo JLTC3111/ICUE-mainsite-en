@@ -50,7 +50,6 @@ export function preloadLegacyPage(pageName) {
   if (pageName === 'recruitment') return import('./jobBoard')
   if (pageName === 'FAQs') return import('./faqPage')
   if (pageName === 'notableAwards') return import('./awardsPage')
-  if (pageName === 'communityActivities') return import('./communityPage')
   return Promise.resolve()
 }
 
@@ -126,18 +125,11 @@ const PAGE_INIT = {
     const awards = await import('./awardsPage')
     awards.initAwardsPage()
   },
-  communityActivities: async () => {
-    const community = await import('./communityPage')
-    community.initCommunityPage()
-  },
 }
 
 const PAGE_CLEANUP = {
   notableAwards: () => {
     void import('./awardsPage').then((awards) => awards.destroyAwardsPage())
-  },
-  communityActivities: () => {
-    void import('./communityPage').then((community) => community.destroyCommunityPage())
   },
   recruitment: () => {
     void import('./jobBoard').then((jobs) => jobs.destroyJobBoard())

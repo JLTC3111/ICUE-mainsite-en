@@ -25,7 +25,6 @@ import './MainSiteNav.css';
 
 const DefaultMainSiteHeader = lazy(() => import('./MainSiteHeader'));
 
-const DARK_NAV_PAGES = ['communityActivities'];
 const DOCK_EXPAND_SCROLL_THRESHOLD = 48;
 const DESKTOP_DOCK_MQ = '(min-width: 1025px)';
 
@@ -47,7 +46,7 @@ function getPageVisibility(page) {
     showContactLink: true,
     showHomeVideoToggle: page === 'Home',
     showAboutUsVideoToggle: page === 'aboutUs',
-    darkNav: DARK_NAV_PAGES.includes(page),
+    darkNav: false,
   };
 }
 

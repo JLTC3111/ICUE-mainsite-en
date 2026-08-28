@@ -1,24 +1,26 @@
 /**
- * Contact and Our Work are served by shared apps on icue.vn (contact-app and
- * ourwork-app in the vn repo, built to /contact and /our-work). ?site=en keeps
- * the page in English and sends its chrome links back to en.icue.vn.
+ * Contact, Our Work, FAQs, Recruitment and Community Activities are served by
+ * shared apps on icue.vn. ?site=en keeps the page in English and sends its
+ * chrome links back to en.icue.vn.
  *
- * Neither has a route here. ROUTE_PATHS keeps /contact only because nav state
- * and the redirect rules read it; Our Work has no entry at all. Link to the
- * URLs below rather than to a bare /our-work or /contact path — those only
- * reach the app through a server redirect, which a client-side navigation
- * never triggers. /our-work and /contact still 301 at the edge so old inbound
- * links keep working.
+ * None of those has a route here. ROUTE_PATHS keeps /contact and
+ * /community-activities only because nav state and the redirect rules read
+ * them; Our Work has no entry at all. Link to the URLs below rather than to
+ * a bare path — those only reach the app through a server redirect, which a
+ * client-side navigation never triggers. The bare paths still 301 at the edge
+ * so old inbound links keep working.
  */
 export const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
 export const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
 /*
- * FAQs and Recruitment joined them in 2026-08. Both used to exist twice, once
- * per host; icue.vn now renders all six UI languages of each, so this site
- * redirects rather than keeping a second English copy that would drift.
+ * FAQs, Recruitment and Community Activities joined them in 2026-08. Each used
+ * to exist twice, once per host; icue.vn now renders all six UI languages of
+ * each, so this site redirects rather than keeping a second English copy that
+ * would drift.
  */
 export const FAQ_APP_URL = 'https://icue.vn/faqs?site=en'
 export const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
+export const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en'
 /** The newsroom is the same arrangement — one app on icue.vn, entered with a hint. */
 export const NEWSROOM_URL = 'https://icue.vn/newsroom/?from=en-news'
 
@@ -71,15 +73,14 @@ export const PAGE_TO_PATH = Object.fromEntries(
 )
 PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 
-// recruitment.html and FAQs.html are deliberately absent: both routes are
-// served by their own apps on icue.vn now, the same as Contact.html. The
-// files stay in legacy/pages/ as the source those apps were built from.
+// recruitment.html, FAQs.html and communityActivities.html are deliberately
+// absent: each route is served by its own app on icue.vn now, the same as
+// Contact.html.
 export const LEGACY_PAGE_FILES = {
   aboutUs: 'aboutUs.html',
   pastProjects: 'pastProjects.html',
   newsArchive: 'News.html',
   notableAwards: 'notableAwards.html',
-  communityActivities: 'communityActivities.html',
   privacy: 'privacy.html',
   terms: 'terms.html',
   gdpr: 'gdpr.html',
@@ -148,7 +149,7 @@ export function prepareLegacyHtml(rawHtml) {
     '#/News': `${VN}/newsroom/?from=en-news`,
     '#/orgStructure': `${VN}/structure/`,
     '#/notableAwards': ROUTE_PATHS.notableAwards,
-    '#/communityActivities': ROUTE_PATHS.communityActivities,
+    '#/communityActivities': COMMUNITY_ACTIVITIES_APP_URL,
     '#/FAQs': ROUTE_PATHS.faqs,
     '#/faqs': ROUTE_PATHS.faqs,
     '#/privacy': ROUTE_PATHS.privacy,
@@ -178,11 +179,14 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${route}'`)
   }
 
-  // Contact has no local page to rewrite to — send its legacy links straight to
-  // the app on icue.vn rather than through the /contact redirect.
+  // Contact and Community Activities have no local page to rewrite to — send
+  // their legacy links straight to the app on icue.vn rather than through a
+  // redirect hop this router never triggers.
   bodyHtml = bodyHtml
     .replaceAll('href="/legacy/pages/Contact.html"', `href="${CONTACT_APP_URL}"`)
     .replaceAll("href='/legacy/pages/Contact.html'", `href='${CONTACT_APP_URL}'`)
+    .replaceAll('href="/legacy/pages/communityActivities.html"', `href="${COMMUNITY_ACTIVITIES_APP_URL}"`)
+    .replaceAll("href='/legacy/pages/communityActivities.html'", `href='${COMMUNITY_ACTIVITIES_APP_URL}'`)
 
   const bodyClass = doc.body?.className?.trim() || ''
 
@@ -211,7 +215,7 @@ export function pathFromLegacyHash(hash) {
     meetOurExperts: 'https://icue.vn/people/experts?site=en',
     coreTeam: 'https://icue.vn/people/core-team?site=en',
     notableAwards: ROUTE_PATHS.notableAwards,
-    communityActivities: ROUTE_PATHS.communityActivities,
+    communityActivities: COMMUNITY_ACTIVITIES_APP_URL,
     FAQs: ROUTE_PATHS.faqs,
     faqs: ROUTE_PATHS.faqs,
     privacy: ROUTE_PATHS.privacy,

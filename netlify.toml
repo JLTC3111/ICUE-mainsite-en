@@ -82,10 +82,9 @@
   to = "/notable-awards.html"
   status = 200
 
-[[redirects]]
-  from = "/community-activities"
-  to = "/community-activities.html"
-  status = 200
+# /community-activities is not a route of this site: _redirects 301s it to the
+# shared Community Activities app on icue.vn. No shell rewrite here — one
+# would win over the redirect and serve a dead page.
 
 # /faqs is not a route of this site either — same arrangement as /recruitment
 # and /our-work above.

@@ -13,6 +13,7 @@ const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
 const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
 const FAQ_APP_URL = 'https://icue.vn/faqs?site=en'
 const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
+const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en'
 
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Home.html': '/',
@@ -26,6 +27,8 @@ const LEGACY_PAGE_REDIRECTS = {
   '/faqs/': FAQ_APP_URL,
   '/recruitment': RECRUITMENT_APP_URL,
   '/recruitment/': RECRUITMENT_APP_URL,
+  '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
+  '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
   '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
   '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': '/past-projects',
@@ -33,7 +36,7 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/News.html': '/news-archive',
   '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
   '/legacy/pages/notableAwards.html': '/notable-awards',
-  '/legacy/pages/communityActivities.html': '/community-activities',
+  '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
   '/legacy/pages/FAQs.html': FAQ_APP_URL,
   '/legacy/pages/privacy.html': '/legal/privacy',
   '/legacy/pages/terms.html': '/legal/terms',
