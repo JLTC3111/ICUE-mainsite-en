@@ -4,7 +4,8 @@ const VN_SITE = 'https://icue.vn'
 export const FOOTER_ROUTE_PATHS = {
   home: '/',
   // Contact is the shared Contact app on icue.vn (contact-app in the vn repo).
-  // ?site=en keeps it in English and points its chrome back at en.icue.vn.
+  // English-default `?site=en` is restamped to `?lang=` by Footer when the UI
+  // language is French, German, Korean or Japanese.
   contact: `${VN_SITE}/contact?site=en`,
   aboutUs: `${VN_SITE}/about-us?site=en`,
   ourWork: `${VN_SITE}/our-work?site=en`,

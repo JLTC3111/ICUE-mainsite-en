@@ -67,7 +67,10 @@ export const DRAWER_LINKS = [
   { page: 'Contact', href: '#/Contact', label: 'Contact', icon: IconContact, closeOnly: true },
 ];
 
-/** Path-based drawer links for the standalone home React app. */
+/** Path-based drawer links for the standalone home React app.
+ *  icue.vn hrefs keep `?site=en` as the English default; MainSiteNav restamps
+ *  them with `?lang=` when the reader is in French, German, Korean or Japanese.
+ */
 export const STANDALONE_DRAWER_LINKS = [
   { page: 'Home', href: '/', label: 'Home', icon: IconHome, closeOnly: true },
   { page: 'orgStructure', href: 'https://icue.vn/structure/', label: 'Structure', icon: IconOrg, closeOnly: true },

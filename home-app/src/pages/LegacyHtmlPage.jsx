@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { cleanupLegacyPage, initLegacyPage, preloadLegacyPage } from '../legacy/pageInit'
 import {
   loadLegacyPageSource,
@@ -10,11 +11,13 @@ import { LEGACY_PAGE_FILES, pageFromPathname, prepareLegacyHtml } from '../lib/r
 export default function LegacyHtmlPage() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
   const pageName = pageFromPathname(pathname)
   const [pageContent, setPageContent] = useState(() => {
     const raw = readEmbeddedLegacyPageSource(pageName)
     if (!raw) return null
-    return { pageName, ...prepareLegacyHtml(raw) }
+    return { pageName, lang, ...prepareLegacyHtml(raw, lang) }
   })
   const [error, setError] = useState(null)
   const legacyRootRef = useRef(null)
@@ -37,16 +40,16 @@ export default function LegacyHtmlPage() {
     async function load() {
       setError(null)
 
-      if (pageContent?.pageName === pageName) return
-      setPageContent(null)
+      if (pageContent?.pageName === pageName && pageContent?.lang === lang) return
+      if (pageContent?.pageName !== pageName) setPageContent(null)
 
       try {
         const raw = readEmbeddedLegacyPageSource(pageName)
           || await loadLegacyPageSource(pageName)
         if (cancelled) return
 
-        const prepared = prepareLegacyHtml(raw)
-        setPageContent({ pageName, ...prepared })
+        const prepared = prepareLegacyHtml(raw, lang)
+        setPageContent({ pageName, lang, ...prepared })
 
       } catch (err) {
         if (cancelled) return
@@ -60,7 +63,7 @@ export default function LegacyHtmlPage() {
       cancelled = true
       cleanupLegacyPage(pageName)
     }
-  }, [pageName])
+  }, [lang, pageName])
 
   const html = pageContent?.pageName === pageName ? pageContent.html : ''
   const legacyBodyClass = pageContent?.pageName === pageName

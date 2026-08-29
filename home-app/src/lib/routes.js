@@ -1,7 +1,11 @@
+import { withUiLang } from '../../../shared/i18n/withUiLang.js'
+
 /**
  * Contact, About Us, Our Work, FAQs, Recruitment and Community Activities are
- * served by shared apps on icue.vn. ?site=en keeps the page in English and
- * sends its chrome links back to en.icue.vn.
+ * served by shared apps on icue.vn. The constants below keep `?site=en` as the
+ * English-default edge redirect. Client-side chrome restamps them with
+ * `withUiLang`: French, German, Korean and Japanese leave as `?lang=fr` (etc.)
+ * because `?site=en` with no `lang` forces those apps back to English.
  *
  * None of those has a route here. ROUTE_PATHS keeps their local paths where nav
  * state and redirect rules need them; Our Work has no entry at all. Link to the
@@ -23,6 +27,32 @@ export const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
 export const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en'
 /** The newsroom is the same arrangement — one app on icue.vn, entered with a hint. */
 export const NEWSROOM_URL = 'https://icue.vn/newsroom/?from=en-news'
+const STRUCTURE_APP_URL = 'https://icue.vn/structure/'
+const EXPERTS_APP_URL = 'https://icue.vn/people/experts?site=en'
+const CORE_TEAM_APP_URL = 'https://icue.vn/people/core-team?site=en'
+
+function appUrlsForLang(lang = 'en') {
+  return {
+    home: withUiLang(ROUTE_PATHS.home, lang),
+    contact: withUiLang(CONTACT_APP_URL, lang),
+    aboutUs: withUiLang(ABOUT_US_APP_URL, lang),
+    ourWork: withUiLang(OUR_WORK_APP_URL, lang),
+    pastProjects: withUiLang(ROUTE_PATHS.pastProjects, lang),
+    recruitment: withUiLang(RECRUITMENT_APP_URL, lang),
+    newsroom: withUiLang(NEWSROOM_URL, lang),
+    newsArchive: withUiLang(ROUTE_PATHS.newsArchive, lang),
+    structure: withUiLang(STRUCTURE_APP_URL, lang),
+    notableAwards: withUiLang(ROUTE_PATHS.notableAwards, lang),
+    communityActivities: withUiLang(COMMUNITY_ACTIVITIES_APP_URL, lang),
+    faqs: withUiLang(FAQ_APP_URL, lang),
+    privacy: withUiLang(ROUTE_PATHS.privacy, lang),
+    terms: withUiLang(ROUTE_PATHS.terms, lang),
+    gdpr: withUiLang(ROUTE_PATHS.gdpr, lang),
+    cookies: withUiLang(ROUTE_PATHS.cookies, lang),
+    experts: withUiLang(EXPERTS_APP_URL, lang),
+    coreTeam: withUiLang(CORE_TEAM_APP_URL, lang),
+  }
+}
 
 /** Path routes for migrated main-site pages. */
 export const ROUTE_PATHS = {
@@ -99,7 +129,7 @@ export function pathFromPage(page) {
 }
 
 /** Rewrite legacy hash links and public/ asset paths inside injected HTML. */
-export function prepareLegacyHtml(rawHtml) {
+export function prepareLegacyHtml(rawHtml, lang = 'en') {
   const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
 
   // Scripts injected through innerHTML never execute. Remove that dead payload
@@ -136,25 +166,25 @@ export function prepareLegacyHtml(rawHtml) {
     .join('\n')
   let bodyHtml = doc.body?.innerHTML || rawHtml
 
-  const VN = 'https://icue.vn'
+  const urls = appUrlsForLang(lang)
 
   const hashToPath = {
-    '#/Home': ROUTE_PATHS.home,
-    '#/Contact': CONTACT_APP_URL,
-    '#/aboutUs': ABOUT_US_APP_URL,
-    '#/ourWork': OUR_WORK_APP_URL,
-    '#/pastProjects': ROUTE_PATHS.pastProjects,
-    '#/recruitment': ROUTE_PATHS.recruitment,
-    '#/News': `${VN}/newsroom/?from=en-news`,
-    '#/orgStructure': `${VN}/structure/`,
-    '#/notableAwards': ROUTE_PATHS.notableAwards,
-    '#/communityActivities': COMMUNITY_ACTIVITIES_APP_URL,
-    '#/FAQs': ROUTE_PATHS.faqs,
-    '#/faqs': ROUTE_PATHS.faqs,
-    '#/privacy': ROUTE_PATHS.privacy,
-    '#/terms': ROUTE_PATHS.terms,
-    '#/gdpr': ROUTE_PATHS.gdpr,
-    '#/cookies': ROUTE_PATHS.cookies,
+    '#/Home': urls.home,
+    '#/Contact': urls.contact,
+    '#/aboutUs': urls.aboutUs,
+    '#/ourWork': urls.ourWork,
+    '#/pastProjects': urls.pastProjects,
+    '#/recruitment': urls.recruitment,
+    '#/News': urls.newsroom,
+    '#/orgStructure': urls.structure,
+    '#/notableAwards': urls.notableAwards,
+    '#/communityActivities': urls.communityActivities,
+    '#/FAQs': urls.faqs,
+    '#/faqs': urls.faqs,
+    '#/privacy': urls.privacy,
+    '#/terms': urls.terms,
+    '#/gdpr': urls.gdpr,
+    '#/cookies': urls.cookies,
   }
 
   bodyHtml = bodyHtml
@@ -168,28 +198,29 @@ export function prepareLegacyHtml(rawHtml) {
   }
 
   bodyHtml = bodyHtml
-    .replaceAll('href="/newsroom/?from=en-news"', `href="${VN}/newsroom/?from=en-news"`)
-    .replaceAll("href='/newsroom/?from=en-news'", `href='${VN}/newsroom/?from=en-news'`)
+    .replaceAll('href="/newsroom/?from=en-news"', `href="${urls.newsroom}"`)
+    .replaceAll("href='/newsroom/?from=en-news'", `href='${urls.newsroom}'`)
 
   for (const [pageId, file] of Object.entries(LEGACY_PAGE_FILES)) {
     const route = PAGE_TO_PATH[pageId]
     if (!route) continue
-    bodyHtml = bodyHtml.replaceAll(`href="/legacy/pages/${file}"`, `href="${route}"`)
-    bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${route}'`)
+    const localized = withUiLang(route, lang)
+    bodyHtml = bodyHtml.replaceAll(`href="/legacy/pages/${file}"`, `href="${localized}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${localized}'`)
   }
 
   // These pages have no local route — send their links straight to the shared
   // apps on icue.vn rather than through a redirect hop this router never
   // triggers.
   bodyHtml = bodyHtml
-    .replaceAll('href="/about-us"', `href="${ABOUT_US_APP_URL}"`)
-    .replaceAll("href='/about-us'", `href='${ABOUT_US_APP_URL}'`)
-    .replaceAll('href="/legacy/pages/aboutUs.html"', `href="${ABOUT_US_APP_URL}"`)
-    .replaceAll("href='/legacy/pages/aboutUs.html'", `href='${ABOUT_US_APP_URL}'`)
-    .replaceAll('href="/legacy/pages/Contact.html"', `href="${CONTACT_APP_URL}"`)
-    .replaceAll("href='/legacy/pages/Contact.html'", `href='${CONTACT_APP_URL}'`)
-    .replaceAll('href="/legacy/pages/communityActivities.html"', `href="${COMMUNITY_ACTIVITIES_APP_URL}"`)
-    .replaceAll("href='/legacy/pages/communityActivities.html'", `href='${COMMUNITY_ACTIVITIES_APP_URL}'`)
+    .replaceAll('href="/about-us"', `href="${urls.aboutUs}"`)
+    .replaceAll("href='/about-us'", `href='${urls.aboutUs}'`)
+    .replaceAll('href="/legacy/pages/aboutUs.html"', `href="${urls.aboutUs}"`)
+    .replaceAll("href='/legacy/pages/aboutUs.html'", `href='${urls.aboutUs}'`)
+    .replaceAll('href="/legacy/pages/Contact.html"', `href="${urls.contact}"`)
+    .replaceAll("href='/legacy/pages/Contact.html'", `href='${urls.contact}'`)
+    .replaceAll('href="/legacy/pages/communityActivities.html"', `href="${urls.communityActivities}"`)
+    .replaceAll("href='/legacy/pages/communityActivities.html'", `href='${urls.communityActivities}'`)
 
   const bodyClass = doc.body?.className?.trim() || ''
 
@@ -197,34 +228,35 @@ export function prepareLegacyHtml(rawHtml) {
 }
 
 /** Convert bookmarks from the retired hash router into canonical paths. */
-export function pathFromLegacyHash(hash) {
+export function pathFromLegacyHash(hash, lang = 'en') {
   if (!hash?.startsWith('#/')) return null
 
   const raw = hash.slice(2)
   const queryIndex = raw.indexOf('?')
   const page = (queryIndex >= 0 ? raw.slice(0, queryIndex) : raw).replace(/\/+$/, '')
   const search = queryIndex >= 0 ? raw.slice(queryIndex) : ''
+  const urls = appUrlsForLang(lang)
 
   const pagePaths = {
-    Home: ROUTE_PATHS.home,
-    Contact: CONTACT_APP_URL,
-    aboutUs: ABOUT_US_APP_URL,
-    ourWork: OUR_WORK_APP_URL,
-    pastProjects: ROUTE_PATHS.pastProjects,
-    recruitment: ROUTE_PATHS.recruitment,
-    News: ROUTE_PATHS.newsArchive,
-    newsArchive: ROUTE_PATHS.newsArchive,
-    orgStructure: 'https://icue.vn/structure/',
-    meetOurExperts: 'https://icue.vn/people/experts?site=en',
-    coreTeam: 'https://icue.vn/people/core-team?site=en',
-    notableAwards: ROUTE_PATHS.notableAwards,
-    communityActivities: COMMUNITY_ACTIVITIES_APP_URL,
-    FAQs: ROUTE_PATHS.faqs,
-    faqs: ROUTE_PATHS.faqs,
-    privacy: ROUTE_PATHS.privacy,
-    terms: ROUTE_PATHS.terms,
-    gdpr: ROUTE_PATHS.gdpr,
-    cookies: ROUTE_PATHS.cookies,
+    Home: urls.home,
+    Contact: urls.contact,
+    aboutUs: urls.aboutUs,
+    ourWork: urls.ourWork,
+    pastProjects: urls.pastProjects,
+    recruitment: urls.recruitment,
+    News: urls.newsArchive,
+    newsArchive: urls.newsArchive,
+    orgStructure: urls.structure,
+    meetOurExperts: urls.experts,
+    coreTeam: urls.coreTeam,
+    notableAwards: urls.notableAwards,
+    communityActivities: urls.communityActivities,
+    FAQs: urls.faqs,
+    faqs: urls.faqs,
+    privacy: urls.privacy,
+    terms: urls.terms,
+    gdpr: urls.gdpr,
+    cookies: urls.cookies,
   }
 
   const path = pagePaths[page]

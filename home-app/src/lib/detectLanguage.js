@@ -1,3 +1,5 @@
+import { normalizeUiLang } from '../../../shared/i18n/withUiLang.js'
+
 /** Shared with the newsroom, Our Work and Contact on icue.vn, so a choice made
     on one of them survives the walk back to this home page. */
 const LANG_KEY = 'icue_news_lang'
@@ -30,13 +32,13 @@ function store(code) {
 export function detectInitialLanguage() {
   const params = new URLSearchParams(window.location.search)
 
-  const requested = params.get('lang')
+  const requested = normalizeUiLang(params.get('lang'), null)
   if (requested && UI_CODES.has(requested)) {
     store(requested)
     return requested
   }
 
-  const saved = readStored()
+  const saved = normalizeUiLang(readStored(), null)
   if (saved && UI_CODES.has(saved)) return saved
 
   return 'en'

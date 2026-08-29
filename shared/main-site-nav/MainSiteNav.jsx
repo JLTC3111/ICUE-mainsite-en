@@ -21,6 +21,7 @@ import {
   localizePeopleSubmenu,
   resolveNavLabels,
 } from './navContent';
+import { withUiLang, withUiLangOnHref } from '../i18n/withUiLang';
 import './MainSiteNav.css';
 
 const DefaultMainSiteHeader = lazy(() => import('./MainSiteHeader'));
@@ -67,6 +68,9 @@ export default function MainSiteNav({
      languages of its own passes its current translation here — see
      navContent.js for the shape. */
   labels: labelOverrides,
+  /* Current UI language. Outbound icue.vn links use `?lang=` (not `?site=en`)
+     so Contact / Our Work / About Us keep French, German, Korean, Japanese. */
+  lang = 'en',
 }) {
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
@@ -252,21 +256,26 @@ export default function MainSiteNav({
   }, []);
 
   const labels = useMemo(() => resolveNavLabels(labelOverrides), [labelOverrides]);
+  const localizedHomeHref = useMemo(() => withUiLang(homeHref, lang), [homeHref, lang]);
+  const localizedAboutUsHref = useMemo(
+    () => withUiLang(aboutUsHref, lang),
+    [aboutUsHref, lang],
+  );
 
   const sourceLinks = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
   const drawerLinkConfig = useMemo(
-    () => localizeNavLinks(sourceLinks, labels),
-    [labels, sourceLinks],
+    () => localizeNavLinks(sourceLinks, labels).map((link) => withUiLangOnHref(link, lang)),
+    [labels, lang, sourceLinks],
   );
   const peopleSubmenu = useMemo(
-    () => localizePeopleSubmenu(PEOPLE_SUBMENU, labels),
-    [labels],
+    () => withUiLangOnHref(localizePeopleSubmenu(PEOPLE_SUBMENU, labels), lang),
+    [labels, lang],
   );
   // The pill's tablet overflow is usually the Personnel pair, which the caller
   // reads off the untranslated export — re-label it here too.
   const localizedOverflowItems = useMemo(
-    () => localizeNavLinks(pillOverflowItems, labels),
-    [labels, pillOverflowItems],
+    () => localizeNavLinks(pillOverflowItems, labels).map((link) => withUiLangOnHref(link, lang)),
+    [labels, lang, pillOverflowItems],
   );
 
   const { navLinks, people } = useMemo(
@@ -441,7 +450,7 @@ export default function MainSiteNav({
           <PillHeaderComponent
             activePage={activePage}
             items={drawerLinkConfig}
-            homeHref={homeHref}
+            homeHref={localizedHomeHref}
             logoMarkSrc={`${isStandalone ? '/' : 'public/'}logoIcons/favicon.png`}
             logoVideoSrc={`${isStandalone ? '/' : 'public/'}bgVideos/video-text-football.mp4`}
             drawerOpen={drawerOpen}
@@ -472,8 +481,8 @@ export default function MainSiteNav({
               showContactLink={showContactLink}
               showHomeVideoToggle={showHomeVideoToggle}
               showAboutUsVideoToggle={showAboutUsVideoToggle}
-              homeHref={homeHref}
-              aboutUsHref={aboutUsHref}
+              homeHref={localizedHomeHref}
+              aboutUsHref={localizedAboutUsHref}
               isStandalone={isStandalone}
               assetPrefix={isStandalone ? '/' : 'public/'}
               homeVideoEnabled={homeVideoEnabled}

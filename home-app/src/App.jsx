@@ -21,8 +21,11 @@ function RouteFallback() {
 }
 
 function LegacyHashRedirect() {
+  const { i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
+
   useLayoutEffect(() => {
-    const target = pathFromLegacyHash(window.location.hash)
+    const target = pathFromLegacyHash(window.location.hash, lang)
     if (!target) return
     if (/^https?:\/\//i.test(target)) {
       window.location.replace(target)
@@ -30,7 +33,7 @@ function LegacyHashRedirect() {
     }
     window.history.replaceState(null, '', target)
     window.dispatchEvent(new PopStateEvent('popstate'))
-  }, [])
+  }, [lang])
   return null
 }
 
@@ -140,6 +143,7 @@ function AppShell() {
         pillOverflowItems={PEOPLE_SUBMENU.items}
         LanguageControl={SiteLanguageMenu}
         labels={navLabels}
+        lang={lang}
       />
       <HomeLayoutGuard />
       <main id="content">
@@ -163,7 +167,7 @@ function AppShell() {
           </Routes>
         </Suspense>
       </main>
-      <Footer linkMode="standalone" onNavigate={navigate} labels={footerLabels} />
+      <Footer linkMode="standalone" onNavigate={navigate} labels={footerLabels} lang={lang} />
       <ContactSidebar contentKey={pathname} />
     </>
   )

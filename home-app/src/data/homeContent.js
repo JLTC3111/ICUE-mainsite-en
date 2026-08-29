@@ -1,5 +1,12 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
-import { NEWSROOM_URL, OUR_WORK_APP_URL, ROUTE_PATHS } from '../lib/routes'
+import { withUiLang } from '@icue/i18n/withUiLang'
+import {
+  CONTACT_APP_URL,
+  NEWSROOM_URL,
+  OUR_WORK_APP_URL,
+  RECRUITMENT_APP_URL,
+  ROUTE_PATHS,
+} from '../lib/routes'
 
 /**
  * Structure here, words in the locale files.
@@ -49,40 +56,40 @@ const SECTION_LAYOUT = [
     id: 'home-recruitment',
     key: 'recruitment',
     alt: true,
-    linkHref: ROUTE_PATHS.recruitment,
+    linkHref: RECRUITMENT_APP_URL,
     cards: [
-      { key: 'culture', image: '/public/recruitment/office.jpg', href: ROUTE_PATHS.recruitment, imageOnly: true },
-      { key: 'growth', image: '/public/recruitment/event.jpg', href: ROUTE_PATHS.recruitment, imageOnly: true },
-      { key: 'impact', image: '/public/recruitment/survey.jpg', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'culture', image: '/public/recruitment/office.jpg', href: RECRUITMENT_APP_URL, imageOnly: true },
+      { key: 'growth', image: '/public/recruitment/event.jpg', href: RECRUITMENT_APP_URL, imageOnly: true },
+      { key: 'impact', image: '/public/recruitment/survey.jpg', href: RECRUITMENT_APP_URL, imageOnly: true },
     ],
   },
 ]
 
-export function buildHero(t) {
+export function buildHero(t, lang = 'en') {
   return {
     bannerLabel: t('home.hero.bannerLabel'),
-    bannerHref: NEWSROOM_URL,
+    bannerHref: withUiLang(NEWSROOM_URL, lang),
     title: t('home.hero.title'),
     subtitle: t('home.hero.subtitle'),
     ariaLabel: t('home.hero.ariaLabel'),
     actions: [
-      { label: t('home.hero.actions.contact'), href: ROUTE_PATHS.contact, variant: 'primary' },
-      { label: t('home.hero.actions.pastProjects'), href: ROUTE_PATHS.pastProjects, variant: 'ghost' },
+      { label: t('home.hero.actions.contact'), href: withUiLang(CONTACT_APP_URL, lang), variant: 'primary' },
+      { label: t('home.hero.actions.pastProjects'), href: withUiLang(ROUTE_PATHS.pastProjects, lang), variant: 'ghost' },
     ],
   }
 }
 
-export function buildHomeSections(t) {
+export function buildHomeSections(t, lang = 'en') {
   return SECTION_LAYOUT.map((section) => ({
     id: section.id,
     alt: section.alt,
-    linkHref: section.linkHref,
+    linkHref: withUiLang(section.linkHref, lang),
     title: t(`home.sections.${section.key}.title`),
     description: t(`home.sections.${section.key}.description`),
     linkLabel: t(`home.sections.${section.key}.linkLabel`),
     cards: section.cards.map((card) => ({
       image: card.image,
-      href: card.href,
+      href: withUiLang(card.href, lang),
       imageOnly: card.imageOnly,
       title: t(`home.sections.${section.key}.cards.${card.key}.title`),
       description: t(`home.sections.${section.key}.cards.${card.key}.description`),

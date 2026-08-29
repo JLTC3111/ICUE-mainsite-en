@@ -1,5 +1,6 @@
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import CircularText from '@icue/ui/CircularText/CircularText'
+import { withUiLang } from '../i18n/withUiLang'
 import { FOOTER_LABELS } from './footerContent'
 import { getFooterLinks } from './footerLinks'
 import './Footer.css'
@@ -16,9 +17,14 @@ function isPlainInternalNavigation(event, href) {
     && !event.altKey
 }
 
-function Footer({ linkMode = 'hash', onNavigate, labels: labelOverrides }) {
+function Footer({ linkMode = 'hash', onNavigate, labels: labelOverrides, lang = 'en' }) {
   const labels = { ...FOOTER_LABELS, ...labelOverrides }
-  const links = getFooterLinks(linkMode)
+  const links = useMemo(() => {
+    const base = getFooterLinks(linkMode)
+    return Object.fromEntries(
+      Object.entries(base).map(([key, href]) => [key, withUiLang(href, lang)]),
+    )
+  }, [lang, linkMode])
   const year = new Date().getFullYear()
   const navigate = (event) => {
     const href = event.currentTarget.getAttribute('href')
