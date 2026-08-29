@@ -2090,7 +2090,7 @@ body.loaded #app {
     z-index: auto;
   }
 
-  .menu-toggle svg:not(.menu-icon-metallic__static){
+  .menu-toggle svg:not(.menu-icon-metallic__static):not(.menu-icon-metallic__fallback-close):not(.menu-icon-metallic__lucide-close){
     width: 26px;
     height: 26px;
   }
@@ -2746,7 +2746,7 @@ h2.handwritten:hover {
     height: clamp(150px, 16vw, 240px);
     animation: none;
   }
-  .menu-toggle svg:not(.menu-icon-metallic__static){
+  .menu-toggle svg:not(.menu-icon-metallic__static):not(.menu-icon-metallic__fallback-close):not(.menu-icon-metallic__lucide-close){
     width: 58px;
     height: 58px;
   }
