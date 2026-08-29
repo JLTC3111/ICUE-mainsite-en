@@ -5,11 +5,6 @@ import {
   loadLegacyPageSource,
   readEmbeddedLegacyPageSource,
 } from '../legacy/pageHtml'
-import {
-  loadModelViewerWhenVisible,
-  pageUsesModelViewer,
-  upgradeModelViewers,
-} from '../legacy/modelViewer'
 import { LEGACY_PAGE_FILES, pageFromPathname, prepareLegacyHtml } from '../lib/routes'
 
 export default function LegacyHtmlPage() {
@@ -71,18 +66,6 @@ export default function LegacyHtmlPage() {
   const legacyBodyClass = pageContent?.pageName === pageName
     ? pageContent.bodyClass
     : ''
-
-  useLayoutEffect(() => {
-    if (!html || !pageUsesModelViewer(pageName)) return
-    upgradeModelViewers(legacyRootRef.current)
-  }, [html, pageName])
-
-  useEffect(() => {
-    if (!html || !pageUsesModelViewer(pageName)) return undefined
-    return loadModelViewerWhenVisible(legacyRootRef.current, () => {
-      upgradeModelViewers(legacyRootRef.current)
-    })
-  }, [html, pageName])
 
   // Init after HTML is committed to the DOM (fixes empty querySelector race).
   useLayoutEffect(() => {

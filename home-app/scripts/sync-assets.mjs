@@ -31,6 +31,7 @@ function copyDir(src, dest) {
 const ASSET_DIRS = [
   'aboutUs',
   'bgVideos',
+  'certs',
   'models',
   'pastProjects',
   'work',
@@ -40,9 +41,13 @@ const ASSET_DIRS = [
   'flags',
 ]
 
+const ASSET_FILES = [
+  'files/photos.zip',
+  'files/speech.pdf',
+  'music/mixkit-a-very-happy-christmas-897.mp3',
+]
+
 const LEGACY_PAGES = [
-  'Contact.html',
-  'aboutUs.html',
   'pastProjects.html',
   'News.html',
   'notableAwards.html',
@@ -56,6 +61,10 @@ const LEGACY_PAGES = [
 
 for (const rel of ASSET_DIRS) {
   copyDir(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
+}
+
+for (const rel of ASSET_FILES) {
+  copyFile(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
 
 for (const file of LEGACY_PAGES) {
@@ -73,4 +82,4 @@ copyFile(
   path.join(appRoot, 'public/logoIcons/favicon.png'),
 )
 
-console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, legacy pages, redirects, script.js, card.js, article.js`)
+console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, selected media, legacy pages, redirects, script.js, card.js, article.js`)

@@ -1,8 +1,7 @@
-// Keep in sync with LEGACY_PAGE_FILES in ../lib/routes.js. Contact, FAQs,
-// recruitment and community activities are absent from both: each is served by
-// its own app on icue.vn, not injected here.
+// Keep in sync with LEGACY_PAGE_FILES in ../lib/routes.js. About Us, Contact,
+// FAQs, recruitment and community activities are absent from both: each is
+// served by its own app on icue.vn, not injected here.
 const PAGE_SOURCE_LOADERS = {
-  aboutUs: () => import('../../../legacy/pages/aboutUs.html?raw'),
   pastProjects: () => import('../../../legacy/pages/pastProjects.html?raw'),
   newsArchive: () => import('../../../legacy/pages/News.html?raw'),
   notableAwards: () => import('../../../legacy/pages/notableAwards.html?raw'),

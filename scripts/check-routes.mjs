@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
+  ABOUT_US_APP_URL,
   CONTACT_APP_URL,
   COMMUNITY_ACTIVITIES_APP_URL,
   FAQ_APP_URL,
@@ -10,16 +11,6 @@ import {
   RECRUITMENT_APP_URL,
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
-
-/*
- * About Us is half-migrated and has been since 2026-08: _redirects sends
- * /about-us to icue.vn with a forced 301, but the React route, the shell and
- * the Express SPA entry are all still here — which is why that redirect needs
- * the `!`. The assertions below describe that reality rather than the
- * fully-migrated shape, so the audit passes; finishing the migration means
- * giving it the same treatment as contact, our-work, faqs and recruitment.
- */
-const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
 import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -30,12 +21,15 @@ const appSource = read('home-app/src/App.jsx')
 const mountedKeys = new Set(
   [...appSource.matchAll(/<Route path=\{ROUTE_PATHS\.(\w+)\}/g)].map((match) => match[1]),
 )
-// contact is a path this site links to but does not render: Netlify sends it to
-// the shared Contact app on icue.vn. It stays in ROUTE_PATHS because nav state
-// and the redirect rules read it. ourWork has no ROUTE_PATHS entry at all.
-const EXTERNALLY_SERVED_ROUTES = new Set(['contact', 'faqs', 'recruitment', 'communityActivities'])
+// These are paths this site links to but does not render: the edge sends each
+// one to its shared app on icue.vn. They stay in ROUTE_PATHS because nav state
+// and redirect rules read them. ourWork has no ROUTE_PATHS entry at all.
+const EXTERNALLY_SERVED_ROUTES = new Set(['contact', 'aboutUs', 'faqs', 'recruitment', 'communityActivities'])
 for (const key of Object.keys(ROUTE_PATHS)) {
-  if (EXTERNALLY_SERVED_ROUTES.has(key)) continue
+  if (EXTERNALLY_SERVED_ROUTES.has(key)) {
+    if (mountedKeys.has(key)) failures.push(`Externally served route is still mounted locally: ${key}`)
+    continue
+  }
   if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
 }
 
@@ -52,10 +46,8 @@ for (const file of ['card.html', 'article_template.html']) {
 
 const redirects = read('_redirects')
 const requiredShellPaths = Object.entries(ROUTE_PATHS)
-  // contact is served by the shared app on icue.vn, not by a local shell — it
-  // is asserted as an external redirect below instead.
-  // aboutUs, faqs and recruitment are redirected at the edge instead of being
-  // rewritten to a local shell, so none of them has a `<route>.html` rule.
+  // External-app routes are asserted below instead of being rewritten to local
+  // shells, so none of them has a `<route>.html` rule.
   .filter(([key]) => !['home', 'contact', 'aboutUs', 'faqs', 'recruitment',
     'communityActivities', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
@@ -91,6 +83,8 @@ for (const [from, to] of Object.entries(legacyRedirects)) {
     .find((candidate) => candidate.trim().startsWith(`${from} `))
   if (!line || !line.trim().split(/\s+/).includes(to)) {
     failures.push(`Missing legacy redirect: ${from} -> ${to}`)
+  } else if (!/\s301!\s*$/.test(line)) {
+    failures.push(`Legacy redirect is not forced: ${from}`)
   }
 }
 
@@ -116,6 +110,9 @@ const netlifyToml = read('netlify.toml')
 const externalRoutes = {
   [ROUTE_PATHS.contact]: CONTACT_APP_URL,
   [`${ROUTE_PATHS.contact}/`]: CONTACT_APP_URL,
+  [ROUTE_PATHS.aboutUs]: ABOUT_US_APP_URL,
+  [`${ROUTE_PATHS.aboutUs}/`]: ABOUT_US_APP_URL,
+  '/about-us.html': ABOUT_US_APP_URL,
   '/our-work': OUR_WORK_APP_URL,
   '/our-work/': OUR_WORK_APP_URL,
   [ROUTE_PATHS.faqs]: FAQ_APP_URL,
@@ -140,13 +137,40 @@ for (const [from, to] of Object.entries(externalRoutes)) {
     failures.push(`netlify.toml rewrites ${from} to a local shell`)
   }
 }
-// Contact is the one path netlify.toml redirects itself, because a stale
-// contact.html once shadowed the _redirects rule.
-if (!new RegExp(`from = "${escapeRe(ROUTE_PATHS.contact)}"\\s+to = "${escapeRe(CONTACT_APP_URL)}"`, 'm').test(netlifyToml)) {
-  failures.push(`Missing external app redirect in netlify.toml: ${ROUTE_PATHS.contact} -> ${CONTACT_APP_URL}`)
+
+const legalAliases = {
+  '/privacy': ROUTE_PATHS.privacy,
+  '/terms': ROUTE_PATHS.terms,
+  '/gdpr': ROUTE_PATHS.gdpr,
+  '/cookies': ROUTE_PATHS.cookies,
+}
+for (const [from, to] of Object.entries(legalAliases)) {
+  const redirectBlock = new RegExp(
+    `from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"\\s+status = 301`,
+    'm',
+  )
+  if (!redirectBlock.test(netlifyToml)) {
+    failures.push(`netlify.toml has the wrong legal alias redirect: ${from} -> ${to}`)
+  }
+}
+// Contact and About Us have explicit forced redirects in netlify.toml because
+// stale/local shells have previously shadowed the canonical external apps.
+for (const [from, to] of [
+  [ROUTE_PATHS.contact, CONTACT_APP_URL],
+  [ROUTE_PATHS.aboutUs, ABOUT_US_APP_URL],
+  ['/about-us.html', ABOUT_US_APP_URL],
+]) {
+  const redirectBlock = new RegExp(
+    `from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"\\s+status = 301\\s+force = true`,
+    'm',
+  )
+  if (!redirectBlock.test(netlifyToml)) {
+    failures.push(`Missing forced external app redirect in netlify.toml: ${from} -> ${to}`)
+  }
 }
 for (const [path, label] of [
   [ROUTE_PATHS.contact, 'contact'],
+  [ROUTE_PATHS.aboutUs, 'about-us'],
   ['/our-work', 'our-work'],
   [ROUTE_PATHS.faqs, 'faqs'],
   [ROUTE_PATHS.recruitment, 'recruitment'],

@@ -1,4 +1,3 @@
-import { BloomEffect, ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import './GridScan.css';
@@ -278,11 +277,7 @@ export const GridScan = ({
   lineStyle = 'solid',
   lineJitter = 0.1,
   scanDirection = 'pingpong',
-  enablePost = true,
   bloomIntensity = 0,
-  bloomThreshold = 0,
-  bloomSmoothing = 0,
-  chromaticAberration = 0.002,
   noiseIntensity = 0.01,
   scanGlow = 0.5,
   scanSoftness = 2,
@@ -299,11 +294,7 @@ export const GridScan = ({
 }) => {
   const containerRef = useRef(null);
 
-  const rendererRef = useRef(null);
   const materialRef = useRef(null);
-  const composerRef = useRef(null);
-  const bloomRef = useRef(null);
-  const chromaRef = useRef(null);
   const rafRef = useRef(null);
 
   const lookTarget = useRef(new THREE.Vector2(0, 0));
@@ -338,7 +329,6 @@ export const GridScan = ({
   const skewScale = THREE.MathUtils.lerp(0.06, 0.2, s);
   const tiltScale = THREE.MathUtils.lerp(0.12, 0.3, s);
   const yawScale = THREE.MathUtils.lerp(0.1, 0.28, s);
-  const depthResponse = THREE.MathUtils.lerp(0.25, 0.45, s);
   const smoothTime = THREE.MathUtils.lerp(0.45, 0.12, s);
   const maxSpeed = Infinity;
 
@@ -412,12 +402,26 @@ export const GridScan = ({
     // edges for it to smooth — every line here is antialiased analytically in
     // the fragment shader. Leaving it on only bought a multisampled buffer the
     // shader never benefits from.
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
-    rendererRef.current = renderer;
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+    } catch (error) {
+      // Keep the static hero background visible when WebGL is unavailable
+      // instead of letting an effect error take down the landing page.
+      container.setAttribute('data-gridscan-unavailable', 'true');
+      console.warn('[GridScan] WebGL initialization failed:', error);
+      return () => container.removeAttribute('data-gridscan-unavailable');
+    }
+
+    const readSize = () => ({
+      width: Math.max(1, container.clientWidth),
+      height: Math.max(1, container.clientHeight)
+    });
+    const initialSize = readSize();
     // Fragment cost scales with the square of this. A soft grid does not repay
     // a 2x device ratio the way text or a photo does, so callers can cap it.
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, Math.max(0.5, maxPixelRatio)));
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(initialSize.width, initialSize.height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.NoToneMapping;
     renderer.autoClear = false;
@@ -426,7 +430,7 @@ export const GridScan = ({
 
     const uniforms = {
       iResolution: {
-        value: new THREE.Vector3(container.clientWidth, container.clientHeight, renderer.getPixelRatio())
+        value: new THREE.Vector3(initialSize.width, initialSize.height, renderer.getPixelRatio())
       },
       iTime: { value: 0 },
       uSkew: { value: new THREE.Vector2(0, 0) },
@@ -466,55 +470,44 @@ export const GridScan = ({
     const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
     scene.add(quad);
 
-    // Each effect is only built when it would actually change a pixel. Bloom is
-    // the expensive one — a full mip pyramid of downsample/upsample passes every
-    // frame — and at opacity 0 it produced exactly nothing. If nothing survives
-    // the filter the composer is skipped altogether and the quad renders
-    // straight to the screen, which is one pass instead of several.
-    const wantsBloom = bloomIntensity > 0;
-    const wantsChroma = Math.abs(chromaticAberration) > 0;
-
-    let composer = null;
-    if (enablePost && (wantsBloom || wantsChroma)) {
-      composer = new EffectComposer(renderer);
-      composerRef.current = composer;
-      const renderPass = new RenderPass(scene, camera);
-      composer.addPass(renderPass);
-
-      const effects = [];
-
-      if (wantsBloom) {
-        const bloom = new BloomEffect({
-          intensity: 1.0,
-          luminanceThreshold: bloomThreshold,
-          luminanceSmoothing: bloomSmoothing
-        });
-        bloom.blendMode.opacity.value = Math.max(0, bloomIntensity);
-        bloomRef.current = bloom;
-        effects.push(bloom);
+    // A renderer can be created successfully even when this particular shader
+    // cannot compile on the visitor's GPU. Compile once up front and fall back
+    // to the hero's normal CSS background instead of leaving a blank canvas.
+    let shaderFailure = null;
+    renderer.debug.onShaderError = () => {
+      shaderFailure = new Error('WebGL shader compilation failed');
+    };
+    try {
+      renderer.compile(scene, camera);
+    } catch (error) {
+      shaderFailure = error;
+    } finally {
+      renderer.debug.onShaderError = null;
+    }
+    if (shaderFailure) {
+      container.setAttribute('data-gridscan-unavailable', 'true');
+      console.warn('[GridScan] Shader unavailable:', shaderFailure);
+      materialRef.current = null;
+      material.dispose();
+      quad.geometry.dispose();
+      renderer.dispose();
+      renderer.forceContextLoss();
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement);
       }
-
-      if (wantsChroma) {
-        const chroma = new ChromaticAberrationEffect({
-          offset: new THREE.Vector2(chromaticAberration, chromaticAberration),
-          radialModulation: true,
-          modulationOffset: 0.0
-        });
-        chromaRef.current = chroma;
-        effects.push(chroma);
-      }
-
-      const effectPass = new EffectPass(camera, ...effects);
-      effectPass.renderToScreen = true;
-      composer.addPass(effectPass);
+      return () => container.removeAttribute('data-gridscan-unavailable');
     }
 
     const onResize = () => {
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      material.uniforms.iResolution.value.set(container.clientWidth, container.clientHeight, renderer.getPixelRatio());
-      if (composerRef.current) composerRef.current.setSize(container.clientWidth, container.clientHeight);
+      const size = readSize();
+      renderer.setSize(size.width, size.height);
+      material.uniforms.iResolution.value.set(size.width, size.height, renderer.getPixelRatio());
     };
     window.addEventListener('resize', onResize);
+    const resizeObserver = typeof ResizeObserver === 'function'
+      ? new ResizeObserver(onResize)
+      : null;
+    resizeObserver?.observe(container);
 
     let last = performance.now();
     const minFrameMs = maxFps > 0 ? 1000 / maxFps - 1 : 0;
@@ -566,11 +559,7 @@ export const GridScan = ({
       // Depth and stencil are never written — depthTest and depthWrite are both
       // off on the material — so clearing them each frame was wasted bandwidth.
       renderer.clear(true, false, false);
-      if (composerRef.current) {
-        composerRef.current.render(dt);
-      } else {
-        renderer.render(scene, camera);
-      }
+      renderer.render(scene, camera);
     };
 
     // The hero is one screen of a long page, and this shader is the most
@@ -600,34 +589,32 @@ export const GridScan = ({
       else stop();
     };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        onScreen = entry.isIntersecting;
-        sync();
-      },
-      { rootMargin: '150px' }
-    );
-    observer.observe(container);
+    const observer = typeof IntersectionObserver === 'function'
+      ? new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting;
+          sync();
+        },
+        { rootMargin: '150px' }
+      )
+      : null;
+    observer?.observe(container);
     document.addEventListener('visibilitychange', sync);
     start();
 
     return () => {
       stop();
-      observer.disconnect();
+      observer?.disconnect();
       document.removeEventListener('visibilitychange', sync);
       window.removeEventListener('resize', onResize);
+      resizeObserver?.disconnect();
       material.dispose();
       quad.geometry.dispose();
-
-      if (composerRef.current) {
-        composerRef.current.dispose();
-        composerRef.current = null;
-      }
-      bloomRef.current = null;
-      chromaRef.current = null;
       renderer.dispose();
       renderer.forceContextLoss();
-      container.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement);
+      }
     };
   }, [
     maxFps,
@@ -641,7 +628,6 @@ export const GridScan = ({
     lineStyle,
     lineJitter,
     scanDirection,
-    enablePost,
     noiseIntensity,
     bloomIntensity,
     scanGlow,
@@ -649,9 +635,6 @@ export const GridScan = ({
     scanPhaseTaper,
     scanDuration,
     scanDelay,
-    bloomThreshold,
-    bloomSmoothing,
-    chromaticAberration,
     smoothTime,
     maxSpeed,
     skewScale,
@@ -680,14 +663,6 @@ export const GridScan = ({
       u.uScanDuration.value = Math.max(0.05, scanDuration);
       u.uScanDelay.value = Math.max(0.0, scanDelay);
     }
-    if (bloomRef.current) {
-      bloomRef.current.blendMode.opacity.value = Math.max(0, bloomIntensity);
-      bloomRef.current.luminanceMaterial.threshold = bloomThreshold;
-      bloomRef.current.luminanceMaterial.smoothing = bloomSmoothing;
-    }
-    if (chromaRef.current) {
-      chromaRef.current.offset.set(chromaticAberration, chromaticAberration);
-    }
   }, [
     lineThickness,
     linesColor,
@@ -696,9 +671,6 @@ export const GridScan = ({
     lineStyle,
     lineJitter,
     bloomIntensity,
-    bloomThreshold,
-    bloomSmoothing,
-    chromaticAberration,
     noiseIntensity,
     scanGlow,
     scanOpacity,
@@ -790,4 +762,3 @@ function smoothDampFloat(current, target, velRef, smoothTime, maxSpeed, deltaTim
   }
   return { value: out, v: velRef.v };
 }
-

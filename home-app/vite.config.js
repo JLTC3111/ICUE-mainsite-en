@@ -21,6 +21,9 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/contact': CONTACT_APP_URL,
   '/contact/': CONTACT_APP_URL,
+  '/about-us': ABOUT_US_APP_URL,
+  '/about-us/': ABOUT_US_APP_URL,
+  '/about-us.html': ABOUT_US_APP_URL,
   '/our-work': OUR_WORK_APP_URL,
   '/our-work/': OUR_WORK_APP_URL,
   '/faqs': FAQ_APP_URL,
@@ -44,6 +47,26 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/cookies.html': '/legal/cookies',
 }
 
+function routeDevRequest(req, res, next) {
+  const urlPath = (req.url || '').split('?')[0]
+
+  if (LEGACY_PAGE_REDIRECTS[urlPath]) {
+    res.statusCode = 302
+    res.setHeader('Location', LEGACY_PAGE_REDIRECTS[urlPath])
+    res.end()
+    return
+  }
+
+  // Netlify's /public/* compatibility rewrite maps these historical URLs to
+  // assets emitted at the site root. Mirror it in dev and preview so local QA
+  // exercises the same URLs without a second physical copy of every asset.
+  if (urlPath.startsWith('/public/')) {
+    req.url = (req.url || '').replace(/^\/public\//, '/')
+  }
+
+  next()
+}
+
 export default defineConfig({
   base: '/',
   plugins: [
@@ -51,18 +74,10 @@ export default defineConfig({
     {
       name: 'legacy-pages-spa',
       configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          const urlPath = (req.url || '').split('?')[0]
-
-          if (LEGACY_PAGE_REDIRECTS[urlPath]) {
-            res.statusCode = 302
-            res.setHeader('Location', LEGACY_PAGE_REDIRECTS[urlPath])
-            res.end()
-            return
-          }
-
-          next()
-        })
+        server.middlewares.use(routeDevRequest)
+      },
+      configurePreviewServer(server) {
+        server.middlewares.use(routeDevRequest)
       },
     },
   ],
@@ -101,7 +116,6 @@ export default defineConfig({
             return 'react-vendor'
           }
           if (id.includes('/motion/')) return 'motion-vendor'
-          if (id.includes('/gsap/')) return 'gsap-vendor'
           return undefined
         }
       },

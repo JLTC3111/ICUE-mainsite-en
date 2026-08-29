@@ -35,9 +35,12 @@ function copyDir(src, dest) {
   }
 }
 
-function removeDir(dir) {
-  if (!fs.existsSync(dir)) return;
-  fs.rmSync(dir, { recursive: true, force: true });
+function walkFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const file = path.join(dir, entry.name);
+    return entry.isDirectory() ? walkFiles(file) : [file];
+  });
 }
 
 function escapeHtml(value) {
@@ -117,7 +120,6 @@ if (!fs.existsSync(homeDist)) {
   process.exit(1);
 }
 
-copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
 for (const file of ['robots.txt', 'sitemap.xml']) {
   copyFile(path.join(root, 'public', file), path.join(homeDist, file));
@@ -127,7 +129,6 @@ for (const file of ['robots.txt', 'sitemap.xml']) {
 const previewJpg = path.join(root, 'public/preview.jpg');
 if (fs.existsSync(previewJpg)) {
   copyFile(previewJpg, path.join(homeDist, 'preview.jpg'));
-  copyFile(previewJpg, path.join(root, 'preview.jpg'));
 } else {
   console.warn('[postbuild] Missing public/preview.jpg — Netlify/OG preview image will be unavailable.');
 }
@@ -146,32 +147,48 @@ for (const route of routeShells) {
   fs.writeFileSync(shellPath, buildRouteShell(builtIndexHtml, route));
 }
 
-copyFile(builtIndex, path.join(root, 'index.html'));
-removeDir(path.join(root, 'assets'));
-copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
-
-const rootDirsFromHome = [
-  'aboutUs',
-  'bgVideos',
-  'flags',
-  'legacy',
-  'legacy-embed',
-  'logoIcons',
-  'models',
-  'news',
-  'pastProjects',
-  'recruitment',
-  'work',
-  'public',
-];
-
-for (const dir of rootDirsFromHome) {
-  const from = path.join(homeDist, dir);
-  if (!fs.existsSync(from)) continue;
-  removeDir(path.join(root, dir));
-  copyDir(from, path.join(root, dir));
+// Defense in depth for pages now owned by icue.vn: neither Netlify's static
+// file precedence nor an old legacy URL can bypass the external redirect.
+for (const retiredFile of [
+  'about-us.html',
+  'contact.html',
+  'legacy/pages/aboutUs.html',
+  'legacy-embed/pages/aboutUs.html',
+  'legacy/pages/Contact.html',
+  'legacy-embed/pages/Contact.html',
+]) {
+  fs.rmSync(path.join(homeDist, retiredFile), { force: true });
 }
 
-copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
+for (const retiredDir of ['aboutUs', 'models']) {
+  fs.rmSync(path.join(homeDist, retiredDir), { recursive: true, force: true });
+}
 
-console.log('[postbuild] Synced home-app production build to repo root for Netlify deploy.');
+const publishedVideos = new Set([
+  'blueflow.mp4',
+  'home_bg_1.mp4',
+  'home_bg_1_mobile.mp4',
+  'home_bg_2.mp4',
+  'home_bg_2_mobile.mp4',
+  'home_bg_3.mp4',
+  'home_bg_3_mobile.mp4',
+  'home_bg_4.mp4',
+  'home_bg_4_mobile.mp4',
+  'video-text-fifa2026.mp4',
+  'video-text-football.mp4',
+]);
+const videoDir = path.join(homeDist, 'bgVideos');
+if (fs.existsSync(videoDir)) {
+  for (const entry of fs.readdirSync(videoDir)) {
+    if (!publishedVideos.has(entry)) {
+      fs.rmSync(path.join(videoDir, entry), { recursive: true, force: true });
+    }
+  }
+}
+
+// Do not ship macOS metadata copied from source asset folders.
+for (const file of walkFiles(homeDist)) {
+  if (path.basename(file) === '.DS_Store') fs.rmSync(file, { force: true });
+}
+
+console.log('[postbuild] Prepared dist-home production build for Netlify deploy.');

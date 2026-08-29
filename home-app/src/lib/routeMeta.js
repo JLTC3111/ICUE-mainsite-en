@@ -3,7 +3,7 @@
  *
  * Single source of truth for two consumers:
  *  - scripts/postbuild.mjs (root): bakes these into the static SEO shells
- *    (contact.html, about-us.html, etc.) at build time.
+ *    (past-projects.html, news-archive.html, etc.) at build time.
  *  - home-app/src/components/RouteHead.jsx: keeps document.title and the
  *    meta description tag in sync during client-side SPA navigation, since
  *    the static shell's <title>/<meta> only apply to the page that was
@@ -16,16 +16,8 @@
 // Contact app on icue.vn, which carries its own title, description and
 // structured data. Building a shell for it would put a static contact.html back
 // in the publish directory, and Netlify serves that file in preference to the
-// redirect. Same for /community-activities, /faqs and /recruitment.
+// redirect. Same for /about-us, /community-activities, /faqs and /recruitment.
 export const ROUTE_META = [
-  {
-    slug: 'about-us',
-    path: '/about-us',
-    pageName: 'aboutUs',
-    pageFile: 'aboutUs.html',
-    title: 'About Us | ICUE Vietnam',
-    description: 'Learn about ICUE Vietnam, our urban-development expertise, values, mission, and people.',
-  },
   {
     slug: 'past-projects',
     path: '/past-projects',

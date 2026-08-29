@@ -74,7 +74,9 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'ourWork', href: 'https://icue.vn/our-work?site=en', label: 'Our Work', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '/past-projects', label: 'Project History', icon: IconProjects, closeOnly: true },
   { page: 'News', href: 'https://icue.vn/newsroom/?from=en-news', label: 'News', icon: IconNews, closeOnly: true },
-  { page: 'aboutUs', href: '/about-us', label: 'About Us', icon: IconAbout, closeOnly: true },
+  // About Us is the shared multilingual app on icue.vn. Link directly so the
+  // home SPA cannot intercept the click and render its retired local page.
+  { page: 'aboutUs', href: 'https://icue.vn/about-us?site=en', label: 'About Us', icon: IconAbout, closeOnly: true },
   // Contact is the shared Contact app on icue.vn — linked directly so the click
   // does not pay for the /contact -> icue.vn redirect hop.
   { page: 'Contact', href: 'https://icue.vn/contact?site=en', label: 'Contact', icon: IconContact, closeOnly: true },

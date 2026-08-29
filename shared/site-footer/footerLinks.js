@@ -6,7 +6,7 @@ export const FOOTER_ROUTE_PATHS = {
   // Contact is the shared Contact app on icue.vn (contact-app in the vn repo).
   // ?site=en keeps it in English and points its chrome back at en.icue.vn.
   contact: `${VN_SITE}/contact?site=en`,
-  aboutUs: '/about-us',
+  aboutUs: `${VN_SITE}/about-us?site=en`,
   ourWork: `${VN_SITE}/our-work?site=en`,
   pastProjects: '/past-projects',
   recruitment: `${VN_SITE}/recruitment?site=en`,

@@ -4,7 +4,7 @@ import { FOOTER_LABELS } from './footerContent'
 import { getFooterLinks } from './footerLinks'
 import './Footer.css'
 
-const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
+const CIRCULAR_TEXT = '@ICUE*©ALL*RIGHTS*RESERVED*'
 
 function isPlainInternalNavigation(event, href) {
   return href?.startsWith('/')
@@ -16,8 +16,8 @@ function isPlainInternalNavigation(event, href) {
     && !event.altKey
 }
 
-function Footer({ linkMode = 'hash', onNavigate }) {
-  const labels = FOOTER_LABELS
+function Footer({ linkMode = 'hash', onNavigate, labels: labelOverrides }) {
+  const labels = { ...FOOTER_LABELS, ...labelOverrides }
   const links = getFooterLinks(linkMode)
   const year = new Date().getFullYear()
   const navigate = (event) => {

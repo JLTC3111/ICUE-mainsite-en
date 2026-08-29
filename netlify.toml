@@ -57,8 +57,27 @@
 
 [[redirects]]
   from = "/about-us"
-  to = "/about-us.html"
-  status = 200
+  to = "https://icue.vn/about-us?site=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about-us/"
+  to = "https://icue.vn/about-us?site=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about-us.html"
+  to = "https://icue.vn/about-us?site=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legacy/pages/aboutUs.html"
+  to = "https://icue.vn/about-us?site=en"
+  status = 301
+  force = true
 
 # /our-work is not a route of this site: _redirects 301s it to the shared Our
 # Work app on icue.vn. No shell rewrite here — there is no our-work.html.
@@ -91,23 +110,23 @@
 
 [[redirects]]
   from = "/privacy"
-  to = "/privacy.html"
-  status = 200
+  to = "/legal/privacy"
+  status = 301
 
 [[redirects]]
   from = "/terms"
-  to = "/terms.html"
-  status = 200
+  to = "/legal/terms"
+  status = 301
 
 [[redirects]]
   from = "/gdpr"
-  to = "/gdpr.html"
-  status = 200
+  to = "/legal/gdpr"
+  status = 301
 
 [[redirects]]
   from = "/cookies"
-  to = "/cookies.html"
-  status = 200
+  to = "/legal/cookies"
+  status = 301
 
 [[redirects]]
   from = "/*"

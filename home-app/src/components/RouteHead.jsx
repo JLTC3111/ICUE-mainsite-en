@@ -4,7 +4,7 @@ import { DEFAULT_META, ROUTE_META_BY_PATH } from '../lib/routeMeta'
 
 /**
  * Keeps the browser tab title and meta description in sync with the current
- * route. The static SEO shells (contact.html, about-us.html, ...) only set
+ * route. The static SEO shells (past-projects.html, news-archive.html, ...) set
  * these on the initial server-rendered load; once React Router takes over
  * for client-side navigation, nothing else touches <title> or <meta
  * name="description">, so without this the tab title stays frozen on

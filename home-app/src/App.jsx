@@ -12,7 +12,7 @@ import SiteLanguageMenu from './components/SiteLanguageMenu'
 import { preloadLegacyPageSource } from './legacy/pageHtml'
 import { preloadLegacyPage } from './legacy/pageInit'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
-import { pageFromPathname, pathFromLegacyHash, ROUTE_PATHS } from './lib/routes'
+import { ABOUT_US_APP_URL, pageFromPathname, pathFromLegacyHash, ROUTE_PATHS } from './lib/routes'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 
@@ -134,7 +134,7 @@ function AppShell() {
         usePillNav
         drawerLinks={STANDALONE_DRAWER_LINKS}
         homeHref={ROUTE_PATHS.home}
-        aboutUsHref={ROUTE_PATHS.aboutUs}
+        aboutUsHref={ABOUT_US_APP_URL}
         onNavigate={navigate}
         PillHeaderComponent={PillSiteHeader}
         pillOverflowItems={PEOPLE_SUBMENU.items}
@@ -146,17 +146,15 @@ function AppShell() {
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-            {/* No /contact route: it is redirected to the shared Contact app on
-                icue.vn before it ever reaches the router. */}
-            <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
+            {/* No /contact or /about-us route: both are redirected to shared
+                apps on icue.vn before they ever reach the router. */}
             <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.newsArchiveLegacyHtml} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.newsArchiveLegacyAlt} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
-            {/* No /community-activities, /faqs or /recruitment route either: all
-                three are redirected to their apps on icue.vn before reaching
-                the router. */}
+            {/* No /community-activities, /faqs or /recruitment route either:
+                all three are redirected before reaching the router. */}
             <Route path={ROUTE_PATHS.privacy} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.terms} element={<LegacyHtmlPage />} />
             <Route path={ROUTE_PATHS.gdpr} element={<LegacyHtmlPage />} />

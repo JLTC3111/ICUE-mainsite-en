@@ -1,17 +1,17 @@
 /**
- * Contact, Our Work, FAQs, Recruitment and Community Activities are served by
- * shared apps on icue.vn. ?site=en keeps the page in English and sends its
- * chrome links back to en.icue.vn.
+ * Contact, About Us, Our Work, FAQs, Recruitment and Community Activities are
+ * served by shared apps on icue.vn. ?site=en keeps the page in English and
+ * sends its chrome links back to en.icue.vn.
  *
- * None of those has a route here. ROUTE_PATHS keeps /contact and
- * /community-activities only because nav state and the redirect rules read
- * them; Our Work has no entry at all. Link to the URLs below rather than to
- * a bare path — those only reach the app through a server redirect, which a
- * client-side navigation never triggers. The bare paths still 301 at the edge
- * so old inbound links keep working.
+ * None of those has a route here. ROUTE_PATHS keeps their local paths where nav
+ * state and redirect rules need them; Our Work has no entry at all. Link to the
+ * URLs below rather than to a bare path — those only reach the app through a
+ * server redirect, which client-side navigation never triggers. The bare paths
+ * still 301 at the edge so old inbound links keep working.
  */
 export const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
 export const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
+export const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
 /*
  * FAQs, Recruitment and Community Activities joined them in 2026-08. Each used
  * to exist twice, once per host; icue.vn now renders all six UI languages of
@@ -73,11 +73,10 @@ export const PAGE_TO_PATH = Object.fromEntries(
 )
 PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 
-// recruitment.html, FAQs.html and communityActivities.html are deliberately
-// absent: each route is served by its own app on icue.vn now, the same as
-// Contact.html.
+// aboutUs.html, recruitment.html, FAQs.html and communityActivities.html are
+// deliberately absent: each route is served by its own app on icue.vn now, the
+// same as Contact.html.
 export const LEGACY_PAGE_FILES = {
-  aboutUs: 'aboutUs.html',
   pastProjects: 'pastProjects.html',
   newsArchive: 'News.html',
   notableAwards: 'notableAwards.html',
@@ -142,7 +141,7 @@ export function prepareLegacyHtml(rawHtml) {
   const hashToPath = {
     '#/Home': ROUTE_PATHS.home,
     '#/Contact': CONTACT_APP_URL,
-    '#/aboutUs': ROUTE_PATHS.aboutUs,
+    '#/aboutUs': ABOUT_US_APP_URL,
     '#/ourWork': OUR_WORK_APP_URL,
     '#/pastProjects': ROUTE_PATHS.pastProjects,
     '#/recruitment': ROUTE_PATHS.recruitment,
@@ -179,10 +178,14 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${route}'`)
   }
 
-  // Contact and Community Activities have no local page to rewrite to — send
-  // their legacy links straight to the app on icue.vn rather than through a
-  // redirect hop this router never triggers.
+  // These pages have no local route — send their links straight to the shared
+  // apps on icue.vn rather than through a redirect hop this router never
+  // triggers.
   bodyHtml = bodyHtml
+    .replaceAll('href="/about-us"', `href="${ABOUT_US_APP_URL}"`)
+    .replaceAll("href='/about-us'", `href='${ABOUT_US_APP_URL}'`)
+    .replaceAll('href="/legacy/pages/aboutUs.html"', `href="${ABOUT_US_APP_URL}"`)
+    .replaceAll("href='/legacy/pages/aboutUs.html'", `href='${ABOUT_US_APP_URL}'`)
     .replaceAll('href="/legacy/pages/Contact.html"', `href="${CONTACT_APP_URL}"`)
     .replaceAll("href='/legacy/pages/Contact.html'", `href='${CONTACT_APP_URL}'`)
     .replaceAll('href="/legacy/pages/communityActivities.html"', `href="${COMMUNITY_ACTIVITIES_APP_URL}"`)
@@ -205,7 +208,7 @@ export function pathFromLegacyHash(hash) {
   const pagePaths = {
     Home: ROUTE_PATHS.home,
     Contact: CONTACT_APP_URL,
-    aboutUs: ROUTE_PATHS.aboutUs,
+    aboutUs: ABOUT_US_APP_URL,
     ourWork: OUR_WORK_APP_URL,
     pastProjects: ROUTE_PATHS.pastProjects,
     recruitment: ROUTE_PATHS.recruitment,

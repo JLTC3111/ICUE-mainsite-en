@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
+const BUILD_ROOT = path.join(ROOT, 'dist-home');
+const BUILD_INDEX = path.join(BUILD_ROOT, 'index.html');
+const HAS_PRODUCTION_BUILD = fs.existsSync(BUILD_INDEX);
 // Contact is served by the shared Contact app on icue.vn (contact-app in the vn
 // repo), so it is redirected rather than rendered here. ?site=en keeps the page
 // in English and sends its chrome links back to en.icue.vn.
@@ -18,6 +22,9 @@ const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=
 const EXTERNAL_ROUTES = {
   '/contact': CONTACT_APP_URL,
   '/contact/': CONTACT_APP_URL,
+  '/about-us': ABOUT_US_APP_URL,
+  '/about-us/': ABOUT_US_APP_URL,
+  '/about-us.html': ABOUT_US_APP_URL,
   '/our-work': OUR_WORK_APP_URL,
   '/our-work/': OUR_WORK_APP_URL,
   '/faqs': FAQ_APP_URL,
@@ -28,7 +35,6 @@ const EXTERNAL_ROUTES = {
   '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
 };
 const SPA_ROUTES = [
-  '/about-us',
   '/past-projects',
   '/news-archive',
   '/notable-awards',
@@ -73,11 +79,18 @@ app.get(Object.keys(EXTERNAL_ROUTES), (req, res) => {
   res.redirect(301, EXTERNAL_ROUTES[req.path]);
 });
 
-app.use('/public', express.static(path.join(ROOT, 'public'), staticOpts));
+// Production assets are emitted at the build root. Mount that directory at
+// /public as well to preserve historical /public/* URLs without keeping a
+// second physical copy of the deploy. Source assets are a development-only
+// fallback when no build exists yet.
+app.use(
+  '/public',
+  express.static(HAS_PRODUCTION_BUILD ? BUILD_ROOT : path.join(ROOT, 'public'), staticOpts),
+);
 app.use(
   '/legacy-embed',
-  express.static(path.join(ROOT, 'legacy-embed'), staticOpts),
   express.static(path.join(ROOT, 'dist-home', 'legacy-embed'), staticOpts),
+  express.static(path.join(ROOT, 'legacy-embed'), staticOpts),
   express.static(path.join(ROOT, 'home-app', 'public', 'legacy-embed'), staticOpts),
 );
 for (const dir of [
@@ -93,15 +106,25 @@ for (const dir of [
   'recruitment',
   'work',
 ]) {
-  app.use(`/${dir}`, express.static(path.join(ROOT, dir), staticOpts));
+  app.use(
+    `/${dir}`,
+    express.static(path.join(BUILD_ROOT, dir), staticOpts),
+    express.static(path.join(ROOT, dir), staticOpts),
+  );
 }
 app.get('/styles.css', (_req, res) => {
   res.sendFile(path.join(ROOT, 'styles.css'));
 });
 
-app.get('/', (_req, res) => {
-  res.sendFile(path.join(ROOT, 'index.html'));
-});
+function sendAppShell(req, res) {
+  if (HAS_PRODUCTION_BUILD && req.path !== '/') {
+    const routeShell = path.join(BUILD_ROOT, `${req.path.replace(/^\//, '')}.html`);
+    if (fs.existsSync(routeShell)) return res.sendFile(routeShell);
+  }
+  return res.sendFile(HAS_PRODUCTION_BUILD ? BUILD_INDEX : path.join(ROOT, 'index.html'));
+}
+
+app.get('/', sendAppShell);
 
 app.use((req, res, next) => {
   if (
@@ -118,12 +141,11 @@ app.use((req, res, next) => {
   return next();
 });
 
-app.get(SPA_ROUTES, (_req, res) => {
-  res.sendFile(path.join(ROOT, 'index.html'));
-});
+app.get(SPA_ROUTES, sendAppShell);
 
-app.use((_req, res) => {
-  res.status(404).sendFile(path.join(ROOT, 'index.html'));
+app.use((req, res) => {
+  res.status(404);
+  sendAppShell(req, res);
 });
 
 app.listen(PORT, () => {
