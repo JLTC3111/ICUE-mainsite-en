@@ -3,13 +3,19 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 
 import './lib/i18n'
+import { redirectExternalAppAtBootstrap } from './lib/bootstrapExternalRedirect'
 import '../../styles.css'
 import './styles/footer-theme.css'
 
 window.__ICUE_API_BASE_URL__ = import.meta.env.VITE_API_BASE_URL || ''
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Netlify owns these redirects, but keep a client-side guard in the entry
+// bundle as well. If a publish configuration ever omits `_redirects`, a stale
+// About Us shell must not be allowed to mount again.
+if (!redirectExternalAppAtBootstrap()) {
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+}

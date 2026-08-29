@@ -33,6 +33,8 @@ const LEGACY_PAGE_REDIRECTS = {
   '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
   '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
   '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
+  '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
+  '/legacy/pages/aboutus': ABOUT_US_APP_URL,
   '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': '/past-projects',
   '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,

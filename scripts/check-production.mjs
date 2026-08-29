@@ -69,7 +69,11 @@ const retiredPublishedFiles = [
   'faqs.html',
   'recruitment.html',
   'legacy/pages/aboutUs.html',
+  'legacy/pages/aboutus.html',
+  'legacy/pages/aboutus',
   'legacy-embed/pages/aboutUs.html',
+  'legacy-embed/pages/aboutus.html',
+  'legacy-embed/pages/aboutus',
   'legacy/pages/Contact.html',
   'legacy-embed/pages/Contact.html',
 ]
@@ -158,6 +162,17 @@ assert(jsFiles.length > 0, 'No compiled JavaScript assets were produced')
 const jsSources = jsFiles.map((file) => ({ file, source: read(file) }))
 const allJs = jsSources.map(({ source }) => source).join('\n')
 
+for (const sourceFile of [
+  'home-app/src/components/HeroVideoTitle.jsx',
+  'shared/main-site-nav/MetallicMenuIcon.jsx',
+  'shared/contact-sidebar/ContactSidebar.jsx',
+]) {
+  assert(
+    read(path.join(root, sourceFile)).includes('shouldAvoidCanvasEffects'),
+    `Privacy-sensitive visual still probes canvas in restricted browsers: ${sourceFile}`,
+  )
+}
+
 assert(
   allJs.includes('@ICUE*©ALL*RIGHTS*RESERVED*')
     || allJs.includes('@ICUE*\\xA9ALL*RIGHTS*RESERVED*'),
@@ -165,8 +180,16 @@ assert(
 )
 assert(allJs.includes(ABOUT_US_APP_URL), 'Compiled navigation is missing the canonical About Us URL')
 assert(
+  allJs.includes('/legacy/pages/aboutus') && allJs.includes('/about-us.html'),
+  'Compiled entry is missing the About Us bootstrap redirect guard',
+)
+assert(
   jsSources.some(({ source }) => source.includes('data-home-hero-grid-scan')),
   'Home build no longer activates the GridScan canvas',
+)
+assert(
+  allJs.includes('data-gridscan-renderer') && allJs.includes('globalPrivacyControl'),
+  'Home build is missing the mobile/privacy-safe GridScan renderer',
 )
 assert(
   jsSources.some(({ source }) => source.includes('data-gridscan-unavailable')

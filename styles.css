@@ -3746,6 +3746,74 @@ button:hover {
   height: 100% !important;
 }
 
+/* Canvas-free GridScan for mobile and privacy-hardened browsers. It preserves
+   the visual change when video is off without invoking WebGL fingerprinting
+   surfaces or running a full-viewport fragment shader on a phone. The same
+   treatment becomes the last-resort fallback if WebGL initialization fails. */
+.home-hero__grid-scan--fallback,
+.home-hero__grid-scan[data-gridscan-unavailable="true"] {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.home-hero__grid-scan--fallback::before,
+.home-hero__grid-scan[data-gridscan-unavailable="true"]::before {
+  content: "";
+  position: absolute;
+  inset: -34% -28%;
+  background-image:
+    linear-gradient(rgba(82, 77, 96, 0.72) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(82, 77, 96, 0.72) 1px, transparent 1px);
+  background-size: clamp(32px, 4.4vw, 64px) clamp(32px, 4.4vw, 64px);
+  opacity: 0.78;
+  transform: perspective(720px) rotateX(56deg) scale(1.35);
+  transform-origin: 50% 68%;
+  -webkit-mask-image: radial-gradient(ellipse 82% 76% at 50% 58%, #000 28%, transparent 82%);
+  mask-image: radial-gradient(ellipse 82% 76% at 50% 58%, #000 28%, transparent 82%);
+}
+
+.home-hero__grid-scan--fallback::after,
+.home-hero__grid-scan[data-gridscan-unavailable="true"]::after {
+  content: "";
+  position: absolute;
+  inset: -50% -12%;
+  background: linear-gradient(
+    180deg,
+    transparent 42%,
+    rgba(159, 185, 255, 0.05) 47%,
+    rgba(159, 185, 255, 0.82) 50%,
+    rgba(159, 185, 255, 0.12) 54%,
+    transparent 60%
+  );
+  filter: drop-shadow(0 0 14px rgba(159, 185, 255, 0.58));
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  animation: home-grid-scan-fallback 4s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes home-grid-scan-fallback {
+  from { transform: translate3d(0, -30%, 0); }
+  to { transform: translate3d(0, 30%, 0); }
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  .home-hero__grid-scan--fallback::before,
+  .home-hero__grid-scan[data-gridscan-unavailable="true"]::before {
+    inset: -28% -48%;
+    background-size: 34px 34px;
+    transform: perspective(520px) rotateX(54deg) scale(1.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__grid-scan--fallback::after,
+  .home-hero__grid-scan[data-gridscan-unavailable="true"]::after {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   [data-home-hero-grid-scan="on"] .home-hero__grid-scan {
     pointer-events: auto;

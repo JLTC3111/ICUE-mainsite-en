@@ -12,12 +12,14 @@ import {
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
 import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
+import { getBootstrapExternalRedirect } from '../home-app/src/lib/bootstrapExternalRedirect.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const failures = []
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8')
 
 const appSource = read('home-app/src/App.jsx')
+const mainSource = read('home-app/src/main.jsx')
 const mountedKeys = new Set(
   [...appSource.matchAll(/<Route path=\{ROUTE_PATHS\.(\w+)\}/g)].map((match) => match[1]),
 )
@@ -64,6 +66,8 @@ const legacyRedirects = {
   '/legacy/pages/Home_OLD.html': '/',
   '/legacy/pages/Contact.html': CONTACT_APP_URL,
   '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
+  '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
+  '/legacy/pages/aboutus': ABOUT_US_APP_URL,
   '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
   '/legacy/pages/pastProjects.html': ROUTE_PATHS.pastProjects,
   '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
@@ -159,6 +163,8 @@ for (const [from, to] of [
   [ROUTE_PATHS.contact, CONTACT_APP_URL],
   [ROUTE_PATHS.aboutUs, ABOUT_US_APP_URL],
   ['/about-us.html', ABOUT_US_APP_URL],
+  ['/legacy/pages/aboutus.html', ABOUT_US_APP_URL],
+  ['/legacy/pages/aboutus', ABOUT_US_APP_URL],
 ]) {
   const redirectBlock = new RegExp(
     `from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"\\s+status = 301\\s+force = true`,
@@ -167,6 +173,22 @@ for (const [from, to] of [
   if (!redirectBlock.test(netlifyToml)) {
     failures.push(`Missing forced external app redirect in netlify.toml: ${from} -> ${to}`)
   }
+}
+
+for (const alias of [
+  '/about-us',
+  '/about-us/',
+  '/about-us.html',
+  '/legacy/pages/aboutUs.html',
+  '/legacy/pages/aboutus.html',
+  '/legacy/pages/aboutus',
+]) {
+  if (getBootstrapExternalRedirect(alias) !== ABOUT_US_APP_URL) {
+    failures.push(`About Us bootstrap guard misses alias: ${alias}`)
+  }
+}
+if (!mainSource.includes('redirectExternalAppAtBootstrap()')) {
+  failures.push('Home entry does not run the external-app bootstrap redirect guard')
 }
 for (const [path, label] of [
   [ROUTE_PATHS.contact, 'contact'],

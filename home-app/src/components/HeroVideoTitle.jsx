@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'motion/react'
 import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEnabled'
+import { shouldAvoidCanvasEffects } from '../lib/gridScanPolicy'
 import './HeroVideoTitle.css'
 
 const HERO_TITLE_VIDEO_SRC = '/public/bgVideos/video-text-fifa2026.mp4'
@@ -88,7 +89,9 @@ export default function HeroVideoTitle({ text }) {
   const [maskUrl, setMaskUrl] = useState('')
   const prefersReducedMotion = useReducedMotion()
   const bgVideoEnabled = useHomeBackgroundVideoEnabled()
-  const useTitleVideo = !bgVideoEnabled && !prefersReducedMotion
+  const useTitleVideo = !bgVideoEnabled
+    && !prefersReducedMotion
+    && !shouldAvoidCanvasEffects()
 
   useLayoutEffect(() => {
     if (!useTitleVideo) {

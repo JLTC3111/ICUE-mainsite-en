@@ -1,5 +1,6 @@
 import { memo, useId, useRef, useState } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
+import { shouldAvoidCanvasEffects } from '../browser/visualEffectsPolicy.js'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
 import { useMusicBarColor } from './useMusicBarColor'
@@ -92,7 +93,12 @@ function MessengerIcon() {
 function ContactSidebar({ musicIconColor, contentKey = '' }) {
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
-  const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null, contentKey)
+  const allowCanvasSampling = !shouldAvoidCanvasEffects()
+  const sampledMusicColor = useMusicBarColor(
+    musicRef,
+    musicIconColor == null && allowCanvasSampling,
+    contentKey,
+  )
   const musicColor = musicIconColor ?? sampledMusicColor
   const { month, day, time } = useCalendarClock()
   const [calendarOpen, setCalendarOpen] = useState(false)

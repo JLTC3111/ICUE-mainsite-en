@@ -153,7 +153,11 @@ for (const retiredFile of [
   'about-us.html',
   'contact.html',
   'legacy/pages/aboutUs.html',
+  'legacy/pages/aboutus.html',
+  'legacy/pages/aboutus',
   'legacy-embed/pages/aboutUs.html',
+  'legacy-embed/pages/aboutus.html',
+  'legacy-embed/pages/aboutus',
   'legacy/pages/Contact.html',
   'legacy-embed/pages/Contact.html',
 ]) {
