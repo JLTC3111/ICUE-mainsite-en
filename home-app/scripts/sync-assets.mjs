@@ -6,9 +6,31 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const appRoot = path.resolve(__dirname, '..')
 const siteRoot = path.resolve(appRoot, '..')
 
+function resolveExistingFile(src) {
+  const dir = path.dirname(src)
+  const wanted = path.basename(src)
+  if (!fs.existsSync(dir)) return null
+  const names = fs.readdirSync(dir)
+  const exact = names.find((name) => name === wanted)
+  if (exact) return path.join(dir, exact)
+  const insensitive = names.find((name) => name.toLowerCase() === wanted.toLowerCase())
+  if (insensitive) return path.join(dir, insensitive)
+  return null
+}
+
 function copyFile(src, dest) {
+  const resolved = resolveExistingFile(src)
+  if (!resolved) {
+    const dir = path.dirname(src)
+    const listing = fs.existsSync(dir)
+      ? fs.readdirSync(dir).join(', ')
+      : '(directory missing)'
+    console.error(`Missing file: ${src}`)
+    console.error(`Contents of ${dir}: ${listing}`)
+    process.exit(1)
+  }
   fs.mkdirSync(path.dirname(dest), { recursive: true })
-  fs.copyFileSync(src, dest)
+  fs.copyFileSync(resolved, dest)
 }
 
 function copyDir(src, dest) {
