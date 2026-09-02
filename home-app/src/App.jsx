@@ -159,10 +159,8 @@ function AppShell() {
             <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
             {/* No /community-activities, /faqs or /recruitment route either:
                 all three are redirected before reaching the router. */}
-            <Route path={ROUTE_PATHS.privacy} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.terms} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.gdpr} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.cookies} element={<LegacyHtmlPage />} />
+            {/* Legal documents are also redirected to the consolidated app on
+                icue.vn; no legacy English legal page is mounted here. */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

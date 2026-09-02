@@ -25,6 +25,13 @@ export const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
 export const FAQ_APP_URL = 'https://icue.vn/faqs?site=en'
 export const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
 export const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en'
+/** All legal documents are rendered by the consolidated six-language app. */
+export const LEGAL_APP_URLS = Object.freeze({
+  privacy: 'https://icue.vn/legal/privacy?lang=en',
+  terms: 'https://icue.vn/legal/terms?lang=en',
+  gdpr: 'https://icue.vn/legal/gdpr?lang=en',
+  cookies: 'https://icue.vn/legal/cookies?lang=en',
+})
 /** The newsroom is the same arrangement — one app on icue.vn, entered with a hint. */
 export const NEWSROOM_URL = 'https://icue.vn/newsroom/?from=en-news'
 const STRUCTURE_APP_URL = 'https://icue.vn/structure/'
@@ -45,10 +52,10 @@ function appUrlsForLang(lang = 'en') {
     notableAwards: withUiLang(ROUTE_PATHS.notableAwards, lang),
     communityActivities: withUiLang(COMMUNITY_ACTIVITIES_APP_URL, lang),
     faqs: withUiLang(FAQ_APP_URL, lang),
-    privacy: withUiLang(ROUTE_PATHS.privacy, lang),
-    terms: withUiLang(ROUTE_PATHS.terms, lang),
-    gdpr: withUiLang(ROUTE_PATHS.gdpr, lang),
-    cookies: withUiLang(ROUTE_PATHS.cookies, lang),
+    privacy: withUiLang(LEGAL_APP_URLS.privacy, lang),
+    terms: withUiLang(LEGAL_APP_URLS.terms, lang),
+    gdpr: withUiLang(LEGAL_APP_URLS.gdpr, lang),
+    cookies: withUiLang(LEGAL_APP_URLS.cookies, lang),
     experts: withUiLang(EXPERTS_APP_URL, lang),
     coreTeam: withUiLang(CORE_TEAM_APP_URL, lang),
   }
@@ -67,12 +74,8 @@ export const ROUTE_PATHS = {
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   faqs: '/faqs',
-  /*
-   * Legal documents live under /legal/* to match icue.vn, where the four are
-   * served by a single consolidated app. This site still renders them from its
-   * own English legacy HTML through the shell below — only the URLs moved. The
-   * bare /privacy, /terms, /gdpr and /cookies paths 301 to these at the edge.
-   */
+  // Retired inbound paths retained only for edge/server redirect matching.
+  // This app does not mount or build any of these pages.
   privacy: '/legal/privacy',
   terms: '/legal/terms',
   gdpr: '/legal/gdpr',
@@ -92,10 +95,6 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.notableAwards]: 'notableAwards',
   [ROUTE_PATHS.communityActivities]: 'communityActivities',
   [ROUTE_PATHS.faqs]: 'FAQs',
-  [ROUTE_PATHS.privacy]: 'privacy',
-  [ROUTE_PATHS.terms]: 'terms',
-  [ROUTE_PATHS.gdpr]: 'gdpr',
-  [ROUTE_PATHS.cookies]: 'cookies',
 }
 
 export const PAGE_TO_PATH = Object.fromEntries(
@@ -103,17 +102,12 @@ export const PAGE_TO_PATH = Object.fromEntries(
 )
 PAGE_TO_PATH.newsArchive = ROUTE_PATHS.newsArchive
 
-// aboutUs.html, recruitment.html, FAQs.html and communityActivities.html are
-// deliberately absent: each route is served by its own app on icue.vn now, the
-// same as Contact.html.
+// Pages served by shared apps on icue.vn are deliberately absent, including
+// the four retired English legal pages.
 export const LEGACY_PAGE_FILES = {
   pastProjects: 'pastProjects.html',
   newsArchive: 'News.html',
   notableAwards: 'notableAwards.html',
-  privacy: 'privacy.html',
-  terms: 'terms.html',
-  gdpr: 'gdpr.html',
-  cookies: 'cookies.html',
 }
 
 export function pageFromPathname(pathname) {
@@ -207,6 +201,20 @@ export function prepareLegacyHtml(rawHtml, lang = 'en') {
     const localized = withUiLang(route, lang)
     bodyHtml = bodyHtml.replaceAll(`href="/legacy/pages/${file}"`, `href="${localized}"`)
     bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${localized}'`)
+  }
+
+  // Legal HTML is retired but links to those old files remain in a few source
+  // documents. Send them directly to the consolidated app, without a local
+  // route or an avoidable redirect hop.
+  for (const [pageId, file] of Object.entries({
+    privacy: 'privacy.html',
+    terms: 'terms.html',
+    gdpr: 'gdpr.html',
+    cookies: 'cookies.html',
+  })) {
+    const target = urls[pageId]
+    bodyHtml = bodyHtml.replaceAll(`href="/legacy/pages/${file}"`, `href="${target}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${target}'`)
   }
 
   // These pages have no local route — send their links straight to the shared

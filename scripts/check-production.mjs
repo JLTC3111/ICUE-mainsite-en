@@ -7,6 +7,7 @@ import {
   CONTACT_APP_URL,
   COMMUNITY_ACTIVITIES_APP_URL,
   FAQ_APP_URL,
+  LEGAL_APP_URLS,
   OUR_WORK_APP_URL,
   RECRUITMENT_APP_URL,
 } from '../home-app/src/lib/routes.js'
@@ -76,6 +77,18 @@ const retiredPublishedFiles = [
   'legacy-embed/pages/aboutus',
   'legacy/pages/Contact.html',
   'legacy-embed/pages/Contact.html',
+  'legal/privacy.html',
+  'legal/terms.html',
+  'legal/gdpr.html',
+  'legal/cookies.html',
+  'legacy/pages/privacy.html',
+  'legacy/pages/terms.html',
+  'legacy/pages/gdpr.html',
+  'legacy/pages/cookies.html',
+  'legacy-embed/pages/privacy.html',
+  'legacy-embed/pages/terms.html',
+  'legacy-embed/pages/gdpr.html',
+  'legacy-embed/pages/cookies.html',
 ]
 for (const file of retiredPublishedFiles) {
   assert(!fs.existsSync(path.join(dist, file)), `Retired page leaked into production: ${file}`)
@@ -121,6 +134,10 @@ const requiredExternalRedirects = {
   '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
   '/faqs': FAQ_APP_URL,
   '/recruitment': RECRUITMENT_APP_URL,
+  '/legal/privacy': LEGAL_APP_URLS.privacy,
+  '/legal/terms': LEGAL_APP_URLS.terms,
+  '/legal/gdpr': LEGAL_APP_URLS.gdpr,
+  '/legal/cookies': LEGAL_APP_URLS.cookies,
 }
 for (const [from, to] of Object.entries(requiredExternalRedirects)) {
   for (const variant of [from, `${from}/`]) {
@@ -132,6 +149,19 @@ for (const [from, to] of Object.entries(requiredExternalRedirects)) {
     assert(tokens?.[1] === to, `Wrong production redirect target: ${variant}`)
     assert(tokens?.[2] === '301!', `External app redirect is not forced: ${variant}`)
   }
+}
+for (const [from, to] of Object.entries({
+  '/privacy': LEGAL_APP_URLS.privacy,
+  '/terms': LEGAL_APP_URLS.terms,
+  '/gdpr': LEGAL_APP_URLS.gdpr,
+  '/cookies': LEGAL_APP_URLS.cookies,
+})) {
+  const tokens = redirects
+    .split('\n')
+    .map((candidate) => candidate.trim().split(/\s+/))
+    .find(([candidate]) => candidate === from)
+  assert(tokens?.[1] === to, `Wrong Legal app alias target: ${from}`)
+  assert(tokens?.[2] === '301!', `Legal app alias is not forced: ${from}`)
 }
 for (const line of redirects.split('\n')) {
   if (!line.trim().startsWith('/legacy/pages/')) continue
@@ -179,9 +209,16 @@ assert(
   'Compiled footer is missing the complete circular rights phrase',
 )
 assert(allJs.includes(ABOUT_US_APP_URL), 'Compiled navigation is missing the canonical About Us URL')
+for (const url of Object.values(LEGAL_APP_URLS)) {
+  assert(allJs.includes(url), `Compiled navigation is missing Legal app URL: ${url}`)
+}
 assert(
   allJs.includes('/legacy/pages/aboutus') && allJs.includes('/about-us.html'),
   'Compiled entry is missing the About Us bootstrap redirect guard',
+)
+assert(
+  allJs.includes('terms.html') && allJs.includes('/legal/terms?lang=en'),
+  'Compiled entry is missing the Legal app bootstrap redirect guard',
 )
 assert(
   jsSources.some(({ source }) => source.includes('data-home-hero-grid-scan')),

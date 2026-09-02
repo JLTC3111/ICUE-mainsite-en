@@ -10,8 +10,8 @@ import './styles/footer-theme.css'
 window.__ICUE_API_BASE_URL__ = import.meta.env.VITE_API_BASE_URL || ''
 
 // Netlify owns these redirects, but keep a client-side guard in the entry
-// bundle as well. If a publish configuration ever omits `_redirects`, a stale
-// About Us shell must not be allowed to mount again.
+// bundle as well. If a publish configuration ever omits `_redirects`, stale
+// About Us or English legal shells must not be allowed to mount again.
 if (!redirectExternalAppAtBootstrap()) {
   createRoot(document.getElementById('root')).render(
     <StrictMode>

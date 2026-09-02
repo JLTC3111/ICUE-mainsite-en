@@ -1,14 +1,10 @@
 // Keep in sync with LEGACY_PAGE_FILES in ../lib/routes.js. About Us, Contact,
-// FAQs, recruitment and community activities are absent from both: each is
-// served by its own app on icue.vn, not injected here.
+// FAQs, recruitment, community activities and the four legal documents are
+// absent from both: each is served by an app on icue.vn, not injected here.
 const PAGE_SOURCE_LOADERS = {
   pastProjects: () => import('../../../legacy/pages/pastProjects.html?raw'),
   newsArchive: () => import('../../../legacy/pages/News.html?raw'),
   notableAwards: () => import('../../../legacy/pages/notableAwards.html?raw'),
-  privacy: () => import('../../../legacy/pages/privacy.html?raw'),
-  terms: () => import('../../../legacy/pages/terms.html?raw'),
-  gdpr: () => import('../../../legacy/pages/gdpr.html?raw'),
-  cookies: () => import('../../../legacy/pages/cookies.html?raw'),
 }
 
 const sourcePromises = new Map()

@@ -1,19 +1,37 @@
-import { ABOUT_US_APP_URL } from './routes.js'
+import { ABOUT_US_APP_URL, LEGAL_APP_URLS } from './routes.js'
 import { withUiLang } from '../../../shared/i18n/withUiLang.js'
 
-const ABOUT_US_ALIASES = new Set([
+const EXTERNAL_ALIASES = new Map()
+
+for (const alias of [
   '/about-us',
   '/about-us.html',
   '/legacy/pages/aboutus',
   '/legacy/pages/aboutus.html',
   '/legacy-embed/pages/aboutus',
   '/legacy-embed/pages/aboutus.html',
-])
+]) {
+  EXTERNAL_ALIASES.set(alias, ABOUT_US_APP_URL)
+}
+
+for (const [slug, target] of Object.entries(LEGAL_APP_URLS)) {
+  for (const alias of [
+    `/legal/${slug}`,
+    `/${slug}`,
+    `/legacy/pages/${slug}`,
+    `/legacy/pages/${slug}.html`,
+    `/legacy-embed/pages/${slug}`,
+    `/legacy-embed/pages/${slug}.html`,
+  ]) {
+    EXTERNAL_ALIASES.set(alias, target)
+  }
+}
+EXTERNAL_ALIASES.set('/legal', LEGAL_APP_URLS.privacy)
 
 export function getBootstrapExternalRedirect(pathname) {
   if (!pathname) return null
   const normalized = `/${pathname.split('/').filter(Boolean).join('/')}`.toLowerCase()
-  return ABOUT_US_ALIASES.has(normalized) ? ABOUT_US_APP_URL : null
+  return EXTERNAL_ALIASES.get(normalized) || null
 }
 
 function readLangHint(locationObject) {

@@ -21,6 +21,10 @@ const EXTERNAL_APP_PATHS = new Set([
   '/faqs',
   '/recruitment',
   '/community-activities',
+  '/legal/privacy',
+  '/legal/terms',
+  '/legal/gdpr',
+  '/legal/cookies',
 ]);
 
 export function getSameOriginNavigationTarget(href) {

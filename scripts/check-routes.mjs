@@ -7,12 +7,14 @@ import {
   COMMUNITY_ACTIVITIES_APP_URL,
   FAQ_APP_URL,
   LEGACY_PAGE_FILES,
+  LEGAL_APP_URLS,
   OUR_WORK_APP_URL,
   RECRUITMENT_APP_URL,
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
 import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
 import { getBootstrapExternalRedirect } from '../home-app/src/lib/bootstrapExternalRedirect.js'
+import { withUiLang } from '../shared/i18n/withUiLang.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const failures = []
@@ -26,7 +28,17 @@ const mountedKeys = new Set(
 // These are paths this site links to but does not render: the edge sends each
 // one to its shared app on icue.vn. They stay in ROUTE_PATHS because nav state
 // and redirect rules read them. ourWork has no ROUTE_PATHS entry at all.
-const EXTERNALLY_SERVED_ROUTES = new Set(['contact', 'aboutUs', 'faqs', 'recruitment', 'communityActivities'])
+const EXTERNALLY_SERVED_ROUTES = new Set([
+  'contact',
+  'aboutUs',
+  'faqs',
+  'recruitment',
+  'communityActivities',
+  'privacy',
+  'terms',
+  'gdpr',
+  'cookies',
+])
 for (const key of Object.keys(ROUTE_PATHS)) {
   if (EXTERNALLY_SERVED_ROUTES.has(key)) {
     if (mountedKeys.has(key)) failures.push(`Externally served route is still mounted locally: ${key}`)
@@ -51,7 +63,8 @@ const requiredShellPaths = Object.entries(ROUTE_PATHS)
   // External-app routes are asserted below instead of being rewritten to local
   // shells, so none of them has a `<route>.html` rule.
   .filter(([key]) => !['home', 'contact', 'aboutUs', 'faqs', 'recruitment',
-    'communityActivities', 'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
+    'communityActivities', 'privacy', 'terms', 'gdpr', 'cookies',
+    'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
   .map(([, route]) => route)
 for (const route of requiredShellPaths) {
   const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -76,10 +89,14 @@ const legacyRedirects = {
   '/legacy/pages/notableAwards.html': ROUTE_PATHS.notableAwards,
   '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
   '/legacy/pages/FAQs.html': FAQ_APP_URL,
-  '/legacy/pages/privacy.html': ROUTE_PATHS.privacy,
-  '/legacy/pages/terms.html': ROUTE_PATHS.terms,
-  '/legacy/pages/gdpr.html': ROUTE_PATHS.gdpr,
-  '/legacy/pages/cookies.html': ROUTE_PATHS.cookies,
+  '/legacy/pages/privacy.html': LEGAL_APP_URLS.privacy,
+  '/legacy/pages/terms.html': LEGAL_APP_URLS.terms,
+  '/legacy/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
+  '/legacy/pages/cookies.html': LEGAL_APP_URLS.cookies,
+  '/legacy-embed/pages/privacy.html': LEGAL_APP_URLS.privacy,
+  '/legacy-embed/pages/terms.html': LEGAL_APP_URLS.terms,
+  '/legacy-embed/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
+  '/legacy-embed/pages/cookies.html': LEGAL_APP_URLS.cookies,
 }
 for (const [from, to] of Object.entries(legacyRedirects)) {
   const line = redirects
@@ -125,6 +142,18 @@ const externalRoutes = {
   [`${ROUTE_PATHS.recruitment}/`]: RECRUITMENT_APP_URL,
   [ROUTE_PATHS.communityActivities]: COMMUNITY_ACTIVITIES_APP_URL,
   [`${ROUTE_PATHS.communityActivities}/`]: COMMUNITY_ACTIVITIES_APP_URL,
+  [ROUTE_PATHS.privacy]: LEGAL_APP_URLS.privacy,
+  [`${ROUTE_PATHS.privacy}/`]: LEGAL_APP_URLS.privacy,
+  [ROUTE_PATHS.terms]: LEGAL_APP_URLS.terms,
+  [`${ROUTE_PATHS.terms}/`]: LEGAL_APP_URLS.terms,
+  [ROUTE_PATHS.gdpr]: LEGAL_APP_URLS.gdpr,
+  [`${ROUTE_PATHS.gdpr}/`]: LEGAL_APP_URLS.gdpr,
+  [ROUTE_PATHS.cookies]: LEGAL_APP_URLS.cookies,
+  [`${ROUTE_PATHS.cookies}/`]: LEGAL_APP_URLS.cookies,
+  '/privacy': LEGAL_APP_URLS.privacy,
+  '/terms': LEGAL_APP_URLS.terms,
+  '/gdpr': LEGAL_APP_URLS.gdpr,
+  '/cookies': LEGAL_APP_URLS.cookies,
 }
 for (const [from, to] of Object.entries(externalRoutes)) {
   if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
@@ -142,21 +171,6 @@ for (const [from, to] of Object.entries(externalRoutes)) {
   }
 }
 
-const legalAliases = {
-  '/privacy': ROUTE_PATHS.privacy,
-  '/terms': ROUTE_PATHS.terms,
-  '/gdpr': ROUTE_PATHS.gdpr,
-  '/cookies': ROUTE_PATHS.cookies,
-}
-for (const [from, to] of Object.entries(legalAliases)) {
-  const redirectBlock = new RegExp(
-    `from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"\\s+status = 301`,
-    'm',
-  )
-  if (!redirectBlock.test(netlifyToml)) {
-    failures.push(`netlify.toml has the wrong legal alias redirect: ${from} -> ${to}`)
-  }
-}
 // Contact and About Us have explicit forced redirects in netlify.toml because
 // stale/local shells have previously shadowed the canonical external apps.
 for (const [from, to] of [
@@ -165,6 +179,18 @@ for (const [from, to] of [
   ['/about-us.html', ABOUT_US_APP_URL],
   ['/legacy/pages/aboutus.html', ABOUT_US_APP_URL],
   ['/legacy/pages/aboutus', ABOUT_US_APP_URL],
+  [ROUTE_PATHS.privacy, LEGAL_APP_URLS.privacy],
+  [`${ROUTE_PATHS.privacy}/`, LEGAL_APP_URLS.privacy],
+  [ROUTE_PATHS.terms, LEGAL_APP_URLS.terms],
+  [`${ROUTE_PATHS.terms}/`, LEGAL_APP_URLS.terms],
+  [ROUTE_PATHS.gdpr, LEGAL_APP_URLS.gdpr],
+  [`${ROUTE_PATHS.gdpr}/`, LEGAL_APP_URLS.gdpr],
+  [ROUTE_PATHS.cookies, LEGAL_APP_URLS.cookies],
+  [`${ROUTE_PATHS.cookies}/`, LEGAL_APP_URLS.cookies],
+  ['/privacy', LEGAL_APP_URLS.privacy],
+  ['/terms', LEGAL_APP_URLS.terms],
+  ['/gdpr', LEGAL_APP_URLS.gdpr],
+  ['/cookies', LEGAL_APP_URLS.cookies],
 ]) {
   const redirectBlock = new RegExp(
     `from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"\\s+status = 301\\s+force = true`,
@@ -187,6 +213,31 @@ for (const alias of [
     failures.push(`About Us bootstrap guard misses alias: ${alias}`)
   }
 }
+for (const [alias, target] of [
+  ['/legal', LEGAL_APP_URLS.privacy],
+  ['/legal/privacy', LEGAL_APP_URLS.privacy],
+  ['/privacy', LEGAL_APP_URLS.privacy],
+  ['/legacy/pages/privacy.html', LEGAL_APP_URLS.privacy],
+  ['/legal/terms/', LEGAL_APP_URLS.terms],
+  ['/terms', LEGAL_APP_URLS.terms],
+  ['/legacy/pages/terms.html', LEGAL_APP_URLS.terms],
+  ['/legal/gdpr', LEGAL_APP_URLS.gdpr],
+  ['/gdpr', LEGAL_APP_URLS.gdpr],
+  ['/legacy/pages/gdpr.html', LEGAL_APP_URLS.gdpr],
+  ['/legal/cookies', LEGAL_APP_URLS.cookies],
+  ['/cookies', LEGAL_APP_URLS.cookies],
+  ['/legacy/pages/cookies.html', LEGAL_APP_URLS.cookies],
+]) {
+  if (getBootstrapExternalRedirect(alias) !== target) {
+    failures.push(`Legal bootstrap guard misses alias: ${alias}`)
+  }
+}
+if (withUiLang(LEGAL_APP_URLS.terms, 'en') !== LEGAL_APP_URLS.terms) {
+  failures.push('English Legal app URL does not preserve ?lang=en')
+}
+if (withUiLang(LEGAL_APP_URLS.terms, 'fr') !== 'https://icue.vn/legal/terms?lang=fr') {
+  failures.push('Legal app URL does not preserve a non-English UI language')
+}
 if (!mainSource.includes('redirectExternalAppAtBootstrap()')) {
   failures.push('Home entry does not run the external-app bootstrap redirect guard')
 }
@@ -197,6 +248,10 @@ for (const [path, label] of [
   [ROUTE_PATHS.faqs, 'faqs'],
   [ROUTE_PATHS.recruitment, 'recruitment'],
   [ROUTE_PATHS.communityActivities, 'community-activities'],
+  [ROUTE_PATHS.privacy, 'legal/privacy'],
+  [ROUTE_PATHS.terms, 'legal/terms'],
+  [ROUTE_PATHS.gdpr, 'legal/gdpr'],
+  [ROUTE_PATHS.cookies, 'legal/cookies'],
 ]) {
   if (ROUTE_META.some((route) => route.path === path)) {
     failures.push(`routeMeta.js still builds a ${label} shell, which shadows the redirect`)

@@ -160,6 +160,18 @@ for (const retiredFile of [
   'legacy-embed/pages/aboutus',
   'legacy/pages/Contact.html',
   'legacy-embed/pages/Contact.html',
+  'legal/privacy.html',
+  'legal/terms.html',
+  'legal/gdpr.html',
+  'legal/cookies.html',
+  'legacy/pages/privacy.html',
+  'legacy/pages/terms.html',
+  'legacy/pages/gdpr.html',
+  'legacy/pages/cookies.html',
+  'legacy-embed/pages/privacy.html',
+  'legacy-embed/pages/terms.html',
+  'legacy-embed/pages/gdpr.html',
+  'legacy-embed/pages/cookies.html',
 ]) {
   fs.rmSync(path.join(homeDist, retiredFile), { force: true });
 }

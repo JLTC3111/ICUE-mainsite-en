@@ -42,38 +42,6 @@ export const ROUTE_META = [
     title: 'Awards and Recognition | ICUE Vietnam',
     description: 'Discover notable awards, certifications, and professional recognition received by ICUE Vietnam.',
   },
-  {
-    slug: 'legal/privacy',
-    path: '/legal/privacy',
-    pageName: 'privacy',
-    pageFile: 'privacy.html',
-    title: 'Privacy Policy | ICUE Vietnam',
-    description: 'Read the ICUE Vietnam privacy policy and learn how personal information is handled.',
-  },
-  {
-    slug: 'legal/terms',
-    path: '/legal/terms',
-    pageName: 'terms',
-    pageFile: 'terms.html',
-    title: 'Terms of Use | ICUE Vietnam',
-    description: 'Read the terms governing use of the ICUE Vietnam website and services.',
-  },
-  {
-    slug: 'legal/gdpr',
-    path: '/legal/gdpr',
-    pageName: 'gdpr',
-    pageFile: 'gdpr.html',
-    title: 'GDPR Rights | ICUE Vietnam',
-    description: 'Learn about GDPR data-protection rights and how to exercise them with ICUE Vietnam.',
-  },
-  {
-    slug: 'legal/cookies',
-    path: '/legal/cookies',
-    pageName: 'cookies',
-    pageFile: 'cookies.html',
-    title: 'Cookie Policy | ICUE Vietnam',
-    description: 'Read the ICUE Vietnam cookie policy and learn how website cookies are used.',
-  },
 ]
 
 export const ROUTE_META_BY_PATH = Object.fromEntries(

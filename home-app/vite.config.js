@@ -14,6 +14,12 @@ const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
 const FAQ_APP_URL = 'https://icue.vn/faqs?site=en'
 const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
 const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en'
+const LEGAL_APP_URLS = {
+  privacy: 'https://icue.vn/legal/privacy?lang=en',
+  terms: 'https://icue.vn/legal/terms?lang=en',
+  gdpr: 'https://icue.vn/legal/gdpr?lang=en',
+  cookies: 'https://icue.vn/legal/cookies?lang=en',
+}
 
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/Home.html': '/',
@@ -32,6 +38,20 @@ const LEGACY_PAGE_REDIRECTS = {
   '/recruitment/': RECRUITMENT_APP_URL,
   '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
   '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
+  '/legal': LEGAL_APP_URLS.privacy,
+  '/legal/': LEGAL_APP_URLS.privacy,
+  '/privacy': LEGAL_APP_URLS.privacy,
+  '/terms': LEGAL_APP_URLS.terms,
+  '/gdpr': LEGAL_APP_URLS.gdpr,
+  '/cookies': LEGAL_APP_URLS.cookies,
+  '/legal/privacy': LEGAL_APP_URLS.privacy,
+  '/legal/privacy/': LEGAL_APP_URLS.privacy,
+  '/legal/terms': LEGAL_APP_URLS.terms,
+  '/legal/terms/': LEGAL_APP_URLS.terms,
+  '/legal/gdpr': LEGAL_APP_URLS.gdpr,
+  '/legal/gdpr/': LEGAL_APP_URLS.gdpr,
+  '/legal/cookies': LEGAL_APP_URLS.cookies,
+  '/legal/cookies/': LEGAL_APP_URLS.cookies,
   '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
   '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
   '/legacy/pages/aboutus': ABOUT_US_APP_URL,
@@ -43,10 +63,14 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
   '/legacy/pages/FAQs.html': FAQ_APP_URL,
-  '/legacy/pages/privacy.html': '/legal/privacy',
-  '/legacy/pages/terms.html': '/legal/terms',
-  '/legacy/pages/gdpr.html': '/legal/gdpr',
-  '/legacy/pages/cookies.html': '/legal/cookies',
+  '/legacy/pages/privacy.html': LEGAL_APP_URLS.privacy,
+  '/legacy/pages/terms.html': LEGAL_APP_URLS.terms,
+  '/legacy/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
+  '/legacy/pages/cookies.html': LEGAL_APP_URLS.cookies,
+  '/legacy-embed/pages/privacy.html': LEGAL_APP_URLS.privacy,
+  '/legacy-embed/pages/terms.html': LEGAL_APP_URLS.terms,
+  '/legacy-embed/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
+  '/legacy-embed/pages/cookies.html': LEGAL_APP_URLS.cookies,
 }
 
 function routeDevRequest(req, res, next) {

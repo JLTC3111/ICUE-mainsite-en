@@ -123,25 +123,85 @@
 # /faqs is not a route of this site either — same arrangement as /recruitment
 # and /our-work above.
 
+# The consolidated Legal app on icue.vn owns every document in every language.
+# These are forced because older deploys produced matching local HTML shells.
+[[redirects]]
+  from = "/legal"
+  to = "https://icue.vn/legal/privacy?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/privacy"
+  to = "https://icue.vn/legal/privacy?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/privacy/"
+  to = "https://icue.vn/legal/privacy?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/terms"
+  to = "https://icue.vn/legal/terms?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/terms/"
+  to = "https://icue.vn/legal/terms?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/gdpr"
+  to = "https://icue.vn/legal/gdpr?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/gdpr/"
+  to = "https://icue.vn/legal/gdpr?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/cookies"
+  to = "https://icue.vn/legal/cookies?lang=en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/legal/cookies/"
+  to = "https://icue.vn/legal/cookies?lang=en"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/privacy"
-  to = "/legal/privacy"
+  to = "https://icue.vn/legal/privacy?lang=en"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/terms"
-  to = "/legal/terms"
+  to = "https://icue.vn/legal/terms?lang=en"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/gdpr"
-  to = "/legal/gdpr"
+  to = "https://icue.vn/legal/gdpr?lang=en"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/cookies"
-  to = "/legal/cookies"
+  to = "https://icue.vn/legal/cookies?lang=en"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/*"

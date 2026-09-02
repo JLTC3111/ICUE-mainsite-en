@@ -34,12 +34,18 @@ function isNewsroomPath(pathname) {
   return pathname === '/newsroom' || pathname.startsWith('/newsroom/')
 }
 
+function isLegalAppPath(pathname) {
+  return pathname === '/legal' || pathname.startsWith('/legal/')
+}
+
 /**
  * Stamp the current UI language onto a link the way the apps on icue.vn do.
  *
  * English stays on the old chrome hints (`site=en`, newsroom `from=en-news`)
- * so typed /contact redirects and existing bookmarks keep working. Every
- * other UI language uses `lang=` and drops those English-forcing params.
+ * so typed /contact redirects and existing bookmarks keep working. The
+ * consolidated Legal app is the exception: like its other locales, English
+ * is selected explicitly with `lang=en`. Every other UI language uses
+ * `lang=` and drops the English-forcing params.
  */
 export function withUiLang(href, lang) {
   if (!href || href.startsWith('#') || SKIP_HREF.test(href)) return href
@@ -62,7 +68,8 @@ export function withUiLang(href, lang) {
 
   if (code === 'en') {
     if (onVn) {
-      if (isNewsroomPath(url.pathname)) url.searchParams.set('from', 'en-news')
+      if (isLegalAppPath(url.pathname)) url.searchParams.set('lang', 'en')
+      else if (isNewsroomPath(url.pathname)) url.searchParams.set('from', 'en-news')
       else url.searchParams.set('site', 'en')
     }
   } else {
