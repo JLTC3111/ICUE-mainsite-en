@@ -18,6 +18,9 @@ const EXTERNAL_APP_PATHS = new Set([
   '/our-work',
   '/contact',
   '/about-us',
+  '/past-projects',
+  '/news-archive',
+  '/notable-awards',
   '/faqs',
   '/recruitment',
   '/community-activities',
@@ -25,6 +28,9 @@ const EXTERNAL_APP_PATHS = new Set([
   '/legal/terms',
   '/legal/gdpr',
   '/legal/cookies',
+  '/newsroom',
+  '/people',
+  '/structure',
 ]);
 
 export function getSameOriginNavigationTarget(href) {
@@ -33,7 +39,11 @@ export function getSameOriginNavigationTarget(href) {
   try {
     const url = new URL(href, window.location.href);
     if (url.origin !== window.location.origin) return null;
-    if (EXTERNAL_APP_PATHS.has(url.pathname.replace(/\/$/, ''))) return null;
+    const pathname = url.pathname.replace(/\/$/, '');
+    if (
+      EXTERNAL_APP_PATHS.has(pathname)
+      || [...EXTERNAL_APP_PATHS].some((path) => pathname.startsWith(`${path}/`))
+    ) return null;
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {
     return null;

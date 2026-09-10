@@ -10,161 +10,162 @@ const ROOT = __dirname;
 const BUILD_ROOT = path.join(ROOT, 'dist-home');
 const BUILD_INDEX = path.join(BUILD_ROOT, 'index.html');
 const HAS_PRODUCTION_BUILD = fs.existsSync(BUILD_INDEX);
-// Contact is served by the shared Contact app on icue.vn (contact-app in the vn
-// repo), so it is redirected rather than rendered here. ?site=en keeps the page
-// in English and sends its chrome links back to en.icue.vn.
-const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
-const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en';
-const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en';
-const FAQ_APP_URL = 'https://icue.vn/faqs?site=en';
-const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en';
-const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en';
-const LEGAL_APP_URLS = {
-  privacy: 'https://icue.vn/legal/privacy?lang=en',
-  terms: 'https://icue.vn/legal/terms?lang=en',
-  gdpr: 'https://icue.vn/legal/gdpr?lang=en',
-  cookies: 'https://icue.vn/legal/cookies?lang=en',
-};
-const EXTERNAL_ROUTES = {
-  '/contact': CONTACT_APP_URL,
-  '/contact/': CONTACT_APP_URL,
-  '/about-us': ABOUT_US_APP_URL,
-  '/about-us/': ABOUT_US_APP_URL,
-  '/about-us.html': ABOUT_US_APP_URL,
-  '/our-work': OUR_WORK_APP_URL,
-  '/our-work/': OUR_WORK_APP_URL,
-  '/faqs': FAQ_APP_URL,
-  '/faqs/': FAQ_APP_URL,
-  '/recruitment': RECRUITMENT_APP_URL,
-  '/recruitment/': RECRUITMENT_APP_URL,
-  '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
-  '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
-  '/legal': LEGAL_APP_URLS.privacy,
-  '/legal/': LEGAL_APP_URLS.privacy,
-  '/privacy': LEGAL_APP_URLS.privacy,
-  '/terms': LEGAL_APP_URLS.terms,
-  '/gdpr': LEGAL_APP_URLS.gdpr,
-  '/cookies': LEGAL_APP_URLS.cookies,
-  '/legal/privacy': LEGAL_APP_URLS.privacy,
-  '/legal/privacy/': LEGAL_APP_URLS.privacy,
-  '/legal/terms': LEGAL_APP_URLS.terms,
-  '/legal/terms/': LEGAL_APP_URLS.terms,
-  '/legal/gdpr': LEGAL_APP_URLS.gdpr,
-  '/legal/gdpr/': LEGAL_APP_URLS.gdpr,
-  '/legal/cookies': LEGAL_APP_URLS.cookies,
-  '/legal/cookies/': LEGAL_APP_URLS.cookies,
-};
-const SPA_ROUTES = [
+const VN_ORIGIN = 'https://icue.vn';
+
+function vnUrl(pathname) {
+  return `${VN_ORIGIN}${pathname}?lang=en`;
+}
+
+const EXTERNAL_EXACT = new Map([
+  ['/contact', vnUrl('/contact')],
+  ['/about-us', vnUrl('/about-us')],
+  ['/about-us.html', vnUrl('/about-us')],
+  ['/about-us-legacy', vnUrl('/about-us')],
+  ['/our-work', vnUrl('/our-work')],
+  ['/past-projects', vnUrl('/past-projects')],
+  ['/past-projects.html', vnUrl('/past-projects')],
+  ['/news-archive', vnUrl('/news-archive')],
+  ['/news-archive.html', vnUrl('/news-archive')],
+  ['/notable-awards', vnUrl('/notable-awards')],
+  ['/notable-awards.html', vnUrl('/notable-awards')],
+  ['/faqs', vnUrl('/faqs')],
+  ['/recruitment', vnUrl('/recruitment')],
+  ['/community-activities', vnUrl('/community-activities')],
+  ['/newsroom', vnUrl('/newsroom/')],
+  ['/people', vnUrl('/people/experts')],
+  ['/structure', vnUrl('/structure/')],
+  ['/legal', vnUrl('/legal/privacy')],
+  ['/privacy', vnUrl('/legal/privacy')],
+  ['/terms', vnUrl('/legal/terms')],
+  ['/gdpr', vnUrl('/legal/gdpr')],
+  ['/cookies', vnUrl('/legal/cookies')],
+])
+
+const EXTERNAL_PREFIXES = new Set([
+  '/contact',
+  '/our-work',
   '/past-projects',
   '/news-archive',
-  '/notable-awards',
-];
-const LEGACY_REDIRECTS = {
-  '/legacy/pages/Home.html': '/',
-  '/legacy/pages/Home_OLD.html': '/',
-  '/legacy/pages/Contact.html': CONTACT_APP_URL,
-  '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
-  '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
-  '/legacy/pages/aboutus': ABOUT_US_APP_URL,
-  '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
-  '/legacy/pages/pastProjects.html': '/past-projects',
-  '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
-  '/legacy/pages/News.html': '/news-archive',
-  '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
-  '/legacy/pages/notableAwards.html': '/notable-awards',
-  '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
-  '/legacy/pages/FAQs.html': FAQ_APP_URL,
-  '/legacy/pages/privacy.html': LEGAL_APP_URLS.privacy,
-  '/legacy/pages/terms.html': LEGAL_APP_URLS.terms,
-  '/legacy/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-  '/legacy/pages/cookies.html': LEGAL_APP_URLS.cookies,
-  '/legacy-embed/pages/privacy.html': LEGAL_APP_URLS.privacy,
-  '/legacy-embed/pages/terms.html': LEGAL_APP_URLS.terms,
-  '/legacy-embed/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-  '/legacy-embed/pages/cookies.html': LEGAL_APP_URLS.cookies,
-};
+  '/faqs',
+  '/recruitment',
+  '/community-activities',
+  '/newsroom',
+  '/people',
+  '/structure',
+  '/legal',
+])
+
+const LEGACY_EXACT = new Map([
+  ['/legacy/pages/home.html', '/'],
+  ['/legacy/pages/home_old.html', '/'],
+  ['/legacy-embed/pages/home.html', '/'],
+  ['/legacy-embed/pages/home_old.html', '/'],
+  ['/src/pages/home.html', '/'],
+  ['/src/pages/home_old.html', '/'],
+  ['/legacy/pages/contact.html', vnUrl('/contact')],
+  ['/legacy-embed/pages/contact.html', vnUrl('/contact')],
+  ['/src/pages/contact.html', vnUrl('/contact')],
+  ['/legacy/pages/aboutus.html', vnUrl('/about-us')],
+  ['/legacy/pages/aboutus', vnUrl('/about-us')],
+  ['/legacy-embed/pages/aboutus.html', vnUrl('/about-us')],
+  ['/src/pages/aboutus.html', vnUrl('/about-us')],
+  ['/legacy/pages/ourwork.html', vnUrl('/our-work')],
+  ['/legacy-embed/pages/ourwork.html', vnUrl('/our-work')],
+  ['/src/pages/ourwork.html', vnUrl('/our-work')],
+  ['/legacy/pages/pastprojects.html', vnUrl('/past-projects')],
+  ['/legacy-embed/pages/pastprojects.html', vnUrl('/past-projects')],
+  ['/src/pages/pastprojects.html', vnUrl('/past-projects')],
+  ['/legacy/pages/news.html', vnUrl('/news-archive')],
+  ['/legacy/pages/news', vnUrl('/news-archive')],
+  ['/legacy-embed/pages/news.html', vnUrl('/news-archive')],
+  ['/src/pages/news.html', vnUrl('/news-archive')],
+  ['/legacy/pages/notableawards.html', vnUrl('/notable-awards')],
+  ['/legacy-embed/pages/notableawards.html', vnUrl('/notable-awards')],
+  ['/src/pages/notableawards.html', vnUrl('/notable-awards')],
+  ['/legacy/pages/communityactivities.html', vnUrl('/community-activities')],
+  ['/legacy-embed/pages/communityactivities.html', vnUrl('/community-activities')],
+  ['/src/pages/communityactivities.html', vnUrl('/community-activities')],
+  ['/legacy/pages/faqs.html', vnUrl('/faqs')],
+  ['/legacy-embed/pages/faqs.html', vnUrl('/faqs')],
+  ['/src/pages/faqs.html', vnUrl('/faqs')],
+  ['/legacy/pages/recruitment.html', vnUrl('/recruitment')],
+  ['/legacy-embed/pages/recruitment.html', vnUrl('/recruitment')],
+  ['/src/pages/recruitment.html', vnUrl('/recruitment')],
+  ['/legacy/pages/orgstructure.html', vnUrl('/structure/')],
+  ['/legacy-embed/pages/orgstructure.html', vnUrl('/structure/')],
+  ['/src/pages/orgstructure.html', vnUrl('/structure/')],
+])
+
+for (const slug of ['privacy', 'terms', 'gdpr', 'cookies']) {
+  const target = vnUrl(`/legal/${slug}`);
+  for (const root of ['/legacy/pages', '/legacy-embed/pages', '/src/pages']) {
+    LEGACY_EXACT.set(`${root}/${slug}.html`, target);
+  }
+}
+
+function legacyDetailTarget(pathname, search) {
+  const id = new URLSearchParams(search || '').get('id');
+  const cardPaths = new Set([
+    '/legacy/pages/card.html',
+    '/legacy-embed/pages/card.html',
+    '/src/pages/card.html',
+  ]);
+  const articlePaths = new Set([
+    '/legacy/pages/article_template.html',
+    '/legacy-embed/pages/article_template.html',
+    '/src/pages/article_template.html',
+  ]);
+
+  if (cardPaths.has(pathname)) {
+    return id ? vnUrl(`/past-projects/${encodeURIComponent(id)}`) : vnUrl('/past-projects');
+  }
+  if (articlePaths.has(pathname)) {
+    return id ? vnUrl(`/news-archive/${encodeURIComponent(id)}`) : vnUrl('/news-archive');
+  }
+  return null;
+}
+
+function externalRedirectFor(req) {
+  const cleanPath = `/${req.path.split('/').filter(Boolean).join('/')}`;
+  const normalized = cleanPath.toLowerCase();
+  const detailTarget = legacyDetailTarget(normalized, req.originalUrl.split('?')[1] || '');
+  if (detailTarget) return detailTarget;
+  if (LEGACY_EXACT.has(normalized)) return LEGACY_EXACT.get(normalized);
+  if (EXTERNAL_EXACT.has(normalized)) return EXTERNAL_EXACT.get(normalized);
+
+  for (const prefix of EXTERNAL_PREFIXES) {
+    if (normalized.startsWith(`${prefix}/`)) return vnUrl(cleanPath);
+  }
+  return null;
+}
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  if (req.method !== 'GET') return next();
+  const target = externalRedirectFor(req);
+  return target ? res.redirect(301, target) : next();
+});
 
 const staticOpts = {
   index: false,
   dotfiles: 'deny',
   maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
 };
-app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
-  res.redirect(301, LEGACY_REDIRECTS[req.path]);
-});
 
-app.get(Object.keys(EXTERNAL_ROUTES), (req, res) => {
-  res.redirect(301, EXTERNAL_ROUTES[req.path]);
-});
-
-// Production assets are emitted at the build root. Mount that directory at
-// /public as well to preserve historical /public/* URLs without keeping a
-// second physical copy of the deploy. Source assets are a development-only
-// fallback when no build exists yet.
 app.use(
   '/public',
   express.static(HAS_PRODUCTION_BUILD ? BUILD_ROOT : path.join(ROOT, 'public'), staticOpts),
 );
-app.use(
-  '/legacy-embed',
-  express.static(path.join(ROOT, 'dist-home', 'legacy-embed'), staticOpts),
-  express.static(path.join(ROOT, 'legacy-embed'), staticOpts),
-  express.static(path.join(ROOT, 'home-app', 'public', 'legacy-embed'), staticOpts),
-);
-for (const dir of [
-  'assets',
-  'aboutUs',
-  'bgVideos',
-  'flags',
-  'legacy',
-  'logoIcons',
-  'models',
-  'news',
-  'pastProjects',
-  'recruitment',
-  'work',
-]) {
-  app.use(
-    `/${dir}`,
-    express.static(path.join(BUILD_ROOT, dir), staticOpts),
-    express.static(path.join(ROOT, dir), staticOpts),
-  );
-}
-app.get('/styles.css', (_req, res) => {
-  res.sendFile(path.join(ROOT, 'styles.css'));
-});
+app.use(express.static(HAS_PRODUCTION_BUILD ? BUILD_ROOT : ROOT, staticOpts));
 
-function sendAppShell(req, res) {
-  if (HAS_PRODUCTION_BUILD && req.path !== '/') {
-    const routeShell = path.join(BUILD_ROOT, `${req.path.replace(/^\//, '')}.html`);
-    if (fs.existsSync(routeShell)) return res.sendFile(routeShell);
-  }
+function sendAppShell(_req, res) {
   return res.sendFile(HAS_PRODUCTION_BUILD ? BUILD_INDEX : path.join(ROOT, 'index.html'));
 }
 
 app.get('/', sendAppShell);
-
-app.use((req, res, next) => {
-  if (
-    req.method === 'GET' &&
-    req.path.length > 1 &&
-    req.path.endsWith('/') &&
-    SPA_ROUTES.includes(req.path.slice(0, -1))
-  ) {
-    const search = req.originalUrl.includes('?')
-      ? req.originalUrl.slice(req.originalUrl.indexOf('?'))
-      : '';
-    return res.redirect(301, `${req.path.slice(0, -1)}${search}`);
-  }
-  return next();
-});
-
-app.get(SPA_ROUTES, sendAppShell);
-
 app.use((req, res) => {
   res.status(404);
   sendAppShell(req, res);

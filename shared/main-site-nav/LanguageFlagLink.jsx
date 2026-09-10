@@ -36,18 +36,6 @@ export default function LanguageFlagLink() {
       // ignore
     }
 
-    if (
-      ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'].includes(
-        fresh.targetPageName
-      )
-    ) {
-      try {
-        sessionStorage.setItem('language_switch_to_static', fresh.targetPageName);
-      } catch (err) {
-        // ignore
-      }
-    }
-
     window.location.assign(fresh.targetUrl);
   };
 

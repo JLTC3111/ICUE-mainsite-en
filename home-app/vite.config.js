@@ -2,83 +2,20 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { getBootstrapExternalRedirect } from './src/lib/bootstrapExternalRedirect.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// Contact is served by the shared Contact app on icue.vn (contact-app in the vn
-// repo). /contact is redirected here as well as at the legacy URL so the
-// home-app dev server matches production.
-const CONTACT_APP_URL = 'https://icue.vn/contact?site=en'
-const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en'
-const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en'
-const FAQ_APP_URL = 'https://icue.vn/faqs?site=en'
-const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en'
-const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en'
-const LEGAL_APP_URLS = {
-  privacy: 'https://icue.vn/legal/privacy?lang=en',
-  terms: 'https://icue.vn/legal/terms?lang=en',
-  gdpr: 'https://icue.vn/legal/gdpr?lang=en',
-  cookies: 'https://icue.vn/legal/cookies?lang=en',
-}
-
-const LEGACY_PAGE_REDIRECTS = {
-  '/legacy/pages/Home.html': '/',
-  '/legacy/pages/Home_OLD.html': '/',
-  '/legacy/pages/Contact.html': CONTACT_APP_URL,
-  '/contact': CONTACT_APP_URL,
-  '/contact/': CONTACT_APP_URL,
-  '/about-us': ABOUT_US_APP_URL,
-  '/about-us/': ABOUT_US_APP_URL,
-  '/about-us.html': ABOUT_US_APP_URL,
-  '/our-work': OUR_WORK_APP_URL,
-  '/our-work/': OUR_WORK_APP_URL,
-  '/faqs': FAQ_APP_URL,
-  '/faqs/': FAQ_APP_URL,
-  '/recruitment': RECRUITMENT_APP_URL,
-  '/recruitment/': RECRUITMENT_APP_URL,
-  '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
-  '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
-  '/legal': LEGAL_APP_URLS.privacy,
-  '/legal/': LEGAL_APP_URLS.privacy,
-  '/privacy': LEGAL_APP_URLS.privacy,
-  '/terms': LEGAL_APP_URLS.terms,
-  '/gdpr': LEGAL_APP_URLS.gdpr,
-  '/cookies': LEGAL_APP_URLS.cookies,
-  '/legal/privacy': LEGAL_APP_URLS.privacy,
-  '/legal/privacy/': LEGAL_APP_URLS.privacy,
-  '/legal/terms': LEGAL_APP_URLS.terms,
-  '/legal/terms/': LEGAL_APP_URLS.terms,
-  '/legal/gdpr': LEGAL_APP_URLS.gdpr,
-  '/legal/gdpr/': LEGAL_APP_URLS.gdpr,
-  '/legal/cookies': LEGAL_APP_URLS.cookies,
-  '/legal/cookies/': LEGAL_APP_URLS.cookies,
-  '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
-  '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
-  '/legacy/pages/aboutus': ABOUT_US_APP_URL,
-  '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
-  '/legacy/pages/pastProjects.html': '/past-projects',
-  '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
-  '/legacy/pages/News.html': '/news-archive',
-  '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
-  '/legacy/pages/notableAwards.html': '/notable-awards',
-  '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
-  '/legacy/pages/FAQs.html': FAQ_APP_URL,
-  '/legacy/pages/privacy.html': LEGAL_APP_URLS.privacy,
-  '/legacy/pages/terms.html': LEGAL_APP_URLS.terms,
-  '/legacy/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-  '/legacy/pages/cookies.html': LEGAL_APP_URLS.cookies,
-  '/legacy-embed/pages/privacy.html': LEGAL_APP_URLS.privacy,
-  '/legacy-embed/pages/terms.html': LEGAL_APP_URLS.terms,
-  '/legacy-embed/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-  '/legacy-embed/pages/cookies.html': LEGAL_APP_URLS.cookies,
-}
-
 function routeDevRequest(req, res, next) {
-  const urlPath = (req.url || '').split('?')[0]
+  const [urlPath, query = ''] = (req.url || '').split('?')
+  const redirectTarget = getBootstrapExternalRedirect(
+    urlPath,
+    query ? `?${query}` : '',
+  )
 
-  if (LEGACY_PAGE_REDIRECTS[urlPath]) {
+  if (redirectTarget) {
     res.statusCode = 302
-    res.setHeader('Location', LEGACY_PAGE_REDIRECTS[urlPath])
+    res.setHeader('Location', redirectTarget)
     res.end()
     return
   }

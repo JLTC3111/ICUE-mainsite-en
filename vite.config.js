@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import { getBootstrapExternalRedirect } from './home-app/src/lib/bootstrapExternalRedirect.js';
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -62,74 +63,6 @@ function homeDevFallback() {
   const appDir = path.resolve(root, 'dist-home');
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
-  // Contact and Our Work are served by shared apps on icue.vn, not by this
-  // site. Redirect them in dev too so the dev server cannot serve a stale
-  // local shell for a route production sends away.
-  const CONTACT_APP_URL = 'https://icue.vn/contact?site=en';
-  const OUR_WORK_APP_URL = 'https://icue.vn/our-work?site=en';
-  const ABOUT_US_APP_URL = 'https://icue.vn/about-us?site=en';
-const FAQ_APP_URL = 'https://icue.vn/faqs?site=en';
-const RECRUITMENT_APP_URL = 'https://icue.vn/recruitment?site=en';
-const COMMUNITY_ACTIVITIES_APP_URL = 'https://icue.vn/community-activities?site=en';
-const LEGAL_APP_URLS = {
-  privacy: 'https://icue.vn/legal/privacy?lang=en',
-  terms: 'https://icue.vn/legal/terms?lang=en',
-  gdpr: 'https://icue.vn/legal/gdpr?lang=en',
-  cookies: 'https://icue.vn/legal/cookies?lang=en',
-};
-
-  const legacyPageRedirects = {
-    '/legacy/pages/Home.html': '/',
-    '/legacy/pages/Home_OLD.html': '/',
-    '/legacy/pages/Contact.html': CONTACT_APP_URL,
-    '/contact': CONTACT_APP_URL,
-    '/contact/': CONTACT_APP_URL,
-    '/about-us': ABOUT_US_APP_URL,
-    '/about-us/': ABOUT_US_APP_URL,
-    '/about-us.html': ABOUT_US_APP_URL,
-    '/our-work': OUR_WORK_APP_URL,
-    '/our-work/': OUR_WORK_APP_URL,
-    '/faqs': FAQ_APP_URL,
-    '/faqs/': FAQ_APP_URL,
-    '/recruitment': RECRUITMENT_APP_URL,
-    '/recruitment/': RECRUITMENT_APP_URL,
-    '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
-    '/community-activities/': COMMUNITY_ACTIVITIES_APP_URL,
-    '/legal': LEGAL_APP_URLS.privacy,
-    '/legal/': LEGAL_APP_URLS.privacy,
-    '/privacy': LEGAL_APP_URLS.privacy,
-    '/terms': LEGAL_APP_URLS.terms,
-    '/gdpr': LEGAL_APP_URLS.gdpr,
-    '/cookies': LEGAL_APP_URLS.cookies,
-    '/legal/privacy': LEGAL_APP_URLS.privacy,
-    '/legal/privacy/': LEGAL_APP_URLS.privacy,
-    '/legal/terms': LEGAL_APP_URLS.terms,
-    '/legal/terms/': LEGAL_APP_URLS.terms,
-    '/legal/gdpr': LEGAL_APP_URLS.gdpr,
-    '/legal/gdpr/': LEGAL_APP_URLS.gdpr,
-    '/legal/cookies': LEGAL_APP_URLS.cookies,
-    '/legal/cookies/': LEGAL_APP_URLS.cookies,
-    '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
-    '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
-    '/legacy/pages/aboutus': ABOUT_US_APP_URL,
-    '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
-    '/legacy/pages/pastProjects.html': '/past-projects',
-    '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
-    '/legacy/pages/News.html': '/news-archive',
-    '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
-    '/legacy/pages/notableAwards.html': '/notable-awards',
-    '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
-    '/legacy/pages/FAQs.html': FAQ_APP_URL,
-    '/legacy/pages/privacy.html': LEGAL_APP_URLS.privacy,
-    '/legacy/pages/terms.html': LEGAL_APP_URLS.terms,
-    '/legacy/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-    '/legacy/pages/cookies.html': LEGAL_APP_URLS.cookies,
-    '/legacy-embed/pages/privacy.html': LEGAL_APP_URLS.privacy,
-    '/legacy-embed/pages/terms.html': LEGAL_APP_URLS.terms,
-    '/legacy-embed/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-    '/legacy-embed/pages/cookies.html': LEGAL_APP_URLS.cookies,
-  };
-
   return {
     name: 'home-dev-fallback',
     configureServer(server) {
@@ -137,13 +70,17 @@ const LEGAL_APP_URLS = {
       // can serve the static legacy/pages/News.html file.
       return () => {
         server.middlewares.use((req, res, next) => {
-          const urlPath = (req.url || '').split('?')[0];
+          const [urlPath, query = ''] = (req.url || '').split('?');
 
           if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
 
-          if (legacyPageRedirects[urlPath]) {
+          const redirectTarget = getBootstrapExternalRedirect(
+            urlPath,
+            query ? `?${query}` : '',
+          );
+          if (redirectTarget) {
             res.statusCode = 302;
-            res.setHeader('Location', legacyPageRedirects[urlPath]);
+            res.setHeader('Location', redirectTarget);
             res.end();
             return;
           }

@@ -1,183 +1,69 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { ROUTE_META } from '../home-app/src/lib/routeMeta.js';
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const homeDist = path.join(root, 'dist-home');
-const siteOrigin = 'https://en.icue.vn';
-
-// Route title/description/pageFile metadata now lives in
-// home-app/src/lib/routeMeta.js (shared with the client-side RouteHead
-// component, so the two can never drift apart again).
-const routeShells = ROUTE_META;
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const homeDist = path.join(root, 'dist-home')
 
 function copyFile(src, dest) {
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.copyFileSync(src, dest);
-}
-
-function copyDir(src, dest) {
-  if (!fs.existsSync(src)) {
-    console.warn(`[postbuild] Skipping missing path: ${src}`);
-    return;
-  }
-
-  fs.mkdirSync(dest, { recursive: true });
-  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    const from = path.join(src, entry.name);
-    const to = path.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      copyDir(from, to);
-    } else {
-      fs.copyFileSync(from, to);
-    }
-  }
+  fs.mkdirSync(path.dirname(dest), { recursive: true })
+  fs.copyFileSync(src, dest)
 }
 
 function walkFiles(dir) {
-  if (!fs.existsSync(dir)) return [];
+  if (!fs.existsSync(dir)) return []
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const file = path.join(dir, entry.name);
-    return entry.isDirectory() ? walkFiles(file) : [file];
-  });
-}
-
-function escapeHtml(value) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('"', '&quot;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
-}
-
-function buildRouteShell(indexHtml, route) {
-  const canonical = `${siteOrigin}/${route.slug}`;
-  const title = escapeHtml(route.title);
-  const description = escapeHtml(route.description);
-  const structuredData = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: route.title,
-    description: route.description,
-    url: canonical,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'ICUE Vietnam',
-      url: `${siteOrigin}/`,
-    },
-  }).replaceAll('<', '\\u003c');
-  const pageSourcePath = path.join(root, 'legacy/pages', route.pageFile);
-  const pageSource = fs.readFileSync(pageSourcePath, 'utf8');
-  const embeddedPageSource = JSON.stringify(pageSource).replaceAll('<', '\\u003c');
-
-  return indexHtml
-    .replace(/<title>.*?<\/title>/i, `<title>${title}</title>`)
-    .replace(
-      /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
-      `<meta name="description" content="${description}" />`,
-    )
-    .replace(
-      /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
-      `<link rel="canonical" href="${canonical}" />`,
-    )
-    .replace(
-      /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i,
-      `<meta property="og:url" content="${canonical}" />`,
-    )
-    .replace(
-      /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i,
-      `<meta property="og:title" content="${title}" />`,
-    )
-    .replace(
-      /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i,
-      `<meta property="og:description" content="${description}" />`,
-    )
-    .replace(
-      /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i,
-      `<meta name="twitter:title" content="${title}" />`,
-    )
-    .replace(
-      /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i,
-      `<meta name="twitter:description" content="${description}" />`,
-    )
-    .replace(
-      '</head>',
-      `<script type="application/ld+json">${structuredData}</script>\n  </head>`,
-    )
-    .replace(
-      '<div id="root"></div>',
-      `<div id="root"><main class="route-static-fallback"><h1>${title}</h1><p>${description}</p></main></div>`,
-    )
-    .replace(
-      '</body>',
-      `<script type="application/json" id="icue-legacy-page-source" data-page="${route.pageName}">${embeddedPageSource}</script>\n  </body>`,
-    );
+    const file = path.join(dir, entry.name)
+    return entry.isDirectory() ? walkFiles(file) : [file]
+  })
 }
 
 if (!fs.existsSync(homeDist)) {
-  console.error('[postbuild] dist-home/ not found. Run npm run build:home first.');
-  process.exit(1);
+  console.error('[postbuild] dist-home/ not found. Run npm run build:home first.')
+  process.exit(1)
 }
 
-copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
+copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'))
 for (const file of ['robots.txt', 'sitemap.xml']) {
-  copyFile(path.join(root, 'public', file), path.join(homeDist, file));
+  copyFile(path.join(root, 'public', file), path.join(homeDist, file))
 }
 
-// Publish social/Netlify preview image at site root (/preview.jpg) in addition to /public/preview.jpg.
-const previewJpg = path.join(root, 'public/preview.jpg');
+const previewJpg = path.join(root, 'public/preview.jpg')
 if (fs.existsSync(previewJpg)) {
-  copyFile(previewJpg, path.join(homeDist, 'preview.jpg'));
+  copyFile(previewJpg, path.join(homeDist, 'preview.jpg'))
 } else {
-  console.warn('[postbuild] Missing public/preview.jpg — Netlify/OG preview image will be unavailable.');
+  console.warn('[postbuild] Missing public/preview.jpg — Netlify/OG preview image will be unavailable.')
 }
 
-const builtIndex = path.join(homeDist, 'index.html');
+const builtIndex = path.join(homeDist, 'index.html')
 if (!fs.existsSync(builtIndex)) {
-  console.error('[postbuild] dist-home/index.html not found.');
-  process.exit(1);
+  console.error('[postbuild] dist-home/index.html not found.')
+  process.exit(1)
 }
 
-const builtIndexHtml = fs.readFileSync(builtIndex, 'utf8');
-for (const route of routeShells) {
-  // Slugs may contain a directory (legal/privacy), so make the parent first.
-  const shellPath = path.join(homeDist, `${route.slug}.html`);
-  fs.mkdirSync(path.dirname(shellPath), { recursive: true });
-  fs.writeFileSync(shellPath, buildRouteShell(builtIndexHtml, route));
-}
-
-// Defense in depth for pages now owned by icue.vn: neither Netlify's static
-// file precedence nor an old legacy URL can bypass the external redirect.
+// en.icue.vn owns only its React home. Remove every retired page source and
+// route shell even if a stale public directory copied one into this build.
 for (const retiredFile of [
   'about-us.html',
+  'past-projects.html',
+  'news-archive.html',
+  'notable-awards.html',
   'contact.html',
-  'legacy/pages/aboutUs.html',
-  'legacy/pages/aboutus.html',
-  'legacy/pages/aboutus',
-  'legacy-embed/pages/aboutUs.html',
-  'legacy-embed/pages/aboutus.html',
-  'legacy-embed/pages/aboutus',
-  'legacy/pages/Contact.html',
-  'legacy-embed/pages/Contact.html',
+  'community-activities.html',
+  'faqs.html',
+  'recruitment.html',
+  'card.html',
+  'article_template.html',
   'legal/privacy.html',
   'legal/terms.html',
   'legal/gdpr.html',
   'legal/cookies.html',
-  'legacy/pages/privacy.html',
-  'legacy/pages/terms.html',
-  'legacy/pages/gdpr.html',
-  'legacy/pages/cookies.html',
-  'legacy-embed/pages/privacy.html',
-  'legacy-embed/pages/terms.html',
-  'legacy-embed/pages/gdpr.html',
-  'legacy-embed/pages/cookies.html',
 ]) {
-  fs.rmSync(path.join(homeDist, retiredFile), { force: true });
+  fs.rmSync(path.join(homeDist, retiredFile), { force: true })
 }
 
-for (const retiredDir of ['aboutUs', 'models']) {
-  fs.rmSync(path.join(homeDist, retiredDir), { recursive: true, force: true });
+for (const retiredDir of ['aboutUs', 'legacy', 'legacy-embed', 'src', 'models', 'public']) {
+  fs.rmSync(path.join(homeDist, retiredDir), { recursive: true, force: true })
 }
 
 const publishedVideos = new Set([
@@ -192,19 +78,18 @@ const publishedVideos = new Set([
   'home_bg_4_mobile.mp4',
   'video-text-fifa2026.mp4',
   'video-text-football.mp4',
-]);
-const videoDir = path.join(homeDist, 'bgVideos');
+])
+const videoDir = path.join(homeDist, 'bgVideos')
 if (fs.existsSync(videoDir)) {
   for (const entry of fs.readdirSync(videoDir)) {
     if (!publishedVideos.has(entry)) {
-      fs.rmSync(path.join(videoDir, entry), { recursive: true, force: true });
+      fs.rmSync(path.join(videoDir, entry), { recursive: true, force: true })
     }
   }
 }
 
-// Do not ship macOS metadata copied from source asset folders.
 for (const file of walkFiles(homeDist)) {
-  if (path.basename(file) === '.DS_Store') fs.rmSync(file, { force: true });
+  if (path.basename(file) === '.DS_Store') fs.rmSync(file, { force: true })
 }
 
-console.log('[postbuild] Prepared dist-home production build for Netlify deploy.');
+console.log('[postbuild] Prepared home-only dist-home production build.')

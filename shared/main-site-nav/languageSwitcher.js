@@ -1,3 +1,9 @@
+import {
+  SITES,
+  resolveMainSiteLink,
+  withLocale,
+} from '../site-routes/mainSitePaths.js';
+
 const SITE_CONFIG = {
   vietnamese: {
     domain: 'icue.vn',
@@ -29,12 +35,8 @@ const PAGE_MAPPING = {
   cookies: 'cookies',
   notableAwards: 'notableAwards',
   communityActivities: 'communityActivities',
+  newsArchive: 'newsArchive',
 };
-
-const STATIC_PAGES = [
-  'gdpr', 'privacy', 'recruitment', 'terms',
-  'faqs', 'cookies', 'notableAwards', 'communityActivities',
-];
 
 /** Path routes for migrated main-site pages (no hash). */
 export const MIGRATED_PAGE_PATHS = {
@@ -85,6 +87,8 @@ export function pageFromPathname(pathname) {
     if (pathSegments.includes('core-team')) return 'coreTeam';
     if (pathSegments.includes('experts')) return 'meetOurExperts';
   }
+  if (pathSegments[0] === 'past-projects') return 'pastProjects';
+  if (pathSegments[0] === 'news-archive') return 'newsArchive';
   if (pathSegments[0] === 'structure') return 'orgStructure';
   if (pathSegments[0] === 'newsroom') return 'News';
   if (pathSegments[0] === 'src' && pathSegments[1] === 'pages' && pathSegments[2] === 'News.html') {
@@ -93,9 +97,6 @@ export function pageFromPathname(pathname) {
 
   const pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
   if (pathPage === 'News' || pathPage === 'news') return 'newsArchive';
-  if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
-    return pathPage;
-  }
   return pathPage;
 }
 
@@ -156,13 +157,22 @@ function mapPageName(pageName, fromLang, toLang) {
   return PAGE_MAPPING[pageName] || pageName;
 }
 
-function buildTargetPath(targetPageName) {
-  if (MIGRATED_PAGE_PATHS[targetPageName]) {
-    return MIGRATED_PAGE_PATHS[targetPageName];
+function mainSiteBase(siteLang) {
+  return siteLang === 'vi' ? SITES.vi : SITES.en;
+}
+
+function buildTargetPath(targetPageName, targetSite) {
+  const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+  const resolved = resolveMainSiteLink(
+    targetPageName,
+    targetSite.language,
+    mainSiteBase(targetSite.language),
+    currentPath,
+  );
+  if (resolved.startsWith('http') || MIGRATED_PAGE_PATHS[targetPageName]) {
+    return resolved;
   }
-  if (STATIC_PAGES.includes(targetPageName)) {
-    return `#/${targetPageName}`;
-  }
+
   return targetPageName === 'Home' ? '#/Home' : `#/${targetPageName}`;
 }
 
@@ -209,8 +219,11 @@ export function buildLanguageSwitchTarget({ currentSiteLanguage } = {}) {
     targetSite.language
   );
 
-  const targetPath = buildTargetPath(targetPageName);
-  const targetUrl = `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
+  const targetPath = buildTargetPath(targetPageName, targetSite);
+  const unresolvedTargetUrl = targetPath.startsWith('http')
+    ? targetPath
+    : `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
+  const targetUrl = withLocale(unresolvedTargetUrl, targetSite.language);
 
   return {
     currentSite,

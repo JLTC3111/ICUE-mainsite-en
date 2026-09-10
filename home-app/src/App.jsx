@@ -9,9 +9,6 @@ import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/nav
 import PillSiteHeader from './components/PillSiteHeader'
 import RouteHead from './components/RouteHead'
 import SiteLanguageMenu from './components/SiteLanguageMenu'
-import { preloadLegacyPageSource } from './legacy/pageHtml'
-import { preloadLegacyPage } from './legacy/pageInit'
-import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { ABOUT_US_APP_URL, pageFromPathname, pathFromLegacyHash, ROUTE_PATHS } from './lib/routes'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -66,29 +63,6 @@ function NavSync() {
   return null
 }
 
-function RoutePrefetch() {
-  useEffect(() => {
-    const prefetch = (event) => {
-      const anchor = event.target.closest?.('a[href]')
-      if (!anchor) return
-      const destination = new URL(anchor.href, window.location.href)
-      if (destination.origin !== window.location.origin) return
-      const pageName = pageFromPathname(destination.pathname)
-      if (!pageName || pageName === 'Home') return
-      void preloadLegacyPageSource(pageName).catch(() => {})
-      void preloadLegacyPage(pageName).catch(() => {})
-    }
-
-    document.addEventListener('pointerover', prefetch, { passive: true })
-    document.addEventListener('focusin', prefetch)
-    return () => {
-      document.removeEventListener('pointerover', prefetch)
-      document.removeEventListener('focusin', prefetch)
-    }
-  }, [])
-  return null
-}
-
 function AppShell() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -131,7 +105,6 @@ function AppShell() {
       <LegacyHashRedirect />
       <RouteHead />
       <NavSync />
-      <RoutePrefetch />
       <MainSiteNav
         variant="standalone"
         usePillNav
@@ -150,17 +123,8 @@ function AppShell() {
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-            {/* No /contact or /about-us route: both are redirected to shared
-                apps on icue.vn before they ever reach the router. */}
-            <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.newsArchiveLegacyHtml} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.newsArchiveLegacyAlt} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
-            {/* No /community-activities, /faqs or /recruitment route either:
-                all three are redirected before reaching the router. */}
-            {/* Legal documents are also redirected to the consolidated app on
-                icue.vn; no legacy English legal page is mounted here. */}
+            {/* Every non-home route is redirected to its React app on icue.vn
+                before this router mounts. */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

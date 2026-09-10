@@ -69,18 +69,6 @@ const ASSET_FILES = [
   'music/mixkit-a-very-happy-christmas-897.mp3',
 ]
 
-const LEGACY_PAGES = [
-  'pastProjects.html',
-  'News.html',
-  'notableAwards.html',
-  'privacy.html',
-  'terms.html',
-  'gdpr.html',
-  'cookies.html',
-  'card.html',
-  'article_template.html',
-]
-
 for (const rel of ASSET_DIRS) {
   copyDir(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
@@ -89,19 +77,13 @@ for (const rel of ASSET_FILES) {
   copyFile(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
 
-for (const file of LEGACY_PAGES) {
-  const source = path.join(siteRoot, 'legacy/pages', file)
-  copyFile(source, path.join(appRoot, 'public/legacy/pages', file))
-  copyFile(source, path.join(appRoot, 'public/legacy-embed/pages', file))
+for (const retiredDir of ['legacy', 'legacy-embed']) {
+  fs.rmSync(path.join(appRoot, 'public', retiredDir), { recursive: true, force: true })
 }
-
-copyFile(path.join(siteRoot, 'legacy/script.js'), path.join(appRoot, 'public/legacy/script.js'))
-copyFile(path.join(siteRoot, 'legacy/card.js'), path.join(appRoot, 'public/legacy/card.js'))
-copyFile(path.join(siteRoot, 'legacy/article.js'), path.join(appRoot, 'public/legacy/article.js'))
 copyFile(path.join(siteRoot, '_redirects'), path.join(appRoot, 'public/_redirects'))
 copyFile(
   path.join(siteRoot, 'public/logoIcons/favicon.png'),
   path.join(appRoot, 'public/logoIcons/favicon.png'),
 )
 
-console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, selected media, legacy pages, redirects, script.js, card.js, article.js`)
+console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, selected media, and redirects`)

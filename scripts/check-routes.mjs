@@ -3,110 +3,239 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   ABOUT_US_APP_URL,
-  CONTACT_APP_URL,
   COMMUNITY_ACTIVITIES_APP_URL,
+  CONTACT_APP_URL,
   FAQ_APP_URL,
-  LEGACY_PAGE_FILES,
   LEGAL_APP_URLS,
+  NEWS_ARCHIVE_APP_URL,
+  NEWSROOM_URL,
+  NOTABLE_AWARDS_APP_URL,
   OUR_WORK_APP_URL,
+  PAST_PROJECTS_APP_URL,
+  pathFromLegacyHash,
   RECRUITMENT_APP_URL,
   ROUTE_PATHS,
 } from '../home-app/src/lib/routes.js'
 import { ROUTE_META } from '../home-app/src/lib/routeMeta.js'
 import { getBootstrapExternalRedirect } from '../home-app/src/lib/bootstrapExternalRedirect.js'
 import { withUiLang } from '../shared/i18n/withUiLang.js'
+import {
+  hostedPathForPage,
+  ICUE_VN_HOSTED_PAGES,
+  MAIN_SITE_PAGE_PATHS,
+  resolveMainSiteDetailLink,
+  resolveMainSiteLink,
+  SUPPORTED_UI_LOCALES,
+  withLocale,
+} from '../shared/site-routes/mainSitePaths.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const failures = []
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8')
+const escapeRe = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+function fail(message) {
+  failures.push(message)
+}
 
 const appSource = read('home-app/src/App.jsx')
 const mainSource = read('home-app/src/main.jsx')
 const mountedKeys = new Set(
   [...appSource.matchAll(/<Route path=\{ROUTE_PATHS\.(\w+)\}/g)].map((match) => match[1]),
 )
-// These are paths this site links to but does not render: the edge sends each
-// one to its shared app on icue.vn. They stay in ROUTE_PATHS because nav state
-// and redirect rules read them. ourWork has no ROUTE_PATHS entry at all.
-const EXTERNALLY_SERVED_ROUTES = new Set([
-  'contact',
-  'aboutUs',
-  'faqs',
-  'recruitment',
-  'communityActivities',
-  'privacy',
-  'terms',
-  'gdpr',
-  'cookies',
-])
-for (const key of Object.keys(ROUTE_PATHS)) {
-  if (EXTERNALLY_SERVED_ROUTES.has(key)) {
-    if (mountedKeys.has(key)) failures.push(`Externally served route is still mounted locally: ${key}`)
-    continue
-  }
-  if (!mountedKeys.has(key)) failures.push(`React route is declared but not mounted: ${key}`)
+if (mountedKeys.size !== 1 || !mountedKeys.has('home')) {
+  fail(`English app must mount only Home, found: ${[...mountedKeys].join(', ') || '(none)'}`)
+}
+if (ROUTE_META.length !== 0) {
+  fail('English routeMeta.js must not emit subpage canonical shells')
+}
+if (!mainSource.includes('redirectExternalAppAtBootstrap()')) {
+  fail('Home entry does not run the external-app bootstrap redirect guard')
+}
+if (!appSource.includes('pathFromLegacyHash')) {
+  fail('Home app is missing the hash compatibility guard')
 }
 
-for (const file of Object.values(LEGACY_PAGE_FILES)) {
-  if (!fs.existsSync(path.join(root, 'legacy/pages', file))) {
-    failures.push(`Missing legacy source page: legacy/pages/${file}`)
+for (const locale of SUPPORTED_UI_LOCALES) {
+  const home = new URL(resolveMainSiteLink('Home', locale))
+  const expectedHomeOrigin = locale === 'en' ? 'https://en.icue.vn' : 'https://icue.vn'
+  if (home.origin !== expectedHomeOrigin) {
+    fail(`Home for ${locale} resolved to ${home.origin}, expected ${expectedHomeOrigin}`)
+  }
+  if (home.searchParams.get('lang') !== locale) {
+    fail(`Home for ${locale} is missing ?lang=${locale}`)
+  }
+  if (home.searchParams.has('site') || home.searchParams.get('from') === 'en-news') {
+    fail(`Home for ${locale} still emits a retired language hint`)
+  }
+
+  for (const page of ICUE_VN_HOSTED_PAGES) {
+    const url = new URL(resolveMainSiteLink(page, locale))
+    if (url.origin !== 'https://icue.vn') {
+      fail(`${page} for ${locale} left icue.vn: ${url.href}`)
+    }
+    if (url.searchParams.get('lang') !== locale) {
+      fail(`${page} for ${locale} is missing ?lang=${locale}`)
+    }
+    if (url.searchParams.has('site') || url.searchParams.get('from') === 'en-news') {
+      fail(`${page} for ${locale} still emits a retired language hint`)
+    }
+    if (url.pathname !== MAIN_SITE_PAGE_PATHS[page] && `${url.pathname}/` !== MAIN_SITE_PAGE_PATHS[page]) {
+      fail(`${page} for ${locale} used ${url.pathname}, expected ${MAIN_SITE_PAGE_PATHS[page]}`)
+    }
   }
 }
-for (const file of ['card.html', 'article_template.html']) {
-  if (!fs.existsSync(path.join(root, 'legacy/pages', file))) {
-    failures.push(`Missing legacy source page: legacy/pages/${file}`)
+
+if (hostedPathForPage('pastProjects', '/past-projects/12') !== '/past-projects/12') {
+  fail('Project detail path is not preserved across locale switching')
+}
+if (hostedPathForPage('newsArchive', '/news-archive/4') !== '/news-archive/4') {
+  fail('Archive article path is not preserved across locale switching')
+}
+if (resolveMainSiteLink('pastProjects', 'en', undefined, '/past-projects/12') !== 'https://icue.vn/past-projects/12?lang=en') {
+  fail('English project detail URL does not keep its id')
+}
+if (resolveMainSiteLink('newsArchive', 'de', undefined, '/news-archive/4') !== 'https://icue.vn/news-archive/4?lang=de') {
+  fail('Archive article URL does not keep its id for a non-English locale')
+}
+if (resolveMainSiteDetailLink('pastProjects', 3, 'en') !== 'https://icue.vn/past-projects/3?lang=en') {
+  fail('Project card helper does not emit a canonical English detail URL')
+}
+if (resolveMainSiteDetailLink('newsArchive', 8, 'fr') !== 'https://icue.vn/news-archive/8?lang=fr') {
+  fail('Article helper does not emit a canonical localized detail URL')
+}
+
+if (withLocale('/newsroom/?from=en-news&site=en#latest', 'de') !== '/newsroom/?lang=de#latest') {
+  fail('withLocale must strip retired language hints while writing ?lang=')
+}
+if (withLocale('/contact?lang=vi', 'en') !== '/contact?lang=en') {
+  fail('withLocale must replace an existing lang value')
+}
+if (withUiLang(LEGAL_APP_URLS.terms, 'en') !== LEGAL_APP_URLS.terms) {
+  fail('English Legal app URL does not preserve ?lang=en')
+}
+if (withUiLang(LEGAL_APP_URLS.terms, 'fr') !== 'https://icue.vn/legal/terms?lang=fr') {
+  fail('Legal app URL does not preserve a non-English UI language')
+}
+
+const hashTargets = {
+  '#/Home': '/',
+  '#/aboutUs': ABOUT_US_APP_URL,
+  '#/pastProjects': PAST_PROJECTS_APP_URL,
+  '#/News': NEWS_ARCHIVE_APP_URL,
+  '#/newsArchive': NEWS_ARCHIVE_APP_URL,
+  '#/Contact': CONTACT_APP_URL,
+  '#/ourWork': OUR_WORK_APP_URL,
+  '#/FAQs': FAQ_APP_URL,
+  '#/notableAwards': NOTABLE_AWARDS_APP_URL,
+  '#/meetOurExperts': 'https://icue.vn/people/experts?lang=en',
+  '#/coreTeam': 'https://icue.vn/people/core-team?lang=en',
+  '#/orgStructure': 'https://icue.vn/structure/?lang=en',
+}
+for (const [hash, expected] of Object.entries(hashTargets)) {
+  const actual = pathFromLegacyHash(hash, 'en')
+  if (actual !== expected && !(hash === '#/Home' && (actual === '/' || actual === expected))) {
+    fail(`Hash ${hash} maps to ${actual}, expected ${expected}`)
   }
 }
 
 const redirects = read('_redirects')
-const requiredShellPaths = Object.entries(ROUTE_PATHS)
-  // External-app routes are asserted below instead of being rewritten to local
-  // shells, so none of them has a `<route>.html` rule.
-  .filter(([key]) => !['home', 'contact', 'aboutUs', 'faqs', 'recruitment',
-    'communityActivities', 'privacy', 'terms', 'gdpr', 'cookies',
-    'newsArchiveLegacyHtml', 'newsArchiveLegacyAlt'].includes(key))
-  .map(([, route]) => route)
-for (const route of requiredShellPaths) {
-  const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const shell = `${route}.html`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  if (!new RegExp(`^${escaped}\\s+${shell}\\s+200!?\\s*$`, 'm').test(redirects)) {
-    failures.push(`Missing route-specific Netlify shell rewrite: ${route}`)
+const requiredRedirects = {
+  [ROUTE_PATHS.contact]: CONTACT_APP_URL,
+  [`${ROUTE_PATHS.contact}/`]: CONTACT_APP_URL,
+  [ROUTE_PATHS.aboutUs]: ABOUT_US_APP_URL,
+  [`${ROUTE_PATHS.aboutUs}/`]: ABOUT_US_APP_URL,
+  '/about-us.html': ABOUT_US_APP_URL,
+  '/about-us-legacy': ABOUT_US_APP_URL,
+  '/our-work': OUR_WORK_APP_URL,
+  '/our-work/': OUR_WORK_APP_URL,
+  [ROUTE_PATHS.pastProjects]: PAST_PROJECTS_APP_URL,
+  [`${ROUTE_PATHS.pastProjects}/`]: PAST_PROJECTS_APP_URL,
+  [ROUTE_PATHS.newsArchive]: NEWS_ARCHIVE_APP_URL,
+  [`${ROUTE_PATHS.newsArchive}/`]: NEWS_ARCHIVE_APP_URL,
+  [ROUTE_PATHS.notableAwards]: NOTABLE_AWARDS_APP_URL,
+  [ROUTE_PATHS.faqs]: FAQ_APP_URL,
+  [ROUTE_PATHS.recruitment]: RECRUITMENT_APP_URL,
+  [ROUTE_PATHS.communityActivities]: COMMUNITY_ACTIVITIES_APP_URL,
+  '/newsroom': NEWSROOM_URL,
+  '/people': 'https://icue.vn/people/experts?lang=en',
+  '/structure': 'https://icue.vn/structure/?lang=en',
+  [ROUTE_PATHS.privacy]: LEGAL_APP_URLS.privacy,
+  [ROUTE_PATHS.terms]: LEGAL_APP_URLS.terms,
+  [ROUTE_PATHS.gdpr]: LEGAL_APP_URLS.gdpr,
+  [ROUTE_PATHS.cookies]: LEGAL_APP_URLS.cookies,
+  '/privacy': LEGAL_APP_URLS.privacy,
+  '/terms': LEGAL_APP_URLS.terms,
+  '/gdpr': LEGAL_APP_URLS.gdpr,
+  '/cookies': LEGAL_APP_URLS.cookies,
+  '/legacy/pages/Home.html': '/',
+  '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
+  '/legacy/pages/Contact.html': CONTACT_APP_URL,
+  '/legacy/pages/pastProjects.html': PAST_PROJECTS_APP_URL,
+  '/legacy/pages/News.html': NEWS_ARCHIVE_APP_URL,
+  '/legacy/pages/card.html': PAST_PROJECTS_APP_URL,
+  '/legacy/pages/article_template.html': NEWS_ARCHIVE_APP_URL,
+}
+
+for (const [from, to] of Object.entries(requiredRedirects)) {
+  if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
+    fail(`Missing forced redirect: ${from} -> ${to}`)
   }
 }
 
-const legacyRedirects = {
-  '/legacy/pages/Home.html': '/',
-  '/legacy/pages/Home_OLD.html': '/',
-  '/legacy/pages/Contact.html': CONTACT_APP_URL,
-  '/legacy/pages/aboutUs.html': ABOUT_US_APP_URL,
-  '/legacy/pages/aboutus.html': ABOUT_US_APP_URL,
-  '/legacy/pages/aboutus': ABOUT_US_APP_URL,
-  '/legacy/pages/ourWork.html': OUR_WORK_APP_URL,
-  '/legacy/pages/pastProjects.html': ROUTE_PATHS.pastProjects,
-  '/legacy/pages/recruitment.html': RECRUITMENT_APP_URL,
-  '/legacy/pages/News.html': ROUTE_PATHS.newsArchive,
-  '/legacy/pages/orgStructure.html': 'https://icue.vn/structure/',
-  '/legacy/pages/notableAwards.html': ROUTE_PATHS.notableAwards,
-  '/legacy/pages/communityActivities.html': COMMUNITY_ACTIVITIES_APP_URL,
-  '/legacy/pages/FAQs.html': FAQ_APP_URL,
-  '/legacy/pages/privacy.html': LEGAL_APP_URLS.privacy,
-  '/legacy/pages/terms.html': LEGAL_APP_URLS.terms,
-  '/legacy/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-  '/legacy/pages/cookies.html': LEGAL_APP_URLS.cookies,
-  '/legacy-embed/pages/privacy.html': LEGAL_APP_URLS.privacy,
-  '/legacy-embed/pages/terms.html': LEGAL_APP_URLS.terms,
-  '/legacy-embed/pages/gdpr.html': LEGAL_APP_URLS.gdpr,
-  '/legacy-embed/pages/cookies.html': LEGAL_APP_URLS.cookies,
+const splatRedirects = {
+  '/past-projects/*': 'https://icue.vn/past-projects/:splat?lang=en',
+  '/news-archive/*': 'https://icue.vn/news-archive/:splat?lang=en',
+  '/contact/*': 'https://icue.vn/contact/:splat?lang=en',
+  '/people/*': 'https://icue.vn/people/:splat?lang=en',
+  '/newsroom/*': 'https://icue.vn/newsroom/:splat?lang=en',
 }
-for (const [from, to] of Object.entries(legacyRedirects)) {
-  const line = redirects
-    .split('\n')
-    .find((candidate) => candidate.trim().startsWith(`${from} `))
-  if (!line || !line.trim().split(/\s+/).includes(to)) {
-    failures.push(`Missing legacy redirect: ${from} -> ${to}`)
-  } else if (!/\s301!\s*$/.test(line)) {
-    failures.push(`Legacy redirect is not forced: ${from}`)
+for (const [from, to] of Object.entries(splatRedirects)) {
+  if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
+    fail(`Missing splat redirect: ${from} -> ${to}`)
   }
+}
+
+if (!/^\/legacy\/pages\/card\.html id=:id\s+https:\/\/icue\.vn\/past-projects\/:id\?lang=en\s+301!?$/m.test(redirects)) {
+  fail('Missing project-id redirect from card.html')
+}
+if (!/^\/legacy\/pages\/article_template\.html id=:id\s+https:\/\/icue\.vn\/news-archive\/:id\?lang=en\s+301!?$/m.test(redirects)) {
+  fail('Missing article-id redirect from article_template.html')
+}
+
+for (const line of redirects.split('\n')) {
+  const trimmed = line.trim()
+  if (!trimmed || trimmed.startsWith('#')) continue
+  if (trimmed.includes('site=en') || trimmed.includes('from=en-news')) {
+    fail(`Redirect still emits a retired language hint: ${trimmed}`)
+  }
+}
+
+const bootstrapCases = [
+  ['/about-us', ABOUT_US_APP_URL],
+  ['/about-us/', ABOUT_US_APP_URL],
+  ['/about-us.html', ABOUT_US_APP_URL],
+  ['/legacy/pages/aboutUs.html', ABOUT_US_APP_URL],
+  ['/past-projects/9', 'https://icue.vn/past-projects/9?lang=en'],
+  ['/news-archive/4', 'https://icue.vn/news-archive/4?lang=en'],
+  ['/legacy/pages/card.html', PAST_PROJECTS_APP_URL],
+  ['/legacy/pages/article_template.html', NEWS_ARCHIVE_APP_URL],
+  ['/legal/terms', LEGAL_APP_URLS.terms],
+  ['/terms', LEGAL_APP_URLS.terms],
+  ['/newsroom', NEWSROOM_URL],
+  ['/people/core-team', 'https://icue.vn/people/core-team?lang=en'],
+]
+for (const [alias, target] of bootstrapCases) {
+  const search = alias.includes('card') || alias.includes('article') ? '' : ''
+  if (getBootstrapExternalRedirect(alias, search) !== target) {
+    fail(`Bootstrap guard misses alias: ${alias} -> ${target} (got ${getBootstrapExternalRedirect(alias, search)})`)
+  }
+}
+if (getBootstrapExternalRedirect('/legacy/pages/card.html', '?id=6') !== 'https://icue.vn/past-projects/6?lang=en') {
+  fail('Bootstrap guard does not preserve a project id from card.html')
+}
+if (getBootstrapExternalRedirect('/src/pages/article_template.html', '?id=2') !== 'https://icue.vn/news-archive/2?lang=en') {
+  fail('Bootstrap guard does not preserve an article id from article_template.html')
 }
 
 const runtimeRouteSources = {
@@ -115,166 +244,43 @@ const runtimeRouteSources = {
   'home-app/vite.config.js': read('home-app/vite.config.js'),
 }
 for (const [file, source] of Object.entries(runtimeRouteSources)) {
-  for (const [from, to] of Object.entries(legacyRedirects)) {
-    if (!source.includes(from) || !source.includes(to)) {
-      failures.push(`Legacy redirect missing from ${file}: ${from} -> ${to}`)
-    }
+  if (!source.includes('getBootstrapExternalRedirect') && !source.includes('vnUrl(') && !source.includes('https://icue.vn')) {
+    fail(`${file} does not send retired English routes to icue.vn`)
+  }
+}
+if (!runtimeRouteSources['server.js'].includes("vnUrl('/past-projects/'")
+  && !runtimeRouteSources['server.js'].includes("vnUrl(`/past-projects/${")) {
+  fail('Express does not preserve project detail ids')
+}
+if (!runtimeRouteSources['server.js'].includes('lang=en')) {
+  fail('Express redirects are missing lang=en')
+}
+if (runtimeRouteSources['server.js'].includes('site=en')) {
+  fail('Express redirects still emit site=en')
+}
+
+const emittedSources = [
+  'shared/main-site-nav/navLinks.jsx',
+  'shared/site-footer/footerLinks.js',
+  'home-app/src/data/homeContent.js',
+  'home-app/src/lib/siteLinks.js',
+  'home-app/src/lib/routes.js',
+  'public/chatbot/kb.en.json',
+  'public/chatbot/kb.vi.json',
+]
+for (const file of emittedSources) {
+  const source = read(file)
+  if (source.includes('site=en') || source.includes('from=en-news')) {
+    fail(`Newly generated links still emit a retired language hint in ${file}`)
+  }
+  if (source.includes('card.html') || source.includes('article_template.html')) {
+    fail(`Navigation still points at retired HTML in ${file}`)
   }
 }
 
-// Routes this site links to but does not render. Every layer that can answer a
-// request for one — Netlify (_redirects and netlify.toml), Express, and both
-// dev servers — has to send it to the app on icue.vn. A local shell left behind
-// in any of them wins over the redirect and serves a dead page.
-const escapeRe = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 const netlifyToml = read('netlify.toml')
-const externalRoutes = {
-  [ROUTE_PATHS.contact]: CONTACT_APP_URL,
-  [`${ROUTE_PATHS.contact}/`]: CONTACT_APP_URL,
-  [ROUTE_PATHS.aboutUs]: ABOUT_US_APP_URL,
-  [`${ROUTE_PATHS.aboutUs}/`]: ABOUT_US_APP_URL,
-  '/about-us.html': ABOUT_US_APP_URL,
-  '/our-work': OUR_WORK_APP_URL,
-  '/our-work/': OUR_WORK_APP_URL,
-  [ROUTE_PATHS.faqs]: FAQ_APP_URL,
-  [`${ROUTE_PATHS.faqs}/`]: FAQ_APP_URL,
-  [ROUTE_PATHS.recruitment]: RECRUITMENT_APP_URL,
-  [`${ROUTE_PATHS.recruitment}/`]: RECRUITMENT_APP_URL,
-  [ROUTE_PATHS.communityActivities]: COMMUNITY_ACTIVITIES_APP_URL,
-  [`${ROUTE_PATHS.communityActivities}/`]: COMMUNITY_ACTIVITIES_APP_URL,
-  [ROUTE_PATHS.privacy]: LEGAL_APP_URLS.privacy,
-  [`${ROUTE_PATHS.privacy}/`]: LEGAL_APP_URLS.privacy,
-  [ROUTE_PATHS.terms]: LEGAL_APP_URLS.terms,
-  [`${ROUTE_PATHS.terms}/`]: LEGAL_APP_URLS.terms,
-  [ROUTE_PATHS.gdpr]: LEGAL_APP_URLS.gdpr,
-  [`${ROUTE_PATHS.gdpr}/`]: LEGAL_APP_URLS.gdpr,
-  [ROUTE_PATHS.cookies]: LEGAL_APP_URLS.cookies,
-  [`${ROUTE_PATHS.cookies}/`]: LEGAL_APP_URLS.cookies,
-  '/privacy': LEGAL_APP_URLS.privacy,
-  '/terms': LEGAL_APP_URLS.terms,
-  '/gdpr': LEGAL_APP_URLS.gdpr,
-  '/cookies': LEGAL_APP_URLS.cookies,
-}
-for (const [from, to] of Object.entries(externalRoutes)) {
-  if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
-    failures.push(`Missing external app redirect in _redirects: ${from} -> ${to}`)
-  }
-  for (const [file, source] of Object.entries(runtimeRouteSources)) {
-    if (!source.includes(`'${from}'`) || !source.includes(to)) {
-      failures.push(`External app redirect missing from ${file}: ${from} -> ${to}`)
-    }
-  }
-  // A shell rewrite for one of these wins over the redirect and serves a dead
-  // page, so netlify.toml must not claim the path at all.
-  if (new RegExp(`from = "${escapeRe(from)}"\\s+to = "(?!https:)`, 'm').test(netlifyToml)) {
-    failures.push(`netlify.toml rewrites ${from} to a local shell`)
-  }
-}
-
-// Contact and About Us have explicit forced redirects in netlify.toml because
-// stale/local shells have previously shadowed the canonical external apps.
-for (const [from, to] of [
-  [ROUTE_PATHS.contact, CONTACT_APP_URL],
-  [ROUTE_PATHS.aboutUs, ABOUT_US_APP_URL],
-  ['/about-us.html', ABOUT_US_APP_URL],
-  ['/legacy/pages/aboutus.html', ABOUT_US_APP_URL],
-  ['/legacy/pages/aboutus', ABOUT_US_APP_URL],
-  [ROUTE_PATHS.privacy, LEGAL_APP_URLS.privacy],
-  [`${ROUTE_PATHS.privacy}/`, LEGAL_APP_URLS.privacy],
-  [ROUTE_PATHS.terms, LEGAL_APP_URLS.terms],
-  [`${ROUTE_PATHS.terms}/`, LEGAL_APP_URLS.terms],
-  [ROUTE_PATHS.gdpr, LEGAL_APP_URLS.gdpr],
-  [`${ROUTE_PATHS.gdpr}/`, LEGAL_APP_URLS.gdpr],
-  [ROUTE_PATHS.cookies, LEGAL_APP_URLS.cookies],
-  [`${ROUTE_PATHS.cookies}/`, LEGAL_APP_URLS.cookies],
-  ['/privacy', LEGAL_APP_URLS.privacy],
-  ['/terms', LEGAL_APP_URLS.terms],
-  ['/gdpr', LEGAL_APP_URLS.gdpr],
-  ['/cookies', LEGAL_APP_URLS.cookies],
-]) {
-  const redirectBlock = new RegExp(
-    `from = "${escapeRe(from)}"\\s+to = "${escapeRe(to)}"\\s+status = 301\\s+force = true`,
-    'm',
-  )
-  if (!redirectBlock.test(netlifyToml)) {
-    failures.push(`Missing forced external app redirect in netlify.toml: ${from} -> ${to}`)
-  }
-}
-
-for (const alias of [
-  '/about-us',
-  '/about-us/',
-  '/about-us.html',
-  '/legacy/pages/aboutUs.html',
-  '/legacy/pages/aboutus.html',
-  '/legacy/pages/aboutus',
-]) {
-  if (getBootstrapExternalRedirect(alias) !== ABOUT_US_APP_URL) {
-    failures.push(`About Us bootstrap guard misses alias: ${alias}`)
-  }
-}
-for (const [alias, target] of [
-  ['/legal', LEGAL_APP_URLS.privacy],
-  ['/legal/privacy', LEGAL_APP_URLS.privacy],
-  ['/privacy', LEGAL_APP_URLS.privacy],
-  ['/legacy/pages/privacy.html', LEGAL_APP_URLS.privacy],
-  ['/legal/terms/', LEGAL_APP_URLS.terms],
-  ['/terms', LEGAL_APP_URLS.terms],
-  ['/legacy/pages/terms.html', LEGAL_APP_URLS.terms],
-  ['/legal/gdpr', LEGAL_APP_URLS.gdpr],
-  ['/gdpr', LEGAL_APP_URLS.gdpr],
-  ['/legacy/pages/gdpr.html', LEGAL_APP_URLS.gdpr],
-  ['/legal/cookies', LEGAL_APP_URLS.cookies],
-  ['/cookies', LEGAL_APP_URLS.cookies],
-  ['/legacy/pages/cookies.html', LEGAL_APP_URLS.cookies],
-]) {
-  if (getBootstrapExternalRedirect(alias) !== target) {
-    failures.push(`Legal bootstrap guard misses alias: ${alias}`)
-  }
-}
-if (withUiLang(LEGAL_APP_URLS.terms, 'en') !== LEGAL_APP_URLS.terms) {
-  failures.push('English Legal app URL does not preserve ?lang=en')
-}
-if (withUiLang(LEGAL_APP_URLS.terms, 'fr') !== 'https://icue.vn/legal/terms?lang=fr') {
-  failures.push('Legal app URL does not preserve a non-English UI language')
-}
-if (!mainSource.includes('redirectExternalAppAtBootstrap()')) {
-  failures.push('Home entry does not run the external-app bootstrap redirect guard')
-}
-for (const [path, label] of [
-  [ROUTE_PATHS.contact, 'contact'],
-  [ROUTE_PATHS.aboutUs, 'about-us'],
-  ['/our-work', 'our-work'],
-  [ROUTE_PATHS.faqs, 'faqs'],
-  [ROUTE_PATHS.recruitment, 'recruitment'],
-  [ROUTE_PATHS.communityActivities, 'community-activities'],
-  [ROUTE_PATHS.privacy, 'legal/privacy'],
-  [ROUTE_PATHS.terms, 'legal/terms'],
-  [ROUTE_PATHS.gdpr, 'legal/gdpr'],
-  [ROUTE_PATHS.cookies, 'legal/cookies'],
-]) {
-  if (ROUTE_META.some((route) => route.path === path)) {
-    failures.push(`routeMeta.js still builds a ${label} shell, which shadows the redirect`)
-  }
-}
-
-const serverSource = runtimeRouteSources['server.js']
-for (const route of requiredShellPaths) {
-  if (!serverSource.includes(`'${route}'`)) {
-    failures.push(`Express SPA route missing: ${route}`)
-  }
-}
-
-for (const copy of ['home-app/public/_redirects', 'dist-home/_redirects']) {
-  const copyPath = path.join(root, copy)
-  if (fs.existsSync(copyPath) && fs.readFileSync(copyPath, 'utf8') !== redirects) {
-    failures.push(`Redirect copy drifted from _redirects: ${copy}`)
-  }
-}
-
-
-if (read('legacy/pages/article_template.html').includes('href="/youtube"')) {
-  failures.push('Broken local /youtube link remains in article_template.html')
+if (/from = "\/about-us"/.test(netlifyToml) && /to = "(?!https:)/.test(netlifyToml)) {
+  fail('netlify.toml still rewrites a retired English subpage to a local shell')
 }
 
 if (failures.length) {
@@ -282,4 +288,7 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`Route audit passed: ${mountedKeys.size} React routes, ${requiredShellPaths.length} SPA rewrites, and ${Object.keys(legacyRedirects).length} legacy redirects checked across all runtimes.`)
+console.log(
+  `Route audit passed: Home-only English app, ${SUPPORTED_UI_LOCALES.length} locales, `
+    + `${ICUE_VN_HOSTED_PAGES.size} icue.vn-hosted pages, and forced compatibility redirects.`,
+)

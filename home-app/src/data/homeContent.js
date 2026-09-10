@@ -4,8 +4,8 @@ import {
   CONTACT_APP_URL,
   NEWSROOM_URL,
   OUR_WORK_APP_URL,
+  PAST_PROJECTS_APP_URL,
   RECRUITMENT_APP_URL,
-  ROUTE_PATHS,
 } from '../lib/routes'
 
 /**
@@ -24,7 +24,7 @@ const SECTION_LAYOUT = [
   {
     id: 'home-past-projects',
     key: 'pastProjects',
-    linkHref: ROUTE_PATHS.pastProjects,
+    linkHref: PAST_PROJECTS_APP_URL,
     cards: [
       { key: 'laoCai', image: '/public/pastProjects/pp_1.jpg', href: projectCardUrl(1) },
       { key: 'subdivision6b', image: '/public/pastProjects/pp_3.jpg', href: projectCardUrl(3) },
@@ -74,7 +74,7 @@ export function buildHero(t, lang = 'en') {
     ariaLabel: t('home.hero.ariaLabel'),
     actions: [
       { label: t('home.hero.actions.contact'), href: withUiLang(CONTACT_APP_URL, lang), variant: 'primary' },
-      { label: t('home.hero.actions.pastProjects'), href: withUiLang(ROUTE_PATHS.pastProjects, lang), variant: 'ghost' },
+      { label: t('home.hero.actions.pastProjects'), href: withUiLang(PAST_PROJECTS_APP_URL, lang), variant: 'ghost' },
     ],
   }
 }

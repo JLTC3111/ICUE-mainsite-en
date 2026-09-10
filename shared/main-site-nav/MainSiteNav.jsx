@@ -267,6 +267,10 @@ export default function MainSiteNav({
     () => localizeNavLinks(sourceLinks, labels).map((link) => withUiLangOnHref(link, lang)),
     [labels, lang, sourceLinks],
   );
+  const pillLinkConfig = useMemo(
+    () => drawerLinkConfig.filter((link) => !link.drawerOnly),
+    [drawerLinkConfig],
+  );
   const peopleSubmenu = useMemo(
     () => withUiLangOnHref(localizePeopleSubmenu(PEOPLE_SUBMENU, labels), lang),
     [labels, lang],
@@ -449,7 +453,7 @@ export default function MainSiteNav({
         {usePillNav && PillHeaderComponent ? (
           <PillHeaderComponent
             activePage={activePage}
-            items={drawerLinkConfig}
+            items={pillLinkConfig}
             homeHref={localizedHomeHref}
             logoMarkSrc={`${isStandalone ? '/' : 'public/'}logoIcons/favicon.png`}
             logoVideoSrc={`${isStandalone ? '/' : 'public/'}bgVideos/video-text-football.mp4`}

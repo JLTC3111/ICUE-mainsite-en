@@ -14,9 +14,9 @@
       "phrases": ["what services do you provide", "consulting services", "what can you help with"],
       "answer": "ICUE provides consulting related to planning/design, project management, procedure support, and sustainability-focused solutions. Tell me your project type + scope (design, supervision, documentation, etc.) and I’ll point you to the best next step.",
       "links": [
-        {"label": "Work / Services", "url": "#/ourWork"},
-        {"label": "FAQs", "url": "#/faqs"},
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Work / Services", "url": "https://icue.vn/our-work?lang=en"},
+        {"label": "FAQs", "url": "https://icue.vn/faqs?lang=en"},
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -25,8 +25,8 @@
       "phrases": ["do you do planning", "can you help with design", "master planning"],
       "answer": "Yes — we can support planning and design depending on the project needs. If you share the site/location, goals, and current status (idea / concept / detailed design), I can suggest the most suitable workflow.",
       "links": [
-        {"label": "Work", "url": "#/ourWork"},
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Work", "url": "https://icue.vn/our-work?lang=en"},
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -35,7 +35,7 @@
       "phrases": ["can you manage my project", "project management support"],
       "answer": "We can provide project management and coordination support depending on scope. If you tell me timeline, stakeholders, and deliverables, I can outline a practical PM plan.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -44,7 +44,7 @@
       "phrases": ["do you supervise construction", "site supervision"],
       "answer": "Supervision/monitoring support depends on project type and location. Share the project location and phase (design / tender / construction) and I’ll advise the best approach.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -53,8 +53,8 @@
       "phrases": ["can you help with permits", "legal procedure support"],
       "answer": "We can assist with procedures/document preparation depending on the project. If you tell me your city/province and project type, I can suggest what documents are typically needed and the usual steps.",
       "links": [
-        {"label": "FAQs", "url": "#/faqs"},
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "FAQs", "url": "https://icue.vn/faqs?lang=en"},
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -63,8 +63,8 @@
       "phrases": ["what documents do i need", "required documents"],
       "answer": "Common starting documents include: basic site info, goals/scope, existing drawings (if any), and relevant legal/ownership papers (if applicable). If you share what you already have, I can tell you what’s missing.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"},
-        {"label": "FAQs", "url": "#/faqs"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"},
+        {"label": "FAQs", "url": "https://icue.vn/faqs?lang=en"}
       ]
     },
     {
@@ -73,7 +73,7 @@
       "phrases": ["how much does it cost", "can i get a quote", "pricing"],
       "answer": "Fees vary by scope, timeline, and project complexity. If you share a 3–5 line brief (project type, location, size, timeline, and what you need), we can provide a more accurate estimate.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -82,7 +82,7 @@
       "phrases": ["can i pay in installments", "payment terms"],
       "answer": "Payment terms are usually aligned with milestones (e.g., concept → draft → final). If you share your timeline and deliverables, we can suggest a reasonable milestone plan.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -91,7 +91,7 @@
       "phrases": ["what is your process", "how do we work together"],
       "answer": "Typical flow: initial discussion → collect requirements → site/context review → draft deliverables → revisions → final delivery. If you tell me your project stage, I can recommend the right starting point.",
       "links": [
-        {"label": "FAQs", "url": "#/faqs"}
+        {"label": "FAQs", "url": "https://icue.vn/faqs?lang=en"}
       ]
     },
     {
@@ -100,7 +100,7 @@
       "phrases": ["how long does it take", "timeline"],
       "answer": "Timeline depends on scope and approvals. Share your deadline and what you need delivered (concept only vs. full package) and I’ll suggest a realistic timeline and checkpoints.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -109,7 +109,7 @@
       "phrases": ["do you use bim", "3d model"],
       "answer": "We can use BIM/3D modeling where appropriate to help visualize and coordinate design. Tell me your deliverable needs (3D model, views, coordination) and I’ll advise.",
       "links": [
-        {"label": "Work", "url": "#/ourWork"}
+        {"label": "Work", "url": "https://icue.vn/our-work?lang=en"}
       ]
     },
     {
@@ -118,7 +118,7 @@
       "phrases": ["green design", "sustainable solutions"],
       "answer": "Yes — we can incorporate sustainability goals (materials, energy, climate resilience) depending on project context. Share your priorities and constraints and I’ll propose practical options.",
       "links": [
-        {"label": "Work", "url": "#/ourWork"}
+        {"label": "Work", "url": "https://icue.vn/our-work?lang=en"}
       ]
     },
     {
@@ -127,7 +127,7 @@
       "phrases": ["who do you work with", "who are your clients"],
       "answer": "We work with a mix of individuals, organizations/businesses, and public-sector stakeholders depending on the program/project. If you share your context, I can point to similar examples.",
       "links": [
-        {"label": "Past Projects", "url": "#/pastProjects"}
+        {"label": "Past Projects", "url": "https://icue.vn/past-projects?lang=en"}
       ]
     },
     {
@@ -136,7 +136,7 @@
       "phrases": ["where do you operate", "are you based in"],
       "answer": "If you tell me the project location (city/province) and whether you prefer remote or on-site support, I can advise what’s feasible and the typical workflow.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -145,8 +145,8 @@
       "phrases": ["show portfolio", "what projects have you done"],
       "answer": "You can browse projects and activities under Work / Past Projects. If you tell me your domain (urban, environment, community…), I’ll suggest the closest examples.",
       "links": [
-        {"label": "Past Projects", "url": "#/pastProjects"},
-        {"label": "Work", "url": "#/ourWork"}
+        {"label": "Past Projects", "url": "https://icue.vn/past-projects?lang=en"},
+        {"label": "Work", "url": "https://icue.vn/our-work?lang=en"}
       ]
     },
     {
@@ -155,7 +155,7 @@
       "phrases": ["latest news", "recent articles"],
       "answer": "You can check the News page for recent updates and articles.",
       "links": [
-        {"label": "News", "url": "#/News"}
+        {"label": "News", "url": "https://icue.vn/newsroom/?lang=en"}
       ]
     },
     {
@@ -164,7 +164,7 @@
       "phrases": ["community activities", "events"],
       "answer": "ICUE also runs/participates in community activities and programs. Check the Community Activities page for more.",
       "links": [
-        {"label": "Community Activities", "url": "https://icue.vn/community-activities?site=en"}
+        {"label": "Community Activities", "url": "https://icue.vn/community-activities?lang=en"}
       ]
     },
     {
@@ -173,7 +173,7 @@
       "phrases": ["are you hiring", "how do i apply", "open roles"],
       "answer": "Check the Recruitment page for open roles and requirements. If you share the role you’re targeting, I can help you tailor your CV and application message.",
       "links": [
-        {"label": "Recruitment", "url": "#/recruitment"}
+        {"label": "Recruitment", "url": "https://icue.vn/recruitment?lang=en"}
       ]
     },
     {
@@ -182,7 +182,7 @@
       "phrases": ["do you offer internships", "internship opportunities"],
       "answer": "If you’re looking for internships, the Recruitment page is the best place to start. Share your background + interests and I can suggest what to highlight in your application.",
       "links": [
-        {"label": "Recruitment", "url": "#/recruitment"}
+        {"label": "Recruitment", "url": "https://icue.vn/recruitment?lang=en"}
       ]
     },
     {
@@ -191,7 +191,7 @@
       "phrases": ["i want to partner", "collaboration opportunities"],
       "answer": "We’re open to collaboration depending on alignment and scope. If you share who you are, the topic, and what you’re proposing, I can help draft a clear outreach message.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -200,7 +200,7 @@
       "phrases": ["media request", "press contact"],
       "answer": "For media/press requests, please contact us with your deadline, topic, and what you need (quote/interview/speaker). I can help you draft the request message.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -209,7 +209,7 @@
       "phrases": ["can we schedule a call", "book a meeting"],
       "answer": "Sure — share your preferred time window, timezone, and what you want to discuss. If you message via the Contact page, include these details to speed things up.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -218,7 +218,7 @@
       "phrases": ["can you send a proposal", "rfp"],
       "answer": "Yes — if you share a brief scope (goals, deliverables, timeline, budget range if available), we can respond with a proposal structure and next steps.",
       "links": [
-        {"label": "Contact", "url": "https://icue.vn/contact?site=en"}
+        {"label": "Contact", "url": "https://icue.vn/contact?lang=en"}
       ]
     },
     {
@@ -227,10 +227,10 @@
       "phrases": ["privacy policy", "terms of use", "cookies"],
       "answer": "You can review our policy pages (Privacy, GDPR, Terms, Cookies). Tell me which one you need and I’ll point you there.",
       "links": [
-        {"label": "Privacy", "url": "#/privacy"},
-        {"label": "GDPR", "url": "#/gdpr"},
-        {"label": "Terms", "url": "#/terms"},
-        {"label": "Cookies", "url": "#/cookies"}
+        {"label": "Privacy", "url": "https://icue.vn/legal/privacy?lang=en"},
+        {"label": "GDPR", "url": "https://icue.vn/legal/gdpr?lang=en"},
+        {"label": "Terms", "url": "https://icue.vn/legal/terms?lang=en"},
+        {"label": "Cookies", "url": "https://icue.vn/legal/cookies?lang=en"}
       ]
     },
     {
@@ -239,7 +239,7 @@
       "phrases": ["faq", "faqs"],
       "answer": "You can use the FAQs page for quick answers — and feel free to ask here too. I’ll try to find the closest match from the FAQ knowledge base.",
       "links": [
-        {"label": "FAQs", "url": "#/faqs"}
+        {"label": "FAQs", "url": "https://icue.vn/faqs?lang=en"}
       ]
     }
   ],

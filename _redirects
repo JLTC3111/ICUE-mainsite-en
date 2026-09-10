@@ -1,95 +1,131 @@
-# Canonical redirects from the retired hash/static site.
-/legacy/pages/Home.html                /                         301!
-/legacy/pages/Home_OLD.html            /                         301!
-/legacy/pages/Contact.html             https://icue.vn/contact?site=en    301!
-/legacy/pages/aboutUs.html             https://icue.vn/about-us?site=en   301!
-/legacy/pages/aboutus.html             https://icue.vn/about-us?site=en   301!
-/legacy/pages/aboutus                  https://icue.vn/about-us?site=en   301!
-/legacy/pages/ourWork.html             https://icue.vn/our-work?site=en   301!
-/legacy/pages/pastProjects.html        /past-projects            301!
-/legacy/pages/recruitment.html         https://icue.vn/recruitment?site=en  301!
-/legacy/pages/News.html                /news-archive             301!
-/legacy/pages/orgStructure.html        https://icue.vn/structure/ 301!
-/legacy/pages/notableAwards.html       /notable-awards           301!
-/legacy/pages/communityActivities.html https://icue.vn/community-activities?site=en 301!
-/legacy/pages/FAQs.html                https://icue.vn/faqs?site=en         301!
-/legacy/pages/privacy.html             https://icue.vn/legal/privacy?lang=en 301!
-/legacy/pages/terms.html               https://icue.vn/legal/terms?lang=en   301!
-/legacy/pages/gdpr.html                https://icue.vn/legal/gdpr?lang=en    301!
-/legacy/pages/cookies.html             https://icue.vn/legal/cookies?lang=en 301!
-/legacy-embed/pages/privacy.html       https://icue.vn/legal/privacy?lang=en 301!
-/legacy-embed/pages/terms.html         https://icue.vn/legal/terms?lang=en   301!
-/legacy-embed/pages/gdpr.html          https://icue.vn/legal/gdpr?lang=en    301!
-/legacy-embed/pages/cookies.html       https://icue.vn/legal/cookies?lang=en 301!
+# Retired English HTML always moves to the current React implementation.
+/legacy/pages/Home.html                         /                                             301!
+/legacy/pages/Home_OLD.html                     /                                             301!
+/legacy-embed/pages/Home.html                   /                                             301!
+/legacy-embed/pages/Home_OLD.html               /                                             301!
+/src/pages/Home.html                            /                                             301!
+/src/pages/Home_OLD.html                        /                                             301!
 
-# Normalize trailing slashes before serving the history-routed app.
-/contact/              https://icue.vn/contact?site=en    301!
-/about-us/             https://icue.vn/about-us?site=en   301!
-/about-us.html         https://icue.vn/about-us?site=en   301!
-/our-work/             https://icue.vn/our-work?site=en   301!
-/past-projects/        /past-projects           301
-/recruitment/          https://icue.vn/recruitment?site=en  301!
-/news-archive/         /news-archive            301
-/notable-awards/       /notable-awards          301
-/community-activities/ https://icue.vn/community-activities?site=en 301!
-/faqs/                 https://icue.vn/faqs?site=en         301!
-/legal/privacy/        https://icue.vn/legal/privacy?lang=en 301!
-/legal/terms/          https://icue.vn/legal/terms?lang=en   301!
-/legal/gdpr/           https://icue.vn/legal/gdpr?lang=en    301!
-/legal/cookies/        https://icue.vn/legal/cookies?lang=en 301!
+/legacy/pages/card.html id=:id                  https://icue.vn/past-projects/:id?lang=en      301!
+/legacy-embed/pages/card.html id=:id            https://icue.vn/past-projects/:id?lang=en      301!
+/src/pages/card.html id=:id                     https://icue.vn/past-projects/:id?lang=en      301!
+/legacy/pages/card.html                         https://icue.vn/past-projects?lang=en          301!
+/legacy-embed/pages/card.html                   https://icue.vn/past-projects?lang=en          301!
+/src/pages/card.html                            https://icue.vn/past-projects?lang=en          301!
 
-# React history routes.
-# Contact is one React app for both sites, hosted on icue.vn (contact-app in the
-# vn repo, built to /contact). ?site=en keeps the page in English and sends its
-# chrome links back to en.icue.vn — same arrangement as Our Work below.
-/contact               https://icue.vn/contact?site=en    301!
-# About Us is now one page for both sites, hosted on icue.vn, which renders all
-# six UI languages — same arrangement as Contact above and Our Work below.
-# ?site=en selects English and sends its chrome links back to en.icue.vn.
-# Keep this redirect forced so a stale about-us.html from an older deploy can
-# never shadow the canonical shared app. The production check also rejects any
-# new build that contains the retired shell or its legacy page HTML.
-/about-us              https://icue.vn/about-us?site=en   301!
-# Our Work is one React app for both sites, hosted on icue.vn. ?site=en keeps
-# the page in English and sends its chrome links back to en.icue.vn.
-/our-work              https://icue.vn/our-work?site=en   301!
-/past-projects         /past-projects.html          200
-# FAQs and Recruitment are single apps for both sites now, hosted on icue.vn
-# (faq-app and recruitment-app in the vn repo), each rendering all six UI
-# languages. ?site=en selects English and points their chrome back here.
-# Forced with `!` on purpose. This build no longer produces recruitment.html or
-# faqs.html — routeMeta.js stopped listing them — but it did until this change,
-# so a copy left in a cached or previously-published deploy would win over an
-# unforced 301 and quietly keep serving the retired English page.
-/recruitment           https://icue.vn/recruitment?site=en  301!
-/news-archive          /news-archive.html           200
-/notable-awards        /notable-awards.html         200
-# Community Activities is a single app for both sites now, hosted on icue.vn
-# (community-activities-app in the vn repo), rendering all six UI languages.
-# ?site=en selects English and points its chrome back here. Forced with `!` on
-# purpose: a cached community-activities.html from an older deploy would win
-# over an unforced 301 and quietly keep serving the retired English page.
-/community-activities  https://icue.vn/community-activities?site=en 301!
-/faqs                  https://icue.vn/faqs?site=en         301!
+/legacy/pages/article_template.html id=:id      https://icue.vn/news-archive/:id?lang=en       301!
+/legacy-embed/pages/article_template.html id=:id https://icue.vn/news-archive/:id?lang=en      301!
+/src/pages/article_template.html id=:id         https://icue.vn/news-archive/:id?lang=en       301!
+/legacy/pages/article_template.html             https://icue.vn/news-archive?lang=en           301!
+/legacy-embed/pages/article_template.html       https://icue.vn/news-archive?lang=en           301!
+/src/pages/article_template.html                https://icue.vn/news-archive?lang=en           301!
 
-# Legal documents are owned by the consolidated six-language app on icue.vn.
-# Force these redirects so stale generated shells and old static HTML can never
-# win Netlify's file-precedence check. The app reads the explicit `lang=en`.
-/legal/privacy         https://icue.vn/legal/privacy?lang=en 301!
-/legal/terms           https://icue.vn/legal/terms?lang=en   301!
-/legal/gdpr            https://icue.vn/legal/gdpr?lang=en    301!
-/legal/cookies         https://icue.vn/legal/cookies?lang=en 301!
-/legal                 https://icue.vn/legal/privacy?lang=en 301!
+/legacy/pages/Contact.html                      https://icue.vn/contact?lang=en                301!
+/legacy-embed/pages/Contact.html                https://icue.vn/contact?lang=en                301!
+/src/pages/Contact.html                         https://icue.vn/contact?lang=en                301!
+/legacy/pages/aboutUs.html                      https://icue.vn/about-us?lang=en               301!
+/legacy/pages/aboutus.html                      https://icue.vn/about-us?lang=en               301!
+/legacy/pages/aboutus                           https://icue.vn/about-us?lang=en               301!
+/legacy-embed/pages/aboutUs.html                https://icue.vn/about-us?lang=en               301!
+/src/pages/aboutUs.html                         https://icue.vn/about-us?lang=en               301!
+/legacy/pages/ourWork.html                      https://icue.vn/our-work?lang=en               301!
+/legacy-embed/pages/ourWork.html                https://icue.vn/our-work?lang=en               301!
+/src/pages/ourWork.html                         https://icue.vn/our-work?lang=en               301!
+/legacy/pages/pastProjects.html                 https://icue.vn/past-projects?lang=en          301!
+/legacy-embed/pages/pastProjects.html           https://icue.vn/past-projects?lang=en          301!
+/src/pages/pastProjects.html                    https://icue.vn/past-projects?lang=en          301!
+/legacy/pages/News.html                         https://icue.vn/news-archive?lang=en           301!
+/legacy/pages/News                              https://icue.vn/news-archive?lang=en           301!
+/legacy-embed/pages/News.html                   https://icue.vn/news-archive?lang=en           301!
+/src/pages/News.html                            https://icue.vn/news-archive?lang=en           301!
+/legacy/pages/notableAwards.html                https://icue.vn/notable-awards?lang=en         301!
+/legacy-embed/pages/notableAwards.html          https://icue.vn/notable-awards?lang=en         301!
+/src/pages/notableAwards.html                   https://icue.vn/notable-awards?lang=en         301!
+/legacy/pages/communityActivities.html          https://icue.vn/community-activities?lang=en   301!
+/legacy-embed/pages/communityActivities.html    https://icue.vn/community-activities?lang=en   301!
+/src/pages/communityActivities.html             https://icue.vn/community-activities?lang=en   301!
+/legacy/pages/FAQs.html                         https://icue.vn/faqs?lang=en                   301!
+/legacy-embed/pages/FAQs.html                   https://icue.vn/faqs?lang=en                   301!
+/src/pages/FAQs.html                            https://icue.vn/faqs?lang=en                   301!
+/legacy/pages/recruitment.html                  https://icue.vn/recruitment?lang=en            301!
+/legacy-embed/pages/recruitment.html            https://icue.vn/recruitment?lang=en            301!
+/src/pages/recruitment.html                     https://icue.vn/recruitment?lang=en            301!
+/legacy/pages/orgStructure.html                 https://icue.vn/structure/?lang=en             301!
+/legacy-embed/pages/orgStructure.html           https://icue.vn/structure/?lang=en             301!
+/src/pages/orgStructure.html                    https://icue.vn/structure/?lang=en             301!
 
-# Former legal-page URLs move directly to that app as well.
-/privacy               https://icue.vn/legal/privacy?lang=en 301!
-/terms                 https://icue.vn/legal/terms?lang=en   301!
-/gdpr                  https://icue.vn/legal/gdpr?lang=en    301!
-/cookies               https://icue.vn/legal/cookies?lang=en 301!
+/legacy/pages/privacy.html                      https://icue.vn/legal/privacy?lang=en          301!
+/legacy/pages/terms.html                        https://icue.vn/legal/terms?lang=en            301!
+/legacy/pages/gdpr.html                         https://icue.vn/legal/gdpr?lang=en             301!
+/legacy/pages/cookies.html                      https://icue.vn/legal/cookies?lang=en          301!
+/legacy-embed/pages/privacy.html                https://icue.vn/legal/privacy?lang=en          301!
+/legacy-embed/pages/terms.html                  https://icue.vn/legal/terms?lang=en            301!
+/legacy-embed/pages/gdpr.html                   https://icue.vn/legal/gdpr?lang=en             301!
+/legacy-embed/pages/cookies.html                https://icue.vn/legal/cookies?lang=en          301!
+/src/pages/privacy.html                         https://icue.vn/legal/privacy?lang=en          301!
+/src/pages/terms.html                           https://icue.vn/legal/terms?lang=en            301!
+/src/pages/gdpr.html                            https://icue.vn/legal/gdpr?lang=en             301!
+/src/pages/cookies.html                         https://icue.vn/legal/cookies?lang=en          301!
 
-# Static compatibility paths.
-/favicon.ico           /logoIcons/favicon.png         200
-/public/*              /:splat                        200
+# Every English-host subpath is compatibility-only. Preserve route suffixes.
+/contact                                       https://icue.vn/contact?lang=en                301!
+/contact/                                      https://icue.vn/contact?lang=en                301!
+/contact/*                                     https://icue.vn/contact/:splat?lang=en         301!
+/about-us                                      https://icue.vn/about-us?lang=en               301!
+/about-us/                                     https://icue.vn/about-us?lang=en               301!
+/about-us.html                                 https://icue.vn/about-us?lang=en               301!
+/about-us-legacy                              https://icue.vn/about-us?lang=en               301!
+/our-work                                      https://icue.vn/our-work?lang=en               301!
+/our-work/                                     https://icue.vn/our-work?lang=en               301!
+/our-work/*                                    https://icue.vn/our-work/:splat?lang=en        301!
+/past-projects                                 https://icue.vn/past-projects?lang=en          301!
+/past-projects/                                https://icue.vn/past-projects?lang=en          301!
+/past-projects.html                            https://icue.vn/past-projects?lang=en          301!
+/past-projects/*                               https://icue.vn/past-projects/:splat?lang=en   301!
+/news-archive                                  https://icue.vn/news-archive?lang=en           301!
+/news-archive/                                 https://icue.vn/news-archive?lang=en           301!
+/news-archive.html                             https://icue.vn/news-archive?lang=en           301!
+/news-archive/*                                https://icue.vn/news-archive/:splat?lang=en    301!
+/notable-awards                                https://icue.vn/notable-awards?lang=en         301!
+/notable-awards/                               https://icue.vn/notable-awards?lang=en         301!
+/notable-awards.html                           https://icue.vn/notable-awards?lang=en         301!
+/faqs                                          https://icue.vn/faqs?lang=en                   301!
+/faqs/                                         https://icue.vn/faqs?lang=en                   301!
+/faqs/*                                        https://icue.vn/faqs/:splat?lang=en            301!
+/recruitment                                   https://icue.vn/recruitment?lang=en            301!
+/recruitment/                                  https://icue.vn/recruitment?lang=en            301!
+/recruitment/*                                 https://icue.vn/recruitment/:splat?lang=en     301!
+/community-activities                          https://icue.vn/community-activities?lang=en   301!
+/community-activities/                         https://icue.vn/community-activities?lang=en   301!
+/community-activities/*                        https://icue.vn/community-activities/:splat?lang=en 301!
+/newsroom                                      https://icue.vn/newsroom/?lang=en              301!
+/newsroom/                                     https://icue.vn/newsroom/?lang=en              301!
+/newsroom/*                                    https://icue.vn/newsroom/:splat?lang=en        301!
+/people                                        https://icue.vn/people/experts?lang=en         301!
+/people/                                       https://icue.vn/people/experts?lang=en         301!
+/people/*                                      https://icue.vn/people/:splat?lang=en          301!
+/structure                                     https://icue.vn/structure/?lang=en             301!
+/structure/                                    https://icue.vn/structure/?lang=en             301!
+/structure/*                                   https://icue.vn/structure/:splat?lang=en       301!
+/legal/privacy                                 https://icue.vn/legal/privacy?lang=en          301!
+/legal/privacy/                                https://icue.vn/legal/privacy?lang=en          301!
+/legal/terms                                   https://icue.vn/legal/terms?lang=en            301!
+/legal/terms/                                  https://icue.vn/legal/terms?lang=en            301!
+/legal/gdpr                                    https://icue.vn/legal/gdpr?lang=en             301!
+/legal/gdpr/                                   https://icue.vn/legal/gdpr?lang=en             301!
+/legal/cookies                                 https://icue.vn/legal/cookies?lang=en          301!
+/legal/cookies/                                https://icue.vn/legal/cookies?lang=en          301!
+/legal                                         https://icue.vn/legal/privacy?lang=en          301!
+/legal/                                        https://icue.vn/legal/privacy?lang=en          301!
+/legal/*                                       https://icue.vn/legal/:splat?lang=en           301!
+/privacy                                       https://icue.vn/legal/privacy?lang=en          301!
+/terms                                         https://icue.vn/legal/terms?lang=en            301!
+/gdpr                                          https://icue.vn/legal/gdpr?lang=en             301!
+/cookies                                       https://icue.vn/legal/cookies?lang=en          301!
 
-# Final SPA fallback for direct visits and future migrated routes.
-/*                     /index.html                    200
+# Static compatibility paths used by the React home.
+/favicon.ico                                   /logoIcons/favicon.png                         200
+/public/*                                      /:splat                                        200
+
+# The English deployment owns only its React home and unknown-route shell.
+/*                                             /index.html                                    200

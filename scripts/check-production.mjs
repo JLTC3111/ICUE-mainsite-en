@@ -47,20 +47,18 @@ for (const asset of referencedAssets) {
   assert(fs.existsSync(path.join(dist, asset)), `Production index references missing asset: ${asset}`)
 }
 
-for (const route of ROUTE_META) {
-  const shell = path.join(dist, `${route.slug}.html`)
-  assert(fs.existsSync(shell), `Missing production route shell: ${route.slug}.html`)
-  if (fs.existsSync(shell)) {
-    const html = read(shell)
-    assert(
-      html.includes(`data-page="${route.pageName}"`),
-      `Route shell does not embed its page source: ${route.slug}.html`,
-    )
-    assert(
-      html.includes(`https://en.icue.vn/${route.slug}`),
-      `Route shell has the wrong canonical URL: ${route.slug}.html`,
-    )
-  }
+assert(ROUTE_META.length === 0, 'English production build must not emit subpage route shells')
+for (const leakedShell of [
+  'about-us.html',
+  'past-projects.html',
+  'news-archive.html',
+  'notable-awards.html',
+  'contact.html',
+  'community-activities.html',
+  'faqs.html',
+  'recruitment.html',
+]) {
+  assert(!fs.existsSync(path.join(dist, leakedShell)), `English subpage shell leaked into production: ${leakedShell}`)
 }
 
 const retiredPublishedFiles = [
@@ -77,6 +75,14 @@ const retiredPublishedFiles = [
   'legacy-embed/pages/aboutus',
   'legacy/pages/Contact.html',
   'legacy-embed/pages/Contact.html',
+  'legacy/pages/card.html',
+  'legacy/pages/article_template.html',
+  'legacy-embed/pages/card.html',
+  'legacy-embed/pages/article_template.html',
+  'src/pages/card.html',
+  'src/pages/article_template.html',
+  'card.html',
+  'article_template.html',
   'legal/privacy.html',
   'legal/terms.html',
   'legal/gdpr.html',
@@ -93,7 +99,7 @@ const retiredPublishedFiles = [
 for (const file of retiredPublishedFiles) {
   assert(!fs.existsSync(path.join(dist, file)), `Retired page leaked into production: ${file}`)
 }
-for (const retiredDir of ['aboutUs', 'models', 'public']) {
+for (const retiredDir of ['aboutUs', 'models', 'public', 'legacy', 'legacy-embed', 'src']) {
   assert(!fs.existsSync(path.join(dist, retiredDir)), `Retired/duplicate directory leaked into production: ${retiredDir}`)
 }
 
@@ -134,6 +140,9 @@ const requiredExternalRedirects = {
   '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
   '/faqs': FAQ_APP_URL,
   '/recruitment': RECRUITMENT_APP_URL,
+  '/past-projects': 'https://icue.vn/past-projects?lang=en',
+  '/news-archive': 'https://icue.vn/news-archive?lang=en',
+  '/notable-awards': 'https://icue.vn/notable-awards?lang=en',
   '/legal/privacy': LEGAL_APP_URLS.privacy,
   '/legal/terms': LEGAL_APP_URLS.terms,
   '/legal/gdpr': LEGAL_APP_URLS.gdpr,
@@ -168,23 +177,32 @@ for (const line of redirects.split('\n')) {
   assert(/\s301!\s*$/.test(line), `Legacy redirect is not forced: ${line.trim()}`)
 }
 assert(
-  /^\/about-us\s+https:\/\/icue\.vn\/about-us\?site=en\s+301!\s*$/m.test(redirects),
+  /^\/about-us\s+https:\/\/icue\.vn\/about-us\?lang=en\s+301!\s*$/m.test(redirects),
   'About Us redirect is not a forced redirect to the shared English page',
 )
 assert(
-  /^\/about-us\.html\s+https:\/\/icue\.vn\/about-us\?site=en\s+301!\s*$/m.test(redirects),
+  /^\/about-us\.html\s+https:\/\/icue\.vn\/about-us\?lang=en\s+301!\s*$/m.test(redirects),
   'Retired /about-us.html URL does not redirect to the shared English page',
+)
+assert(
+  !redirects.includes('site=en') && !redirects.includes('from=en-news'),
+  'Production redirects still emit retired language hints',
 )
 
 const sitemapFile = path.join(dist, 'sitemap.xml')
 assert(fs.existsSync(sitemapFile), 'Production sitemap.xml is missing')
 const sitemap = fs.existsSync(sitemapFile) ? read(sitemapFile) : ''
+assert(sitemap.includes('<loc>https://en.icue.vn/</loc>'), 'Sitemap is missing the English home URL')
 for (const route of Object.keys(requiredExternalRedirects)) {
   assert(
     !sitemap.includes(`<loc>https://en.icue.vn${route}</loc>`),
     `Sitemap claims an externally served route as local: ${route}`,
   )
 }
+assert(
+  !/<loc>https:\/\/en\.icue\.vn\/.+<\/loc>/.test(sitemap),
+  'Sitemap still lists an English-host subpage canonical',
+)
 
 const assetFiles = walk(path.join(dist, 'assets'))
 const jsFiles = assetFiles.filter((file) => file.endsWith('.js'))
@@ -208,16 +226,19 @@ assert(
     || allJs.includes('@ICUE*\\xA9ALL*RIGHTS*RESERVED*'),
   'Compiled footer is missing the complete circular rights phrase',
 )
-assert(allJs.includes(ABOUT_US_APP_URL), 'Compiled navigation is missing the canonical About Us URL')
-for (const url of Object.values(LEGAL_APP_URLS)) {
-  assert(allJs.includes(url), `Compiled navigation is missing Legal app URL: ${url}`)
+assert(allJs.includes('https://icue.vn'), 'Compiled navigation is missing the icue.vn origin')
+assert(allJs.includes('/about-us'), 'Compiled navigation is missing the About Us path')
+assert(allJs.includes('set("lang"'), 'Compiled navigation does not stamp ?lang=')
+for (const slug of ['privacy', 'terms', 'gdpr', 'cookies']) {
+  assert(allJs.includes(`/legal/${slug}`), `Compiled navigation is missing Legal app path: /legal/${slug}`)
 }
+assert(!allJs.includes('?site=en'), 'Compiled bundle still emits ?site=en')
 assert(
   allJs.includes('/legacy/pages/aboutus') && allJs.includes('/about-us.html'),
   'Compiled entry is missing the About Us bootstrap redirect guard',
 )
 assert(
-  allJs.includes('terms.html') && allJs.includes('/legal/terms?lang=en'),
+  allJs.includes('/legacy/pages/') && allJs.includes('/legal/terms') && allJs.includes('.html'),
   'Compiled entry is missing the Legal app bootstrap redirect guard',
 )
 assert(

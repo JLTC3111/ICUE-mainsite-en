@@ -96,14 +96,17 @@ export default function PillSiteHeader({
   const moreButtonRef = useRef(null);
   const isMobile = mode === 'mobile';
   const isTablet = mode === 'tablet';
+  // Community Activities (and any later drawer-only entries) stay in the
+  // hamburger, not the pill row or tablet More menu.
+  const headerItems = items.filter((item) => !item.drawerOnly);
   const visibleItems = isTablet
-    ? items.filter((item) => TABLET_PRIMARY_PAGES.has(item.page))
-    : items;
-  const hiddenItemIsActive = isTablet && items.some(
+    ? headerItems.filter((item) => TABLET_PRIMARY_PAGES.has(item.page))
+    : headerItems;
+  const hiddenItemIsActive = isTablet && headerItems.some(
     (item) => !TABLET_PRIMARY_PAGES.has(item.page) && item.page === activePage,
   );
   const tabletOverflowItems = [
-    ...items.filter((item) => !TABLET_PRIMARY_PAGES.has(item.page)),
+    ...headerItems.filter((item) => !TABLET_PRIMARY_PAGES.has(item.page)),
     ...overflowItems,
   ];
   const toggleSuffix = isMobile ? 'Mobile' : 'Desktop';

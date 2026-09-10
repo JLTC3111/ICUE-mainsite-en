@@ -1,4 +1,7 @@
 import { Fragment } from 'react';
+import { resolveMainSiteLink } from '../site-routes/mainSitePaths.js';
+
+const enPage = (page) => resolveMainSiteLink(page, 'en');
 
 const IconHome = () => (
   <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -57,32 +60,38 @@ const IconSubmenuArrow = () => (
   </svg>
 );
 
+const IconCommunity = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true" {...props}>
+    <circle cx="12" cy="8" r="2.6" strokeLinecap="round" />
+    <circle cx="5" cy="10" r="2" strokeLinecap="round" />
+    <circle cx="19" cy="10" r="2" strokeLinecap="round" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 18.5a4.5 4.5 0 0 1 9 0" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1.8 18a3.4 3.4 0 0 1 3.9-3.3M22.2 18a3.4 3.4 0 0 0-3.9-3.3" />
+  </svg>
+);
+
 export const DRAWER_LINKS = [
   { page: 'Home', href: '#/Home', label: 'Home', icon: IconHome, closeOnly: true },
-  { page: 'orgStructure', href: 'https://icue.vn/structure/', label: 'Structure', icon: IconOrg, closeOnly: true },
-  { page: 'ourWork', href: '#/ourWork', label: 'Our Work', icon: IconWork, closeOnly: true },
-  { page: 'pastProjects', href: '#/pastProjects', label: 'Project History', icon: IconProjects, closeOnly: true },
-  { page: 'News', href: '#/News', label: 'News', icon: IconNews, closeOnly: true },
-  { page: 'aboutUs', href: '#/aboutUs', label: 'About Us', icon: IconAbout, closeOnly: true },
-  { page: 'Contact', href: '#/Contact', label: 'Contact', icon: IconContact, closeOnly: true },
+  { page: 'orgStructure', href: enPage('orgStructure'), label: 'Structure', icon: IconOrg, closeOnly: true },
+  { page: 'ourWork', href: enPage('ourWork'), label: 'Our Work', icon: IconWork, closeOnly: true },
+  { page: 'pastProjects', href: enPage('pastProjects'), label: 'Project History', icon: IconProjects, closeOnly: true },
+  { page: 'News', href: enPage('News'), label: 'News', icon: IconNews, closeOnly: true },
+  // drawerOnly: hamburger only. The pill header and tablet More menu skip these.
+  { page: 'communityActivities', href: enPage('communityActivities'), label: 'Community Activities', icon: IconCommunity, closeOnly: true, drawerOnly: true },
+  { page: 'aboutUs', href: enPage('aboutUs'), label: 'About Us', icon: IconAbout, closeOnly: true },
+  { page: 'Contact', href: enPage('Contact'), label: 'Contact', icon: IconContact, closeOnly: true },
 ];
 
-/** Path-based drawer links for the standalone home React app.
- *  icue.vn hrefs keep `?site=en` as the English default; MainSiteNav restamps
- *  them with `?lang=` when the reader is in French, German, Korean or Japanese.
- */
+/** Path-based drawer links for the standalone English React home. */
 export const STANDALONE_DRAWER_LINKS = [
   { page: 'Home', href: '/', label: 'Home', icon: IconHome, closeOnly: true },
-  { page: 'orgStructure', href: 'https://icue.vn/structure/', label: 'Structure', icon: IconOrg, closeOnly: true },
-  { page: 'ourWork', href: 'https://icue.vn/our-work?site=en', label: 'Our Work', icon: IconWork, closeOnly: true },
-  { page: 'pastProjects', href: '/past-projects', label: 'Project History', icon: IconProjects, closeOnly: true },
-  { page: 'News', href: 'https://icue.vn/newsroom/?from=en-news', label: 'News', icon: IconNews, closeOnly: true },
-  // About Us is the shared multilingual app on icue.vn. Link directly so the
-  // home SPA cannot intercept the click and render its retired local page.
-  { page: 'aboutUs', href: 'https://icue.vn/about-us?site=en', label: 'About Us', icon: IconAbout, closeOnly: true },
-  // Contact is the shared Contact app on icue.vn — linked directly so the click
-  // does not pay for the /contact -> icue.vn redirect hop.
-  { page: 'Contact', href: 'https://icue.vn/contact?site=en', label: 'Contact', icon: IconContact, closeOnly: true },
+  { page: 'orgStructure', href: enPage('orgStructure'), label: 'Structure', icon: IconOrg, closeOnly: true },
+  { page: 'ourWork', href: enPage('ourWork'), label: 'Our Work', icon: IconWork, closeOnly: true },
+  { page: 'pastProjects', href: enPage('pastProjects'), label: 'Project History', icon: IconProjects, closeOnly: true },
+  { page: 'News', href: enPage('News'), label: 'News', icon: IconNews, closeOnly: true },
+  { page: 'communityActivities', href: enPage('communityActivities'), label: 'Community Activities', icon: IconCommunity, closeOnly: true, drawerOnly: true },
+  { page: 'aboutUs', href: enPage('aboutUs'), label: 'About Us', icon: IconAbout, closeOnly: true },
+  { page: 'Contact', href: enPage('Contact'), label: 'Contact', icon: IconContact, closeOnly: true },
 ];
 
 export const PEOPLE_SUBMENU = {
@@ -92,14 +101,14 @@ export const PEOPLE_SUBMENU = {
   items: [
     {
       page: 'meetOurExperts',
-      href: 'https://icue.vn/people/experts?site=en',
+      href: enPage('meetOurExperts'),
       label: 'Meet Our Experts',
       className: 'moe-subMenu',
       icon: IconSubmenuArrow,
     },
     {
       page: 'coreTeam',
-      href: 'https://icue.vn/people/core-team?site=en',
+      href: enPage('coreTeam'),
       label: 'Core Team',
       className: 'core-subMenu',
       icon: IconSubmenuArrow,

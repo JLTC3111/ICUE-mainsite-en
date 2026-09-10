@@ -1,14 +1,9 @@
-/**
- * Cross-app language in the query string.
- *
- * Shared ICUE apps on icue.vn (Contact, Our Work, About Us, FAQs, …) read
- * `lang` first. `site=en` and `from=en-news` only run when `lang` is absent,
- * and they force English — which is why a French reader leaving this site
- * used to land on the English Contact page.
- *
- * Country aliases (`kr`, `jp`) match those apps: the flag files are named
- * that way, but the i18n codes are `ko` and `ja`.
- */
+import {
+  normalizeUiLocale,
+  withLocale,
+} from '../site-routes/mainSitePaths.js'
+
+/** Cross-app language in the query string. */
 export const SHARED_LANG_CODES = new Set(['vi', 'en', 'de', 'fr', 'ko', 'ja'])
 
 export const LANG_ALIASES = {
@@ -23,29 +18,13 @@ const VN_HOSTS = new Set(['icue.vn', 'www.icue.vn'])
 const SKIP_HREF = /^(?:mailto|tel|sms|javascript):/i
 
 export function normalizeUiLang(code, fallback = 'en') {
-  if (code == null || code === '') return fallback
-  const raw = String(code).trim().toLowerCase().replaceAll('_', '-')
-  const base = raw.split('-')[0]
-  const mapped = LANG_ALIASES[raw] || LANG_ALIASES[base] || base
-  return SHARED_LANG_CODES.has(mapped) ? mapped : fallback
-}
-
-function isNewsroomPath(pathname) {
-  return pathname === '/newsroom' || pathname.startsWith('/newsroom/')
-}
-
-function isLegalAppPath(pathname) {
-  return pathname === '/legal' || pathname.startsWith('/legal/')
+  return normalizeUiLocale(code, fallback)
 }
 
 /**
- * Stamp the current UI language onto a link the way the apps on icue.vn do.
- *
- * English stays on the old chrome hints (`site=en`, newsroom `from=en-news`)
- * so typed /contact redirects and existing bookmarks keep working. The
- * consolidated Legal app is the exception: like its other locales, English
- * is selected explicitly with `lang=en`. Every other UI language uses
- * `lang=` and drops the English-forcing params.
+ * Stamp the current UI language onto ICUE links. Apps still read `site=en`
+ * and `from=en-news` for old bookmarks, but new links emit only `lang=`.
+ * The English home stays clean at `/`; non-English variants retain `lang=`.
  */
 export function withUiLang(href, lang) {
   if (!href || href.startsWith('#') || SKIP_HREF.test(href)) return href
@@ -60,19 +39,18 @@ export function withUiLang(href, lang) {
     return href
   }
 
-  const onVn = VN_HOSTS.has(url.hostname)
-
   url.searchParams.delete('site')
-  url.searchParams.delete('from')
+  if (url.searchParams.get('from') === 'en-news') url.searchParams.delete('from')
   url.searchParams.delete('lang')
 
-  if (code === 'en') {
-    if (onVn) {
-      if (isLegalAppPath(url.pathname)) url.searchParams.set('lang', 'en')
-      else if (isNewsroomPath(url.pathname)) url.searchParams.set('from', 'en-news')
-      else url.searchParams.set('site', 'en')
-    }
-  } else {
+  if (VN_HOSTS.has(url.hostname)) {
+    const localized = new URL(withLocale(url.toString(), code))
+    return isAbsolute
+      ? localized.toString()
+      : `${localized.pathname}${localized.search}${localized.hash}`
+  }
+
+  if (code !== 'en') {
     url.searchParams.set('lang', code)
   }
 

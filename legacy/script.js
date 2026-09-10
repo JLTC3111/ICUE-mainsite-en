@@ -1931,11 +1931,11 @@ window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
 
 window.loadPage = (page) => {
   if (page === 'meetOurExperts') {
-    window.location.replace('https://icue.vn/people/experts?site=en');
+    window.location.replace('https://icue.vn/people/experts?lang=en');
     return;
   }
   if (page === 'coreTeam') {
-    window.location.replace('https://icue.vn/people/core-team?site=en');
+    window.location.replace('https://icue.vn/people/core-team?lang=en');
     return;
   }
 
@@ -4285,7 +4285,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
               answer: lang === 'vi'
                 ? 'Bạn có thể xem trang Liên hệ để biết email/số điện thoại/biểu mẫu.'
                 : 'Please check the Contact page for email/phone/form details.',
-              links: [{ label: 'Contact', url: 'https://icue.vn/contact?site=en' }]
+              links: [{ label: 'Contact', url: 'https://icue.vn/contact?lang=en' }]
             }
           ],
           fallback: {
@@ -4374,7 +4374,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             : 'I’m not fully sure I understood. Could you clarify your question?'),
           links: [
             { label: detectedLang === 'vi' ? 'FAQ' : 'FAQs', url: '#/faqs' },
-            { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: detectedLang === 'vi' ? 'https://icue.vn/contact' : 'https://icue.vn/contact?site=en' }
+            { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: detectedLang === 'vi' ? 'https://icue.vn/contact?lang=vi' : 'https://icue.vn/contact?lang=en' }
           ]
         };
       }
@@ -5625,10 +5625,10 @@ function setupLanguageSwitcher() {
     targetPath = `#/${targetPageName}`;
     console.log('🔧 [DEBUG] Static page - hash path:', targetPath);
   } else if (targetPageName === 'meetOurExperts') {
-    window.location.href = 'https://icue.vn/people/experts?site=en';
+    window.location.href = 'https://icue.vn/people/experts?lang=en';
     return;
   } else if (targetPageName === 'coreTeam') {
-    window.location.href = 'https://icue.vn/people/core-team?site=en';
+    window.location.href = 'https://icue.vn/people/core-team?lang=en';
     return;
   } else {
     // Hash-based routing for main navigation pages

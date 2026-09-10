@@ -1,28 +1,25 @@
-const VN_SITE = 'https://icue.vn'
+import { resolveMainSiteLink } from '../site-routes/mainSitePaths.js'
 
 /** Canonical path-based routes for footer and cross-site links on en.icue.vn. */
 export const FOOTER_ROUTE_PATHS = {
   home: '/',
-  // Contact is the shared Contact app on icue.vn (contact-app in the vn repo).
-  // English-default `?site=en` is restamped to `?lang=` by Footer when the UI
-  // language is French, German, Korean or Japanese.
-  contact: `${VN_SITE}/contact?site=en`,
-  aboutUs: `${VN_SITE}/about-us?site=en`,
-  ourWork: `${VN_SITE}/our-work?site=en`,
-  pastProjects: '/past-projects',
-  recruitment: `${VN_SITE}/recruitment?site=en`,
-  notableAwards: '/notable-awards',
-  communityActivities: `${VN_SITE}/community-activities?site=en`,
-  faqs: `${VN_SITE}/faqs?site=en`,
-  privacy: `${VN_SITE}/legal/privacy?lang=en`,
-  terms: `${VN_SITE}/legal/terms?lang=en`,
-  gdpr: `${VN_SITE}/legal/gdpr?lang=en`,
-  cookies: `${VN_SITE}/legal/cookies?lang=en`,
-  news: `${VN_SITE}/newsroom/?from=en-news`,
-  archive: '/news-archive',
-  orgStructure: `${VN_SITE}/structure/`,
-  meetOurExperts: `${VN_SITE}/people/experts?site=en`,
-  coreTeam: `${VN_SITE}/people/core-team?site=en`,
+  contact: resolveMainSiteLink('Contact', 'en'),
+  aboutUs: resolveMainSiteLink('aboutUs', 'en'),
+  ourWork: resolveMainSiteLink('ourWork', 'en'),
+  pastProjects: resolveMainSiteLink('pastProjects', 'en'),
+  recruitment: resolveMainSiteLink('recruitment', 'en'),
+  notableAwards: resolveMainSiteLink('notableAwards', 'en'),
+  communityActivities: resolveMainSiteLink('communityActivities', 'en'),
+  faqs: resolveMainSiteLink('FAQs', 'en'),
+  privacy: resolveMainSiteLink('privacy', 'en'),
+  terms: resolveMainSiteLink('terms', 'en'),
+  gdpr: resolveMainSiteLink('gdpr', 'en'),
+  cookies: resolveMainSiteLink('cookies', 'en'),
+  news: resolveMainSiteLink('News', 'en'),
+  archive: resolveMainSiteLink('newsArchive', 'en'),
+  orgStructure: resolveMainSiteLink('orgStructure', 'en'),
+  meetOurExperts: resolveMainSiteLink('meetOurExperts', 'en'),
+  coreTeam: resolveMainSiteLink('coreTeam', 'en'),
 }
 
 function buildFooterLinks() {
