@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { subscribeToPageResume } from '../../../shared/resilience/pageResume.js'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -13,6 +14,14 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     console.error('[ErrorBoundary]', error, info)
   }
+
+  componentDidMount() {
+    this.unsubscribe = subscribeToPageResume(() => {
+      if (this.state.hasError) this.setState({ hasError: false })
+    }, { minHiddenMs: 0 })
+  }
+
+  componentWillUnmount() { this.unsubscribe?.() }
 
   render() {
     if (this.state.hasError) {

@@ -3,6 +3,7 @@ import { useReducedMotion } from 'motion/react'
 import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEnabled'
 import { shouldAvoidCanvasEffects } from '../lib/gridScanPolicy'
 import './HeroVideoTitle.css'
+import { observeDecorativeVideo } from '../../../shared/resilience/decorativeVideo.js'
 
 const HERO_TITLE_VIDEO_SRC = '/public/bgVideos/video-text-fifa2026.mp4'
 
@@ -103,12 +104,17 @@ export default function HeroVideoTitle({ text }) {
     if (!label) return undefined
 
     let frame = 0
+    let generation = 0
+    let cancelled = false
 
     const updateMask = () => {
+      const currentGeneration = ++generation
       window.cancelAnimationFrame(frame)
       frame = window.requestAnimationFrame(async () => {
-        const nextMask = await buildCanvasMaskFromElement(label)
-        if (nextMask) setMaskUrl(nextMask)
+        try {
+          const nextMask = await buildCanvasMaskFromElement(label)
+          if (!cancelled && currentGeneration === generation && nextMask) setMaskUrl(nextMask)
+        } catch { /* Keep the readable text if the mask cannot be generated. */ }
       })
     }
 
@@ -123,6 +129,7 @@ export default function HeroVideoTitle({ text }) {
     window.addEventListener('resize', updateMask)
 
     return () => {
+      cancelled = true
       window.cancelAnimationFrame(frame)
       resizeObserver.disconnect()
       fonts?.removeEventListener?.('loadingdone', updateMask)
@@ -132,25 +139,10 @@ export default function HeroVideoTitle({ text }) {
 
   useEffect(() => {
     if (!useTitleVideo || !shellRef.current || !videoRef.current) return undefined
-    const video = videoRef.current
-    let inViewport = true
-    const syncPlayback = () => {
-      if (document.hidden || !inViewport) {
-        video.pause()
-      } else {
-        void video.play().catch(() => {})
-      }
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      inViewport = entry.isIntersecting
-      syncPlayback()
-    }, { threshold: 0.05 })
-    observer.observe(shellRef.current)
-    document.addEventListener('visibilitychange', syncPlayback)
-    return () => {
-      observer.disconnect()
-      document.removeEventListener('visibilitychange', syncPlayback)
-    }
+    return observeDecorativeVideo(videoRef.current, {
+      target: shellRef.current,
+      threshold: 0.05,
+    })
   }, [useTitleVideo])
 
   if (!useTitleVideo) {
@@ -185,7 +177,7 @@ export default function HeroVideoTitle({ text }) {
       </span>
       <span className="home-hero__title-stack" aria-hidden="true">
         <span className="home-hero__title-fill" style={maskStyle}>
-          <video ref={videoRef} autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+          <video ref={videoRef} muted loop playsInline preload="auto" aria-hidden="true">
             <source src={HERO_TITLE_VIDEO_SRC} type="video/mp4" />
           </video>
         </span>

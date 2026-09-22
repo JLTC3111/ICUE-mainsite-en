@@ -29,7 +29,8 @@
     "@vitejs/plugin-react": "^4.7.0",
     "cpy": "^11.1.0",
     "nodemon": "^3.1.14",
-    "vite": "^6.3.2"
+    "vite": "^6.3.2",
+    "react-test-renderer": "19.2.7"
   },
   "scripts": {
     "dev": "npm run build:home && node scripts/sync-home-dev.mjs && vite",
@@ -41,6 +42,7 @@
     "server": "node server.js",
     "server-dev": "nodemon server.js",
     "check:routes": "node scripts/check-routes.mjs",
-    "check:production": "npm run check:routes && node scripts/check-production.mjs"
+    "check:production": "npm run check:routes && node scripts/check-production.mjs",
+    "test:recovery": "node --experimental-vm-modules --test shared/resilience/*.test.js home-app/src/lib/homeBackgroundVideo.test.js"
   }
 }

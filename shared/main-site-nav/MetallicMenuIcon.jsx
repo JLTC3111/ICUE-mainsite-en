@@ -88,6 +88,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
           <MetallicPaint
             className="menu-icon-metallic__paint"
             imageSrc={menuImageSrc}
+            fallback={<MenuIconFallback />}
             speed={speed}
             paused={isOpen}
             {...METALLIC_PROPS}
@@ -101,6 +102,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
           <MetallicPaint
             className="menu-icon-metallic__paint"
             imageSrc={closeImageSrc}
+            fallback={<CloseIconFallback />}
             speed={speed}
             paused={!isOpen}
             {...METALLIC_PROPS}

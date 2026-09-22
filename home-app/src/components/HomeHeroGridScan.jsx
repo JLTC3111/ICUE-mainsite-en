@@ -2,20 +2,19 @@ import { useEffect, useState } from 'react'
 import { useHomeGridScanVisible } from '../hooks/useHomeGridScanVisible'
 import { useVisualEffectsTier } from '../hooks/useHeavyVisualEffects'
 import { getGridScanRenderer } from '../lib/gridScanPolicy'
+import { createRetryableLoader } from '../../../shared/resilience/requests.js'
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import ErrorBoundary from './ErrorBoundary'
 
-let gridScanModulePromise
+const loadGridScan = createRetryableLoader(() => import('./reactbits/GridScan'))
 
-function loadGridScan() {
-  if (!gridScanModulePromise) {
-    gridScanModulePromise = import('./reactbits/GridScan')
-      .catch((error) => {
-        // Let a later retry make a fresh request after a transient failure.
-        gridScanModulePromise = undefined
-        throw error
-      })
-  }
-  return gridScanModulePromise
-}
+const fallback = (
+  <div
+    className="home-hero__grid-scan home-hero__grid-scan--fallback"
+    data-gridscan-renderer="css"
+    aria-hidden="true"
+  />
+)
 
 export default function HomeHeroGridScan() {
   const visible = useHomeGridScanVisible()
@@ -25,6 +24,7 @@ export default function HomeHeroGridScan() {
   const preferredRenderer = getGridScanRenderer(tier)
   const enabled = visible && preferredRenderer !== 'none'
   const webglEnabled = enabled && preferredRenderer === 'webgl'
+  const [resumeRevision] = useResumeRevision({ enabled: webglEnabled && !GridScan, minHiddenMs: 0 })
   // Show the lightweight scan immediately while the desktop WebGL chunk loads.
   // On mobile, Gecko, Mullvad/Tor-like browsers, and GPC-enabled browsers this
   // remains the final renderer and no canvas context is requested at all.
@@ -71,7 +71,7 @@ export default function HomeHeroGridScan() {
       cancelled = true
       if (retryTimer != null) window.clearTimeout(retryTimer)
     }
-  }, [webglEnabled, GridScan])
+  }, [webglEnabled, GridScan, resumeRevision])
 
   useEffect(() => {
     if (!enabled) return undefined
@@ -85,34 +85,28 @@ export default function HomeHeroGridScan() {
 
   if (!enabled) return null
 
-  if (activeRenderer === 'css') {
-    return (
-      <div
-        className="home-hero__grid-scan home-hero__grid-scan--fallback"
-        data-gridscan-renderer="css"
-        aria-hidden="true"
-      />
-    )
-  }
+  if (activeRenderer === 'css') return fallback
 
   return (
-    <GridScan
-      className="home-hero__grid-scan"
-      linesColor="#2f293a"
-      scanColor="#9fb9ff"
-      lineThickness={1}
-      gridScale={0.09}
-      lineJitter={0.1}
-      scanGlow={0.4}
-      scanSoftness={3.2}
-      noiseIntensity={0.01}
-      // A soft grid gains almost nothing from a 2x backing store and costs
-      // four times the fragments for it; 1.25 keeps the lines crisp on
-      // Retina at well under half the pixel throughput.
-      maxPixelRatio={1.25}
-      // The scan is a 4s cycle and the parallax is heavily damped. Neither
-      // reads any differently at 30fps, which halves the frame count.
-      maxFps={30}
-    />
+    <ErrorBoundary fallback={fallback}>
+      <GridScan
+        className="home-hero__grid-scan"
+        linesColor="#2f293a"
+        scanColor="#9fb9ff"
+        lineThickness={1}
+        gridScale={0.09}
+        lineJitter={0.1}
+        scanGlow={0.4}
+        scanSoftness={3.2}
+        noiseIntensity={0.01}
+        // A soft grid gains almost nothing from a 2x backing store and costs
+        // four times the fragments for it; 1.25 keeps the lines crisp on
+        // Retina at well under half the pixel throughput.
+        maxPixelRatio={1.25}
+        // The scan is a 4s cycle and the parallax is heavily damped. Neither
+        // reads any differently at 30fps, which halves the frame count.
+        maxFps={30}
+      />
+    </ErrorBoundary>
   )
 }
