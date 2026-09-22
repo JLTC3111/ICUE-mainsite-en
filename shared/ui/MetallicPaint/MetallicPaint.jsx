@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import './MetallicPaint.css';
+import { usePageResume } from '../../resilience/usePageResume.js';
+import { subscribeToPageResume } from '../../resilience/pageResume.js';
 
 const vertexShader = `#version 300 es
 precision highp float;
@@ -275,10 +277,12 @@ export default function MetallicPaint({
   tintColor = '#feb3ff',
   className = '',
   paused = false,
+  fallback = null,
 }) {
   const canvasRef = useRef(null);
   const glRef = useRef(null);
   const programRef = useRef(null);
+  const bufferRef = useRef(null);
   const uniformsRef = useRef({});
   const textureRef = useRef(null);
   const animTimeRef = useRef(0);
@@ -289,6 +293,7 @@ export default function MetallicPaint({
   const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
   const mouseAnimRef = useRef(mouseAnimation);
 
+  const [contextRevision, setContextRevision] = useState(0);
   const [ready, setReady] = useState(false);
   const [textureReady, setTextureReady] = useState(false);
 
@@ -299,12 +304,32 @@ export default function MetallicPaint({
     mouseAnimRef.current = mouseAnimation;
   }, [mouseAnimation]);
 
+  usePageResume(() => {
+    if (!glRef.current?.isContextLost()) setContextRevision(value => value + 1);
+  }, { enabled: !ready || !textureReady, minHiddenMs: 0 });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const onLost = event => {
+      event.preventDefault();
+      setReady(false);
+      setTextureReady(false);
+    };
+    const onRestored = () => setContextRevision(value => value + 1);
+    canvas.addEventListener('webglcontextlost', onLost);
+    canvas.addEventListener('webglcontextrestored', onRestored);
+    return () => {
+      canvas.removeEventListener('webglcontextlost', onLost);
+      canvas.removeEventListener('webglcontextrestored', onRestored);
+    };
+  }, []);
+
   const initGL = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return false;
 
     const gl = canvas.getContext('webgl2', { antialias: true, alpha: true });
-    if (!gl) return false;
+    if (!gl || gl.isContextLost()) return false;
 
     const compile = (shaderSrc, type) => {
       const s = gl.createShader(type);
@@ -313,6 +338,7 @@ export default function MetallicPaint({
       gl.compileShader(s);
       if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
         console.error(gl.getShaderInfoLog(s));
+        gl.deleteShader(s);
         return null;
       }
       return s;
@@ -320,15 +346,26 @@ export default function MetallicPaint({
 
     const vs = compile(vertexShader, gl.VERTEX_SHADER);
     const fs = compile(fragmentShader, gl.FRAGMENT_SHADER);
-    if (!vs || !fs) return false;
+    if (!vs || !fs) {
+      if (vs) gl.deleteShader(vs);
+      if (fs) gl.deleteShader(fs);
+      return false;
+    }
 
     const prog = gl.createProgram();
-    if (!prog) return false;
+    if (!prog) {
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
+      return false;
+    }
     gl.attachShader(prog, vs);
     gl.attachShader(prog, fs);
     gl.linkProgram(prog);
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
       console.error(gl.getProgramInfoLog(prog));
+      gl.deleteProgram(prog);
       return false;
     }
 
@@ -351,6 +388,7 @@ export default function MetallicPaint({
 
     glRef.current = gl;
     programRef.current = prog;
+    bufferRef.current = buf;
     uniformsRef.current = uniforms;
 
     return true;
@@ -382,6 +420,8 @@ export default function MetallicPaint({
   }, []);
 
   useEffect(() => {
+    setReady(false);
+    setTextureReady(false);
     const glOk = initGL()
     if (!glOk) return;
 
@@ -402,11 +442,16 @@ export default function MetallicPaint({
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (textureRef.current && glRef.current) {
-        glRef.current.deleteTexture(textureRef.current);
-      }
+      if (textureRef.current) gl.deleteTexture(textureRef.current);
+      if (bufferRef.current) gl.deleteBuffer(bufferRef.current);
+      if (programRef.current) gl.deleteProgram(programRef.current);
+      textureRef.current = null;
+      bufferRef.current = null;
+      programRef.current = null;
+      glRef.current = null;
+      rafRef.current = null;
     };
-  }, [initGL]);
+  }, [initGL, contextRevision]);
 
   useEffect(() => {
     if (!ready || !imageSrc) return;
@@ -414,13 +459,21 @@ export default function MetallicPaint({
     setTextureReady(false);
     const img = new Image();
     img.crossOrigin = 'anonymous';
+    let cancelled = false;
     img.onload = () => {
-      const imgData = processImage(img);
-      uploadTexture(imgData);
-      setTextureReady(true);
+      if (cancelled || glRef.current?.isContextLost()) return;
+      try {
+        uploadTexture(processImage(img));
+        setTextureReady(true);
+      } catch { setTextureReady(false); }
     };
     img.src = imageSrc;
-  }, [ready, imageSrc, uploadTexture]);
+    return () => {
+      cancelled = true;
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [ready, imageSrc, uploadTexture, contextRevision]);
 
   useEffect(() => {
     const gl = glRef.current;
@@ -451,6 +504,7 @@ export default function MetallicPaint({
     gl.uniform3f(u.u_tint, tint[0], tint[1], tint[2]);
   }, [
     ready,
+    contextRevision,
     seed,
     scale,
     refraction,
@@ -511,15 +565,30 @@ export default function MetallicPaint({
       rafRef.current = requestAnimationFrame(render);
     };
 
-    lastTimeRef.current = performance.now();
-    rafRef.current = requestAnimationFrame(render);
+    const syncAnimation = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      if (document.hidden || gl.isContextLost()) return;
+      lastTimeRef.current = performance.now();
+      rafRef.current = requestAnimationFrame(render);
+    };
+    document.addEventListener('visibilitychange', syncAnimation);
+    const unsubscribe = subscribeToPageResume(syncAnimation, { minHiddenMs: 0 });
+    syncAnimation();
 
     return () => {
+      unsubscribe();
+      document.removeEventListener('visibilitychange', syncAnimation);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
       canvas.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [ready, textureReady, paused]);
+  }, [ready, textureReady, paused, contextRevision]);
 
-  return <canvas ref={canvasRef} className={`paint-container ${className}`.trim()} />;
+  const available = ready && textureReady;
+  return <>
+    {!available && fallback}
+    <canvas ref={canvasRef} style={{ visibility: available ? undefined : 'hidden' }} className={`paint-container ${className}`.trim()} />
+  </>;
 }
 

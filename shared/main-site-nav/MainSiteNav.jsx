@@ -1,5 +1,4 @@
 import {
-  lazy,
   Suspense,
   useCallback,
   useEffect,
@@ -7,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { lazyWithRecovery } from '../resilience/lazyWithRecovery.jsx';
 import DrawerMenuPanel from '@icue/drawer-menu/DrawerMenuPanel.jsx';
 import { registerMainSiteNavBridge } from './bridge';
 import { pageFromPathname } from './languageSwitcher';
@@ -24,7 +24,7 @@ import {
 import { withUiLang, withUiLangOnHref } from '../i18n/withUiLang';
 import './MainSiteNav.css';
 
-const DefaultMainSiteHeader = lazy(() => import('./MainSiteHeader'));
+const DefaultMainSiteHeader = lazyWithRecovery(() => import('./MainSiteHeader'));
 
 const DOCK_EXPAND_SCROLL_THRESHOLD = 48;
 const DESKTOP_DOCK_MQ = '(min-width: 1025px)';

@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { recoveryChunks } from './recoveryChunks.js'
 import { getBootstrapExternalRedirect } from './src/lib/bootstrapExternalRedirect.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -34,6 +35,7 @@ export default defineConfig({
   base: '/',
   plugins: [
     react(),
+    recoveryChunks(),
     {
       name: 'legacy-pages-spa',
       configureServer(server) {

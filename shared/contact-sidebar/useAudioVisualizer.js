@@ -1,82 +1,62 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { subscribeToPageResume } from '../resilience/pageResume.js'
 
 const AUDIO_SRC = '/public/music/mixkit-a-very-happy-christmas-897.mp3'
 
-function getOrCreateVisualizer() {
+function getOrCreateAudio() {
   if (typeof window === 'undefined') return null
-  if (window.__icueAudioVisualizer) return window.__icueAudioVisualizer
-
-  const audio = new Audio()
-  audio.preload = 'none'
-  audio.src = AUDIO_SRC
-  const ctx = new (window.AudioContext || window.webkitAudioContext)()
-  const source = ctx.createMediaElementSource(audio)
-  const analyser = ctx.createAnalyser()
-  source.connect(analyser)
-  analyser.connect(ctx.destination)
-  const freqData = new Uint8Array(analyser.frequencyBinCount)
-  window.__icueAudioVisualizer = { audio, ctx, analyser, freqData }
-  return window.__icueAudioVisualizer
+  if (!window.__icueBackgroundAudio) {
+    const audio = new Audio(AUDIO_SRC)
+    audio.preload = 'none'
+    window.__icueBackgroundAudio = audio
+  }
+  return window.__icueBackgroundAudio
 }
 
-export function useAudioVisualizer(barRef) {
-  const rafRef = useRef(null)
-
-  const stopVisualizer = useCallback(() => {
-    if (rafRef.current) {
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = null
-    }
-    if (barRef.current) barRef.current.style.transform = 'scale(1)'
-  }, [barRef])
-
-  const updateVisualizer = useCallback(() => {
-    const el = barRef.current
-    const av = window.__icueAudioVisualizer
-    if (!el || !av?.analyser || av.audio.paused || av.audio.ended || document.hidden) {
-      stopVisualizer()
-      return
-    }
-
-    av.analyser.getByteFrequencyData(av.freqData)
-    const value = av.freqData[0] || 0
-    const scale = Math.max(0.85, 1 + value / 512)
-    el.style.transform = `scale(${scale})`
-    rafRef.current = requestAnimationFrame(updateVisualizer)
-  }, [barRef, stopVisualizer])
-
-  const startVisualizer = useCallback(() => {
-    if (rafRef.current) return
-    rafRef.current = requestAnimationFrame(updateVisualizer)
-  }, [updateVisualizer])
-
-  const toggle = useCallback(async () => {
-    const av = getOrCreateVisualizer()
-    if (!av) return
-
-    if (!av.audio.paused) {
-      av.audio.pause()
-      stopVisualizer()
-      return
-    }
-
-    if (av.ctx.state === 'suspended') await av.ctx.resume().catch(() => {})
-    await av.audio.play().then(startVisualizer).catch(stopVisualizer)
-  }, [startVisualizer, stopVisualizer])
+export function useAudioVisualizer() {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
-    const onVisibilityChange = () => {
-      const av = window.__icueAudioVisualizer
-      if (document.hidden || !av || av.audio.paused) stopVisualizer()
-      else startVisualizer()
-    }
+    const audio = getOrCreateAudio()
+    if (!audio) return
 
-    document.addEventListener('visibilitychange', onVisibilityChange)
+    const syncPlayback = () => {
+      setIsPlaying(!audio.paused && !audio.ended && audio.readyState >= 3)
+    }
+    const stopAnimation = () => setIsPlaying(false)
+    const syncVisibility = () => setIsVisible(!document.hidden)
+    const stopEvents = ['pause', 'ended', 'waiting', 'emptied', 'error']
+
+    audio.addEventListener('playing', syncPlayback)
+    stopEvents.forEach((event) => audio.addEventListener(event, stopAnimation))
+    document.addEventListener('visibilitychange', syncVisibility)
+    const unsubscribe = subscribeToPageResume(() => {
+      // Resync an interrupted tab without restarting deliberately paused music.
+      syncPlayback()
+      syncVisibility()
+    }, { minHiddenMs: 0 })
+    syncPlayback()
+    syncVisibility()
+
     return () => {
-      document.removeEventListener('visibilitychange', onVisibilityChange)
-      stopVisualizer()
+      unsubscribe()
+      audio.removeEventListener('playing', syncPlayback)
+      stopEvents.forEach((event) => audio.removeEventListener(event, stopAnimation))
+      document.removeEventListener('visibilitychange', syncVisibility)
     }
-  }, [startVisualizer, stopVisualizer])
+  }, [])
 
-  return { toggle }
+  const toggle = useCallback(async () => {
+    const audio = getOrCreateAudio()
+    if (!audio) return
+
+    if (audio.paused) {
+      await audio.play().catch(() => setIsPlaying(false))
+    } else {
+      audio.pause()
+    }
+  }, [])
+
+  return { toggle, isPlaying, isAnimating: isPlaying && isVisible }
 }

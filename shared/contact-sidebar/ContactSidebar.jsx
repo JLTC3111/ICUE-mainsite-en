@@ -1,10 +1,20 @@
 import { memo, useId, useRef, useState } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
+import { normalizeUiLocale } from '../site-routes/mainSitePaths.js'
 import { shouldAvoidCanvasEffects } from '../browser/visualEffectsPolicy.js'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
 import { useMusicBarColor } from './useMusicBarColor'
 import './ContactSidebar.css'
+
+const CALENDAR_LABELS = {
+  vi: { title: 'Lịch', open: 'Mở lịch', close: 'Đóng lịch' },
+  en: { title: 'Calendar', open: 'Open calendar', close: 'Close calendar' },
+  de: { title: 'Kalender', open: 'Kalender öffnen', close: 'Kalender schließen' },
+  fr: { title: 'Calendrier', open: 'Ouvrir le calendrier', close: 'Fermer le calendrier' },
+  ko: { title: '달력', open: '달력 열기', close: '달력 닫기' },
+  ja: { title: 'カレンダー', open: 'カレンダーを開く', close: 'カレンダーを閉じる' },
+}
 
 function CalendarSvg({ month, day, time }) {
   return (
@@ -90,9 +100,9 @@ function MessengerIcon() {
   )
 }
 
-function ContactSidebar({ musicIconColor, contentKey = '' }) {
+function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
   const musicRef = useRef(null)
-  const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
+  const { toggle: toggleMusic, isPlaying, isAnimating } = useAudioVisualizer()
   const allowCanvasSampling = !shouldAvoidCanvasEffects()
   const sampledMusicColor = useMusicBarColor(
     musicRef,
@@ -100,7 +110,9 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
     contentKey,
   )
   const musicColor = musicIconColor ?? sampledMusicColor
-  const { month, day, time } = useCalendarClock()
+  const calendarLocale = normalizeUiLocale(locale, 'en')
+  const calendarLabels = CALENDAR_LABELS[calendarLocale]
+  const { month, day, time } = useCalendarClock(calendarLocale)
   const [calendarOpen, setCalendarOpen] = useState(false)
 
   return (
@@ -112,21 +124,29 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
           ref={musicRef}
           onClick={toggleMusic}
           aria-label="Toggle background music"
+          aria-pressed={isPlaying}
+          data-animating={isAnimating}
           style={{ color: musicColor }}
         >
           <svg
             width="30"
             height="30"
-            viewBox="0 0 512 512"
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
             style={{ color: musicColor }}
           >
-            <path
-              fill="currentColor"
-              style={{ fill: musicColor }}
-              d="M42.7,486.7h42.7v-256H42.7V486.7z M469.3,17.3h-42.7v256h42.7V17.3z M85.3,17.3H42.7V60h42.7V17.3z M277.3,17.3h-42.7 v149.3h42.7V17.3z M0,188h128v-85.3H0V188z M21.3,124h85.3v42.7H21.3V124z M234.7,486.7h42.7V337.3h-42.7V486.7z M426.7,486.7h42.7 V444h-42.7V486.7z M384,316v85.3h128V316H384z M490.7,380h-85.3v-42.7h85.3V380z M192,294.7h128v-85.3H192V294.7z M213.3,230.7h85.3 v42.7h-85.3V230.7z"
-            />
+            {[3, 8, 13, 18].map((x) => (
+              <rect
+                key={x}
+                className="contact-sidebar__music-bar"
+                x={x}
+                y="3"
+                width="3"
+                height="18"
+                rx="1.5"
+              />
+            ))}
           </svg>
         </button>
 
@@ -148,7 +168,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
           type="button"
           className="contact-sidebar__item contact-sidebar__calendar"
           onClick={() => setCalendarOpen(true)}
-          aria-label="Open calendar"
+          aria-label={calendarLabels.open}
         >
           <CalendarSvg month={month} day={day} time={time} />
         </button>
@@ -192,7 +212,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
           className="contact-sidebar__modal"
           role="dialog"
           aria-modal="true"
-          aria-label="Calendar"
+          aria-label={calendarLabels.title}
           onClick={(e) => {
             if (e.target === e.currentTarget) setCalendarOpen(false)
           }}
@@ -202,7 +222,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
               type="button"
               className="contact-sidebar__modal-close"
               onClick={() => setCalendarOpen(false)}
-              aria-label="Close calendar"
+              aria-label={calendarLabels.close}
             >
               &times;
             </button>

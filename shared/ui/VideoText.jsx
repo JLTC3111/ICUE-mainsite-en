@@ -1,5 +1,6 @@
 import { Children, useEffect, useMemo, useRef, useState } from 'react';
 import './video-text.css';
+import { observeDecorativeVideo } from '../resilience/decorativeVideo.js';
 
 /** Data Saver or an explicit reduced-motion preference means: never loop the video. */
 function prefersStillVideo() {
@@ -98,42 +99,11 @@ export default function VideoText({
     const mask = maskRef.current;
     if (!video || !mask) return undefined;
 
-    if (prefersStillVideo()) {
-      video.pause();
-      return undefined;
-    }
-
-    let onScreen = true;
-
-    const sync = () => {
-      if (onScreen && !document.hidden) {
-        const played = video.play();
-        if (played?.catch) played.catch(() => {});
-      } else {
-        video.pause();
-      }
-    };
-
-    let observer = null;
-    if (typeof IntersectionObserver === 'function') {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          onScreen = entry.isIntersecting;
-          sync();
-        },
-        { rootMargin: '96px' },
-      );
-      observer.observe(mask);
-    }
-
-    document.addEventListener('visibilitychange', sync, { passive: true });
-    sync();
-
-    return () => {
-      observer?.disconnect();
-      document.removeEventListener('visibilitychange', sync);
-    };
-  }, [loadVideo, src]);
+    return observeDecorativeVideo(video, {
+      target: mask,
+      shouldPlay: () => autoPlay && !prefersStillVideo(),
+    });
+  }, [autoPlay, loadVideo, src]);
 
   const dataUrlMask = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`;
 
@@ -161,7 +131,6 @@ export default function VideoText({
         {loadVideo ? (
           <video
             ref={videoRef}
-            autoPlay={autoPlay}
             muted={muted}
             loop={loop}
             preload={preload}
@@ -170,6 +139,7 @@ export default function VideoText({
             tabIndex={-1}
             aria-hidden="true"
             onCanPlay={() => setVideoReady(true)}
+            onError={() => setVideoReady(false)}
           >
             <source src={src} type="video/mp4" />
           </video>

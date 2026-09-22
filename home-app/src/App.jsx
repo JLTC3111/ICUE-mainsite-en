@@ -1,5 +1,6 @@
 import { BrowserRouter, Link, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
-import { lazy, Suspense, useEffect, useLayoutEffect, useMemo } from 'react'
+import { Suspense, useEffect, useLayoutEffect, useMemo } from 'react'
+import { lazyWithRecovery } from '../../shared/resilience/lazyWithRecovery.jsx'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
@@ -11,7 +12,7 @@ import RouteHead from './components/RouteHead'
 import SiteLanguageMenu from './components/SiteLanguageMenu'
 import { ABOUT_US_APP_URL, pageFromPathname, pathFromLegacyHash, ROUTE_PATHS } from './lib/routes'
 
-const HomePage = lazy(() => import('./pages/HomePage'))
+const HomePage = lazyWithRecovery(() => import('./pages/HomePage'))
 
 function RouteFallback() {
   return <div className="route-loading" role="status" aria-label="Loading page" />
@@ -130,7 +131,7 @@ function AppShell() {
         </Suspense>
       </main>
       <Footer linkMode="standalone" onNavigate={navigate} labels={footerLabels} lang={lang} />
-      <ContactSidebar contentKey={pathname} />
+      <ContactSidebar contentKey={pathname} locale={lang} />
     </>
   )
 }

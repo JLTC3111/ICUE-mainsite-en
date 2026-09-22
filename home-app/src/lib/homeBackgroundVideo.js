@@ -1,3 +1,4 @@
+import { subscribeToPageResume } from '../../../shared/resilience/pageResume.js';
 export const HOME_BG_VIDEO_STORAGE_KEY = 'home_bg_video_enabled';
 
 export function readHomeBackgroundVideoEnabledPreference() {
@@ -66,6 +67,9 @@ const HomeBackgroundVideoManager = (() => {
     },
   ];
 
+  let unsubscribeResume = null;
+  let recoveryMetadataHandler = null;
+  let needsMediaRecovery = false;
   let videoEl = null;
   let resizeHandler = null;
   let visibilityHandler = null;
@@ -87,26 +91,55 @@ const HomeBackgroundVideoManager = (() => {
   let scheduledWarmupSrc = null;
   let heroVisibilityObserver = null;
   let heroInViewport = true;
+  let lifecycle = 0;
+  let playFallbackTimer = null;
+  let transitionTimer = null;
+  let warmupTask = null;
+  let warmupUsesIdle = false;
+  let canPlayHandler = null;
+  let metadataHandler = null;
 
   const logHomeBg = (...args) => console.log('[HomeBackgroundVideo]', ...args);
 
   const debounce = (fn, delay = 200) => {
     let timer;
-    return function debounced(...args) {
+    function debounced(...args) {
       clearTimeout(timer);
       timer = setTimeout(() => fn.apply(this, args), delay);
-    };
+    }
+    debounced.cancel = () => clearTimeout(timer);
+    return debounced;
+  };
+
+  const cancelWarmup = () => {
+    if (warmupTask === null) return;
+    if (warmupUsesIdle) window.cancelIdleCallback(warmupTask);
+    else clearTimeout(warmupTask);
+    warmupTask = null;
+    scheduledWarmupSrc = null;
   };
 
   const scheduleIdleTask = (task) => {
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(task, { timeout: 2000 });
+    cancelWarmup();
+    const token = lifecycle;
+    const run = () => {
+      warmupTask = null;
+      scheduledWarmupSrc = null;
+      if (token === lifecycle && videoEl && heroInViewport && !shouldKeepStatic() && !document.hidden) task();
+    };
+    warmupUsesIdle = typeof window.requestIdleCallback === 'function';
+    if (warmupUsesIdle) {
+      warmupTask = window.requestIdleCallback(run, { timeout: 2000 });
     } else {
-      setTimeout(task, 100); // Small delay instead of 0 to avoid blocking main thread
+      warmupTask = setTimeout(run, 100);
     }
   };
 
-  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
+  // Keep phones on the smaller asset after rotation, and include the 768px
+  // boundary used by the mobile layout.
+  const isMobileViewport = () => window.matchMedia(
+    '(max-width: 768px), (max-width: 1024px) and (max-height: 600px) and (pointer: coarse)',
+  ).matches;
 
   const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -170,7 +203,7 @@ const HomeBackgroundVideoManager = (() => {
     }
     if (videoEl) {
       videoEl.loop = false;
-      videoEl.preload = 'auto';
+      videoEl.preload = 'metadata';
       videoEl.muted = true;
       videoEl.playsInline = true;
       videoEl.setAttribute('muted', '');
@@ -198,6 +231,7 @@ const HomeBackgroundVideoManager = (() => {
     if (!videoEl) return;
     videoEl.pause();
     videoEl.removeAttribute('src');
+    videoEl.removeAttribute('data-active-src');
     videoEl.querySelectorAll('source').forEach(source => source.removeAttribute('src'));
     videoEl.load();
   };
@@ -236,7 +270,7 @@ const HomeBackgroundVideoManager = (() => {
       document.body.appendChild(warmupVideo);
     }
 
-    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const prefersMobile = isMobileViewport();
     const src = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!src) return;
 
@@ -252,10 +286,9 @@ const HomeBackgroundVideoManager = (() => {
     if (videoPlaylist.length <= 1 || currentIndex < 0) return;
     const expectedIndex = currentIndex;
     const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
-    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const prefersMobile = isMobileViewport();
     const src = prefersMobile && upcoming.mobile ? upcoming.mobile : upcoming.desktop;
     if (!src || scheduledWarmupSrc === src || warmupVideo?.getAttribute('data-src') === src) return;
-    scheduledWarmupSrc = src;
     scheduleIdleTask(() => {
       if (currentIndex !== expectedIndex || !videoEl?.isConnected) {
         scheduledWarmupSrc = null;
@@ -264,29 +297,39 @@ const HomeBackgroundVideoManager = (() => {
       warmVideoForMeta(upcoming);
       scheduledWarmupSrc = null;
     });
+    scheduledWarmupSrc = src;
   };
 
   const attemptPlay = (label = 'play') => {
-    if (!videoEl) return;
-    const playPromise = videoEl.play();
+    if (!videoEl || !heroInViewport || shouldKeepStatic() || document.hidden) return;
+    const el = videoEl;
+    const token = lifecycle;
+    const isCurrent = () => token === lifecycle && el === videoEl && heroInViewport && !shouldKeepStatic() && !document.hidden;
+    const playPromise = el.play();
     if (playPromise?.catch) {
       playPromise.catch(err => {
+        if (!isCurrent()) return;
         console.warn('[HomeBackgroundVideo] Autoplay blocked:', err);
         logHomeBg('play failed', { label, err });
-        videoEl.muted = true;
-        videoEl.setAttribute('muted', '');
-        setTimeout(() => {
-          videoEl.play().catch(e2 => console.warn('[HomeBackgroundVideo] Retry play failed:', e2));
+        el.muted = true;
+        el.setAttribute('muted', '');
+        clearTimeout(playFallbackTimer);
+        playFallbackTimer = setTimeout(() => {
+          playFallbackTimer = null;
+          if (!isCurrent() || !el.paused) return;
+          el.play().catch(e2 => {
+            if (isCurrent()) console.warn('[HomeBackgroundVideo] Retry play failed:', e2);
+          });
         }, 200);
       });
     }
   };
 
   const activateVideo = (meta) => {
-    if (!videoEl || !meta) return;
+    if (!videoEl || !meta || shouldKeepStatic()) return;
     enforceVideoNonInteractive(videoEl);
 
-    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const prefersMobile = isMobileViewport();
     const chosenSrc = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!chosenSrc) return;
     
@@ -296,6 +339,15 @@ const HomeBackgroundVideoManager = (() => {
       logHomeBg('skip activate - already active', meta.id);
       return;
     }
+
+    lifecycle += 1;
+    cancelWarmup();
+    if (recoveryMetadataHandler) videoEl.removeEventListener('loadedmetadata', recoveryMetadataHandler);
+    recoveryMetadataHandler = null;
+    needsMediaRecovery = false;
+    clearTimeout(playFallbackTimer);
+    if (canPlayHandler) videoEl.removeEventListener('canplay', canPlayHandler);
+    if (metadataHandler) videoEl.removeEventListener('loadedmetadata', metadataHandler);
     
     videoEl.src = chosenSrc;
     videoEl.setAttribute('data-active-src', chosenSrc);
@@ -316,8 +368,10 @@ const HomeBackgroundVideoManager = (() => {
     if (videoEl.readyState >= 2) {
       attemptPlay('ready');
     } else {
-      videoEl.addEventListener('loadedmetadata', () => logHomeBg('loadedmetadata', { duration: videoEl.duration, src: videoEl.currentSrc || videoEl.src }), { once: true });
-      videoEl.addEventListener('canplay', () => attemptPlay('canplay'), { once: true });
+      metadataHandler = () => logHomeBg('loadedmetadata', { duration: videoEl.duration, src: videoEl.currentSrc || videoEl.src });
+      canPlayHandler = () => attemptPlay('canplay');
+      videoEl.addEventListener('loadedmetadata', metadataHandler, { once: true });
+      videoEl.addEventListener('canplay', canPlayHandler, { once: true });
     }
 
     if (playRetryTimer) clearTimeout(playRetryTimer);
@@ -339,24 +393,47 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const handleEnded = () => {
-    if (!videoPlaylist.length || isTransitioning) return;
+    if (!videoEl || !videoPlaylist.length || isTransitioning || !heroInViewport || shouldKeepStatic() || document.hidden) return;
     isTransitioning = true;
     logHomeBg('handleEnded', { currentIndex, nextIndex: (currentIndex + 1) % videoPlaylist.length });
     goToIndex((currentIndex + 1) % videoPlaylist.length);
-    setTimeout(() => { isTransitioning = false; }, 500);
+    transitionTimer = setTimeout(() => { isTransitioning = false; }, 500);
   };
 
   const handleResize = () => {
-    if (currentIndex === -1 || !videoPlaylist[currentIndex]) return;
+    if (currentIndex === -1 || !videoPlaylist[currentIndex] || !heroInViewport || shouldKeepStatic() || document.hidden) return;
     activateVideo(videoPlaylist[currentIndex]);
+  };
+
+  const recoverPlayback = () => {
+    if (!videoEl || !heroInViewport || shouldKeepStatic() || document.hidden) return;
+    handleResize();
+    if (needsMediaRecovery || videoEl.error) {
+      const el = videoEl;
+      const token = ++lifecycle;
+      clearTimeout(playFallbackTimer);
+      const position = el.currentTime;
+      if (recoveryMetadataHandler) el.removeEventListener('loadedmetadata', recoveryMetadataHandler);
+      recoveryMetadataHandler = () => {
+        if (el !== videoEl || lifecycle !== token || shouldKeepStatic()) return;
+        if (Number.isFinite(position) && position > 0 && position < el.duration) {
+          try { el.currentTime = position; } catch { /* Browser can reject a seek. */ }
+        }
+        attemptPlay('reconnected-media');
+      };
+      el.addEventListener('loadedmetadata', recoveryMetadataHandler, { once: true });
+      needsMediaRecovery = false;
+      el.load();
+    }
+    attemptPlay('resume');
   };
 
   const handleVisibilityChange = () => {
     if (!videoEl) return;
     if (document.hidden) {
       videoEl.pause();
-    } else if (heroInViewport && !shouldKeepStatic()) {
-      videoEl.play().catch(() => {});
+    } else if (!shouldKeepStatic()) {
+      recoverPlayback();
     }
   };
 
@@ -375,7 +452,7 @@ const HomeBackgroundVideoManager = (() => {
       if (!heroInViewport) {
         videoEl.pause();
       } else if (!document.hidden && !shouldKeepStatic()) {
-        attemptPlay('hero-visible');
+        recoverPlayback();
       }
     }, { rootMargin: '100px 0px', threshold: 0.01 });
     heroVisibilityObserver.observe(hero);
@@ -399,6 +476,7 @@ const HomeBackgroundVideoManager = (() => {
     const startIndex = nextIndex();
     if (startIndex === -1) return;
     goToIndex(startIndex);
+
     observeHeroVisibility();
 
     let lastLogTime = 0;
@@ -410,13 +488,15 @@ const HomeBackgroundVideoManager = (() => {
       }
     };
     playHandler = () => {
-      throttleLog('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+      needsMediaRecovery = false;
+      throttleLog('playing', { currentIndex });
       scheduleNextVideoWarmup();
     };
     pauseHandler = () => throttleLog('pause', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
     waitingHandler = () => throttleLog('waiting', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
-    stalledHandler = () => throttleLog('stalled', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    stalledHandler = () => { needsMediaRecovery = true; throttleLog('stalled', { currentIndex }); };
     errorHandler = () => {
+      needsMediaRecovery = true;
       const currentSrc = videoEl?.currentSrc || videoEl?.src;
       logHomeBg('error', { error: videoEl?.error, currentSrc, active: videoEl?.getAttribute('data-active-src') });
       if (!activeMeta || errorSwapAttempted) return;
@@ -500,10 +580,29 @@ const HomeBackgroundVideoManager = (() => {
     window.addEventListener('resize', resizeHandler, { passive: true });
     visibilityHandler = handleVisibilityChange;
     document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
+    unsubscribeResume = subscribeToPageResume(recoverPlayback, { minHiddenMs: 0 });
   };
 
   const destroy = () => {
+    unsubscribeResume?.();
+    unsubscribeResume = null;
+    needsMediaRecovery = false;
+    if (videoEl && recoveryMetadataHandler) videoEl.removeEventListener('loadedmetadata', recoveryMetadataHandler);
+    recoveryMetadataHandler = null;
+    // Invalidate rejected play promises before detaching the media element.
+    lifecycle += 1;
+    cancelWarmup();
+    clearTimeout(playFallbackTimer);
+    clearTimeout(transitionTimer);
+    playFallbackTimer = null;
+    transitionTimer = null;
+    isTransitioning = false;
+    activeMeta = null;
     if (videoEl) {
+      if (canPlayHandler) videoEl.removeEventListener('canplay', canPlayHandler);
+      if (metadataHandler) videoEl.removeEventListener('loadedmetadata', metadataHandler);
+      canPlayHandler = null;
+      metadataHandler = null;
       clearVideoSources();
       videoEl.pause();
       videoEl.removeEventListener('ended', handleEnded);
@@ -532,6 +631,7 @@ const HomeBackgroundVideoManager = (() => {
     }
     if (resizeHandler) {
       window.removeEventListener('resize', resizeHandler);
+      resizeHandler.cancel();
       resizeHandler = null;
     }
     if (visibilityHandler) {
@@ -541,13 +641,13 @@ const HomeBackgroundVideoManager = (() => {
     heroVisibilityObserver?.disconnect();
     heroVisibilityObserver = null;
     heroInViewport = true;
+    scheduledWarmupSrc = null;
     if (warmupVideo) {
       warmupVideo.removeAttribute('src');
       warmupVideo.load();
       warmupVideo.remove();
       warmupVideo = null;
     }
-    scheduledWarmupSrc = null;
     currentIndex = -1;
     videoEl = null;
     applyNavTheme(null);
