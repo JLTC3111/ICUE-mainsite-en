@@ -20,6 +20,7 @@ export const DrawerMenuCloseIcon = forwardRef(function DrawerMenuCloseIcon(props
 
 const DrawerMenuToggle = forwardRef(function DrawerMenuToggle({
   open = false,
+  morph = false,
   className = '',
   menuLabel = 'Menu',
   closeLabel = 'Close',
@@ -29,20 +30,34 @@ const DrawerMenuToggle = forwardRef(function DrawerMenuToggle({
     <button
       ref={ref}
       type="button"
-      className={['nav-drawer__toggle', open ? 'is-open' : '', className].filter(Boolean).join(' ')}
-      aria-label={open ? closeLabel : menuLabel}
+      className={[
+        'nav-drawer__toggle',
+        morph ? 'nav-drawer__toggle--morph' : '',
+        open ? 'is-open' : '',
+        className,
+      ].filter(Boolean).join(' ')}
+      aria-label={morph && open ? closeLabel : menuLabel}
       aria-expanded={open}
       {...props}
     >
-      {open ? (
-        <DrawerMenuCloseIcon />
-      ) : (
-        <>
-          <span />
-          <span />
-          <span />
-        </>
-      )}
+      <span className="nav-drawer__toggle-bars" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </span>
+      {morph ? (
+        <svg
+          className="nav-drawer__toggle-x"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.25}
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      ) : null}
     </button>
   )
 })

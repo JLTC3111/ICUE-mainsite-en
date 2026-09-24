@@ -11,7 +11,7 @@ function CloseIcon() {
       className="nav-drawer__close-icon"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#f8fafc"
+      stroke="currentColor"
       strokeWidth={2.25}
       strokeLinecap="round"
       aria-hidden="true"
@@ -27,7 +27,8 @@ function DrawerMenuPanel({
   open: openProp,
   onOpenChange,
   showToggle = true,
-  showFloatingClose = true,
+  showClose = true,
+  morphToggle = false,
   portal = true,
   resizable = false,
   drawerId = 'drawerMenu',
@@ -144,6 +145,19 @@ function DrawerMenuPanel({
         aria-hidden={!open}
         inert={open ? undefined : ''}
       >
+        {showClose ? (
+          <div className="nav-drawer__header">
+            <button
+              type="button"
+              className="nav-drawer__close"
+              aria-label={closeLabel}
+              onClick={close}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+        ) : null}
+
         <LineSidebarNav
           links={links}
           people={people}
@@ -171,35 +185,34 @@ function DrawerMenuPanel({
   return (
     <>
       {showToggle ? (
-        open ? (
-          <span className="nav-drawer__toggle-placeholder" aria-hidden="true" />
-        ) : (
-          <button
-            type="button"
-            className="nav-drawer__toggle"
-            aria-label={menuLabel}
-            aria-expanded={false}
-            onClick={toggle}
-          >
-            <span /><span /><span />
-          </button>
-        )
-      ) : null}
-
-      {showToggle && showFloatingClose && open
-        ? createPortal(
-            <button
-              type="button"
-              className="nav-drawer__toggle is-open nav-drawer__toggle--floating"
-              aria-label={closeLabel}
-              aria-expanded
-              onClick={toggle}
+        <button
+          type="button"
+          className={`nav-drawer__toggle${morphToggle ? ' nav-drawer__toggle--morph' : ''}${open ? ' is-open' : ''}`}
+          aria-label={morphToggle && open ? closeLabel : menuLabel}
+          aria-expanded={open}
+          aria-controls={drawerId}
+          onClick={toggle}
+        >
+          <span className="nav-drawer__toggle-bars" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+          {morphToggle ? (
+            <svg
+              className="nav-drawer__toggle-x"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.25}
+              strokeLinecap="round"
+              aria-hidden="true"
             >
-              <CloseIcon />
-            </button>,
-            document.body,
-          )
-        : null}
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          ) : null}
+        </button>
+      ) : null}
 
       {portal ? createPortal(panel, document.body) : panel}
     </>

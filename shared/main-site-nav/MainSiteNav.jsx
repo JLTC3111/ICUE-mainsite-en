@@ -515,7 +515,7 @@ export default function MainSiteNav({
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
         showToggle={false}
-        showFloatingClose={false}
+        showClose={false}
         portal={false}
         resizable
         drawerId="drawerMenu"
