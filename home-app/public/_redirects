@@ -1,3 +1,8 @@
+# Live Vietnamese chatbot knowledge; locale is validated by the function.
+/chatbot/shared/:lang /.netlify/functions/chat-knowledge?lang=:lang 200!
+
+# The legacy-redirect edge function preserves incoming languages before these
+# English-default compatibility rules. Local runtimes use the same helper.
 # Retired English HTML always moves to the current React implementation.
 /legacy/pages/Home.html                         /                                             301!
 /legacy/pages/Home_OLD.html                     /                                             301!

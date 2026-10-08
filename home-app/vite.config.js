@@ -4,10 +4,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { recoveryChunks } from './recoveryChunks.js'
 import { getBootstrapExternalRedirect } from './src/lib/bootstrapExternalRedirect.js'
+import { safeRequestPath } from '../scripts/lib/static-files.mjs'
+import { createChatMiddleware } from '../scripts/lib/chat-routes.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function routeDevRequest(req, res, next) {
+  if (!safeRequestPath(req.url)) { res.statusCode = 403; res.end(); return }
   const [urlPath, query = ''] = (req.url || '').split('?')
   const redirectTarget = getBootstrapExternalRedirect(
     urlPath,
@@ -39,9 +42,11 @@ export default defineConfig({
     {
       name: 'legacy-pages-spa',
       configureServer(server) {
+        server.middlewares.use(createChatMiddleware())
         server.middlewares.use(routeDevRequest)
       },
       configurePreviewServer(server) {
+        server.middlewares.use(createChatMiddleware())
         server.middlewares.use(routeDevRequest)
       },
     },

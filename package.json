@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "ICUE Vietnam English website",
   "main": "server.js",
+  "engines": { "node": ">=22.12.0" },
+  "overrides": { "qs": "^6.16.0" },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
+    "express": "^4.22.2",
     "i18next": "^26.3.6",
     "i18next-browser-languagedetector": "^8.2.1",
     "lucide": "^1.24.0",
@@ -27,9 +29,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",
-    "cpy": "^11.1.0",
-    "nodemon": "^3.1.14",
-    "vite": "^6.3.2",
+    "vite": "^6.4.3",
     "react-test-renderer": "19.2.7"
   },
   "scripts": {
@@ -40,9 +40,11 @@
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",
     "preview": "npm run preview --prefix home-app --",
     "server": "node server.js",
-    "server-dev": "nodemon server.js",
+    "server-dev": "node --watch server.js",
     "check:routes": "node scripts/check-routes.mjs",
     "check:production": "npm run check:routes && node scripts/check-production.mjs",
-    "test:recovery": "node --experimental-vm-modules --test shared/resilience/*.test.js home-app/src/lib/homeBackgroundVideo.test.js"
+    "test:recovery": "node --experimental-vm-modules --test shared/resilience/*.test.js home-app/src/lib/homeBackgroundVideo.test.js",
+    "test:audit": "node --experimental-vm-modules --test scripts/tests/*.test.mjs shared/chatbot/*.test.mjs shared/chatbot/lib/*.test.mjs",
+    "sync:chatbot": "node scripts/sync-vn-chatbot.mjs"
   }
 }

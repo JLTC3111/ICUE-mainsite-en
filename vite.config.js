@@ -1,137 +1,59 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { getBootstrapExternalRedirect } from './home-app/src/lib/bootstrapExternalRedirect.js';
-
-const MIME = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.jsx': 'text/javascript; charset=utf-8',
-  '.mjs': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.ico': 'image/x-icon',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.mp4': 'video/mp4',
-  '.webm': 'video/webm',
-};
+import { resolveStaticFile, safeRequestPath, serveStaticFile } from './scripts/lib/static-files.mjs';
+import { createChatMiddleware } from './scripts/lib/chat-routes.mjs';
 
 function publicDevFallback() {
   const root = process.cwd();
   return {
     name: 'public-dev-fallback',
     configureServer(server) {
+      server.middlewares.use(createChatMiddleware());
       server.middlewares.use((req, res, next) => {
-        const urlPath = (req.url || '').split('?')[0];
-        if (!urlPath.startsWith('/public/')) {
-          return next();
-        }
-
-        const rel = urlPath.replace(/^\/public\/?/, '');
-        const filePath = path.join(root, 'public', rel);
-        if (rel && path.extname(rel) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-          res.statusCode = 200;
-          res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
-          res.end(fs.readFileSync(filePath));
-          return;
-        }
-
-        next();
+        const urlPath = safeRequestPath(req.url);
+        if (!urlPath) { res.statusCode = 403; res.end(); return; }
+        if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+        const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+        const target = getBootstrapExternalRedirect(urlPath, query);
+        if (target) { res.writeHead(302, { Location: target }); res.end(); return; }
+        if (!urlPath.startsWith('/public/')) return next();
+        const file = resolveStaticFile(path.join(root, 'public'), urlPath.slice('/public/'.length));
+        if (file) serveStaticFile(req, res, file);
+        else { res.statusCode = 404; res.end(); }
       });
     },
   };
 }
 
-function resolveExistingFile(...candidates) {
-  for (const candidate of candidates) {
-    if (candidate && fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
-      return candidate;
-    }
-  }
-  return null;
-}
-
 function homeDevFallback() {
-  const root = process.cwd();
-  const appDir = path.resolve(root, 'dist-home');
+  const appDir = path.resolve(process.cwd(), 'dist-home');
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
-
   return {
     name: 'home-dev-fallback',
     configureServer(server) {
-      // Pre-middleware: rewrite News archive to the React shell before Vite
-      // can serve the static legacy/pages/News.html file.
       return () => {
         server.middlewares.use((req, res, next) => {
-          const [urlPath, query = ''] = (req.url || '').split('?');
-
-          if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
-
-          const redirectTarget = getBootstrapExternalRedirect(
-            urlPath,
-            query ? `?${query}` : '',
-          );
-          if (redirectTarget) {
-            res.statusCode = 302;
-            res.setHeader('Location', redirectTarget);
-            res.end();
+          if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+          const urlPath = safeRequestPath(req.url);
+          if (!urlPath) { res.statusCode = 403; res.end(); return; }
+          if (viteInternals.some(prefix => urlPath.startsWith(prefix))) return next();
+          const relative = urlPath.replace(/^\//, '');
+          // Only built public output is eligible here. Never fall back to raw
+          // repository files or let relative URLs escape the configured root.
+          const file = resolveStaticFile(appDir, relative)
+            || (urlPath.startsWith('/public/') ? resolveStaticFile(appDir, relative.slice(7)) : null)
+            || (!path.extname(relative) ? resolveStaticFile(appDir, `${relative}.html`) : null);
+          if (file) { serveStaticFile(req, res, file); return; }
+          if (path.extname(relative)) return next();
+          const index = resolveStaticFile(appDir, 'index.html');
+          if (!index) {
+            res.writeHead(503, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Home app not built. Run npm run build:home first.');
             return;
           }
-
-          const rel = urlPath.replace(/^\//, '');
-          const filePath = path.join(appDir, rel);
-          const rootFilePath = path.join(root, rel);
-          const hasExtension = Boolean(rel && path.extname(rel));
-          const indexPath = path.join(appDir, 'index.html');
-
-          if (hasExtension) {
-            const matched = resolveExistingFile(
-              filePath,
-              rootFilePath,
-              urlPath.startsWith('/public/')
-                ? path.join(appDir, rel.replace(/^public\//, ''))
-                : null,
-            );
-            if (matched) {
-              res.statusCode = 200;
-              res.setHeader('Content-Type', MIME[path.extname(matched).toLowerCase()] || 'application/octet-stream');
-              res.end(fs.readFileSync(matched));
-              return;
-            }
-
-            return next();
-          }
-
-          const htmlMatch = resolveExistingFile(
-            `${filePath}.html`,
-            `${rootFilePath}.html`,
-            path.join(appDir, `${rel}.html`),
-            path.join(root, `${rel}.html`),
-          );
-          if (htmlMatch) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            res.end(fs.readFileSync(htmlMatch));
-            return;
-          }
-
-          if (!fs.existsSync(indexPath)) {
-            res.statusCode = 503;
-            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-            res.end('Home app not built. Run npm run build:home first (or npm run dev, which builds it automatically).');
-            return;
-          }
-
-          res.statusCode = 200;
-          res.setHeader('Content-Type', 'text/html; charset=utf-8');
-          res.end(fs.readFileSync(indexPath, 'utf-8'));
+          serveStaticFile(req, res, index);
         });
       };
     },

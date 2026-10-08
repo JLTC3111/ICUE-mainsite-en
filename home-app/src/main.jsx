@@ -4,7 +4,8 @@ import App from './App.jsx'
 import AppRecovery from '../../shared/resilience/AppRecovery.jsx'
 import { installChunkRecovery } from '../../shared/resilience/chunkRecovery.js'
 
-import './lib/i18n'
+import i18n from './lib/i18n'
+import SiteChatbot from '../../shared/chatbot/SiteChatbot.jsx'
 import { redirectExternalAppAtBootstrap } from './lib/bootstrapExternalRedirect'
 import '../../styles.css'
 import './styles/footer-theme.css'
@@ -19,7 +20,7 @@ window.__ICUE_API_BASE_URL__ = import.meta.env.VITE_API_BASE_URL || ''
 if (!redirectExternalAppAtBootstrap()) {
   createRoot(document.getElementById('root')).render(
     <StrictMode>
-      <AppRecovery><App /></AppRecovery>
+      <AppRecovery><App /><SiteChatbot i18n={i18n} /></AppRecovery>
     </StrictMode>,
   )
 }

@@ -1,0 +1,378 @@
+/*
+ * Ported from styles.css:110-355, where it styled the chatbot the legacy
+ * runtime injected into every legacy page.
+ *
+ * Class names are prefixed `icue-chat` rather than reusing the legacy
+ * `.chatbot-*` names. The archived legacy CSS is still imported by home-app;
+ * keeping the namespaces apart prevents it from restyling this component.
+ *
+ * Colours come from tokens with literal fallbacks, so the component renders
+ * correctly in an app that has not defined them.
+ */
+
+.icue-chat {
+  --icue-chat-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  --icue-chat-left: max(25px, env(safe-area-inset-left, 0px));
+  --icue-chat-right: max(15px, env(safe-area-inset-right, 0px));
+  --icue-chat-launcher-space: 112px;
+  --icue-chat-top: max(12px, env(safe-area-inset-top, 0px));
+  position: fixed;
+  bottom: calc(var(--icue-chat-bottom) + var(--icue-chat-keyboard-inset, 0px));
+  left: var(--icue-chat-left);
+  z-index: 40;
+  font-family: var(--icue-font-stack, system-ui, sans-serif);
+  line-height: 1.4;
+}
+
+.icue-chat, .icue-chat * {
+  box-sizing: border-box;
+}
+
+/* The contact rail uses 140; navigation drawers use 1200+. Keep the open
+   conversation above the rail so it cannot intercept the close/send buttons. */
+.icue-chat--open { z-index: 150; }
+
+.icue-chat__toggle {
+  width: 104px;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: none;
+  font: inherit;
+  line-height: 1;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease;
+}
+
+/* Override legacy button:hover gradients without moving the click target. */
+.icue-chat__toggle:is(:hover, :focus, :active) {
+  background: none;
+  box-shadow: none;
+}
+
+.icue-chat__toggle:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.icue-chat button:focus-visible {
+  outline: 3px solid #187fbd;
+  outline-offset: 4px;
+}
+
+.icue-chat__header button:focus-visible {
+  outline-color: #a2f9ff;
+  outline-offset: 1px;
+}
+
+.icue-chat__window {
+  position: absolute;
+  bottom: var(--icue-chat-launcher-space);
+  left: 0;
+  width: min(350px, calc(100vw - var(--icue-chat-left) - var(--icue-chat-right)));
+  height: 500px;
+  max-height: calc(100vh - var(--icue-chat-launcher-space) - var(--icue-chat-bottom) - 12px);
+  max-height: calc(var(--icue-chat-viewport-height, 100dvh) - var(--icue-chat-launcher-space) - var(--icue-chat-bottom) - var(--icue-chat-top));
+  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  animation: icue-chat-slide-up 0.3s ease-out;
+}
+
+@keyframes icue-chat-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* The window mounts and unmounts rather than toggling a class, so a reader who
+   asked for reduced motion should not see it fly in. */
+@media (prefers-reduced-motion: reduce) {
+  .icue-chat__window {
+    animation: none;
+  }
+
+  .icue-chat button, .icue-chat button svg {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+.icue-chat__header {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #23242a 0%, #070020 100%);
+  color: #fff;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icue-chat__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  min-width: 0;
+}
+
+.icue-chat__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.icue-chat__subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: #b9cedf;
+}
+
+.icue-chat__header-actions { display: flex; align-items: center; flex: none; }
+
+.icue-chat__close,
+.icue-chat__sync {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.icue-chat__close:hover,
+.icue-chat__sync:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.icue-chat__messages {
+  flex: 1;
+  min-height: 0;
+  padding: 20px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  background: #f8f9fa;
+}
+
+.icue-chat__message {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.icue-chat__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.icue-chat__message--user {
+  flex-direction: row-reverse;
+}
+
+.icue-chat__message--user .icue-chat__avatar {
+  background: #e9ecef;
+  color: #495057;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.icue-chat__bubble {
+  background: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  max-width: 250px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.icue-chat__message--user .icue-chat__bubble {
+  background: #667eea;
+  color: #fff;
+}
+
+.icue-chat__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.icue-chat__links a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.icue-chat__pending {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.icue-chat__input-area {
+  flex-shrink: 0;
+  padding: 16px 20px;
+  border-top: 1px solid #e9ecef;
+  background: #fff;
+}
+
+.icue-chat__input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.icue-chat__input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 1px solid #e9ecef;
+  border-radius: 24px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.icue-chat__input:focus {
+  border-color: #187fbd;
+  box-shadow: 0 0 0 1px #187fbd;
+}
+
+.icue-chat__send {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: #0d2ec0;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.icue-chat__send:hover {
+  filter: brightness(1.5);
+  background: #59ffbd;
+  color: #000;
+}
+
+.icue-chat__send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icue-chat__send:disabled svg {
+  transform: none;
+}
+
+.icue-chat__suggestions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.icue-chat__suggestion {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  color: #495057;
+}
+
+.icue-chat__suggestion:hover {
+  background: #031771;
+  color: #fff;
+  border-color: #667eea;
+}
+
+.icue-chat--compact .icue-chat__input-area {
+  padding: 8px 12px;
+}
+
+/* Recover the launcher's vertical space when a keyboard or landscape viewport
+   leaves little room. The header retains an accessible 44px close button. */
+.icue-chat--compact {
+  --icue-chat-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  --icue-chat-launcher-space: 0px;
+  --icue-chat-top: max(76px, calc(env(safe-area-inset-top, 0px) + 60px));
+}
+
+.icue-chat--compact.icue-chat--open .icue-chat__toggle {
+  display: none;
+}
+
+.icue-chat--compact .icue-chat__window {
+  animation: none;
+}
+
+.icue-chat--compact .icue-chat__messages {
+  padding: 12px;
+}
+
+.icue-chat--compact .icue-chat__suggestions {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.icue-chat--compact .icue-chat__suggestion {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .icue-chat__window {
+    width: min(320px, calc(100vw - var(--icue-chat-left) - var(--icue-chat-right)));
+    height: 450px;
+  }
+
+  .icue-chat {
+    --icue-chat-bottom: max(15px, env(safe-area-inset-bottom, 0px));
+    --icue-chat-left: max(15px, env(safe-area-inset-left, 0px));
+    --icue-chat-launcher-space: 72px;
+  }
+
+  .icue-chat__toggle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .icue-chat--compact {
+    --icue-chat-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    --icue-chat-launcher-space: 0px;
+  }
+}

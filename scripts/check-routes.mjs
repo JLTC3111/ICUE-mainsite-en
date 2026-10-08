@@ -248,12 +248,8 @@ for (const [file, source] of Object.entries(runtimeRouteSources)) {
     fail(`${file} does not send retired English routes to icue.vn`)
   }
 }
-if (!runtimeRouteSources['server.js'].includes("vnUrl('/past-projects/'")
-  && !runtimeRouteSources['server.js'].includes("vnUrl(`/past-projects/${")) {
-  fail('Express does not preserve project detail ids')
-}
-if (!runtimeRouteSources['server.js'].includes('lang=en')) {
-  fail('Express redirects are missing lang=en')
+if (!runtimeRouteSources['server.js'].includes('getBootstrapExternalRedirect(req.path, search)')) {
+  fail('Express must use the shared localized redirect decision')
 }
 if (runtimeRouteSources['server.js'].includes('site=en')) {
   fail('Express redirects still emit site=en')
@@ -279,6 +275,9 @@ for (const file of emittedSources) {
 }
 
 const netlifyToml = read('netlify.toml')
+if (!netlifyToml.includes('function = "legacy-redirect"') || !netlifyToml.includes('path = "/*"')) {
+  fail('Netlify must preserve incoming languages through the shared edge redirect')
+}
 if (/from = "\/about-us"/.test(netlifyToml) && /to = "(?!https:)/.test(netlifyToml)) {
   fail('netlify.toml still rewrites a retired English subpage to a local shell')
 }

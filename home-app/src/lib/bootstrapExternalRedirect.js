@@ -11,7 +11,7 @@ import {
   PAST_PROJECTS_APP_URL,
   RECRUITMENT_APP_URL,
 } from './routes.js'
-import { withUiLang } from '../../../shared/i18n/withUiLang.js'
+import { normalizeUiLang, withUiLang } from '../../../shared/i18n/withUiLang.js'
 
 const EXTERNAL_ALIASES = new Map()
 
@@ -112,6 +112,7 @@ for (const [slug, target] of Object.entries(LEGAL_APP_URLS)) {
     `/legacy/pages/${slug}.html`,
     `/legacy-embed/pages/${slug}`,
     `/legacy-embed/pages/${slug}.html`,
+    `/src/pages/${slug}.html`,
   ]) {
     EXTERNAL_ALIASES.set(alias, target)
   }
@@ -154,12 +155,20 @@ export function getBootstrapExternalRedirect(pathname, search = '') {
   const cleanPath = `/${pathname.split('/').filter(Boolean).join('/')}`
   const normalized = cleanPath.toLowerCase()
   const detailTarget = legacyDetailTarget(normalized, search)
-  if (detailTarget) return detailTarget
-  if (EXTERNAL_ALIASES.has(normalized)) return EXTERNAL_ALIASES.get(normalized)
-  if (EXTERNAL_PREFIXES.some((prefix) => normalized.startsWith(`${prefix}/`))) {
-    return withUiLang(`https://icue.vn${cleanPath}`, 'en')
+  const target = detailTarget || EXTERNAL_ALIASES.get(normalized)
+    || (EXTERNAL_PREFIXES.some((prefix) => normalized.startsWith(`${prefix}/`))
+      ? `https://icue.vn${cleanPath}` : null)
+  if (!target) return null
+
+  const incoming = new URLSearchParams(search)
+  const url = new URL(target, 'https://en.icue.vn')
+  // Keep campaign/filter parameters; a legacy detail id is now part of the path.
+  for (const [key, value] of incoming) {
+    if (key === 'lang' || (key === 'id' && detailTarget)) continue
+    url.searchParams.append(key, value)
   }
-  return null
+  const href = target.startsWith('/') ? `${url.pathname}${url.search}` : url.href
+  return withUiLang(href, normalizeUiLang(incoming.get('lang'), 'en'))
 }
 
 function readLangHint(locationObject) {

@@ -1,4 +1,6 @@
-import { memo, useId, useRef, useState } from 'react'
+import { memo, useCallback, useId, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import useModalFocus from '../ui/useModalFocus.js'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { normalizeUiLocale } from '../site-routes/mainSitePaths.js'
 import { shouldAvoidCanvasEffects } from '../browser/visualEffectsPolicy.js'
@@ -114,6 +116,10 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
   const calendarLabels = CALENDAR_LABELS[calendarLocale]
   const { month, day, time } = useCalendarClock(calendarLocale)
   const [calendarOpen, setCalendarOpen] = useState(false)
+  const calendarTriggerRef = useRef(null)
+  const calendarDialogRef = useRef(null)
+  const closeCalendar = useCallback(() => setCalendarOpen(false), [])
+  useModalFocus(calendarOpen, calendarDialogRef, calendarTriggerRef, closeCalendar)
 
   return (
     <>
@@ -167,8 +173,11 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
         <button
           type="button"
           className="contact-sidebar__item contact-sidebar__calendar"
+          ref={calendarTriggerRef}
           onClick={() => setCalendarOpen(true)}
           aria-label={calendarLabels.open}
+          aria-haspopup="dialog"
+          aria-expanded={calendarOpen}
         >
           <CalendarSvg month={month} day={day} time={time} />
         </button>
@@ -207,8 +216,10 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
         <div className="contact-sidebar__divider" aria-hidden="true" />
       </aside>
 
-      {calendarOpen && (
+      {calendarOpen && createPortal(
         <div
+          ref={calendarDialogRef}
+          tabIndex={-1}
           className="contact-sidebar__modal"
           role="dialog"
           aria-modal="true"
@@ -230,7 +241,8 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
               <CalendarSvg month={month} day={day} time={time} />
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   )

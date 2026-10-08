@@ -35,9 +35,17 @@ export default function useDrawerResize(drawerRef, handleRef, enabled = true) {
 
     const loadSavedWidth = () => {
       const migrationKey = 'icue_main_drawer_width_v2'
-      const saved = Number.parseInt(localStorage.getItem(STORAGE_KEY), 10)
+      let saved
+      let migrated
+      try {
+        saved = Number.parseInt(localStorage.getItem(STORAGE_KEY), 10)
+        migrated = localStorage.getItem(migrationKey)
+      } catch {
+        applyWidth(DEFAULT_WIDTH)
+        return
+      }
 
-      if (!localStorage.getItem(migrationKey) && Number.isFinite(saved)) {
+      if (!migrated && Number.isFinite(saved)) {
         const halved = clampWidth(Math.round(saved / 2))
         applyWidth(halved)
         try {

@@ -2,8 +2,15 @@
   command = "npm run build"
   publish = "dist-home"
 
+[build.environment]
+  NODE_VERSION = "22"
+
 # Redirects live in the generated dist-home/_redirects file. Keeping one
 # ordered manifest avoids Netlify TOML rules drifting from local runtimes.
+
+[[edge_functions]]
+  function = "legacy-redirect"
+  path = "/*"
 
 [[headers]]
   for = "/assets/*"
