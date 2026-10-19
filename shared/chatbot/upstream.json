@@ -4,8 +4,8 @@
   "files": {
     "shared/chatbot/AssistantAvatar.css": "dc19e0ccda48f24f5ddcc5f822d3fcf26d83efecdf0407aa5d75579b3912d89f",
     "shared/chatbot/AssistantAvatar.jsx": "d20f5a74cbde011bfa9d74c9413088344cf1433fda87fbd8a8294b8519caca0e",
-    "shared/chatbot/Chatbot.css": "68cd4494ad6656b450f8c397cee16df4932d465f95f415f1cce57de4f7d15085",
-    "shared/chatbot/Chatbot.jsx": "cde229d3c94a5982026796bedd3392587808f11be9e5b6b44bc1989fb66a4549",
+    "shared/chatbot/Chatbot.css": "da704b57fc2284a083a0db2ca28efc8723e016a3fecbbedc62ace420261658ca",
+    "shared/chatbot/Chatbot.jsx": "401f2e9de5a13db310e4eaa42d3bbff4e83c5fbee33f849a11721e5182f8cf4c",
     "shared/chatbot/HistorySettings.css": "29255571217e9fefcb7a0ab1de953b149bbcc9a186c840761322fdfe58177e17",
     "shared/chatbot/HistorySettings.jsx": "2a83234702fc60790d5c7c14f6ade948f75b83807b62c3c167bceee11e335b9e",
     "shared/chatbot/content/questionVariants.js": "4cae2207e7ed642c27eaf2f9cbea3274490ea04cc653c78bbc10234133089349",
@@ -50,6 +50,10 @@
     "public/chatbot/kb.de.json": "7997db8bdc0e3e7c6c3815c628d53a79291b0236dc130dbe371fcfd69a41dca6",
     "public/chatbot/kb.fr.json": "c7cb10761a0061f218aa97790c933ad9396f6e488b714b1670adbca306806fed",
     "public/chatbot/kb.ko.json": "0afa26d4d2f6fbd1159d4443b3663cd525f0f446372c71fe442464894429499c",
-    "public/chatbot/kb.ja.json": "51a5d3872d34798c38119199c2325d46270933c6a005182d97bd304af672e5f8"
+    "public/chatbot/kb.ja.json": "51a5d3872d34798c38119199c2325d46270933c6a005182d97bd304af672e5f8",
+    "shared/ui/useFloatingCollapse.js": "7b8b89df18075e83f1ce5c5706e47f2396c7f32a6fac4cd471ca2ad068c73f66",
+    "shared/ui/FloatingCollapseControls.jsx": "aa069333c7a5d2c6e5e2a4e1d20f2a76af56a72d315fef6c23e14793f0a93080",
+    "shared/ui/FloatingCollapseControls.css": "bf0c9ec74662fd7fd747acb2f16b4ee5bea2c8c39eaf108be33e8d3d2c9bc27e",
+    "shared/ui/floatingCollapseCopy.js": "a5e8e4e41cb175c7e05f29ac10d57e6a585e07595961bc5f3fffc30f3e9b08ec"
   }
 }
