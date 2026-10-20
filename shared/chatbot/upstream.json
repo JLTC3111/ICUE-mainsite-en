@@ -53,7 +53,7 @@
     "public/chatbot/kb.ja.json": "51a5d3872d34798c38119199c2325d46270933c6a005182d97bd304af672e5f8",
     "shared/ui/useFloatingCollapse.js": "7b8b89df18075e83f1ce5c5706e47f2396c7f32a6fac4cd471ca2ad068c73f66",
     "shared/ui/FloatingCollapseControls.jsx": "aa069333c7a5d2c6e5e2a4e1d20f2a76af56a72d315fef6c23e14793f0a93080",
-    "shared/ui/FloatingCollapseControls.css": "bf0c9ec74662fd7fd747acb2f16b4ee5bea2c8c39eaf108be33e8d3d2c9bc27e",
+    "shared/ui/FloatingCollapseControls.css": "7337d107fb8b5ee48ee20802e6f6c2b8cffbe2d1604b26d6ca2f6dff911602b3",
     "shared/ui/floatingCollapseCopy.js": "a5e8e4e41cb175c7e05f29ac10d57e6a585e07595961bc5f3fffc30f3e9b08ec"
   }
 }

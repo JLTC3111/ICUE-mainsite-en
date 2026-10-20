@@ -213,13 +213,18 @@ const allJs = jsSources.map(({ source }) => source).join('\n')
 for (const sourceFile of [
   'home-app/src/components/HeroVideoTitle.jsx',
   'shared/main-site-nav/MetallicMenuIcon.jsx',
-  'shared/contact-sidebar/ContactSidebar.jsx',
 ]) {
   assert(
     read(path.join(root, sourceFile)).includes('shouldAvoidCanvasEffects'),
     `Privacy-sensitive visual still probes canvas in restricted browsers: ${sourceFile}`,
   )
 }
+
+const musicSource = read(path.join(root, 'shared/contact-sidebar/useMusicBarColor.js'))
+assert(musicSource.includes('readBackgroundSampleRgb'), 'Music contrast does not use the CSS-only sampler')
+assert(!musicSource.includes('bindBackgroundVideoSampling') && !musicSource.includes('captureBackgroundSampleCanvas'), 'Music contrast still reads canvas/video pixels')
+assert(indexHtml.includes('data-icue-boot-recovery'), 'Early startup recovery is missing')
+assert(indexHtml.indexOf('data-icue-boot-recovery') < indexHtml.indexOf('<script type="module"'), 'Startup recovery must run before application modules')
 
 assert(
   allJs.includes('@ICUE*©ALL*RIGHTS*RESERVED*')
@@ -258,7 +263,6 @@ assert(
 const forbiddenChunkNames = [
   /aboutUs/i,
   /faqPage/i,
-  /gsap/i,
   /jobBoard/i,
   /model-viewer/i,
   /postprocessing/i,

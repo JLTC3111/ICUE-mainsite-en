@@ -1,0 +1,60 @@
+/* Shared chrome follows an explicit page selection, then the OS preference.
+   These tokens do not change the Home page's background or color scheme. */
+:root {
+  --drawer-toggle-surface: #ffffff;
+  --drawer-toggle-ink: #175b96;
+  --drawer-toggle-border: #64748b;
+  --drawer-toggle-hover: #e2e8f0;
+  --drawer-toggle-hover-ink: #124f82;
+  --drawer-toggle-focus: #1d4ed8;
+  --contact-sidebar-divider: rgba(0, 0, 0, 0.25);
+  --contact-sidebar-rule: #000000;
+  --contact-sidebar-surface: #ffffff;
+  --contact-sidebar-ink: #17202a;
+  --floating-control-border: #64748b;
+  --floating-control-bg: #ffffff;
+  --floating-control-ink: #18334d;
+  --floating-control-hover: #e7f4fc;
+  --floating-control-active-ink: #ffffff;
+  --floating-control-active-bg: #18334d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light'], [data-about-theme='light'], [data-icue-page-theme='light']) {
+    --drawer-toggle-surface: #161c25;
+    --drawer-toggle-ink: #f1f5f9;
+    --drawer-toggle-border: #71829a;
+    --drawer-toggle-hover: #26364b;
+    --drawer-toggle-hover-ink: #ffffff;
+    --drawer-toggle-focus: #93c5fd;
+    --contact-sidebar-divider: rgba(241, 245, 249, 0.35);
+    --contact-sidebar-rule: #cbd5e1;
+    --contact-sidebar-surface: #161c25;
+    --contact-sidebar-ink: #f1f5f9;
+    --floating-control-border: #71829a;
+    --floating-control-bg: #161c25;
+    --floating-control-ink: #f1f5f9;
+    --floating-control-hover: #26364b;
+    --floating-control-active-ink: #111827;
+    --floating-control-active-bg: #dbeafe;
+  }
+}
+
+:root:is([data-theme='dark'], [data-about-theme='dark'], [data-icue-page-theme='dark']) {
+  --drawer-toggle-surface: #161c25;
+  --drawer-toggle-ink: #f1f5f9;
+  --drawer-toggle-border: #71829a;
+  --drawer-toggle-hover: #26364b;
+  --drawer-toggle-hover-ink: #ffffff;
+  --drawer-toggle-focus: #93c5fd;
+  --contact-sidebar-divider: rgba(241, 245, 249, 0.35);
+  --contact-sidebar-rule: #cbd5e1;
+  --contact-sidebar-surface: #161c25;
+  --contact-sidebar-ink: #f1f5f9;
+  --floating-control-border: #71829a;
+  --floating-control-bg: #161c25;
+  --floating-control-ink: #f1f5f9;
+  --floating-control-hover: #26364b;
+  --floating-control-active-ink: #111827;
+  --floating-control-active-bg: #dbeafe;
+}

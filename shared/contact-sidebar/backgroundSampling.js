@@ -61,6 +61,7 @@ export function getBackgroundCanvases() {
   document.querySelectorAll('canvas').forEach((node) => {
     if (!(node instanceof HTMLCanvasElement)) return
     if (node.closest('.contact-sidebar')) return
+    if (node.matches('.star-border__light, .icue-bento__stars')) return
     if (node.closest('.home-hero__title')) return
 
     const rect = node.getBoundingClientRect()
@@ -545,4 +546,23 @@ export function bindBackgroundVideoSampling(onFrame) {
     boundVideos.clear()
     frameCallbackIds.clear()
   }
+}
+
+/** Read theme CSS without canvas pixel reads or video-frame polling. */
+export function readBackgroundSampleRgb(musicEl) {
+  if (!musicEl) return null
+  const rect = musicEl.getBoundingClientRect()
+  if (rect.width <= 0 || rect.height <= 0) return null
+  const x = rect.left + rect.width / 2
+  const y = rect.top + rect.height / 2
+  return withSidebarHidden(musicEl, () => {
+    const warp = getVisibleWarpBackground()
+    if (warp && pointInRect(x, y, warp.getBoundingClientRect())) return readWarpBackgroundRgb(warp)
+    // Animated media has no stable CSS color. Keep its established white icon
+    // without probing protected pixels or scheduling a continuous sample loop.
+    if (getBackgroundCanvases().some(canvas => pointInRect(x, y, canvas.getBoundingClientRect()))
+      || getBackgroundVideos().some(video => pointNearSample(x, y, video.getBoundingClientRect(), { allowViewportCover: true }))) return null
+    const target = document.elementFromPoint?.(x, y)
+    return readBackgroundAtPoint(target) ?? readBackground(document.body)
+  })
 }

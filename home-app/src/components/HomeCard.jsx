@@ -95,7 +95,7 @@ export default function HomeCard({
 
   return (
     <article className="home-card" ref={beamRef}>
-      <AnimatedContent>
+      <AnimatedContent blur={4} tilt={3}>
         {cardContent}
       </AnimatedContent>
     </article>

@@ -6,6 +6,7 @@ import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
 import { handleSpaNavigation, isUnmodifiedPrimaryActivation } from './navigation';
 import { NAV_LABELS } from './navContent';
+import AppSwitcher from '../app-switcher/AppSwitcher.jsx';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -34,6 +35,7 @@ export default function MainSiteHeader({
      header is rendered on its own. */
   LanguageControl = LanguageFlagLink,
   labels = NAV_LABELS,
+  locale = 'en',
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
@@ -83,6 +85,8 @@ export default function MainSiteHeader({
               </VideoText>
             </a>
           </div>
+
+          <AppSwitcher currentApp="website" locale={locale} appearance="dark" variant="pill" />
 
           <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--menu">
             <button

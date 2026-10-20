@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { recoveryChunks } from './recoveryChunks.js'
+import { bootRecovery } from '../shared/vite/bootRecovery.js'
 import { getBootstrapExternalRedirect } from './src/lib/bootstrapExternalRedirect.js'
 import { safeRequestPath } from '../scripts/lib/static-files.mjs'
 import { createChatMiddleware } from '../scripts/lib/chat-routes.mjs'
@@ -38,6 +39,7 @@ export default defineConfig({
   base: '/',
   plugins: [
     react(),
+    bootRecovery(),
     recoveryChunks(),
     {
       name: 'legacy-pages-spa',

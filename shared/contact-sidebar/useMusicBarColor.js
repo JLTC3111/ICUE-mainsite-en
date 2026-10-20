@@ -1,21 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  BACKGROUND_SAMPLE_SIZE,
-  bindBackgroundVideoSampling,
-  captureBackgroundSampleCanvas,
-} from './backgroundSampling.js'
+import { useCallback, useEffect, useState } from 'react'
+import { readBackgroundSampleRgb } from './backgroundSampling.js'
 
 const FALLBACK_COLOR = '#ffffff'
 const DARK_COLOR = '#0a1a3a'
+const DARK_RGB = [10, 26, 58]
+const SAMPLE_THROTTLE_MS = 120
 
-function relativeLuminance([red, green, blue]) {
-  const channels = [red, green, blue].map((value) => {
-    const channel = Math.max(0, Math.min(255, Number(value))) / 255
-    return channel <= 0.04045
-      ? channel / 12.92
-      : ((channel + 0.055) / 1.055) ** 2.4
-  })
-  return (0.2126 * channels[0]) + (0.7152 * channels[1]) + (0.0722 * channels[2])
+function relativeLuminance(rgb) {
+  if (!Array.isArray(rgb) || rgb.length < 3 || !rgb.every(Number.isFinite)) return null
+  const channel = (value) => {
+    const normalized = Math.min(Math.max(value, 0), 255) / 255
+    return normalized <= 0.03928
+      ? normalized / 12.92
+      : ((normalized + 0.055) / 1.055) ** 2.4
+  }
+  return 0.2126 * channel(rgb[0]) + 0.7152 * channel(rgb[1]) + 0.0722 * channel(rgb[2])
 }
 
 function contrastRatio(first, second) {
@@ -24,12 +23,15 @@ function contrastRatio(first, second) {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-function pickBarColor(rgb) {
-  if (!Array.isArray(rgb) || rgb.length < 3) return FALLBACK_COLOR
+export function pickBarColor(rgb) {
+  if (!rgb) return FALLBACK_COLOR
 
   const backgroundLuminance = relativeLuminance(rgb)
+  const darkLuminance = relativeLuminance(DARK_RGB)
+  if (backgroundLuminance == null || darkLuminance == null) return FALLBACK_COLOR
+
   const whiteContrast = contrastRatio(backgroundLuminance, 1)
-  const darkContrast = contrastRatio(backgroundLuminance, relativeLuminance([10, 26, 58]))
+  const darkContrast = contrastRatio(backgroundLuminance, darkLuminance)
 
   if (whiteContrast >= darkContrast && whiteContrast >= 3) return FALLBACK_COLOR
   if (darkContrast >= 3) return DARK_COLOR
@@ -37,98 +39,79 @@ function pickBarColor(rgb) {
   return backgroundLuminance > 0.58 ? DARK_COLOR : FALLBACK_COLOR
 }
 
-function averageCanvasRgb(canvas) {
-  const ctx = canvas?.getContext('2d', { willReadFrequently: true })
-  if (!ctx) return null
-
-  try {
-    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    let red = 0
-    let green = 0
-    let blue = 0
-    let weight = 0
-
-    for (let index = 0; index < data.length; index += 4) {
-      const alpha = data[index + 3] / 255
-      if (alpha <= 0.02) continue
-      red += data[index] * alpha
-      green += data[index + 1] * alpha
-      blue += data[index + 2] * alpha
-      weight += alpha
-    }
-
-    return weight > 0 ? [red / weight, green / weight, blue / weight] : null
-  } catch {
-    return null
-  }
-}
-
-function extractBarColorFromCanvas(canvas, rgbHint = null) {
-  if (rgbHint) return pickBarColor(rgbHint)
-  if (!canvas) return FALLBACK_COLOR
-  return pickBarColor(averageCanvasRgb(canvas))
-}
-
 function resolveMusicBarColor(musicEl) {
   if (!musicEl) return FALLBACK_COLOR
-
-  const { canvas, rgbHint } = captureBackgroundSampleCanvas(musicEl, BACKGROUND_SAMPLE_SIZE)
-  return extractBarColorFromCanvas(canvas, rgbHint)
+  return pickBarColor(readBackgroundSampleRgb(musicEl))
 }
 
 export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
   const [color, setColor] = useState(FALLBACK_COLOR)
-  const samplingRef = useRef(false)
-
   const sample = useCallback(() => {
-    if (!enabled || document.hidden) return
+    if (!enabled) return
     const el = barRef.current
-    if (!el || samplingRef.current) return
-
-    samplingRef.current = true
-    try {
-      const nextColor = resolveMusicBarColor(el)
-      setColor((prev) => (prev === nextColor ? prev : nextColor))
-    } finally {
-      samplingRef.current = false
-    }
-  }, [barRef, contentKey, enabled])
+    if (!el) return
+    const nextColor = resolveMusicBarColor(el)
+    setColor((prev) => (prev === nextColor ? prev : nextColor))
+  }, [barRef, enabled])
 
   useEffect(() => {
     if (!enabled) return undefined
 
-    let debounceId = null
-    let frameTimerId = null
-    let lastFrameSampleAt = 0
-    const scheduleSample = () => {
-      if (debounceId) window.clearTimeout(debounceId)
-      debounceId = window.setTimeout(() => {
-        sample()
-      }, 64)
-    }
-    const scheduleFrameSample = () => {
-      const now = performance.now()
-      const remaining = 250 - (now - lastFrameSampleAt)
-      if (remaining <= 0) {
-        lastFrameSampleAt = now
-        sample()
-        return
-      }
-      if (frameTimerId) return
-      frameTimerId = window.setTimeout(() => {
-        frameTimerId = null
-        lastFrameSampleAt = performance.now()
-        sample()
-      }, remaining)
+    let sampleTimer = null
+    let lastSampleAt = 0
+
+    const runSample = () => {
+      if (document.hidden) return
+      lastSampleAt = performance.now()
+      void sample()
     }
 
-    sample()
+    const scheduleSample = () => {
+      if (document.hidden) return
+      const elapsed = performance.now() - lastSampleAt
+      if (elapsed >= SAMPLE_THROTTLE_MS) {
+        if (sampleTimer !== null) {
+          window.clearTimeout(sampleTimer)
+          sampleTimer = null
+        }
+        runSample()
+        return
+      }
+
+      if (sampleTimer !== null) return
+      sampleTimer = window.setTimeout(() => {
+        sampleTimer = null
+        runSample()
+      }, SAMPLE_THROTTLE_MS - elapsed)
+    }
+
+    runSample()
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (sampleTimer !== null) window.clearTimeout(sampleTimer)
+        sampleTimer = null
+      } else {
+        scheduleSample()
+      }
+    }
+
+    // A theme attribute changes before a CSS background transition settles.
+    // Sample again at its end so the icon cannot keep the previous palette.
+    const handleBackgroundTransition = event => {
+      if (['background', 'background-color', 'background-image'].includes(event.propertyName)) scheduleSample()
+    }
 
     window.addEventListener('scroll', scheduleSample, { passive: true, capture: true })
     window.addEventListener('resize', scheduleSample)
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
     window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
     window.addEventListener('icue:homeVideoEnabled', scheduleSample)
+    window.addEventListener('icue:aboutUsTheme', scheduleSample)
+    window.addEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    document.addEventListener('transitionend', handleBackgroundTransition)
+    document.addEventListener('transitioncancel', handleBackgroundTransition)
 
     const viewport = window.visualViewport
     viewport?.addEventListener('resize', scheduleSample)
@@ -141,31 +124,45 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     observer?.observe(content, {
       childList: true,
       subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style'],
     })
 
     const rootObserver = new MutationObserver(scheduleSample)
     rootObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-home-bg-video', 'data-aboutus-bg-video'],
+      attributeFilter: ['class', 'style', 'data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme', 'data-icue-page-theme', 'data-icue-theme-page', 'data-theme'],
     })
-
-    const unbindVideos = bindBackgroundVideoSampling(scheduleFrameSample)
-    const id = window.setInterval(sample, 2500)
+    if (document.body) {
+      rootObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style'],
+      })
+    }
+    const appRoot = document.querySelector('.icue-app')
+    if (appRoot) {
+      rootObserver.observe(appRoot, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
 
     return () => {
-      if (debounceId) window.clearTimeout(debounceId)
-      if (frameTimerId) window.clearTimeout(frameTimerId)
+      if (sampleTimer !== null) window.clearTimeout(sampleTimer)
       window.removeEventListener('scroll', scheduleSample, true)
       window.removeEventListener('resize', scheduleSample)
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
       window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
       window.removeEventListener('icue:homeVideoEnabled', scheduleSample)
+      window.removeEventListener('icue:aboutUsTheme', scheduleSample)
+      window.removeEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      document.removeEventListener('transitionend', handleBackgroundTransition)
+      document.removeEventListener('transitioncancel', handleBackgroundTransition)
       viewport?.removeEventListener('resize', scheduleSample)
       viewport?.removeEventListener('scroll', scheduleSample)
       observer?.disconnect()
       rootObserver.disconnect()
-      unbindVideos()
-      window.clearInterval(id)
     }
   }, [contentKey, enabled, sample])
 

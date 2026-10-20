@@ -452,6 +452,7 @@ export default function MainSiteNav({
       <nav className={barClass} aria-label={labels.aria.nav}>
         {usePillNav && PillHeaderComponent ? (
           <PillHeaderComponent
+            locale={lang}
             activePage={activePage}
             items={pillLinkConfig}
             homeHref={localizedHomeHref}
@@ -480,6 +481,7 @@ export default function MainSiteNav({
         ) : (
           <Suspense fallback={<div className="main-site-nav__dock-wrap" aria-hidden="true" />}>
             <DefaultMainSiteHeader
+              locale={lang}
               drawerOpen={drawerOpen}
               onToggleDrawer={handleToggleDrawer}
               showContactLink={showContactLink}
