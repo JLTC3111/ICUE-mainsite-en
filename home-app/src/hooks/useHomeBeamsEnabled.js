@@ -8,9 +8,9 @@ let runtimeEnabled
 export function readHomeBeamsEnabled() {
   if (runtimeEnabled !== undefined) return runtimeEnabled
   try {
-    return window.localStorage.getItem(HOME_BEAMS_STORAGE_KEY) === 'on'
+    return window.localStorage.getItem(HOME_BEAMS_STORAGE_KEY) !== 'off'
   } catch {
-    return false
+    return true
   }
 }
 
@@ -39,7 +39,7 @@ function subscribe(listener) {
   }
 }
 
-const serverSnapshot = () => false
+const serverSnapshot = () => true
 
 export function useHomeBeamsEnabled() {
   const enabled = useSyncExternalStore(subscribe, readHomeBeamsEnabled, serverSnapshot)

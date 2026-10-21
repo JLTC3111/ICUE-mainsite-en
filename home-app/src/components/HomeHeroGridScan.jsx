@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useHomeGridScanVisible } from '../hooks/useHomeGridScanVisible'
 import { useVisualEffectsTier } from '../hooks/useHeavyVisualEffects'
+import { useHomeTheme } from '../hooks/useHomeTheme.js'
 import { getGridScanRenderer } from '../lib/gridScanPolicy'
 import { createRetryableLoader } from '../../../shared/resilience/requests.js'
 import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
@@ -9,19 +10,48 @@ import ErrorBoundary from './ErrorBoundary'
 const loadGridScan = createRetryableLoader(() => import('./reactbits/GridScan'))
 
 function CssGridFrame({ animated }) {
+  const ref = useRef(null)
+  const [ping, setPing] = useState(null)
+
+  useEffect(() => {
+    if (!animated) return undefined
+    const onPointerDown = (event) => {
+      if (event.button !== 0) return
+      if (event.target?.closest?.('a, button, input, textarea, select, [role="button"], [role="menu"]')) return
+      const rect = ref.current?.getBoundingClientRect()
+      if (!rect || event.clientX < rect.left || event.clientX > rect.right
+        || event.clientY < rect.top || event.clientY > rect.bottom) return
+      setPing({ x: event.clientX - rect.left, y: event.clientY - rect.top, id: event.timeStamp })
+    }
+    window.addEventListener('pointerdown', onPointerDown, { passive: true })
+    return () => window.removeEventListener('pointerdown', onPointerDown)
+  }, [animated])
+
   return (
     <div
+      ref={ref}
       className="home-hero__grid-scan home-hero__grid-scan--fallback"
       data-gridscan-renderer="css"
       data-gridscan-animated={animated ? 'true' : 'false'}
       aria-hidden="true"
-    />
+    >
+      {animated && ping && (
+        <span
+          key={ping.id}
+          className="home-hero__grid-ping"
+          style={{ left: ping.x, top: ping.y }}
+          onAnimationEnd={() => setPing(null)}
+        />
+      )}
+    </div>
   )
 }
 
 export default function HomeHeroGridScan({ active = false }) {
   const visible = useHomeGridScanVisible()
   const tier = useVisualEffectsTier()
+  const [theme] = useHomeTheme()
+  const lightMode = theme === 'light'
   const [GridScan, setGridScan] = useState(null)
 
   const preferredRenderer = getGridScanRenderer(tier)
@@ -96,23 +126,19 @@ export default function HomeHeroGridScan({ active = false }) {
     <ErrorBoundary fallback={fallback}>
       <GridScan
         className="home-hero__grid-scan"
-        linesColor="#2f293a"
-        scanColor="#9fb9ff"
-        lineThickness={0.8}
-        gridScale={0.09}
-        lineJitter={0.05}
-        scanOpacity={0.22}
-        scanDuration={4}
-        scanDelay={3}
-        scanGlow={0.2}
-        scanSoftness={3.2}
-        noiseIntensity={0.005}
+        lightMode={lightMode}
+        linesColor={lightMode ? '#b2bfce' : '#4d4757'}
+        scanColor={lightMode ? '#0284c7' : '#7dd3fc'}
+        cells={8}
+        depth={3}
+        scanDuration={2.4}
+        scanDelay={1.6}
+        clickEffect="ping"
         // A soft grid gains almost nothing from a 2x backing store and costs
         // four times the fragments for it; 1.25 keeps the lines crisp on
         // Retina at well under half the pixel throughput.
         maxPixelRatio={1.25}
-        // The scan is a slow cycle and the parallax is heavily damped. Neither
-        // reads any differently at 30fps, which halves the frame count.
+        // Limit background drawing to 30fps while leaving UI interactions free.
         maxFps={30}
       />
     </ErrorBoundary>

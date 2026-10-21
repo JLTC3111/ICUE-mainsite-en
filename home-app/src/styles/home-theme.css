@@ -14,6 +14,7 @@
   --home-primary-ink: #12253b;
   --home-ghost-bg: rgba(255, 255, 255, 0.08);
   --home-cpu-on: #80ecff;
+  --home-grid-background: linear-gradient(180deg, #0a0c12 0%, #08090e 50%, #05070b 100%);
 }
 
 :root[data-icue-home-theme='light'] {
@@ -32,6 +33,10 @@
   --home-primary-ink: #ffffff;
   --home-ghost-bg: rgba(255, 255, 255, 0.7);
   --home-cpu-on: #0076ae;
+  --home-grid-background: linear-gradient(180deg, #f8fafc 0%, #eef4fa 100%);
+  --home-grid-line: rgba(74, 99, 124, 0.28);
+  --home-grid-scan-rgb: 2, 132, 199;
+  --home-grid-blend: multiply;
   --drawer-toggle-surface: #ffffff;
   --drawer-toggle-ink: #175b96;
   --drawer-toggle-border: #64748b;
@@ -69,9 +74,8 @@
   --home-hero-overlay: linear-gradient(180deg, rgba(2, 10, 20, 0.55), rgba(2, 10, 20, 0.25) 45%, rgba(12, 15, 20, 0.85));
 }
 
-/* The bright warp/static fallback needs its original dark foreground. GridScan
-   keeps its own dark underlay and light foreground in the English site. */
-:root[data-icue-home-theme][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero {
+/* The video keeps its media palette; the exposed grid follows the page theme. */
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .home-hero {
   background: #f8fafc;
   --home-ink: #0a1a3a;
   --home-muted: rgba(10, 26, 58, 0.88);
@@ -80,6 +84,10 @@
   --home-ghost-bg: transparent;
   --home-card-edge: rgba(10, 26, 58, 0.35);
   --home-card-shadow: 0 12px 28px rgba(10, 26, 58, 0.18);
+}
+
+:root[data-icue-home-theme][data-home-bg-video='off'] .home-hero__media::before {
+  background: var(--home-grid-background);
 }
 
 /* In both themes, shading stays below the opaque warp/GridScan frame. */
@@ -96,7 +104,7 @@
 :root[data-icue-home-theme]:not([data-home-bg-video='off']) .home-hero__media::before { background: var(--home-hero-static); }
 :root[data-icue-home-theme]:not([data-home-bg-video='off']) .home-hero__overlay { background: var(--home-hero-overlay); }
 
-:root[data-icue-home-theme][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero__title--shadowed {
+:root[data-icue-home-theme][data-home-bg-video='off'] .home-hero__title--shadowed {
   text-shadow: none;
 }
 
@@ -153,14 +161,15 @@
 }
 :root[data-icue-home-theme] .home-cta p { color: var(--home-muted); }
 
-:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) {
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']),
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .pill-site-header {
   --pill-nav-base: rgba(255, 255, 255, 0.95);
   --pill-nav-text: #16304a;
   --pill-nav-accent: #087eb8;
   --pill-nav-hover-text: #ffffff;
 }
 
-:root[data-icue-home-theme='light'] .pill-site-header[data-over-hero='true'] {
+:root[data-icue-home-theme='light']:not([data-home-bg-video='off']) .pill-site-header[data-over-hero='true'] {
   --pill-nav-base: rgba(10, 14, 20, 0.76);
   --pill-nav-text: rgba(255, 255, 255, 0.96);
   --pill-nav-accent: #bfe5ff;
@@ -171,7 +180,11 @@
 :root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .pill-site-header__brand-cluster,
 :root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .pill-site-header__items,
 :root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .pill-site-header__actions,
-:root[data-icue-home-theme='light'] .pill-site-header--mobile:not([data-over-hero='true']) {
+:root[data-icue-home-theme='light'] .pill-site-header--mobile:not([data-over-hero='true']),
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .pill-site-header .pill-site-header__brand-cluster,
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .pill-site-header .pill-site-header__items,
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .pill-site-header .pill-site-header__actions,
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .pill-site-header--mobile {
   border-color: #cedae7;
   box-shadow: 0 8px 30px rgba(24, 55, 88, 0.09);
 }
@@ -190,6 +203,9 @@
 }
 
 :root[data-icue-home-theme='light'] .icue-footer {
+  --icue-footer-ring-ink: #172b43;
+  --icue-footer-ring-shadow: #172b43;
+  --icue-footer-ring-tint: #172b43;
   background: #eaf1f8;
   color: #526579;
   border-top-color: #cedae7;
@@ -205,8 +221,20 @@
 :root[data-icue-home-theme='light'] .icue-footer__legal a { color: #526579; }
 
 :root[data-icue-home-theme='light'] .icue-footer__col a:hover,
-:root[data-icue-home-theme='light'] .icue-footer__legal a:hover,
-:root[data-icue-home-theme='light'] .icue-footer__circular-text { color: #095f99; }
+:root[data-icue-home-theme='light'] .icue-footer__legal a:hover { color: #095f99; }
+
+:root[data-icue-home-theme='light'] .icue-footer__circular-text {
+  color: var(--icue-footer-ring-ink);
+}
+
+/* Small rotating letters need solid ink on a light surface. */
+:root[data-icue-home-theme='light'] .icue-footer__circular-text span {
+  background-image: none;
+  color: var(--icue-footer-ring-ink);
+  -webkit-text-fill-color: currentColor;
+  filter: none;
+  text-shadow: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   :root[data-icue-home-theme] body:has(.home-hero) { transition: none; }
@@ -225,6 +253,7 @@ html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header_
   transition: none;
 }
 
-:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .menu-icon-metallic {
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .menu-icon-metallic,
+:root[data-icue-home-theme='light'][data-home-bg-video='off'] .pill-site-header .menu-icon-metallic {
   filter: brightness(0.34) saturate(1.1);
 }

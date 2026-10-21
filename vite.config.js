@@ -28,11 +28,26 @@ function publicDevFallback() {
 }
 
 function homeDevFallback() {
-  const appDir = path.resolve(process.cwd(), 'dist-home');
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
   return {
     name: 'home-dev-fallback',
     configureServer(server) {
+      const appDir = path.resolve(server.config.root, 'dist-home');
+      // This must run before Vite's static files and HTML fallback. The latter
+      // rewrites missing asset URLs to /index.html before the post hook below,
+      // while repository assets can belong to an older build than that HTML.
+      server.middlewares.use((req, res, next) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+        const urlPath = safeRequestPath(req.url);
+        if (!urlPath?.startsWith('/assets/')) return next();
+        const file = resolveStaticFile(appDir, urlPath.slice(1));
+        if (file) { serveStaticFile(req, res, file); return; }
+        res.writeHead(404, {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-store',
+        });
+        res.end(req.method === 'HEAD' ? undefined : 'Asset not found');
+      });
       return () => {
         server.middlewares.use((req, res, next) => {
           if (req.method !== 'GET' && req.method !== 'HEAD') return next();

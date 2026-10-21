@@ -15,14 +15,15 @@ test('English GridScan keeps its frame while CPU-off and reduced motion stop the
   const dom = new JSDOM('<html><body></body></html>', { url: 'https://icue.test/' })
   const { window } = dom, { document } = window
   const idle = new Map()
-  let visible = true, tier = 'full', loads = 0, drawings = 0, nextIdle = 0, renderer
+  let visible = true, tier = 'full', theme = 'dark', loads = 0, drawings = 0, nextIdle = 0, renderer, drawingProps
   window.requestIdleCallback = callback => { const id = ++nextIdle; idle.set(id, callback); return id }
   window.cancelIdleCallback = id => idle.delete(id)
   t.after(async () => { if (renderer) await unmount(renderer); window.close() })
 
-  function Drawing({ className }) {
+  function Drawing(props) {
+    drawingProps = props
     React.useEffect(() => { drawings++; return () => { drawings-- } }, [])
-    return React.createElement('div', { className, 'data-gridscan-renderer': 'webgl' })
+    return React.createElement('div', { className: props.className, 'data-gridscan-renderer': 'webgl' })
   }
 
   const { default: Grid } = await sourceModule('home-app/src/components/HomeHeroGridScan.jsx', {
@@ -30,6 +31,7 @@ test('English GridScan keeps its frame while CPU-off and reduced motion stop the
     imports: {
       '../hooks/useHomeGridScanVisible': { useHomeGridScanVisible: () => visible },
       '../hooks/useHeavyVisualEffects': { useVisualEffectsTier: () => tier },
+      '../hooks/useHomeTheme.js': { useHomeTheme: () => [theme] },
       '../lib/gridScanPolicy': { getGridScanRenderer: () => tier === 'none' ? 'none' : 'webgl' },
       '../../../shared/resilience/requests.js': { createRetryableLoader: () => async () => { loads++; return { GridScan: Drawing } } },
       '../../../shared/resilience/usePageResume.js': { useResumeRevision: () => [0] },
@@ -47,6 +49,16 @@ test('English GridScan keeps its frame while CPU-off and reduced motion stop the
   await act(async () => renderer.update(React.createElement(Grid, { active: true })))
   assert.equal(loads, 1)
   assert.equal(drawings, 1)
+  assert.equal(drawingProps.lightMode, false)
+  theme = 'light'
+  await act(async () => renderer.update(React.createElement(Grid, { active: true })))
+  assert.equal(drawingProps.lightMode, true)
+  assert.equal(drawingProps.scanColor, '#0284c7')
+  assert.equal(loads, 1, 'switching themes updates the existing renderer')
+  theme = 'dark'
+  await act(async () => renderer.update(React.createElement(Grid, { active: true })))
+  assert.equal(drawingProps.lightMode, false)
+  assert.equal(drawingProps.scanColor, '#7dd3fc')
   await act(async () => renderer.update(React.createElement(Grid, { active: false })))
   assert.equal(frame().props['data-gridscan-animated'], 'false')
   assert.equal(drawings, 0)
@@ -161,8 +173,14 @@ async function fixture(t, source, language, { saved, denied = false } = {}) {
 
 for (const [name, source, language] of implementations) {
 
-  test(`${name}: new visits keep the frame with animated beams off and no scheduled visual work`, async t => {
+  test(`${name}: new visits start animated effects and turning them off preserves the static frame`, async t => {
     const f = await fixture(t, source, language)
+    assert.equal(f.button().props['aria-pressed'], true)
+    assert.equal(f.preference.readHomeBeamsEnabled(), true)
+    await f.flush()
+    assert.ok(f.beams().length > 0)
+    assert.equal(f.backgrounds().length, 1)
+    await f.toggle()
     assert.equal(f.button().props['aria-pressed'], false)
     assert.equal(f.preference.readHomeBeamsEnabled(), false)
     assert.equal(f.beams().length, 0)
@@ -232,8 +250,6 @@ for (const [name, source, language] of implementations) {
 
   test(`${name}: blocked storage still synchronizes the button and beam network for the visit`, async t => {
     const f = await fixture(t, source, language, { denied: true })
-    assert.equal(f.button().props['aria-pressed'], false)
-    await f.toggle()
     await f.flush()
     assert.equal(f.button().props['aria-pressed'], true)
     assert.equal(f.beams().length, 6)
@@ -259,7 +275,7 @@ for (const [name, source, language] of implementations) {
     assert.equal(f.backgrounds().length, 0)
     await f.crossTab(null, null)
     await f.flush()
-    assert.equal(f.beams().length, 0, 'clearing the preference returns to the quiet default')
+    assert.equal(f.beams().length, 6, 'clearing the preference returns to the English effects-on default')
     await f.crossTab('on')
     await f.flush()
     assert.equal(f.beams().length, 6)

@@ -136,7 +136,7 @@ test('the optional grid chunk retries after reconnect when its initial retries f
       return import('data:text/javascript,export function GridScan(){return "recovered grid"}')
     },
   })
-  let renderer; await act(async () => { renderer = create(React.createElement(Grid)) })
+  let renderer; await act(async () => { renderer = create(React.createElement(Grid, { active: true })) })
   await act(async () => t.mock.timers.tick(750)); await act(async () => t.mock.timers.tick(1500))
   assert.equal(calls, 3); assert.equal(renderer.toJSON().props['data-gridscan-renderer'], 'css')
   online = true; await act(async () => f.window.dispatchEvent(new Event('online')))

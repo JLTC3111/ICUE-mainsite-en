@@ -12,16 +12,8 @@ import {
 } from '../lib/routes'
 
 /**
- * Structure here, words in the locale files.
- *
- * Everything below — ids, images, hrefs, which section is `alt`, which cards
- * are image-only — is layout and does not change with language. The titles,
- * descriptions, link labels and alt text all come from `home.*` in
- * src/locales/, so a reader on the Korean or German page gets the whole home
- * page rather than a translated menu on top of English copy.
- *
- * The card keys (`laoCai`, `auCoPark`, …) are the join between the two: rename
- * one here and the same key has to move in all five locale files.
+ * Layout and assets live here; English titles, descriptions, and labels live
+ * under `home.*` in src/locales/en.json. Card keys join the two structures.
  */
 const SECTION_LAYOUT = [
   {

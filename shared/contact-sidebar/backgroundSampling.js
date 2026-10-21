@@ -619,6 +619,15 @@ export function readBackgroundSample(sampleEl) {
       if (warpRgb) return { rgb: warpRgb, overVideo: false }
     }
 
+    // GridScan draws translucent lines over a theme-owned CSS backing. Sample
+    // that backing so both renderers follow the palette without pixel reads.
+    const grid = document.querySelector('.home-hero__grid-scan')
+    if (grid instanceof Element && isMediaVisible(grid) && pointInRect(x, y, grid.getBoundingClientRect())) {
+      const media = grid.closest('.home-hero__media')
+      const gridRgb = media && readPseudoBackground(media, '::before')
+      if (gridRgb) return { rgb: gridRgb, overVideo: false }
+    }
+
     const backdrop = document.querySelector('.about-waves-bg, .interactive-bg')
     if (backdrop && isMediaVisible(backdrop) && pointInRect(x, y, backdrop.getBoundingClientRect())) {
       const layers = [

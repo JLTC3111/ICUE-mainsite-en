@@ -127,8 +127,10 @@ export default function HomeBeamNetwork({
       if (!container) return
       const rect = container.getBoundingClientRect()
       const next = {
-        width: Math.max(1, container.scrollWidth, rect.width),
-        height: Math.max(1, container.scrollHeight, rect.height),
+        // Scroll dimensions can include this SVG's old size after a resize.
+        // Measure the page box so the overlay can shrink with the page.
+        width: Math.max(1, rect.width),
+        height: Math.max(1, rect.height),
         paths: visibleConnections
           .map((connection) => ({ ...connection, path: getPath(rect, connection) }))
           .filter((connection) => connection.path),

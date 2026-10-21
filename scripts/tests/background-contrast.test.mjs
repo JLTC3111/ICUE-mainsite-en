@@ -37,6 +37,7 @@ async function fixture(t) {
   video.getBoundingClientRect = () => box()
   let target = document.querySelector('.home-section__inner'), reads = 0, styles = 0
   const computedColors = new Map()
+  const pseudoBackgrounds = new Map()
   document.elementFromPoint = () => target
   window.HTMLCanvasElement.prototype.getContext = () => { reads++; throw new Error('No pixel readback allowed') }
   const globals = {
@@ -44,7 +45,7 @@ async function fixture(t) {
     HTMLVideoElement: window.HTMLVideoElement, MutationObserver: window.MutationObserver,
     getComputedStyle(node, pseudo) {
       styles++
-      if (pseudo) return { backgroundColor: 'transparent', backgroundImage: 'none' }
+      if (pseudo) return pseudoBackgrounds.get(node)?.[pseudo] ?? { backgroundColor: 'transparent', backgroundImage: 'none' }
       const style = window.getComputedStyle(node)
       return computedColors.has(node)
         ? { backgroundColor: computedColors.get(node), backgroundImage: 'none' }
@@ -52,7 +53,7 @@ async function fixture(t) {
     },
   }
   const sampler = await sourceModule('shared/contact-sidebar/backgroundSampling.js', { globals })
-  return { window, document, globals, music, camera, header, video, sampler, computedColors,
+  return { window, document, globals, music, camera, header, video, sampler, computedColors, pseudoBackgrounds,
     target(selector) { target = document.querySelector(selector) },
     sample(el = music) { return sampler.readBackgroundSampleRgb(el) },
     reads: () => reads, styles: () => styles,
@@ -60,7 +61,7 @@ async function fixture(t) {
 }
 
 
-test('collapse controls use a solid light surface only over exposed video and stay stable while sampling themselves', async t => {
+test('Home collapse controls use a solid light surface only over exposed video and stay stable while sampling themselves', async t => {
   silenceRenderer(t)
   const f = await fixture(t)
   const controls = f.document.createElement('div')
@@ -117,12 +118,12 @@ test('collapse controls use a solid light surface only over exposed video and st
   assert.equal(toggles, 1)
   f.target('.home-section__inner')
   await scroll()
-  assert.equal(surface()['--floating-control-surface'], 'transparent')
-  assert.equal(surface()['--floating-control-ink'], '#0a1a3a')
+  assert.equal(surface()['--floating-control-surface'], undefined)
+  assert.equal(surface()['--floating-control-sampled-ink'], '#0a1a3a')
   f.target('article')
   await scroll()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'an opaque dark card is not mistaken for video')
-  assert.equal(surface()['--floating-control-ink'], '#ffffff')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'an opaque dark card is not mistaken for video')
+  assert.equal(surface()['--floating-control-sampled-ink'], '#ffffff')
   f.document.documentElement.setAttribute('data-home-bg-video', 'off')
   const warp = f.document.createElement('div')
   warp.className = 'home-hero__warp'
@@ -132,16 +133,16 @@ test('collapse controls use a solid light surface only over exposed video and st
   f.document.querySelector('.home-hero__media').appendChild(warp)
   f.target('.home-hero__content')
   await tick()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'switching video off removes the surface over the warp')
-  assert.equal(surface()['--floating-control-ink'], '#0a1a3a')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'switching video off removes the surface over the warp')
+  assert.equal(surface()['--floating-control-sampled-ink'], '#0a1a3a')
   warp.remove()
   const canvas = f.document.createElement('canvas')
   canvas.style.cssText = 'display:block;visibility:visible;opacity:1'
   canvas.getBoundingClientRect = () => box()
   f.document.querySelector('.home-hero__media').appendChild(canvas)
   await tick()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'a dark canvas also stays transparent')
-  assert.equal(surface()['--floating-control-ink'], '#ffffff')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'a dark canvas also stays transparent')
+  assert.equal(surface()['--floating-control-sampled-ink'], '#ffffff')
   f.document.documentElement.setAttribute('data-home-bg-video', 'on')
   await tick()
   assert.equal(surface()['--floating-control-surface'], '#f8fafc', 'video detection updates even when the sampled icon color stays white')
@@ -151,7 +152,7 @@ test('collapse controls use a solid light surface only over exposed video and st
   Object.defineProperty(transition, 'propertyName', { value: 'grid-template-rows' })
   controls.dispatchEvent(transition)
   await tick()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'collapse layout changes recheck the final control position')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'collapse layout changes recheck the final control position')
   assert.equal(f.reads(), 0)
   assert.equal(f.document.querySelector('aside').style.visibility, '')
   assert.equal(controls.style.pointerEvents, '')
@@ -208,6 +209,29 @@ test('camera contrast follows its own header capsule above video and warp backgr
   assert.deepEqual(Array.from(f.sample(f.camera)), [10, 14, 20])
   assert.deepEqual(Array.from(f.sample()), [248, 250, 252], 'transparent music control follows the warp')
   assert.equal(f.reads(), 0)
+})
+
+test('GridScan controls sample the themed CSS backing even with an active canvas', async t => {
+  const f = await fixture(t)
+  f.document.documentElement.setAttribute('data-home-bg-video', 'off')
+  const media = f.document.querySelector('.home-hero__media')
+  const grid = f.document.createElement('div')
+  grid.className = 'home-hero__grid-scan'
+  grid.innerHTML = '<canvas></canvas>'
+  for (const el of [grid, grid.firstChild]) {
+    el.style.cssText = 'display:block;visibility:visible;opacity:1'
+    el.getBoundingClientRect = () => box()
+  }
+  media.appendChild(grid)
+  f.target('.home-hero__content')
+  f.pseudoBackgrounds.set(media, { '::before': { backgroundColor: 'transparent', backgroundImage: 'linear-gradient(#f8fafc, #eef4fa)' } })
+  assert.deepEqual(Array.from(f.sample()), [243, 247, 251], 'light grid has dark, readable controls')
+  f.document.documentElement.setAttribute('data-icue-home-theme', 'dark')
+  f.pseudoBackgrounds.set(media, { '::before': { backgroundColor: 'transparent', backgroundImage: 'linear-gradient(#0a0c12, #05070b)' } })
+  assert.deepEqual(Array.from(f.sample()), [7.5, 9.5, 14.5], 'switching themes samples the new backing')
+  f.target('.home-section__inner')
+  assert.deepEqual(Array.from(f.sample()), [245, 248, 252], 'foreground sections keep priority')
+  assert.equal(f.reads(), 0, 'no canvas context or pixel readback is needed')
 })
 
 test('People background CSS remains sampled when WebGL is unavailable or reduced motion replaces it', async t => {

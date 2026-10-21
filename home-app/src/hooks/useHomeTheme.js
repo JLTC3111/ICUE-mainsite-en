@@ -6,8 +6,8 @@ let runtimeTheme
 
 export function readHomeTheme() {
   if (runtimeTheme !== undefined) return runtimeTheme
-  try { return window.localStorage.getItem(HOME_THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light' }
-  catch { return 'light' }
+  try { return window.localStorage.getItem(HOME_THEME_STORAGE_KEY) === 'light' ? 'light' : 'dark' }
+  catch { return 'dark' }
 }
 
 export function setHomeTheme(next) {
@@ -32,7 +32,7 @@ function subscribe(listener) {
   }
 }
 
-const serverSnapshot = () => 'light'
+const serverSnapshot = () => 'dark'
 const restore = (element, attribute, value) => {
   if (value == null) element.removeAttribute(attribute)
   else element.setAttribute(attribute, value)

@@ -74,10 +74,7 @@ function AppShell() {
     document.documentElement.lang = lang
   }, [lang])
 
-  // The nav and footer are injected chrome shared with the other ICUE apps —
-  // they take their copy as a prop. Without these both fall back to their
-  // English defaults, which would strand a reader who picked Korean in an
-  // English menu.
+  // Shared navigation and footer receive this site's English copy.
   const navLabels = useMemo(() => t('nav', { returnObjects: true }), [t, lang])
 
   const footerLabels = useMemo(

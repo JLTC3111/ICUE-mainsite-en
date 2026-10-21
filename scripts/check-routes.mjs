@@ -288,6 +288,6 @@ if (failures.length) {
 }
 
 console.log(
-  `Route audit passed: Home-only English app, ${SUPPORTED_UI_LOCALES.length} locales, `
+  `Route audit passed: English-only home, ${SUPPORTED_UI_LOCALES.length} cross-site locales, `
     + `${ICUE_VN_HOSTED_PAGES.size} icue.vn-hosted pages, and forced compatibility redirects.`,
 )

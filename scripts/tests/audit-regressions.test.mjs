@@ -61,6 +61,13 @@ test('Express GET/HEAD and the Netlify edge retain locale, detail ids, and query
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
   t.after(() => new Promise(resolve => server.close(resolve)))
   const cases = [
+    ['/?lang=vi', 'https://icue.vn/?lang=vi'],
+    ['/?lang=de', 'https://icue.vn/?lang=de'],
+    ['/?lang=fr', 'https://icue.vn/?lang=fr'],
+    ['/?lang=ko-KR', 'https://icue.vn/?lang=ko'],
+    ['/?lang=jp', 'https://icue.vn/?lang=ja'],
+    ['/index.html?lang=ja', 'https://icue.vn/?lang=ja'],
+    ['/legacy/pages/Home.html?lang=fr', 'https://icue.vn/?lang=fr'],
     ['/contact?lang=ja', 'https://icue.vn/contact?lang=ja'],
     ['/contact?lang=jp', 'https://icue.vn/contact?lang=ja'],
     ['/people/core-team?lang=ko-KR', 'https://icue.vn/people/core-team?lang=ko'],
@@ -85,7 +92,7 @@ test('Express GET/HEAD and the Netlify edge retain locale, detail ids, and query
   assert.equal(campaign.searchParams.get('lang'), 'fr')
   assert.ok(!campaign.searchParams.has('site'))
   assert.ok(!campaign.searchParams.has('from'))
-  assert.equal(getBootstrapExternalRedirect('/', '?lang=fr'), null)
+  assert.equal(getBootstrapExternalRedirect('/', '?lang=en'), null)
   assert.equal(await edgeRedirect(new Request('https://en.icue.vn/'), { next: () => 'homepage' }), 'homepage')
 })
 

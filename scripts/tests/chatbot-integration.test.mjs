@@ -121,7 +121,7 @@ test('history rejects missing capabilities, cross-origin callers, oversized bodi
   }
 })
 
-test('the host adapter begins in English, updates with i18n, and links to localized VN pages', async t => {
+test('the English host adapter keeps chat copy and VN links in English despite an old locale preference', async t => {
   silenceRenderer(t)
   const listeners = new Set()
   const i18n = { language: 'en', resolvedLanguage: 'en', on: (_, listener) => listeners.add(listener), off: (_, listener) => listeners.delete(listener), getResource: () => undefined }
@@ -131,9 +131,12 @@ test('the host adapter begins in English, updates with i18n, and links to locali
   const props = () => renderer.root.findByType('chat-fixture').props
   assert.equal(props().locale, 'en')
   assert.equal(props().links.contact, 'https://icue.vn/contact?lang=en')
-  await act(async () => { i18n.language = i18n.resolvedLanguage = 'ja'; listeners.forEach(listener => listener()) })
-  assert.equal(props().locale, 'ja')
-  assert.equal(props().links.faqs, 'https://icue.vn/faqs?lang=ja')
+  await act(async () => {
+    i18n.language = i18n.resolvedLanguage = 'ja'
+    renderer.update(React.createElement(SiteChatbot, { i18n }))
+  })
+  assert.equal(props().locale, 'en')
+  assert.equal(props().links.faqs, 'https://icue.vn/faqs?lang=en')
   await unmount(renderer)
   assert.equal(listeners.size, 0)
 })

@@ -154,13 +154,17 @@ export function getBootstrapExternalRedirect(pathname, search = '') {
   if (!pathname) return null
   const cleanPath = `/${pathname.split('/').filter(Boolean).join('/')}`
   const normalized = cleanPath.toLowerCase()
+  const incoming = new URLSearchParams(search)
+  const language = normalizeUiLang(incoming.get('lang'), 'en')
   const detailTarget = legacyDetailTarget(normalized, search)
-  const target = detailTarget || EXTERNAL_ALIASES.get(normalized)
+  let target = detailTarget || EXTERNAL_ALIASES.get(normalized)
     || (EXTERNAL_PREFIXES.some((prefix) => normalized.startsWith(`${prefix}/`))
       ? `https://icue.vn${cleanPath}` : null)
+  if (language !== 'en' && (normalized === '/' || normalized === '/index.html' || target === '/')) {
+    target = 'https://icue.vn/'
+  }
   if (!target) return null
 
-  const incoming = new URLSearchParams(search)
   const url = new URL(target, 'https://en.icue.vn')
   // Keep campaign/filter parameters; a legacy detail id is now part of the path.
   for (const [key, value] of incoming) {
@@ -168,24 +172,15 @@ export function getBootstrapExternalRedirect(pathname, search = '') {
     url.searchParams.append(key, value)
   }
   const href = target.startsWith('/') ? `${url.pathname}${url.search}` : url.href
-  return withUiLang(href, normalizeUiLang(incoming.get('lang'), 'en'))
-}
-
-function readLangHint(locationObject) {
-  const fromQuery = new URLSearchParams(locationObject.search || '').get('lang')
-  if (fromQuery) return fromQuery
-  try {
-    return localStorage.getItem('icue_news_lang')
-  } catch {
-    return null
-  }
+  return withUiLang(href, language)
 }
 
 export function redirectExternalAppAtBootstrap(locationObject = window.location) {
   const target = getBootstrapExternalRedirect(locationObject.pathname, locationObject.search)
   if (!target) return false
-  const localized = withUiLang(target, readLangHint(locationObject) || 'en')
-  if (new URL(localized, locationObject.href).href === locationObject.href) return false
-  locationObject.replace(localized)
+  const destination = new URL(target, locationObject.href)
+  if (!destination.hash) destination.hash = locationObject.hash || ''
+  if (destination.href === locationObject.href) return false
+  locationObject.replace(destination.href)
   return true
 }
