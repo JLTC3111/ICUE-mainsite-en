@@ -221,7 +221,7 @@ for (const sourceFile of [
 }
 
 const musicSource = read(path.join(root, 'shared/contact-sidebar/useMusicBarColor.js'))
-assert(musicSource.includes('readBackgroundSampleRgb'), 'Music contrast does not use the CSS-only sampler')
+assert(musicSource.includes('readBackgroundSample'), 'Music contrast does not use the CSS-only sampler')
 assert(!musicSource.includes('bindBackgroundVideoSampling') && !musicSource.includes('captureBackgroundSampleCanvas'), 'Music contrast still reads canvas/video pixels')
 assert(indexHtml.includes('data-icue-boot-recovery'), 'Early startup recovery is missing')
 assert(indexHtml.indexOf('data-icue-boot-recovery') < indexHtml.indexOf('<script type="module"'), 'Startup recovery must run before application modules')

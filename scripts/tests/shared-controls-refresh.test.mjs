@@ -109,7 +109,10 @@ test('sidebar social icons render monochrome artwork at the shared calendar size
       '@icue/zalo/zaloLink': { ICUE_ZALO_PHONE: '0', openZaloChat() {}, zaloWebUrl: () => '#' },
       './useCalendarClock': { useCalendarClock: () => ({ month: 'October', day: '20', time: '09:00' }) },
       './useAudioVisualizer': { useAudioVisualizer: () => ({ toggle() {}, isPlaying: false, isAnimating: false }) },
-      './useMusicBarColor': { useMusicBarColor: () => '#fff' },
+      './useMusicBarColor': {
+        useMusicBarColor: () => '#fff',
+        useBackgroundAppearance: () => ({ color: '#fff', overVideo: false }),
+      },
     },
   })
   let renderer

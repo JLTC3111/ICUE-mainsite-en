@@ -3765,7 +3765,7 @@ button:hover {
     linear-gradient(rgba(82, 77, 96, 0.72) 1px, transparent 1px),
     linear-gradient(90deg, rgba(82, 77, 96, 0.72) 1px, transparent 1px);
   background-size: clamp(32px, 4.4vw, 64px) clamp(32px, 4.4vw, 64px);
-  opacity: 0.78;
+  opacity: 0.45;
   transform: perspective(720px) rotateX(56deg) scale(1.35);
   transform-origin: 50% 68%;
   -webkit-mask-image: radial-gradient(ellipse 82% 76% at 50% 58%, #000 28%, transparent 82%);
@@ -3787,9 +3787,15 @@ button:hover {
   );
   filter: drop-shadow(0 0 14px rgba(159, 185, 255, 0.58));
   mix-blend-mode: screen;
-  opacity: 0.9;
-  animation: home-grid-scan-fallback 4s ease-in-out infinite alternate;
+  opacity: 0.4;
+  animation: home-grid-scan-fallback 7s ease-in-out infinite alternate;
   will-change: transform;
+}
+
+.home-hero__grid-scan--fallback[data-gridscan-animated="false"]::after {
+  display: none;
+  animation: none;
+  will-change: auto;
 }
 
 @keyframes home-grid-scan-fallback {

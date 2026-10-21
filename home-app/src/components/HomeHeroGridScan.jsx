@@ -8,22 +8,27 @@ import ErrorBoundary from './ErrorBoundary'
 
 const loadGridScan = createRetryableLoader(() => import('./reactbits/GridScan'))
 
-const fallback = (
-  <div
-    className="home-hero__grid-scan home-hero__grid-scan--fallback"
-    data-gridscan-renderer="css"
-    aria-hidden="true"
-  />
-)
+function CssGridFrame({ animated }) {
+  return (
+    <div
+      className="home-hero__grid-scan home-hero__grid-scan--fallback"
+      data-gridscan-renderer="css"
+      data-gridscan-animated={animated ? 'true' : 'false'}
+      aria-hidden="true"
+    />
+  )
+}
 
-export default function HomeHeroGridScan() {
+export default function HomeHeroGridScan({ active = false }) {
   const visible = useHomeGridScanVisible()
   const tier = useVisualEffectsTier()
   const [GridScan, setGridScan] = useState(null)
 
   const preferredRenderer = getGridScanRenderer(tier)
-  const enabled = visible && preferredRenderer !== 'none'
-  const webglEnabled = enabled && preferredRenderer === 'webgl'
+  const enabled = visible
+  const animated = active && tier !== 'none'
+  const webglEnabled = enabled && animated && preferredRenderer === 'webgl'
+  const fallback = <CssGridFrame animated={animated} />
   const [resumeRevision] = useResumeRevision({ enabled: webglEnabled && !GridScan, minHiddenMs: 0 })
   // Show the lightweight scan immediately while the desktop WebGL chunk loads.
   // On mobile, Gecko, Mullvad/Tor-like browsers, and GPC-enabled browsers this
@@ -31,7 +36,7 @@ export default function HomeHeroGridScan() {
   const activeRenderer = webglEnabled && GridScan ? 'webgl' : 'css'
 
   useEffect(() => {
-    if (preferredRenderer !== 'webgl' || visible) return undefined
+    if (!animated || preferredRenderer !== 'webgl' || visible) return undefined
 
     // The canvas is shown when the hero video is switched off. Warm its large
     // WebGL chunk after the initial page paint so that toggle does not have to
@@ -44,7 +49,7 @@ export default function HomeHeroGridScan() {
 
     const timerId = window.setTimeout(preload, 250)
     return () => window.clearTimeout(timerId)
-  }, [preferredRenderer, visible])
+  }, [animated, preferredRenderer, visible])
 
   useEffect(() => {
     if (!webglEnabled || GridScan) return undefined
@@ -93,17 +98,20 @@ export default function HomeHeroGridScan() {
         className="home-hero__grid-scan"
         linesColor="#2f293a"
         scanColor="#9fb9ff"
-        lineThickness={1}
+        lineThickness={0.8}
         gridScale={0.09}
-        lineJitter={0.1}
-        scanGlow={0.4}
+        lineJitter={0.05}
+        scanOpacity={0.22}
+        scanDuration={4}
+        scanDelay={3}
+        scanGlow={0.2}
         scanSoftness={3.2}
-        noiseIntensity={0.01}
+        noiseIntensity={0.005}
         // A soft grid gains almost nothing from a 2x backing store and costs
         // four times the fragments for it; 1.25 keeps the lines crisp on
         // Retina at well under half the pixel throughput.
         maxPixelRatio={1.25}
-        // The scan is a 4s cycle and the parallax is heavily damped. Neither
+        // The scan is a slow cycle and the parallax is heavily damped. Neither
         // reads any differently at 30fps, which halves the frame count.
         maxFps={30}
       />

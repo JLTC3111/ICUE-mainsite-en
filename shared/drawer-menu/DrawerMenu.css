@@ -230,6 +230,15 @@ body.nav-drawer-open:has(.nav-drawer__toggle--morph) .nav-drawer {
   visibility: visible;
 }
 
+/* The Home shell has no universal border-box reset. Keep full-width menu
+   backgrounds and proximity-driven padding inside the drawer's content area. */
+.nav-drawer,
+.nav-drawer *,
+.nav-drawer *::before,
+.nav-drawer *::after {
+  box-sizing: border-box;
+}
+
 .nav-drawer {
   position: fixed;
   top: 0;
@@ -257,6 +266,8 @@ body.nav-drawer-open:has(.nav-drawer__toggle--morph) .nav-drawer {
 
 .nav-drawer__links {
   position: relative;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;

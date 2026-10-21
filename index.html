@@ -1,6 +1,168 @@
 <!doctype html>
 <html lang="en" class="cursor-symbol">
   <head>
+    <script data-icue-boot-recovery="">(function installBootRecovery(modulePaths = [], recoveryCss = "") {
+  if (recoveryCss && !document.getElementById?.("icue-recovery-styles")) {
+    const style = document.createElement("style");
+    style.id = "icue-recovery-styles";
+    style.textContent = recoveryCss;
+    document.head.append(style);
+  }
+  const retryParam = "__icue_boot_retry";
+  const maxRetries = 2;
+  const attempt = Math.min(maxRetries, Math.max(0, Number(new URLSearchParams(window.location.search).get(retryParam)) || 0));
+  if (attempt && modulePaths.length) {
+    const imports = {};
+    for (const pathname of modulePaths) {
+      const url = new URL(pathname, window.location.href);
+      const original = url.href;
+      url.searchParams.set("__icue_module_retry", String(attempt));
+      imports[original] = url.href;
+    }
+    const map = document.createElement("script");
+    map.type = "importmap";
+    map.textContent = JSON.stringify({ imports });
+    document.head.append(map);
+  }
+  const failedStyles = /* @__PURE__ */ new Map();
+  const pendingRoutes = /* @__PURE__ */ new Set();
+  let mounted = false;
+  let ready = false;
+  let failed = false;
+  let retryable = false;
+  let retryTimer;
+  let notice;
+  const language = new URLSearchParams(window.location.search).get("lang") || document.documentElement.lang;
+  const copy = {
+    vi: ["Trang ch\u01B0a t\u1EA3i xong. Vui l\xF2ng ki\u1EC3m tra k\u1EBFt n\u1ED1i ho\u1EB7c t\u1EA3i l\u1EA1i trang.", "T\u1EA3i l\u1EA1i trang"],
+    en: ["The page could not finish loading. Check your connection or reload the page.", "Reload page"],
+    de: ["Die Seite konnte nicht vollst\xE4ndig geladen werden. Pr\xFCfen Sie die Verbindung oder laden Sie die Seite neu.", "Seite neu laden"],
+    fr: ["Le chargement de la page a \xE9chou\xE9. V\xE9rifiez votre connexion ou rechargez la page.", "Recharger la page"],
+    ko: ["\uD398\uC774\uC9C0\uB97C \uBD88\uB7EC\uC624\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4. \uC5F0\uACB0\uC744 \uD655\uC778\uD558\uAC70\uB098 \uD398\uC774\uC9C0\uB97C \uC0C8\uB85C\uACE0\uCE68\uD558\uC138\uC694.", "\uD398\uC774\uC9C0 \uC0C8\uB85C\uACE0\uCE68"],
+    ja: ["\u30DA\u30FC\u30B8\u3092\u8AAD\u307F\u8FBC\u3081\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u63A5\u7D9A\u3092\u78BA\u8A8D\u3059\u308B\u304B\u3001\u30DA\u30FC\u30B8\u3092\u518D\u8AAD\u307F\u8FBC\u307F\u3057\u3066\u304F\u3060\u3055\u3044\u3002", "\u30DA\u30FC\u30B8\u3092\u518D\u8AAD\u307F\u8FBC\u307F"]
+  }[language?.split("-")[0]] || ["The page could not be loaded.", "Reload page"];
+  function showNotice() {
+    if (notice || !document.body) return;
+    notice = document.createElement("aside");
+    notice.id = "icue-boot-recovery";
+    notice.className = "icue-recovery icue-recovery--boot";
+    notice.setAttribute("role", "alert");
+    notice.style.cssText = "position:fixed;z-index:2147483647;bottom:16px;left:16px;right:16px;max-width:560px;max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:20px;background:var(--recovery-surface,#f8fafc);color:var(--recovery-text,#17202a);border:1px solid var(--recovery-border,#64748b);border-radius:8px;font:16px/1.5 system-ui;box-shadow:0 4px 24px #0003";
+    const text = document.createElement("p");
+    text.textContent = copy[0];
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = copy[1];
+    button.style.cssText = "min-height:44px;padding:8px 16px;font:inherit;cursor:pointer";
+    if (!recoveryCss) {
+      button.style.cssText += ";background:#17202a;color:#fff;border:1px solid #17202a;box-shadow:none";
+    }
+    button.addEventListener("click", () => window.location.reload());
+    const actions = document.createElement("div");
+    actions.className = "icue-recovery__actions";
+    actions.append(button);
+    notice.append(text, actions);
+    document.body.append(notice);
+  }
+  function clearNotice() {
+    if (ready && failedStyles.size === 0) {
+      notice?.remove();
+      notice = null;
+    }
+  }
+  function connected() {
+    return !document.hidden && navigator.onLine !== false;
+  }
+  function recover() {
+    if (!connected()) return;
+    for (const [link, state] of failedStyles) {
+      if (state.pending || state.attempts >= maxRetries) continue;
+      state.pending = true;
+      window.setTimeout(() => {
+        state.pending = false;
+        if (!connected() || !failedStyles.has(link)) return;
+        state.pending = true;
+        state.attempts++;
+        const url2 = new URL(link.href);
+        url2.searchParams.set("__icue_asset_retry", String(state.attempts));
+        link.href = url2.href;
+      }, 1500);
+    }
+    if (ready || !failed || !retryable || retryTimer) return;
+    const url = new URL(window.location.href);
+    const attempts = Math.max(0, Number(url.searchParams.get(retryParam)) || 0);
+    if (attempts >= maxRetries) return;
+    retryTimer = window.setTimeout(() => {
+      retryTimer = null;
+      if (ready || !connected()) return;
+      url.searchParams.set(retryParam, String(attempts + 1));
+      window.location.replace(url.href);
+    }, 1500);
+  }
+  function failBoot(canRetry) {
+    if (ready) return;
+    failed = true;
+    retryable ||= canRetry;
+    showNotice();
+    recover();
+  }
+  window.addEventListener("error", (event) => {
+    const target = event.target;
+    if (target?.tagName === "LINK" && target.rel === "stylesheet") {
+      if (!failedStyles.has(target)) target.addEventListener("load", () => {
+        failedStyles.delete(target);
+        clearNotice();
+      }, { once: true });
+      const state = failedStyles.get(target) || { attempts: 0 };
+      state.pending = false;
+      failedStyles.set(target, state);
+      showNotice();
+      recover();
+    } else if (target?.tagName === "SCRIPT" && target.type === "module") {
+      failBoot(true);
+    } else if (target === window) {
+      failBoot(false);
+    }
+  }, true);
+  window.addEventListener("unhandledrejection", () => failBoot(false));
+  window.addEventListener("online", recover);
+  window.addEventListener("pageshow", recover);
+  document.addEventListener("visibilitychange", recover);
+  document.addEventListener("resume", recover);
+  document.addEventListener("DOMContentLoaded", () => {
+    if (failed || failedStyles.size) showNotice();
+  }, { once: true });
+  const deadline = window.setTimeout(() => failBoot(true), 2e4);
+  function markReady() {
+    if (!mounted || pendingRoutes.size) return;
+    ready = true;
+    failed = false;
+    retryable = false;
+    window.clearTimeout(deadline);
+    window.clearTimeout(retryTimer);
+    retryTimer = null;
+    clearNotice();
+    const url = new URL(window.location.href);
+    if (url.searchParams.has(retryParam)) {
+      url.searchParams.delete(retryParam);
+      window.history.replaceState(window.history.state, "", url.href);
+    }
+  }
+  window.addEventListener("icue:app-ready", () => {
+    mounted = true;
+    markReady();
+  }, { once: true });
+  window.addEventListener("icue:route-loading", (event) => {
+    pendingRoutes.add(event.detail);
+    ready = false;
+  });
+  window.addEventListener("icue:route-ready", (event) => {
+    pendingRoutes.delete(event.detail);
+    markReady();
+  });
+  window.addEventListener("icue:route-error", () => failBoot(true));
+})(["/assets/react-vendor-BfLYh_J-.js","/assets/motion-vendor-1UKp84-Q.js","/assets/routes-B8ih4Jzm.js","/assets/AppSwitcher-CzxVP2Qb.js","/assets/visualEffectsPolicy-DPS6QSn0.js"],"/* Also inlined by bootRecovery: this UI must work without an app stylesheet. */\n.icue-recovery {\n  --recovery-surface: #f8fafc;\n  --recovery-text: #17202a;\n  --recovery-border: #64748b;\n  --recovery-action-bg: #17202a;\n  --recovery-action-text: #ffffff;\n  --recovery-action-hover: #26364b;\n  --recovery-focus: #1d4ed8;\n  --recovery-scheme: light;\n  display: grid;\n  place-content: center;\n  gap: 12px;\n  box-sizing: border-box;\n  min-width: 0;\n  max-width: 100%;\n  min-height: 180px;\n  padding: 24px;\n  border: 1px solid var(--recovery-border);\n  border-radius: 8px;\n  background: var(--recovery-surface);\n  color: var(--recovery-text);\n  color-scheme: var(--recovery-scheme);\n  text-align: center;\n  text-shadow: none;\n  animation: none;\n  transition: none;\n  overflow-wrap: anywhere;\n  font: 400 1rem/1.5 var(--icue-font-stack, system-ui, sans-serif);\n}\n\n@media (prefers-color-scheme: dark) {\n  .icue-recovery {\n    --recovery-surface: #161c25;\n    --recovery-text: #f1f5f9;\n    --recovery-border: #71829a;\n    --recovery-action-bg: #bfdbfe;\n    --recovery-action-text: #111827;\n    --recovery-action-hover: #dbeafe;\n    --recovery-focus: #93c5fd;\n    --recovery-scheme: dark;\n  }\n}\n\n/* A selected page mode takes precedence over the OS fallback. */\n:where([data-icue-page-theme='light'], [data-about-theme='light'], [data-theme='light'],\n  .icue-app:not(.icue-app--news-theme-dark),\n  html:not(.icue-news-theme-dark):has(.icue-app:not(.icue-app--news-theme-dark))) .icue-recovery {\n  --recovery-surface: #f8fafc;\n  --recovery-text: #17202a;\n  --recovery-border: #64748b;\n  --recovery-action-bg: #17202a;\n  --recovery-action-text: #ffffff;\n  --recovery-action-hover: #26364b;\n  --recovery-focus: #1d4ed8;\n  --recovery-scheme: light;\n}\n\n:where([data-icue-page-theme='dark'], [data-about-theme='dark'], [data-theme='dark'],\n  .icue-app--news-theme-dark, .icue-news-theme-dark) .icue-recovery {\n  --recovery-surface: #161c25;\n  --recovery-text: #f1f5f9;\n  --recovery-border: #71829a;\n  --recovery-action-bg: #bfdbfe;\n  --recovery-action-text: #111827;\n  --recovery-action-hover: #dbeafe;\n  --recovery-focus: #93c5fd;\n  --recovery-scheme: dark;\n}\n\n.icue-recovery p {\n  margin: 0;\n  color: var(--recovery-text);\n  font: inherit;\n  animation: none;\n  transition: none;\n  -webkit-text-fill-color: currentColor;\n}\n\n.icue-recovery--compact {\n  min-height: 0;\n  padding: 12px;\n  font-size: 0.875rem;\n}\n\n.icue-recovery .icue-recovery__actions {\n  display: flex;\n  justify-content: center;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\n.icue-recovery .icue-recovery__actions > button {\n  box-sizing: border-box;\n  width: auto;\n  max-width: 100%;\n  min-height: 44px;\n  margin: 0;\n  padding: 10px 16px;\n  border: 1px solid var(--recovery-action-bg);\n  border-radius: 8px;\n  background: var(--recovery-action-bg);\n  color: var(--recovery-action-text);\n  -webkit-text-fill-color: currentColor;\n  box-shadow: none;\n  text-shadow: none;\n  animation: none;\n  transition: none;\n  font: 600 1rem/1.4 var(--icue-font-stack, system-ui, sans-serif);\n  text-align: center;\n  white-space: normal;\n  cursor: pointer;\n}\n\n.icue-recovery .icue-recovery__actions > button:hover,\n.icue-recovery .icue-recovery__actions > button:active {\n  background: var(--recovery-action-hover);\n  border-color: var(--recovery-action-hover);\n  color: var(--recovery-action-text);\n}\n\n.icue-recovery .icue-recovery__actions > button:focus-visible {\n  outline: 3px solid var(--recovery-focus);\n  outline-offset: 3px;\n}\n");</script>
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logoIcons/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,13 +211,13 @@
       />
     </noscript>
     <title>ICUE Vietnam</title>
-    <script type="module" crossorigin src="/assets/index-BLYyC2nP.js"></script>
+    <script type="module" crossorigin src="/assets/index-BFFii9pD.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BfLYh_J-.js">
-    <link rel="modulepreload" crossorigin href="/assets/decorativeVideo-DQft3m8U.js">
-    <link rel="modulepreload" crossorigin href="/assets/routes-BbKZgS2K.js">
-    <link rel="modulepreload" crossorigin href="/assets/VideoToggle-BcFNy8Mq.js">
-    <link rel="stylesheet" crossorigin href="/assets/VideoToggle-s4jBSLyW.css">
-    <link rel="stylesheet" crossorigin href="/assets/index-CHQvNi_1.css">
+    <link rel="modulepreload" crossorigin href="/assets/visualEffectsPolicy-DPS6QSn0.js">
+    <link rel="modulepreload" crossorigin href="/assets/routes-B8ih4Jzm.js">
+    <link rel="modulepreload" crossorigin href="/assets/AppSwitcher-CzxVP2Qb.js">
+    <link rel="stylesheet" crossorigin href="/assets/AppSwitcher-BpaMKvqz.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-BEabB4S-.css">
   </head>
   <body>
     <div id="root"></div>

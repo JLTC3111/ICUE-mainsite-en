@@ -5,11 +5,57 @@
 }
 
 html[data-icue-view-toggle-vt='active']::view-transition-group(root) {
-  animation-duration: var(--icue-view-toggle-vt-duration, 400ms);
+  animation-duration: var(--icue-view-toggle-vt-duration, 450ms);
 }
 
 html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
-  clip-path: var(--icue-view-toggle-vt-clip-from, circle(0px at 50% 50%));
+  clip-path: var(--icue-view-toggle-vt-clip-from, circle(0% at 50% 50%));
+}
+
+/* Smooth camera ON ↔ OFF icon morph during the page view transition */
+html[data-icue-view-toggle-vt='active']::view-transition-group(icue-avt-video-icon) {
+  animation-duration: var(--icue-view-toggle-vt-duration, 450ms);
+  z-index: 1;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-old(icue-avt-video-icon),
+html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-video-icon) {
+  height: 100%;
+  width: 100%;
+  mix-blend-mode: normal;
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-old(icue-avt-video-icon) {
+  animation-name: icue-avt-icon-out;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-video-icon) {
+  animation-name: icue-avt-icon-in;
+}
+
+@keyframes icue-avt-icon-out {
+  from {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.55) rotate(-48deg);
+  }
+}
+
+@keyframes icue-avt-icon-in {
+  from {
+    opacity: 0;
+    transform: scale(0.55) rotate(48deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 .animated-view-toggle {
@@ -27,8 +73,6 @@ html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
   flex-shrink: 0;
-  /* Morph independently of the page circle wipe */
-  view-transition-name: icue-home-video-toggle;
 }
 
 .animated-view-toggle:hover:not(:disabled) {
@@ -50,114 +94,33 @@ html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
   pointer-events: none;
 }
 
-.animated-view-toggle__icon {
+.animated-view-toggle__face {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
+  opacity: 0;
+  transform: scale(0.55) rotate(-48deg);
+  pointer-events: none;
   transition:
-    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 420ms ease;
-  will-change: opacity, transform;
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.animated-view-toggle__icon svg {
-  display: block;
+.animated-view-toggle__face--off {
+  transform: scale(0.55) rotate(48deg);
+}
+
+.animated-view-toggle__face.is-active {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.animated-view-toggle__face svg {
   width: 55%;
   height: 55%;
+  display: block;
   margin: 0;
-  transform: none;
-}
-
-/* Video off → show camera (turn on) */
-.animated-view-toggle[data-state='off'] .animated-view-toggle__icon--camera {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-  filter: blur(0);
-  pointer-events: auto;
-}
-
-.animated-view-toggle[data-state='off'] .animated-view-toggle__icon--slash {
-  opacity: 0;
-  transform: scale(0.55) rotate(72deg);
-  filter: blur(1.5px);
-  pointer-events: none;
-}
-
-/* Video on → show slash (turn off) */
-.animated-view-toggle[data-state='on'] .animated-view-toggle__icon--camera {
-  opacity: 0;
-  transform: scale(0.55) rotate(-72deg);
-  filter: blur(1.5px);
-  pointer-events: none;
-}
-
-.animated-view-toggle[data-state='on'] .animated-view-toggle__icon--slash {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-  filter: blur(0);
-  pointer-events: auto;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animated-view-toggle {
-    view-transition-name: none;
-  }
-
-  .animated-view-toggle__icon {
-    transition: opacity 160ms ease;
-    filter: none !important;
-  }
-
-  .animated-view-toggle[data-state='off'] .animated-view-toggle__icon--slash,
-  .animated-view-toggle[data-state='on'] .animated-view-toggle__icon--camera {
-    transform: scale(0.85);
-  }
-}
-
-::view-transition-group(icue-home-video-toggle) {
-  animation-duration: var(--icue-view-toggle-vt-duration, 450ms);
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 100;
-}
-
-::view-transition-old(icue-home-video-toggle) {
-  animation:
-    icue-video-toggle-icon-out var(--icue-view-toggle-vt-duration, 450ms)
-      cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-::view-transition-new(icue-home-video-toggle) {
-  animation:
-    icue-video-toggle-icon-in var(--icue-view-toggle-vt-duration, 450ms)
-      cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes icue-video-toggle-icon-out {
-  from {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1) rotate(0deg);
-  }
-  to {
-    opacity: 0;
-    filter: blur(2px);
-    transform: scale(0.6) rotate(-56deg);
-  }
-}
-
-@keyframes icue-video-toggle-icon-in {
-  from {
-    opacity: 0;
-    filter: blur(2px);
-    transform: scale(0.6) rotate(56deg);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1) rotate(0deg);
-  }
 }
 
 .animated-view-toggle__sr-only {
@@ -170,4 +133,23 @@ html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
+    clip-path: none;
+  }
+
+  html[data-icue-view-toggle-vt='active']::view-transition-old(icue-avt-video-icon),
+  html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-video-icon) {
+    animation: none;
+  }
+
+  .animated-view-toggle:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .animated-view-toggle__face {
+    transition: none;
+  }
 }

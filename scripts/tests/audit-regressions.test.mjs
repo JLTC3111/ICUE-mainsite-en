@@ -136,7 +136,10 @@ test('calendar moves and traps focus, dismisses with Escape, restores focus and 
       '@icue/zalo/zaloLink': { ICUE_ZALO_PHONE: '0', openZaloChat() {}, zaloWebUrl: () => '#' },
       './useCalendarClock': { useCalendarClock: () => ({ month: 'October', day: '8', time: '09:00' }) },
       './useAudioVisualizer': { useAudioVisualizer: () => ({ toggle() {}, isPlaying: false, isAnimating: false }) },
-      './useMusicBarColor': { useMusicBarColor: () => '#fff' },
+      './useMusicBarColor': {
+        useMusicBarColor: () => '#fff',
+        useBackgroundAppearance: () => ({ color: '#fff', overVideo: false }),
+      },
     },
   })
   let renderer

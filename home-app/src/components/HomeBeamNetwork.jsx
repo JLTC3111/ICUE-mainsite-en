@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useState } from 'react'
-import { motion } from 'motion/react'
+import { motion as Motion } from 'motion/react'
 
 const BEAM_BEND = 72
 const MOBILE_BEAM_SECTION_INDICES = [0, 2]
@@ -99,10 +99,11 @@ export default function HomeBeamNetwork({
   }, [connections, tier])
 
   useLayoutEffect(() => {
+    let secondFrame = 0
     const first = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setReady(true))
+      secondFrame = requestAnimationFrame(() => setReady(true))
     })
-    return () => cancelAnimationFrame(first)
+    return () => { cancelAnimationFrame(first); cancelAnimationFrame(secondFrame) }
   }, [])
 
   useEffect(() => {
@@ -172,7 +173,7 @@ export default function HomeBeamNetwork({
               ? { x1: ['90%', '-10%'], x2: ['100%', '0%'] }
               : { x1: ['10%', '110%'], x2: ['0%', '100%'] }
             return (
-              <motion.linearGradient
+              <Motion.linearGradient
                 key={connection.key}
                 id={`${idPrefix}-${connection.key}`}
                 gradientUnits="userSpaceOnUse"
@@ -180,7 +181,8 @@ export default function HomeBeamNetwork({
                 animate={{ ...coordinates, y1: ['0%', '0%'], y2: ['0%', '0%'] }}
                 transition={{
                   delay: connection.delay,
-                  duration: 4.5,
+                  duration: 7,
+                  repeatDelay: 0.5,
                   ease: [0.16, 1, 0.3, 1],
                   repeat: Infinity,
                   repeatType: 'mirror',
@@ -190,7 +192,7 @@ export default function HomeBeamNetwork({
                 <stop stopColor="#1db7ff" />
                 <stop offset="32.5%" stopColor="#c8ff00" />
                 <stop offset="100%" stopColor="#c8ff00" stopOpacity="0" />
-              </motion.linearGradient>
+              </Motion.linearGradient>
             )
           })}
         </defs>
@@ -200,8 +202,8 @@ export default function HomeBeamNetwork({
             d={connection.path}
             fill="none"
             stroke="rgba(255, 255, 255, 0.2)"
-            strokeWidth="2"
-            strokeOpacity="0.3"
+            strokeWidth="1.25"
+            strokeOpacity="0.15"
             strokeLinecap="round"
           />,
           <path
@@ -209,7 +211,8 @@ export default function HomeBeamNetwork({
             d={connection.path}
             fill="none"
             stroke={`url(#${idPrefix}-${connection.key})`}
-            strokeWidth="2"
+            strokeWidth="1.25"
+            strokeOpacity={tier === 'light' ? 0.28 : 0.4}
             strokeLinecap="round"
           />,
         ])}

@@ -1,5 +1,8 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { withUiLang } from '@icue/i18n/withUiLang'
+import recruitmentOffice from '../../../public/recruitment/office.jpg?url'
+import recruitmentEvent from '../../../public/recruitment/event.jpg?url'
+import recruitmentSurvey from '../../../public/recruitment/survey.jpg?url'
 import {
   CONTACT_APP_URL,
   NEWSROOM_URL,
@@ -58,9 +61,9 @@ const SECTION_LAYOUT = [
     alt: true,
     linkHref: RECRUITMENT_APP_URL,
     cards: [
-      { key: 'culture', image: '/public/recruitment/office.jpg', href: RECRUITMENT_APP_URL, imageOnly: true },
-      { key: 'growth', image: '/public/recruitment/event.jpg', href: RECRUITMENT_APP_URL, imageOnly: true },
-      { key: 'impact', image: '/public/recruitment/survey.jpg', href: RECRUITMENT_APP_URL, imageOnly: true },
+      { key: 'culture', image: recruitmentOffice, href: RECRUITMENT_APP_URL, imageOnly: true },
+      { key: 'growth', image: recruitmentEvent, href: RECRUITMENT_APP_URL, imageOnly: true },
+      { key: 'impact', image: recruitmentSurvey, href: RECRUITMENT_APP_URL, imageOnly: true },
     ],
   },
 ]
