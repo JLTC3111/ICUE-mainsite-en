@@ -1,5 +1,6 @@
 # Live Vietnamese chatbot knowledge; locale is validated by the function.
 /chatbot/shared/:lang /.netlify/functions/chat-knowledge?lang=:lang 200!
+/newsroom/supabase-config.json /.netlify/functions/chat-config 200!
 
 # The legacy-redirect edge function preserves incoming languages before these
 # English-default compatibility rules. Local runtimes use the same helper.

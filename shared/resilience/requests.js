@@ -23,6 +23,18 @@ export function withDeadline(operation, { signal, timeoutMs = REQUEST_TIMEOUT_MS
   })
 }
 
+/** Include body download in the deadline for Supabase JSON and file responses. */
+export function fetchWithDeadline(input, init = {}) {
+  const method = String(init.method || (typeof Request !== 'undefined' && input instanceof Request ? input.method : 'GET')).toUpperCase()
+  return withDeadline(async signal => {
+    const response = await fetch(input, { ...init, signal })
+    const body = await response.arrayBuffer()
+    return new Response(method === 'HEAD' || [204, 205, 304].includes(response.status) ? null : body, {
+      status: response.status, statusText: response.statusText, headers: response.headers,
+    })
+  }, { signal: init.signal ?? (typeof Request !== 'undefined' && input instanceof Request ? input.signal : undefined), timeoutMs: ['GET', 'HEAD'].includes(method) ? REQUEST_TIMEOUT_MS : 90_000 })
+}
+
 /** Cache successful module/configuration loads, never a rejected attempt. */
 export function createRetryableLoader(load, { timeoutMs = REQUEST_TIMEOUT_MS } = {}) {
   let pending = null

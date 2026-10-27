@@ -1,0 +1,21 @@
+.icue-account { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 18px; background: rgb(6 17 29 / 65%); color: #17324a; color-scheme: light; font-family: var(--icue-font-stack, system-ui, sans-serif); }
+.icue-account, .icue-account * { box-sizing: border-box; }
+.icue-account__panel { width: min(100%, 460px); max-height: calc(100dvh - 36px); overflow: auto; overscroll-behavior: contain; border: 1px solid #d5dfe7; border-radius: 22px; background: #fbfcfe; padding: clamp(20px, 5vw, 32px); box-shadow: 0 24px 80px #06111d66; }
+.icue-account header { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; letter-spacing: .04em; }
+.icue-account h2 { margin: 22px 0 12px; font-size: clamp(24px, 5vw, 30px); line-height: 1.2; }
+.icue-account p { font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+.icue-account form, .icue-account label { display: grid; gap: 8px; }
+.icue-account form { gap: 16px; margin: 22px 0 16px; }
+.icue-account label { font-size: 13px; font-weight: 600; }
+.icue-account input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #a3b4c2; border-radius: 9px; font: inherit; font-size: 16px; color: #17324a; background: #fff; }
+.icue-account button { min-height: 40px; padding: 8px 12px; border: 1px solid #a3b4c2; border-radius: 9px; color: #17324a; background: #fff; font: inherit; font-size: 14px; cursor: pointer; }
+.icue-account header button { font-size: 23px; line-height: 1; }
+.icue-account button:disabled { opacity: .6; cursor: wait; }
+.icue-account .icue-account__primary { width: 100%; background: #173f60; border-color: #173f60; color: #fff; font-weight: 600; }
+.icue-account a { display: block; margin-top: 16px; color: #174d76; font-size: 14px; }
+.icue-account :is(button, input, a):focus-visible { outline: 2px solid #176499; outline-offset: 3px; }
+.icue-account .icue-account__error { color: #a52222; }
+.icue-account__chats { display: grid; gap: 8px; margin: 16px 0; }
+.icue-account__chats button { display: grid; gap: 6px; text-align: left; overflow-wrap: anywhere; }
+.icue-account__chats button[aria-pressed='true'] { border-color: #173f60; background: #eaf1f6; }
+.icue-account__chats small { color: #4e6375; }

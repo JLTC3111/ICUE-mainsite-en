@@ -6,7 +6,34 @@ retrieval engine, FAQ corpus, and encrypted history code are reused without
 redesigning a separate mascot. `shared/chatbot/upstream.json` records the source
 commit and SHA-256 hashes; regression tests verify those files still match.
 Only the host adapters choose English by default, supply canonical localized
-links, and connect to the homepage's existing background music.
+links, connect to the homepage's existing background music, and handle account
+sign-in on the English origin.
+
+## Live support and portals
+
+The shared **Talk to our team** tab uses the same support service and inbox as
+the Vietnamese site, including presence, typing, retries, private PDF/image
+attachments, downloads, and account ownership. Opening the assistant does not
+start a support conversation or forward the assistant transcript.
+
+`/newsroom/supabase-config.json` is a same-origin `chat-config` relay of the VN
+site's public configuration. It returns only the service URL and public key,
+rejects privileged keys, and forwards no cookies. The edge redirect and local
+runtimes leave this JSON endpoint local. No separate database or service key is
+required. The support API validates guest capabilities and account sessions.
+
+The contact bar's **Staff login and chat management** link opens
+`https://icue.vn/newsroom/portal?mode=staff&lang=en`. The People/Staff header links
+open `https://icue.vn/people/experts?lang=en` in the pill, mobile, and dock headers;
+the drawer retains both Experts and Core Team.
+
+**Sign in to keep this conversation** opens the English customer account dialog
+without leaving the current chat. This matters because guest capabilities and
+auth sessions are stored separately on each origin. Successful sign-in claims
+the English guest thread on the shared backend. The dialog also lists saved
+conversations; signing out clears the private chat view. The same account can
+then access its saved threads on the VN customer portal after signing in there.
+Signup email confirmation and password recovery use that existing portal.
 
 ## Knowledge
 
@@ -51,10 +78,10 @@ fallback changes require the explicit sync command and the next EN deployment.
 Builds do not require the VN checkout to exist.
 
 Use Node 22.12 or newer. `npm ci`, `npm ci --prefix home-app`, and `npm run build`
-produce the homepage; a normal Netlify deployment also bundles the two functions
+produce the homepage; a normal Netlify deployment also bundles the three functions
 and the locale-preserving edge redirect declared in `netlify.toml`. Publishing
 only the static `dist-home` directory to another host requires equivalent
-handlers for `/chatbot/shared/<locale>` and the history endpoint. Vite dev,
+handlers for `/chatbot/shared/<locale>`, the public configuration relay, and the history endpoint. Vite dev,
 Vite preview, and the optional Express server already use the same handlers.
 
 Validation commands: `npm run test:audit`, `npm run test:recovery`,

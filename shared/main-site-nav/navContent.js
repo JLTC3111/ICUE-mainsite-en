@@ -19,12 +19,13 @@ export const NAV_LABELS = {
     News: 'News',
     aboutUs: 'About Us',
     Contact: 'Contact',
-    ourPeople: 'Personnel',
+    ourPeople: 'People / Staff',
     meetOurExperts: 'Meet Our Experts',
     coreTeam: 'Core Team',
   },
   /** Shorter forms for the pill, where a long label breaks the row. */
   compact: {
+    ourPeople: 'People',
     Home: 'Home',
     orgStructure: 'Structure',
     ourWork: 'Our Work',

@@ -5,6 +5,7 @@ import { FOOTER_LABELS } from './footerContent'
 import { getFooterLinks } from './footerLinks'
 import './Footer.css'
 import StaffPortalLinks from '../app-switcher/StaffPortalLinks.jsx'
+import { customerPortalUrl } from '../customer-account/account.js'
 
 const CIRCULAR_TEXT = '@ICUE*©ALL*RIGHTS*RESERVED*'
 
@@ -47,6 +48,7 @@ function Footer({ linkMode = 'hash', onNavigate, labels: labelOverrides, lang = 
           <h4>{labels.otherPages}</h4>
           <a href={links.faqs} onClick={navigate}>{labels.faqs}</a>
           <a href={links.recruitment} onClick={navigate}>{labels.recruitment}</a>
+          <a href={customerPortalUrl()}>Your conversations</a>
           <StaffPortalLinks locale={lang} />
         </div>
         <div className="icue-footer__brand">

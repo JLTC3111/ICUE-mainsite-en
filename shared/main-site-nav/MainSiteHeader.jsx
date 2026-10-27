@@ -6,6 +6,8 @@ import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
 import { handleSpaNavigation, isUnmodifiedPrimaryActivation } from './navigation';
 import { NAV_LABELS } from './navContent';
+import { IconPeople } from './navLinks';
+import { resolveMainSiteLink } from '../site-routes/mainSitePaths.js';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -15,6 +17,8 @@ export default function MainSiteHeader({
   showAboutUsVideoToggle,
   homeHref = 'https://icue.vn',
   aboutUsHref = '#/aboutUs',
+  peopleHref = resolveMainSiteLink('meetOurExperts', 'en'),
+  activePage,
   isStandalone = false,
   assetPrefix = 'public/',
   homeVideoEnabled,
@@ -89,6 +93,19 @@ export default function MainSiteHeader({
         </div>
 
         <div className="main-site-nav__dock-zone main-site-nav__dock-zone--trailing">
+          <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--people">
+            <a
+              href={peopleHref}
+              className="main-site-nav__people-link"
+              data-page="ourPeople"
+              aria-label={labels.pages.ourPeople}
+              title={labels.pages.ourPeople}
+              aria-current={['ourPeople', 'meetOurExperts', 'coreTeam'].includes(activePage) ? 'page' : undefined}
+              onClick={(event) => handleSpaNavigation(event, peopleHref, onNavigate)}
+            >
+              <IconPeople />
+            </a>
+          </DockIcon>
           {showActionsGroup && (
             <div className="main-site-nav__dock-actions">
               {showHomeVideoToggle && (

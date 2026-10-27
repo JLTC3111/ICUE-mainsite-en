@@ -120,4 +120,4 @@ export function DrawerLinkIcon({ icon: Icon }) {
   return Icon ? <Icon /> : null;
 }
 
-export { Fragment };
+export { Fragment, IconPeople };

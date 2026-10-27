@@ -4,6 +4,7 @@ import useModalFocus from '../ui/useModalFocus.js'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { normalizeUiLocale } from '../site-routes/mainSitePaths.js'
 import { useCalendarClock } from './useCalendarClock'
+import { staffPortalCopy, staffPortalUrl } from './staffPortal.js'
 import { useAudioVisualizer } from './useAudioVisualizer'
 import { useBackgroundAppearance, useMusicBarColor } from './useMusicBarColor'
 import useFloatingCollapse from '../ui/useFloatingCollapse.js'
@@ -138,6 +139,7 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
   const musicColor = musicIconColor ?? sampledMusicColor
   const calendarLocale = normalizeUiLocale(locale, 'en')
   const calendarLabels = CALENDAR_LABELS[calendarLocale]
+  const staffCopy = staffPortalCopy(locale)
   const { month, day, time } = useCalendarClock(calendarLocale)
   const calendarTriggerRef = useRef(null)
   const calendarDialogRef = useRef(null)
@@ -177,6 +179,7 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
               onClick={toggleMusic}
               aria-label="Toggle background music"
               aria-pressed={isPlaying}
+              data-icue-music-toggle=""
               data-animating={isAnimating && !collapse.collapsed}
               style={{ color: musicColor }}
             >
@@ -211,6 +214,21 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'en' }) {
                   fill="#ffffff"
                   stroke="black"
                 />
+              </svg>
+            </a>
+
+            <div className="contact-sidebar__divider" aria-hidden="true" />
+
+            <a
+              href={staffPortalUrl(locale)}
+              className="contact-sidebar__item contact-sidebar__staff"
+              aria-label={staffCopy.link}
+              title={staffCopy.link}
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5" stroke="#fff" strokeWidth="4" />
+                <path d="M3 12h12m-5-5 5 5-5 5" stroke="#fff" strokeWidth="4" />
+                <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5M3 12h12m-5-5 5 5-5 5" />
               </svg>
             </a>
 

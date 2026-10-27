@@ -267,14 +267,21 @@ export default function MainSiteNav({
     () => localizeNavLinks(sourceLinks, labels).map((link) => withUiLangOnHref(link, lang)),
     [labels, lang, sourceLinks],
   );
-  const pillLinkConfig = useMemo(
-    () => drawerLinkConfig.filter((link) => !link.drawerOnly),
-    [drawerLinkConfig],
-  );
   const peopleSubmenu = useMemo(
     () => withUiLangOnHref(localizePeopleSubmenu(PEOPLE_SUBMENU, labels), lang),
     [labels, lang],
   );
+  const peopleHref = peopleSubmenu.items[0].href;
+  const pillLinkConfig = useMemo(() => {
+    const items = drawerLinkConfig.filter((link) => !link.drawerOnly && link.page !== PEOPLE_SUBMENU.page);
+    const structureIndex = items.findIndex((link) => link.page === 'orgStructure');
+    items.splice(structureIndex + 1, 0, {
+      page: PEOPLE_SUBMENU.page,
+      href: peopleHref,
+      label: peopleSubmenu.label,
+    });
+    return items;
+  }, [drawerLinkConfig, peopleHref, peopleSubmenu.label]);
   // The pill's tablet overflow is usually the Personnel pair, which the caller
   // reads off the untranslated export — re-label it here too.
   const localizedOverflowItems = useMemo(
@@ -489,6 +496,8 @@ export default function MainSiteNav({
               showAboutUsVideoToggle={showAboutUsVideoToggle}
               homeHref={localizedHomeHref}
               aboutUsHref={localizedAboutUsHref}
+              peopleHref={peopleHref}
+              activePage={activePage}
               isStandalone={isStandalone}
               assetPrefix={isStandalone ? '/' : 'public/'}
               homeVideoEnabled={homeVideoEnabled}

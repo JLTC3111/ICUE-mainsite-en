@@ -12,11 +12,12 @@
       "News": "News",
       "aboutUs": "About Us",
       "Contact": "Contact",
-      "ourPeople": "Personnel",
+      "ourPeople": "People / Staff",
       "meetOurExperts": "Meet Our Experts",
       "coreTeam": "Core Team"
     },
     "compact": {
+      "ourPeople": "People",
       "Home": "Home",
       "orgStructure": "Structure",
       "ourWork": "Our Work",

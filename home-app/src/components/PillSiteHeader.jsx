@@ -4,12 +4,13 @@ import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
 import { handleSpaNavigation } from '@icue/main-site-nav/navigation';
 import { NAV_LABELS } from '@icue/main-site-nav/navContent';
+import { IconPeople } from '@icue/main-site-nav/navLinks';
 import './PillSiteHeader.css';
 import HomeBeamsToggle from './HomeBeamsToggle.jsx';
 import HomeThemeToggle from './HomeThemeToggle.jsx';
 import useHeaderOverHero from '../hooks/useHeaderOverHero.js';
 
-const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
+const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourPeople', 'ourWork', 'pastProjects', 'News']);
 
 function getResponsiveMode() {
   if (window.matchMedia('(max-width: 768px)').matches) return 'mobile';
@@ -100,6 +101,7 @@ export default function PillSiteHeader({
   // Community Activities (and any later drawer-only entries) stay in the
   // hamburger, not the pill row or tablet More menu.
   const headerItems = items.filter((item) => !item.drawerOnly);
+  const peopleItem = headerItems.find((item) => item.page === 'ourPeople');
   const visibleItems = isTablet
     ? headerItems.filter((item) => TABLET_PRIMARY_PAGES.has(item.page))
     : headerItems;
@@ -166,6 +168,7 @@ export default function PillSiteHeader({
             <ul className="pill-site-header__list">
               {visibleItems.map((item) => {
                 const active = item.page === activePage
+                  || (item.page === 'ourPeople' && ['meetOurExperts', 'coreTeam'].includes(activePage))
                   || (item.page === 'News' && activePage === 'newsArchive');
                 return (
                   <li key={item.page}>
@@ -222,6 +225,19 @@ export default function PillSiteHeader({
       )}
 
       <div className="pill-site-header__actions">
+        {isMobile && peopleItem && (
+          <a
+            href={peopleItem.href}
+            className="pill-site-header__people-link"
+            data-page="ourPeople"
+            aria-label={labels.pages.ourPeople}
+            title={labels.pages.ourPeople}
+            aria-current={['ourPeople', 'meetOurExperts', 'coreTeam'].includes(activePage) ? 'page' : undefined}
+            onClick={(event) => handleSpaNavigation(event, peopleItem.href, onNavigate)}
+          >
+            <IconPeople />
+          </a>
+        )}
         {showHomeVideoToggle && (
           <VideoToggle
             id={`homeVideoToggleContainer${toggleSuffix}`}

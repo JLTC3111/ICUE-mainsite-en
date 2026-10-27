@@ -125,7 +125,10 @@ test('the English host adapter keeps chat copy and VN links in English despite a
   silenceRenderer(t)
   const listeners = new Set()
   const i18n = { language: 'en', resolvedLanguage: 'en', on: (_, listener) => listeners.add(listener), off: (_, listener) => listeners.delete(listener), getResource: () => undefined }
-  const { default: SiteChatbot } = await sourceModule('shared/chatbot/SiteChatbot.jsx', { imports: { './Chatbot.jsx': { default: props => React.createElement('chat-fixture', props) } } })
+  const { default: SiteChatbot } = await sourceModule('shared/chatbot/SiteChatbot.jsx', { imports: {
+    './Chatbot.jsx': { default: props => React.createElement('chat-fixture', props) },
+    '../contact-sidebar/BackgroundMusicBanner.jsx': { default: () => null },
+  } })
   let renderer
   await act(async () => { renderer = create(React.createElement(SiteChatbot, { i18n })) })
   const props = () => renderer.root.findByType('chat-fixture').props

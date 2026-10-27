@@ -154,6 +154,8 @@ export function getBootstrapExternalRedirect(pathname, search = '') {
   if (!pathname) return null
   const cleanPath = `/${pathname.split('/').filter(Boolean).join('/')}`
   const normalized = cleanPath.toLowerCase()
+  // This public JSON is a same-origin relay, not a newsroom page.
+  if (normalized === '/newsroom/supabase-config.json') return null
   const incoming = new URLSearchParams(search)
   const language = normalizeUiLang(incoming.get('lang'), 'en')
   const detailTarget = legacyDetailTarget(normalized, search)

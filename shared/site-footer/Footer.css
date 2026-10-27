@@ -103,6 +103,7 @@ footer.icue-footer,
    border. Only desktop showed it — the 768px block below restates the padding
    and already sits after .icue-container. */
 .icue-footer .icue-footer__bottom {
+  box-sizing: border-box;
   padding: 18px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;

@@ -197,6 +197,12 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   border-right: 0.5px dotted var(--contact-sidebar-rule, black);
 }
 
+.contact-sidebar__staff:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
 .contact-sidebar__modal {
   position: fixed;
   inset: 0;

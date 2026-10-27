@@ -29,6 +29,9 @@ async function copyTree(relative) {
 
 await copyTree('shared/chatbot')
 await copyTree('shared/faq-content')
+for (const file of ['BackgroundMusicBanner.jsx', 'BackgroundMusicBanner.css']) {
+  await copyFile(`shared/contact-sidebar/${file}`)
+}
 for (const file of ['useFloatingCollapse.js', 'FloatingCollapseControls.jsx', 'FloatingCollapseControls.css', 'floatingCollapseCopy.js']) {
   await copyFile(`shared/ui/${file}`)
 }
