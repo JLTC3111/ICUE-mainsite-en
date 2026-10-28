@@ -1,4 +1,5 @@
 import {
+  SITES,
   normalizeUiLocale,
   withLocale,
 } from '../site-routes/mainSitePaths.js'
@@ -14,11 +15,19 @@ export const LANG_ALIASES = {
   jp: 'ja',
 }
 
-const VN_HOSTS = new Set(['icue.vn', 'www.icue.vn'])
+const VN_HOST = new URL(SITES.vi).hostname
+const EN_HOST = new URL(SITES.en).hostname
+/** icue.vn now serves the company landing page; links written before the move still mean the VN site. */
+const LEGACY_VN_HOSTS = new Set(['icue.vn', 'www.icue.vn'])
 const SKIP_HREF = /^(?:mailto|tel|sms|javascript):/i
 
 export function normalizeUiLang(code, fallback = 'en') {
   return normalizeUiLocale(code, fallback)
+}
+
+/** Hosts whose links carry the UI language, including pre-move icue.vn links. */
+export function isMainSiteHost(hostname) {
+  return hostname === VN_HOST || hostname === EN_HOST || LEGACY_VN_HOSTS.has(hostname)
 }
 
 /**
@@ -43,7 +52,12 @@ export function withUiLang(href, lang) {
   if (url.searchParams.get('from') === 'en-news') url.searchParams.delete('from')
   url.searchParams.delete('lang')
 
-  if (VN_HOSTS.has(url.hostname)) {
+  if (LEGACY_VN_HOSTS.has(url.hostname)) {
+    url.protocol = 'https:'
+    url.hostname = VN_HOST
+  }
+
+  if (url.hostname === VN_HOST) {
     const localized = new URL(withLocale(url.toString(), code))
     return isAbsolute
       ? localized.toString()

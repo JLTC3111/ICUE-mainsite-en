@@ -1,4 +1,4 @@
-const UPSTREAM = 'https://icue.vn/.netlify/functions/chat-history'
+const UPSTREAM = 'https://vi.icue.vn/.netlify/functions/chat-history'
 const HEADERS = { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' }
 const reply = (status, error) => new Response(JSON.stringify({ error }), { status, headers: HEADERS })
 
@@ -34,7 +34,7 @@ export async function relayChatHistory(request, fetchUpstream = globalThis.fetch
     const response = await fetchUpstream(UPSTREAM, {
       method: request.method, signal: controller.signal, redirect: 'error',
       credentials: 'omit', cache: 'no-store',
-      headers: { Authorization: authorization, Origin: 'https://icue.vn', ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      headers: { Authorization: authorization, Origin: 'https://vi.icue.vn', ...(body ? { 'Content-Type': 'application/json' } : {}) },
       ...(body ? { body } : {}),
     })
     if (!response.headers.get('content-type')?.includes('application/json')) return reply(503, 'sync_unavailable')

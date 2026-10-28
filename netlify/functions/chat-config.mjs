@@ -1,4 +1,4 @@
-const CONFIG_URL = 'https://icue.vn/newsroom/supabase-config.json'
+const CONFIG_URL = 'https://vi.icue.vn/newsroom/supabase-config.json'
 
 /** Relay only the public configuration for the existing VN support service. */
 export async function sharedChatConfig(request, fetchUpstream = globalThis.fetch) {

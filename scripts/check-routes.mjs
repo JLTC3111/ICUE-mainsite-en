@@ -58,7 +58,7 @@ if (!appSource.includes('pathFromLegacyHash')) {
 
 for (const locale of SUPPORTED_UI_LOCALES) {
   const home = new URL(resolveMainSiteLink('Home', locale))
-  const expectedHomeOrigin = locale === 'en' ? 'https://en.icue.vn' : 'https://icue.vn'
+  const expectedHomeOrigin = locale === 'en' ? 'https://en.icue.vn' : 'https://vi.icue.vn'
   if (home.origin !== expectedHomeOrigin) {
     fail(`Home for ${locale} resolved to ${home.origin}, expected ${expectedHomeOrigin}`)
   }
@@ -71,8 +71,8 @@ for (const locale of SUPPORTED_UI_LOCALES) {
 
   for (const page of ICUE_VN_HOSTED_PAGES) {
     const url = new URL(resolveMainSiteLink(page, locale))
-    if (url.origin !== 'https://icue.vn') {
-      fail(`${page} for ${locale} left icue.vn: ${url.href}`)
+    if (url.origin !== 'https://vi.icue.vn') {
+      fail(`${page} for ${locale} left vi.icue.vn: ${url.href}`)
     }
     if (url.searchParams.get('lang') !== locale) {
       fail(`${page} for ${locale} is missing ?lang=${locale}`)
@@ -92,16 +92,16 @@ if (hostedPathForPage('pastProjects', '/past-projects/12') !== '/past-projects/1
 if (hostedPathForPage('newsArchive', '/news-archive/4') !== '/news-archive/4') {
   fail('Archive article path is not preserved across locale switching')
 }
-if (resolveMainSiteLink('pastProjects', 'en', undefined, '/past-projects/12') !== 'https://icue.vn/past-projects/12?lang=en') {
+if (resolveMainSiteLink('pastProjects', 'en', undefined, '/past-projects/12') !== 'https://vi.icue.vn/past-projects/12?lang=en') {
   fail('English project detail URL does not keep its id')
 }
-if (resolveMainSiteLink('newsArchive', 'de', undefined, '/news-archive/4') !== 'https://icue.vn/news-archive/4?lang=de') {
+if (resolveMainSiteLink('newsArchive', 'de', undefined, '/news-archive/4') !== 'https://vi.icue.vn/news-archive/4?lang=de') {
   fail('Archive article URL does not keep its id for a non-English locale')
 }
-if (resolveMainSiteDetailLink('pastProjects', 3, 'en') !== 'https://icue.vn/past-projects/3?lang=en') {
+if (resolveMainSiteDetailLink('pastProjects', 3, 'en') !== 'https://vi.icue.vn/past-projects/3?lang=en') {
   fail('Project card helper does not emit a canonical English detail URL')
 }
-if (resolveMainSiteDetailLink('newsArchive', 8, 'fr') !== 'https://icue.vn/news-archive/8?lang=fr') {
+if (resolveMainSiteDetailLink('newsArchive', 8, 'fr') !== 'https://vi.icue.vn/news-archive/8?lang=fr') {
   fail('Article helper does not emit a canonical localized detail URL')
 }
 
@@ -114,7 +114,7 @@ if (withLocale('/contact?lang=vi', 'en') !== '/contact?lang=en') {
 if (withUiLang(LEGAL_APP_URLS.terms, 'en') !== LEGAL_APP_URLS.terms) {
   fail('English Legal app URL does not preserve ?lang=en')
 }
-if (withUiLang(LEGAL_APP_URLS.terms, 'fr') !== 'https://icue.vn/legal/terms?lang=fr') {
+if (withUiLang(LEGAL_APP_URLS.terms, 'fr') !== 'https://vi.icue.vn/legal/terms?lang=fr') {
   fail('Legal app URL does not preserve a non-English UI language')
 }
 
@@ -128,9 +128,9 @@ const hashTargets = {
   '#/ourWork': OUR_WORK_APP_URL,
   '#/FAQs': FAQ_APP_URL,
   '#/notableAwards': NOTABLE_AWARDS_APP_URL,
-  '#/meetOurExperts': 'https://icue.vn/people/experts?lang=en',
-  '#/coreTeam': 'https://icue.vn/people/core-team?lang=en',
-  '#/orgStructure': 'https://icue.vn/structure/?lang=en',
+  '#/meetOurExperts': 'https://vi.icue.vn/people/experts?lang=en',
+  '#/coreTeam': 'https://vi.icue.vn/people/core-team?lang=en',
+  '#/orgStructure': 'https://vi.icue.vn/structure/?lang=en',
 }
 for (const [hash, expected] of Object.entries(hashTargets)) {
   const actual = pathFromLegacyHash(hash, 'en')
@@ -158,8 +158,8 @@ const requiredRedirects = {
   [ROUTE_PATHS.recruitment]: RECRUITMENT_APP_URL,
   [ROUTE_PATHS.communityActivities]: COMMUNITY_ACTIVITIES_APP_URL,
   '/newsroom': NEWSROOM_URL,
-  '/people': 'https://icue.vn/people/experts?lang=en',
-  '/structure': 'https://icue.vn/structure/?lang=en',
+  '/people': 'https://vi.icue.vn/people/experts?lang=en',
+  '/structure': 'https://vi.icue.vn/structure/?lang=en',
   [ROUTE_PATHS.privacy]: LEGAL_APP_URLS.privacy,
   [ROUTE_PATHS.terms]: LEGAL_APP_URLS.terms,
   [ROUTE_PATHS.gdpr]: LEGAL_APP_URLS.gdpr,
@@ -184,11 +184,11 @@ for (const [from, to] of Object.entries(requiredRedirects)) {
 }
 
 const splatRedirects = {
-  '/past-projects/*': 'https://icue.vn/past-projects/:splat?lang=en',
-  '/news-archive/*': 'https://icue.vn/news-archive/:splat?lang=en',
-  '/contact/*': 'https://icue.vn/contact/:splat?lang=en',
-  '/people/*': 'https://icue.vn/people/:splat?lang=en',
-  '/newsroom/*': 'https://icue.vn/newsroom/:splat?lang=en',
+  '/past-projects/*': 'https://vi.icue.vn/past-projects/:splat?lang=en',
+  '/news-archive/*': 'https://vi.icue.vn/news-archive/:splat?lang=en',
+  '/contact/*': 'https://vi.icue.vn/contact/:splat?lang=en',
+  '/people/*': 'https://vi.icue.vn/people/:splat?lang=en',
+  '/newsroom/*': 'https://vi.icue.vn/newsroom/:splat?lang=en',
 }
 for (const [from, to] of Object.entries(splatRedirects)) {
   if (!new RegExp(`^${escapeRe(from)}\\s+${escapeRe(to)}\\s+301!?\\s*$`, 'm').test(redirects)) {
@@ -196,10 +196,10 @@ for (const [from, to] of Object.entries(splatRedirects)) {
   }
 }
 
-if (!/^\/legacy\/pages\/card\.html id=:id\s+https:\/\/icue\.vn\/past-projects\/:id\?lang=en\s+301!?$/m.test(redirects)) {
+if (!/^\/legacy\/pages\/card\.html id=:id\s+https:\/\/vi\.icue\.vn\/past-projects\/:id\?lang=en\s+301!?$/m.test(redirects)) {
   fail('Missing project-id redirect from card.html')
 }
-if (!/^\/legacy\/pages\/article_template\.html id=:id\s+https:\/\/icue\.vn\/news-archive\/:id\?lang=en\s+301!?$/m.test(redirects)) {
+if (!/^\/legacy\/pages\/article_template\.html id=:id\s+https:\/\/vi\.icue\.vn\/news-archive\/:id\?lang=en\s+301!?$/m.test(redirects)) {
   fail('Missing article-id redirect from article_template.html')
 }
 
@@ -216,14 +216,14 @@ const bootstrapCases = [
   ['/about-us/', ABOUT_US_APP_URL],
   ['/about-us.html', ABOUT_US_APP_URL],
   ['/legacy/pages/aboutUs.html', ABOUT_US_APP_URL],
-  ['/past-projects/9', 'https://icue.vn/past-projects/9?lang=en'],
-  ['/news-archive/4', 'https://icue.vn/news-archive/4?lang=en'],
+  ['/past-projects/9', 'https://vi.icue.vn/past-projects/9?lang=en'],
+  ['/news-archive/4', 'https://vi.icue.vn/news-archive/4?lang=en'],
   ['/legacy/pages/card.html', PAST_PROJECTS_APP_URL],
   ['/legacy/pages/article_template.html', NEWS_ARCHIVE_APP_URL],
   ['/legal/terms', LEGAL_APP_URLS.terms],
   ['/terms', LEGAL_APP_URLS.terms],
   ['/newsroom', NEWSROOM_URL],
-  ['/people/core-team', 'https://icue.vn/people/core-team?lang=en'],
+  ['/people/core-team', 'https://vi.icue.vn/people/core-team?lang=en'],
 ]
 for (const [alias, target] of bootstrapCases) {
   const search = alias.includes('card') || alias.includes('article') ? '' : ''
@@ -231,10 +231,10 @@ for (const [alias, target] of bootstrapCases) {
     fail(`Bootstrap guard misses alias: ${alias} -> ${target} (got ${getBootstrapExternalRedirect(alias, search)})`)
   }
 }
-if (getBootstrapExternalRedirect('/legacy/pages/card.html', '?id=6') !== 'https://icue.vn/past-projects/6?lang=en') {
+if (getBootstrapExternalRedirect('/legacy/pages/card.html', '?id=6') !== 'https://vi.icue.vn/past-projects/6?lang=en') {
   fail('Bootstrap guard does not preserve a project id from card.html')
 }
-if (getBootstrapExternalRedirect('/src/pages/article_template.html', '?id=2') !== 'https://icue.vn/news-archive/2?lang=en') {
+if (getBootstrapExternalRedirect('/src/pages/article_template.html', '?id=2') !== 'https://vi.icue.vn/news-archive/2?lang=en') {
   fail('Bootstrap guard does not preserve an article id from article_template.html')
 }
 
@@ -244,8 +244,8 @@ const runtimeRouteSources = {
   'home-app/vite.config.js': read('home-app/vite.config.js'),
 }
 for (const [file, source] of Object.entries(runtimeRouteSources)) {
-  if (!source.includes('getBootstrapExternalRedirect') && !source.includes('vnUrl(') && !source.includes('https://icue.vn')) {
-    fail(`${file} does not send retired English routes to icue.vn`)
+  if (!source.includes('getBootstrapExternalRedirect') && !source.includes('vnUrl(') && !source.includes('https://vi.icue.vn')) {
+    fail(`${file} does not send retired English routes to vi.icue.vn`)
   }
 }
 if (!runtimeRouteSources['server.js'].includes('getBootstrapExternalRedirect(req.path, search)')) {
@@ -289,5 +289,5 @@ if (failures.length) {
 
 console.log(
   `Route audit passed: English-only home, ${SUPPORTED_UI_LOCALES.length} cross-site locales, `
-    + `${ICUE_VN_HOSTED_PAGES.size} icue.vn-hosted pages, and forced compatibility redirects.`,
+    + `${ICUE_VN_HOSTED_PAGES.size} vi.icue.vn-hosted pages, and forced compatibility redirects.`,
 )

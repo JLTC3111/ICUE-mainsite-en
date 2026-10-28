@@ -4,7 +4,7 @@ import de from '../../public/chatbot/kb.de.json' with { type: 'json' }
 import fr from '../../public/chatbot/kb.fr.json' with { type: 'json' }
 import ko from '../../public/chatbot/kb.ko.json' with { type: 'json' }
 import ja from '../../public/chatbot/kb.ja.json' with { type: 'json' }
-import { withUiLang } from '../../shared/i18n/withUiLang.js'
+import { isMainSiteHost, withUiLang } from '../../shared/i18n/withUiLang.js'
 
 const snapshot = { vi, en, de, fr, ko, ja }
 const LOCALES = new Set(['vi', 'en', 'de', 'fr', 'ko', 'ja'])
@@ -17,7 +17,7 @@ export async function sharedKnowledge(request, fetchUpstream = globalThis.fetch)
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 3500)
   try {
-    const response = await fetchUpstream(`https://icue.vn/public/chatbot/kb.${locale}.json`, {
+    const response = await fetchUpstream(`https://vi.icue.vn/public/chatbot/kb.${locale}.json`, {
       signal: controller.signal, credentials: 'omit', redirect: 'error',
     })
     if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) throw new Error('knowledge_unavailable')
@@ -36,8 +36,8 @@ function knowledgeResponse(knowledge, request, source) {
     if (!Array.isArray(intent.links)) return intent
     return { ...intent, links: intent.links.map(link => {
       if (typeof link.url !== 'string') return link
-      const url = new URL(link.url, 'https://icue.vn')
-      if (!['icue.vn', 'www.icue.vn', 'en.icue.vn'].includes(url.hostname)) return link
+      const url = new URL(link.url, 'https://vi.icue.vn')
+      if (!isMainSiteHost(url.hostname)) return link
       return { ...link, url: withUiLang(url.href, knowledge.language) }
     }) }
   }) }

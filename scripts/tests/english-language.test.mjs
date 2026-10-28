@@ -30,12 +30,12 @@ test('the English site renders English regardless of saved, requested, or progra
   assert.equal(stored.get('icue_news_lang'), 'de', 'Opening English must preserve the separate main-site preference')
 })
 
-test('every non-English flag opens icue.vn in the chosen locale and retains campaign parameters and anchors', () => {
+test('every non-English flag opens vi.icue.vn in the chosen locale and retains campaign parameters and anchors', () => {
   for (const { code } of LANGUAGE_OPTIONS.filter(language => language.code !== 'en')) {
     const target = new URL(languageSelectionTarget(code, {
       pathname: '/', search: '?lang=en&utm_campaign=autumn&site=en&from=en-news', hash: '#home-news',
     }))
-    assert.equal(target.origin, 'https://icue.vn')
+    assert.equal(target.origin, 'https://vi.icue.vn')
     assert.equal(target.pathname, '/')
     assert.equal(target.searchParams.get('lang'), code)
     assert.equal(target.searchParams.get('utm_campaign'), 'autumn')
@@ -45,7 +45,7 @@ test('every non-English flag opens icue.vn in the chosen locale and retains camp
   }
   assert.equal(languageSelectionTarget('en'), null)
   assert.equal(languageSelectionTarget('invalid'), null)
-  assert.equal(languageSelectionTarget('jp', { pathname: '/past-projects/12' }), 'https://icue.vn/past-projects/12?lang=ja')
+  assert.equal(languageSelectionTarget('jp', { pathname: '/past-projects/12' }), 'https://vi.icue.vn/past-projects/12?lang=ja')
 })
 
 test('the actual flag menu stays English and redirects even when local storage is blocked', async t => {
@@ -67,7 +67,7 @@ test('the actual flag menu stays English and redirects even when local storage i
   assert.equal(menu.props.value, 'en')
   for (const code of ['vi', 'de', 'fr', 'ko', 'ja']) {
     menu.props.onChange(code)
-    assert.equal(navigations.at(-1), `https://icue.vn/?lang=${code}`)
+    assert.equal(navigations.at(-1), `https://vi.icue.vn/?lang=${code}`)
   }
   menu.props.onChange('en')
   assert.equal(navigations.length, 5)
@@ -80,7 +80,7 @@ test('bookmarked non-English home links redirect before React mounts, preserving
     href: 'https://en.icue.vn/?lang=fr#home-news', pathname: '/', search: '?lang=fr', hash: '#home-news',
     replace: href => replacements.push(href),
   }), true)
-  assert.deepEqual(replacements, ['https://icue.vn/?lang=fr#home-news'])
+  assert.deepEqual(replacements, ['https://vi.icue.vn/?lang=fr#home-news'])
   for (const search of ['', '?lang=en', '?lang=invalid']) {
     assert.equal(redirectExternalAppAtBootstrap({
       href: `https://en.icue.vn/${search}`, pathname: '/', search,

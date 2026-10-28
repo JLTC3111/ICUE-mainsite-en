@@ -83,7 +83,7 @@ fix is warranted; P3 means a lower-priority correctness fix.
    ```text
    GET /contact?lang=ja
    HTTP 301
-   Location: https://icue.vn/contact?lang=en
+   Location: https://vi.icue.vn/contact?lang=en
    ```
 
    The live Netlify deployment returned the same Location on 8 October 2026.

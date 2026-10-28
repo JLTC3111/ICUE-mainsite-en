@@ -3,7 +3,7 @@
 import { resolveMainSiteDetailLink } from '../../../shared/site-routes/mainSitePaths.js'
 
 export const SITES = {
-  vi: 'https://icue.vn',
+  vi: 'https://vi.icue.vn',
   en: 'https://en.icue.vn',
 }
 

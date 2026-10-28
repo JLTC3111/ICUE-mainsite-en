@@ -2,7 +2,7 @@ import { withUiLang } from '../../../shared/i18n/withUiLang.js'
 import { resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
 
 /**
- * Every non-home page is served by a React app on icue.vn. ROUTE_PATHS retains
+ * Every non-home page is served by a React app on vi.icue.vn. ROUTE_PATHS retains
  * old en.icue.vn paths only for redirect matching and legacy bookmark parsing.
  */
 const englishAppUrl = (page) => resolveMainSiteLink(page, 'en')

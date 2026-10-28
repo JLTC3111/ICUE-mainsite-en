@@ -1,5 +1,5 @@
 export const SITES = {
-  vi: 'https://icue.vn',
+  vi: 'https://vi.icue.vn',
   en: 'https://en.icue.vn',
 }
 
@@ -35,7 +35,7 @@ export function normalizeUiLocale(value, fallback = null) {
   return SUPPORTED_UI_LOCALE_SET.has(normalizedFallback) ? normalizedFallback : 'vi'
 }
 
-/** English keeps its dedicated home host; every other localized home lives on icue.vn. */
+/** English keeps its dedicated home host; every other localized home lives on vi.icue.vn. */
 export function mainSiteOriginForLocale(locale = 'vi') {
   return normalizeUiLocale(locale, 'vi') === 'en' ? SITES.en : SITES.vi
 }

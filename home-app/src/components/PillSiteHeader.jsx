@@ -81,8 +81,8 @@ export default function PillSiteHeader({
   flagLinkRef,
   onNavigate,
   overflowItems = [],
-  /* Defaults to the icue.vn <-> en.icue.vn flag link every main-site page uses.
-     SiteLanguageMenu keeps English active and sends the other flags to icue.vn. */
+  /* Defaults to the vi.icue.vn <-> en.icue.vn flag link every main-site page uses.
+     SiteLanguageMenu keeps English active and sends the other flags to vi.icue.vn. */
   LanguageControl = LanguageFlagLink,
   /* Resolved upstream by MainSiteNav. The default keeps this header usable on
      its own and matches what en.icue.vn showed before it took copy as a prop. */

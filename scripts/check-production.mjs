@@ -140,9 +140,9 @@ const requiredExternalRedirects = {
   '/community-activities': COMMUNITY_ACTIVITIES_APP_URL,
   '/faqs': FAQ_APP_URL,
   '/recruitment': RECRUITMENT_APP_URL,
-  '/past-projects': 'https://icue.vn/past-projects?lang=en',
-  '/news-archive': 'https://icue.vn/news-archive?lang=en',
-  '/notable-awards': 'https://icue.vn/notable-awards?lang=en',
+  '/past-projects': 'https://vi.icue.vn/past-projects?lang=en',
+  '/news-archive': 'https://vi.icue.vn/news-archive?lang=en',
+  '/notable-awards': 'https://vi.icue.vn/notable-awards?lang=en',
   '/legal/privacy': LEGAL_APP_URLS.privacy,
   '/legal/terms': LEGAL_APP_URLS.terms,
   '/legal/gdpr': LEGAL_APP_URLS.gdpr,
@@ -177,11 +177,11 @@ for (const line of redirects.split('\n')) {
   assert(/\s301!\s*$/.test(line), `Legacy redirect is not forced: ${line.trim()}`)
 }
 assert(
-  /^\/about-us\s+https:\/\/icue\.vn\/about-us\?lang=en\s+301!\s*$/m.test(redirects),
+  /^\/about-us\s+https:\/\/vi\.icue\.vn\/about-us\?lang=en\s+301!\s*$/m.test(redirects),
   'About Us redirect is not a forced redirect to the shared English page',
 )
 assert(
-  /^\/about-us\.html\s+https:\/\/icue\.vn\/about-us\?lang=en\s+301!\s*$/m.test(redirects),
+  /^\/about-us\.html\s+https:\/\/vi\.icue\.vn\/about-us\?lang=en\s+301!\s*$/m.test(redirects),
   'Retired /about-us.html URL does not redirect to the shared English page',
 )
 assert(
@@ -231,7 +231,7 @@ assert(
     || allJs.includes('@ICUE*\\xA9ALL*RIGHTS*RESERVED*'),
   'Compiled footer is missing the complete circular rights phrase',
 )
-assert(allJs.includes('https://icue.vn'), 'Compiled navigation is missing the icue.vn origin')
+assert(allJs.includes('https://vi.icue.vn'), 'Compiled navigation is missing the vi.icue.vn origin')
 assert(allJs.includes('/about-us'), 'Compiled navigation is missing the About Us path')
 assert(allJs.includes('set("lang"'), 'Compiled navigation does not stamp ?lang=')
 for (const slug of ['privacy', 'terms', 'gdpr', 'cookies']) {

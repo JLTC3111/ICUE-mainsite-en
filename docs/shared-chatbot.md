@@ -23,8 +23,8 @@ runtimes leave this JSON endpoint local. No separate database or service key is
 required. The support API validates guest capabilities and account sessions.
 
 The contact bar's **Staff login and chat management** link opens
-`https://icue.vn/newsroom/portal?mode=staff&lang=en`. The People/Staff header links
-open `https://icue.vn/people/experts?lang=en` in the pill, mobile, and dock headers;
+`https://vi.icue.vn/newsroom/portal?mode=staff&lang=en`. The People/Staff header links
+open `https://vi.icue.vn/people/experts?lang=en` in the pill, mobile, and dock headers;
 the drawer retains both Experts and Core Team.
 
 **Sign in to keep this conversation** opens the English customer account dialog
@@ -39,7 +39,7 @@ Signup email confirmation and password recovery use that existing portal.
 
 All six languages request `/chatbot/shared/<locale>`. Netlify rewrites this to
 `chat-knowledge`, which reads the current public knowledge from
-`https://icue.vn/public/chatbot/kb.<locale>.json`. This same-origin relay avoids
+`https://vi.icue.vn/public/chatbot/kb.<locale>.json`. This same-origin relay avoids
 requiring CORS changes on the Vietnamese site. Answers continue to be selected
 locally by the original retrieval engine; visitors' questions are not sent to
 the knowledge service.
@@ -55,13 +55,13 @@ corpus retains the VN review flags excluding variable commercial/legal claims.
 
 History remains local until the visitor enables sync. The `chat-history`
 function relays the original capability token and encrypted payload to
-`https://icue.vn/.netlify/functions/chat-history`. It forwards no cookies or
+`https://vi.icue.vn/.netlify/functions/chat-history`. It forwards no cookies or
 Supabase keys. It validates methods, token format, caller origin, and payload
 size before forwarding; the existing service performs vault authorization and
 revision checks. Existing upstream rate limits and encryption remain in use.
 
 Use the same pairing code in the Sync settings on each site to access the same
-encrypted vault. Browser storage on `icue.vn` and `en.icue.vn` is separate, so
+encrypted vault. Browser storage on `vi.icue.vn` and `en.icue.vn` is separate, so
 transcripts do not automatically appear across domains without that pairing.
 No second Supabase project, table, or backend secret is needed in this repo.
 If the VN sync backend is unavailable, the original UI retains local history

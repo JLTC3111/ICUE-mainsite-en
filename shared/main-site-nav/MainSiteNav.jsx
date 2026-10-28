@@ -54,21 +54,21 @@ function getPageVisibility(page) {
 export default function MainSiteNav({
   variant = 'hash',
   drawerLinks,
-  homeHref = 'https://icue.vn',
+  homeHref = 'https://vi.icue.vn',
   aboutUsHref = '#/aboutUs',
   usePillNav = false,
   onNavigate,
   PillHeaderComponent,
   pillOverflowItems = [],
   /* Optional replacement for the flag link. Left undefined, each header keeps
-     the icue.vn <-> en.icue.vn switch it has always had. */
+     the vi.icue.vn <-> en.icue.vn switch it has always had. */
   LanguageControl,
   /* Chrome copy. Left undefined the nav speaks English, which is what every
      page on en.icue.vn that has not been localized still wants. An app with UI
      languages of its own passes its current translation here — see
      navContent.js for the shape. */
   labels: labelOverrides,
-  /* Current UI language. Outbound icue.vn links use `?lang=` (not `?site=en`)
+  /* Current UI language. Outbound vi.icue.vn links use `?lang=` (not `?site=en`)
      so Contact / Our Work / About Us keep French, German, Korean, Japanese. */
   lang = 'en',
 }) {

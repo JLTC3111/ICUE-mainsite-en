@@ -28,7 +28,7 @@ test('knowledge uses the live VN JSON for all six languages, accepts no arbitrar
   for (const locale of locales) {
     const live = { language: locale, intents: [{ id: 'live-test', answer: 'Updated shared answer' }] }
     const response = await sharedKnowledge(request(locale), async (url, options) => {
-      assert.equal(url, `https://icue.vn/public/chatbot/kb.${locale}.json`)
+      assert.equal(url, `https://vi.icue.vn/public/chatbot/kb.${locale}.json`)
       assert.equal(options.credentials, 'omit')
       assert.equal(options.redirect, 'error')
       return Response.json(live)
@@ -63,18 +63,22 @@ test('VN knowledge links stay canonical and retain the answer language on the En
     language: 'fr', intents: [{ answer: 'Bonjour', links: [
       { label: 'Contact', url: '/contact' },
       { label: 'Projet', url: '/past-projects/6' },
+      { label: 'FAQ', url: 'https://icue.vn/faqs' },
+      { label: 'Recrutement', url: 'http://www.icue.vn/recruitment?lang=vi#open-roles' },
       { label: 'Outside', url: 'https://example.org/article' },
     ] }],
   }))
   const kb = await response.json()
   assert.deepEqual(kb.intents[0].links.map(link => link.url), [
-    'https://icue.vn/contact?lang=fr', 'https://icue.vn/past-projects/6?lang=fr', 'https://example.org/article',
+    'https://vi.icue.vn/contact?lang=fr', 'https://vi.icue.vn/past-projects/6?lang=fr',
+    'https://vi.icue.vn/faqs?lang=fr', 'https://vi.icue.vn/recruitment?lang=fr#open-roles',
+    'https://example.org/article',
   ])
 })
 
 test('the actual retrieval engine reads the shared relay and answers a site question', async t => {
   const kb = JSON.parse(await fs.readFile(new URL('../../public/chatbot/kb.en.json', import.meta.url)))
-  const copy = createBotCopy({ faqsUrl: 'https://icue.vn/faqs?lang=en', contactUrl: 'https://icue.vn/contact?lang=en' })
+  const copy = createBotCopy({ faqsUrl: 'https://vi.icue.vn/faqs?lang=en', contactUrl: 'https://vi.icue.vn/contact?lang=en' })
   const urls = []
   t.mock.method(globalThis, 'fetch', async url => { urls.push(url); return Response.json(kb) })
   const knowledge = createChatbotKnowledge({ siteLang: 'en', urls: knowledgeUrls, copy })
@@ -92,11 +96,11 @@ test('encrypted history pairs with the existing VN vault and keeps upstream stat
       method, headers: { Authorization: `Bearer ${token}`, Origin: 'https://en.icue.vn', Cookie: 'must-not-forward', ...(method === 'PUT' ? { 'Content-Type': 'application/json' } : {}) },
       ...(method === 'PUT' ? { body: JSON.stringify(payload) } : {}),
     }), async (url, options) => {
-      assert.equal(url, 'https://icue.vn/.netlify/functions/chat-history')
+      assert.equal(url, 'https://vi.icue.vn/.netlify/functions/chat-history')
       assert.equal(options.method, method)
       assert.equal(options.credentials, 'omit')
       assert.equal(options.headers.Authorization, `Bearer ${token}`)
-      assert.equal(options.headers.Origin, 'https://icue.vn')
+      assert.equal(options.headers.Origin, 'https://vi.icue.vn')
       assert.ok(!('Cookie' in options.headers))
       if (method === 'PUT') assert.deepEqual(JSON.parse(await options.body.text()), payload)
       return Response.json({ revision: 3 }, { status: 200 })
@@ -133,13 +137,13 @@ test('the English host adapter keeps chat copy and VN links in English despite a
   await act(async () => { renderer = create(React.createElement(SiteChatbot, { i18n })) })
   const props = () => renderer.root.findByType('chat-fixture').props
   assert.equal(props().locale, 'en')
-  assert.equal(props().links.contact, 'https://icue.vn/contact?lang=en')
+  assert.equal(props().links.contact, 'https://vi.icue.vn/contact?lang=en')
   await act(async () => {
     i18n.language = i18n.resolvedLanguage = 'ja'
     renderer.update(React.createElement(SiteChatbot, { i18n }))
   })
   assert.equal(props().locale, 'en')
-  assert.equal(props().links.faqs, 'https://icue.vn/faqs?lang=en')
+  assert.equal(props().links.faqs, 'https://vi.icue.vn/faqs?lang=en')
   await unmount(renderer)
   assert.equal(listeners.size, 0)
 })

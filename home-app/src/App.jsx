@@ -121,7 +121,7 @@ function AppShell() {
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-            {/* Every non-home route is redirected to its React app on icue.vn
+            {/* Every non-home route is redirected to its React app on vi.icue.vn
                 before this router mounts. */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

@@ -12,7 +12,7 @@ const publicKey = role => `header.${Buffer.from(JSON.stringify({ role })).toStri
 test('English live chat relays only the existing public VN configuration and rejects private keys', async () => {
   for (const anonKey of [publicKey('anon'), 'sb_publishable_test']) {
     const response = await sharedChatConfig(configRequest('GET'), async (url, options) => {
-      assert.equal(url, 'https://icue.vn/newsroom/supabase-config.json')
+      assert.equal(url, 'https://vi.icue.vn/newsroom/supabase-config.json')
       assert.equal(options.credentials, 'omit')
       assert.equal(options.redirect, 'error')
       return Response.json({ url: 'https://example.supabase.co', anonKey, privateValue: 'must-not-leak' })
@@ -30,11 +30,11 @@ test('English live chat relays only the existing public VN configuration and rej
   }
   assert.equal((await sharedChatConfig(configRequest('POST'), () => { throw new Error('Must not fetch') })).status, 405)
   assert.equal(getBootstrapExternalRedirect('/newsroom/supabase-config.json'), null)
-  assert.equal(getBootstrapExternalRedirect('/newsroom/portal', '?mode=staff'), 'https://icue.vn/newsroom/portal?mode=staff&lang=en')
+  assert.equal(getBootstrapExternalRedirect('/newsroom/portal', '?mode=staff'), 'https://vi.icue.vn/newsroom/portal?mode=staff&lang=en')
 })
 
 test('staff sign-in always opens the shared portal with English selected', () => {
-  assert.equal(staffPortalUrl(), 'https://icue.vn/newsroom/portal?mode=staff&lang=en')
+  assert.equal(staffPortalUrl(), 'https://vi.icue.vn/newsroom/portal?mode=staff&lang=en')
 })
 
 test('People stays in the pill header on desktop and tablet and has a direct mobile action', async t => {
@@ -53,7 +53,7 @@ test('People stays in the pill header on desktop and tablet and has a direct mob
       },
     })
     let renderer
-    const peopleHref = 'https://icue.vn/people/experts?lang=en'
+    const peopleHref = 'https://vi.icue.vn/people/experts?lang=en'
     await act(async () => { renderer = create(React.createElement(Header, {
       activePage: 'coreTeam', homeHref: '/', labels: NAV_LABELS,
       items: [{ page: 'Home', href: '/', label: 'Home' }, { page: 'ourPeople', href: peopleHref, label: 'People / Staff' }],
@@ -80,7 +80,7 @@ test('the shared dock header also exposes the English People destination', async
   })
   let renderer
   await act(async () => { renderer = create(React.createElement(Header, { LanguageControl: () => null })) })
-  assert.equal(renderer.root.findByProps({ 'data-page': 'ourPeople' }).props.href, 'https://icue.vn/people/experts?lang=en')
+  assert.equal(renderer.root.findByProps({ 'data-page': 'ourPeople' }).props.href, 'https://vi.icue.vn/people/experts?lang=en')
   await unmount(renderer)
 })
 

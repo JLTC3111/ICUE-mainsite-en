@@ -96,8 +96,8 @@ addAliases(COMMUNITY_ACTIVITIES_APP_URL, [
   '/legacy-embed/pages/communityactivities.html',
 ])
 addAliases(NEWSROOM_URL, ['/newsroom'])
-addAliases(withUiLang('https://icue.vn/people/experts', 'en'), ['/people'])
-addAliases(withUiLang('https://icue.vn/structure/', 'en'), [
+addAliases(withUiLang('https://vi.icue.vn/people/experts', 'en'), ['/people'])
+addAliases(withUiLang('https://vi.icue.vn/structure/', 'en'), [
   '/structure',
   '/src/pages/orgstructure.html',
   '/legacy/pages/orgstructure.html',
@@ -138,14 +138,14 @@ function legacyDetailTarget(pathname, search) {
   const id = new URLSearchParams(search || '').get('id')
   if (!id) return null
   if (['/src/pages/card.html', '/legacy/pages/card.html', '/legacy-embed/pages/card.html'].includes(normalized)) {
-    return withUiLang(`https://icue.vn/past-projects/${encodeURIComponent(id)}`, 'en')
+    return withUiLang(`https://vi.icue.vn/past-projects/${encodeURIComponent(id)}`, 'en')
   }
   if ([
     '/src/pages/article_template.html',
     '/legacy/pages/article_template.html',
     '/legacy-embed/pages/article_template.html',
   ].includes(normalized)) {
-    return withUiLang(`https://icue.vn/news-archive/${encodeURIComponent(id)}`, 'en')
+    return withUiLang(`https://vi.icue.vn/news-archive/${encodeURIComponent(id)}`, 'en')
   }
   return null
 }
@@ -161,9 +161,9 @@ export function getBootstrapExternalRedirect(pathname, search = '') {
   const detailTarget = legacyDetailTarget(normalized, search)
   let target = detailTarget || EXTERNAL_ALIASES.get(normalized)
     || (EXTERNAL_PREFIXES.some((prefix) => normalized.startsWith(`${prefix}/`))
-      ? `https://icue.vn${cleanPath}` : null)
+      ? `https://vi.icue.vn${cleanPath}` : null)
   if (language !== 'en' && (normalized === '/' || normalized === '/index.html' || target === '/')) {
-    target = 'https://icue.vn/'
+    target = 'https://vi.icue.vn/'
   }
   if (!target) return null
 

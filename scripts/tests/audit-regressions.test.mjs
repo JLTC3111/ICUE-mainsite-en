@@ -61,21 +61,21 @@ test('Express GET/HEAD and the Netlify edge retain locale, detail ids, and query
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
   t.after(() => new Promise(resolve => server.close(resolve)))
   const cases = [
-    ['/?lang=vi', 'https://icue.vn/?lang=vi'],
-    ['/?lang=de', 'https://icue.vn/?lang=de'],
-    ['/?lang=fr', 'https://icue.vn/?lang=fr'],
-    ['/?lang=ko-KR', 'https://icue.vn/?lang=ko'],
-    ['/?lang=jp', 'https://icue.vn/?lang=ja'],
-    ['/index.html?lang=ja', 'https://icue.vn/?lang=ja'],
-    ['/legacy/pages/Home.html?lang=fr', 'https://icue.vn/?lang=fr'],
-    ['/contact?lang=ja', 'https://icue.vn/contact?lang=ja'],
-    ['/contact?lang=jp', 'https://icue.vn/contact?lang=ja'],
-    ['/people/core-team?lang=ko-KR', 'https://icue.vn/people/core-team?lang=ko'],
-    ['/legacy/pages/card.html?id=6&lang=fr', 'https://icue.vn/past-projects/6?lang=fr'],
-    ['/src/pages/article_template.html?id=4&lang=de', 'https://icue.vn/news-archive/4?lang=de'],
-    ['/src/pages/privacy.html?lang=ja', 'https://icue.vn/legal/privacy?lang=ja'],
-    ['/contact?lang=invalid', 'https://icue.vn/contact?lang=en'],
-    ['/contact', 'https://icue.vn/contact?lang=en'],
+    ['/?lang=vi', 'https://vi.icue.vn/?lang=vi'],
+    ['/?lang=de', 'https://vi.icue.vn/?lang=de'],
+    ['/?lang=fr', 'https://vi.icue.vn/?lang=fr'],
+    ['/?lang=ko-KR', 'https://vi.icue.vn/?lang=ko'],
+    ['/?lang=jp', 'https://vi.icue.vn/?lang=ja'],
+    ['/index.html?lang=ja', 'https://vi.icue.vn/?lang=ja'],
+    ['/legacy/pages/Home.html?lang=fr', 'https://vi.icue.vn/?lang=fr'],
+    ['/contact?lang=ja', 'https://vi.icue.vn/contact?lang=ja'],
+    ['/contact?lang=jp', 'https://vi.icue.vn/contact?lang=ja'],
+    ['/people/core-team?lang=ko-KR', 'https://vi.icue.vn/people/core-team?lang=ko'],
+    ['/legacy/pages/card.html?id=6&lang=fr', 'https://vi.icue.vn/past-projects/6?lang=fr'],
+    ['/src/pages/article_template.html?id=4&lang=de', 'https://vi.icue.vn/news-archive/4?lang=de'],
+    ['/src/pages/privacy.html?lang=ja', 'https://vi.icue.vn/legal/privacy?lang=ja'],
+    ['/contact?lang=invalid', 'https://vi.icue.vn/contact?lang=en'],
+    ['/contact', 'https://vi.icue.vn/contact?lang=en'],
   ]
   for (const [url, expected] of cases) {
     for (const method of ['GET', 'HEAD']) {

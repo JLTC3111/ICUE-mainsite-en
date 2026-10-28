@@ -5,7 +5,7 @@ import { getLiveChatClient, liveChatRpc } from '../chatbot/lib/liveChat.js'
 import useModalFocus from '../ui/useModalFocus.js'
 import './CustomerAccountDialog.css'
 
-const PORTAL = 'https://icue.vn/newsroom/portal?lang=en'
+const PORTAL = 'https://vi.icue.vn/newsroom/portal?lang=en'
 
 function accountError(error) {
   if (error?.code === 'invalid_credentials') return 'The email or password is incorrect.'
@@ -66,7 +66,7 @@ export default function CustomerAccountDialog({ onClose }) {
     try {
       const client = await connectAccount()
       const result = mode === 'signup'
-        ? await client.auth.signUp({ email, password, options: { data: { display_name: String(fields.get('name') || '').trim() }, emailRedirectTo: 'https://icue.vn/newsroom/portal?lang=en' } })
+        ? await client.auth.signUp({ email, password, options: { data: { display_name: String(fields.get('name') || '').trim() }, emailRedirectTo: 'https://vi.icue.vn/newsroom/portal?lang=en' } })
         : await client.auth.signInWithPassword({ email, password })
       if (result.error) throw result.error
       if (!result.data.session) {

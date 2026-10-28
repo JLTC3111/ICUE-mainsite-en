@@ -1,4 +1,4 @@
-/** en.icue.vn owns only its React home; subpage metadata lives on icue.vn. */
+/** en.icue.vn owns only its React home; subpage metadata lives on vi.icue.vn. */
 export const ROUTE_META = []
 
 export const ROUTE_META_BY_PATH = Object.fromEntries(

@@ -4,7 +4,7 @@ import './LanguageFlagMenu.css'
 
 /**
  * The main site's round flag button, extended into a switcher. On the main site
- * that flag is a single link between icue.vn and en.icue.vn; an app that
+ * that flag is a single link between vi.icue.vn and en.icue.vn; an app that
  * carries its own UI languages uses this instead — the button keeps the same
  * shape and shows the active language, and the alternates drop out of it as the
  * same round flags.
