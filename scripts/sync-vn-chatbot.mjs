@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const source = path.resolve(process.env.ICUE_VN_REPO || path.join(root, '../ICUE-mainsite-vn'))
-const adapters = new Set(['shared/chatbot/SiteChatbot.jsx', 'shared/chatbot/lib/knowledgeAssets.js'])
+const adapters = new Set(['shared/chatbot/SiteChatbot.jsx', 'shared/chatbot/SiteChatbot.css', 'shared/chatbot/lib/knowledgeAssets.js'])
+const patches = ['scripts/chatbot-patches/live-chat-recovery.patch']
 const files = {}
 
 async function copyFile(relative) {
@@ -42,9 +43,16 @@ for (const locale of ['vi', 'en', 'de', 'fr', 'ko', 'ja']) {
   await fs.writeFile(path.join(root, relative), bytes)
   files[relative] = createHash('sha256').update(bytes).digest('hex')
 }
+// Keep source hashes tied to VN bytes. Local recovery fixes are reviewable
+// patches and must still apply cleanly after an upstream refresh.
+for (const patch of patches) {
+  execFileSync('git', ['apply', '--check', path.join(root, patch)], { cwd: root })
+  execFileSync('git', ['apply', path.join(root, patch)], { cwd: root })
+}
 await fs.writeFile(path.join(root, 'shared/chatbot/upstream.json'), `${JSON.stringify({
   source: 'ICUE-mainsite-vn',
   commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: source, encoding: 'utf8' }).trim(),
   files,
+  patches,
 }, null, 2)}\n`)
 console.log(`Reused ${Object.keys(files).length} Vietnamese chatbot files, including the original bird artwork.`)

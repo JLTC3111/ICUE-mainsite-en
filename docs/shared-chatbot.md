@@ -4,10 +4,16 @@ The English homepage mounts the Vietnamese site's original `Chatbot.jsx` and
 bird mascot. The component, artwork, expressions, motion, localized copy,
 retrieval engine, FAQ corpus, and encrypted history code are reused without
 redesigning a separate mascot. `shared/chatbot/upstream.json` records the source
-commit and SHA-256 hashes; regression tests verify those files still match.
+commit and SHA-256 hashes; regression tests verify those files still match
+after reversing the documented local recovery patches. The original source
+hashes remain tied to the upstream bytes.
 Only the host adapters choose English by default, supply canonical localized
 links, connect to the homepage's existing background music, and handle account
 sign-in on the English origin.
+
+`SiteChatbot.css` contains English homepage style overrides. Keep these outside
+the mirrored stylesheets so upstream refreshes preserve both provenance and
+the homepage's hover contrast.
 
 ## Live support and portals
 
@@ -44,6 +50,12 @@ requiring CORS changes on the Vietnamese site. Answers continue to be selected
 locally by the original retrieval engine; visitors' questions are not sent to
 the knowledge service.
 
+The handler validates the locale from the original public URL path, including
+when Netlify retains that URL during a rewrite. A conflicting `?lang=` cannot
+change the path's language. Direct calls to `/.netlify/functions/chat-knowledge`
+continue to accept `?lang=`. Local middleware follows the same rules without
+injecting a query parameter.
+
 Successful live knowledge can be cached for 60 seconds, with up to five minutes
 of stale content during revalidation. After a 3.5-second upstream timeout,
 invalid response, or outage, the relay uses the last synced VN snapshot bundled
@@ -77,12 +89,26 @@ automatically when the VN site's knowledge is published; component/FAQ and
 fallback changes require the explicit sync command and the next EN deployment.
 Builds do not require the VN checkout to exist.
 
+`scripts/chatbot-patches/live-chat-recovery.patch` retains the reviewed local
+fixes for authenticated first-message retries, conversation-switch cleanup,
+and attachment response deadlines. The sync command applies this patch after
+copying VN source and fails if it no longer applies cleanly; review/rebase it
+when upstream changes. The provenance test reverses the patch in a temporary
+directory and verifies the original hashes, including the unmodified artwork.
+
 Use Node 22.12 or newer. `npm ci`, `npm ci --prefix home-app`, and `npm run build`
 produce the homepage; a normal Netlify deployment also bundles the three functions
 and the locale-preserving edge redirect declared in `netlify.toml`. Publishing
 only the static `dist-home` directory to another host requires equivalent
 handlers for `/chatbot/shared/<locale>`, the public configuration relay, and the history endpoint. Vite dev,
 Vite preview, and the optional Express server already use the same handlers.
+
+For Express behind HTTPS termination, production defaults its public origin to
+`https://en.icue.vn`. Set `PUBLIC_SITE_ORIGIN` to the browser-facing origin for a
+different hostname or an HTTPS proxy used outside production. The adapter also
+respects `req.protocol` from an explicitly trusted Express proxy configuration;
+it does not trust forwarding headers directly. Foreign origins remain rejected
+by the history handler.
 
 Validation commands: `npm run test:audit`, `npm run test:recovery`,
 `npm run check:production`, and `npm audit` in both dependency trees.

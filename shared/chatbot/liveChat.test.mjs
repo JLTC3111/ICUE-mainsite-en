@@ -59,6 +59,72 @@ test('a lost creation acknowledgement survives reload and retries the same capab
   assert.equal(second.getSnapshot().pending, null)
 })
 
+test('signed-in first messages survive reload and retry one identity whether or not creation committed', async () => {
+  const { createLiveChatClient } = await load()
+  const user = { id: '00000000-0000-4000-8000-000000008910' }
+  for (const committedBeforeDisconnect of [true, false]) {
+    const saved = storage(), calls = []
+    let committed
+    const first = createLiveChatClient({ storage: saved, rpc: async (name, args) => {
+      if (name === 'health') return health()
+      calls.push(args)
+      if (committedBeforeDisconnect) committed = snapshot(args)
+      throw new Error('Connection lost')
+    } })
+    await first.syncAccount(user)
+    first.setDraft('Please retain my first enquiry')
+    assert.equal(await first.send({ locale: 'en' }), false)
+    const second = createLiveChatClient({ storage: saved, rpc: async (name, args) => {
+      if (name === 'health') return health()
+      calls.push(args)
+      return committed || snapshot(args)
+    } })
+    await second.syncAccount(user)
+    assert.equal(second.getSnapshot().draft, 'Please retain my first enquiry')
+    assert.equal(second.getSnapshot().pending.id, calls[0].p_client_id)
+    assert.equal(await second.send(), true)
+    assert.equal(calls[1].p_token, calls[0].p_token)
+    assert.equal(calls[1].p_client_id, calls[0].p_client_id)
+    assert.equal(second.getSnapshot().messages.length, 1)
+    const persisted = JSON.parse(saved.getItem(`icue:live-chat:v1:account:${user.id}`))
+    assert.equal(persisted.token, null, 'acknowledged account conversations no longer persist a capability')
+    assert.equal(persisted.pending, undefined)
+    const signedOut = createLiveChatClient({ storage: saved })
+    assert.equal(signedOut.getSnapshot().draft, '', 'account drafts never restore as guest drafts')
+  }
+})
+
+test('switching or starting a conversation during a send clears busy state and ignores the late response', async () => {
+  const { createLiveChatClient } = await load()
+  const user = { id: '00000000-0000-4000-8000-000000008911' }
+  const nextId = '00000000-0000-4000-8000-000000008912'
+  for (const action of ['select', 'new']) {
+    const oldSend = deferred()
+    let sends = 0, oldSignal
+    const client = createLiveChatClient({ storage: storage(), rpc: async (name, args, options) => {
+      if (name === 'health') return health()
+      if (name === 'read') return { conversation: { id: nextId }, messages: [], health: health() }
+      if (sends++ === 0) { oldSignal = options.signal; return oldSend.promise.then(() => snapshot(args)) }
+      return { ...snapshot(args), conversation: { id: nextId } }
+    } })
+    await client.syncAccount(user)
+    client.setDraft('Old conversation message')
+    const sending = client.send()
+    assert.equal(client.getSnapshot().sending, true)
+    if (action === 'select') await client.selectConversation(nextId)
+    else client.newConversation()
+    assert.equal(oldSignal.aborted, true)
+    assert.equal(client.getSnapshot().sending, false)
+    client.setDraft('New conversation message')
+    assert.equal(await client.send(), true)
+    oldSend.resolve()
+    assert.equal(await sending, false)
+    assert.equal(client.getSnapshot().sending, false)
+    assert.equal(client.getSnapshot().conversation.id, nextId)
+    assert.deepEqual(Array.from(client.getSnapshot().messages, message => message.content), ['New conversation message'])
+  }
+})
+
 test('concurrent clicks serialize a send and an older read cannot overwrite its response', async () => {
   const { createLiveChatClient } = await load()
   const send = deferred(), read = deferred()

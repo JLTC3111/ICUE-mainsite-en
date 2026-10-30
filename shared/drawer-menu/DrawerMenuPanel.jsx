@@ -143,7 +143,7 @@ function DrawerMenuPanel({
         className={drawerPanelClass}
         id={drawerId}
         aria-hidden={!open}
-        inert={open ? undefined : ''}
+        inert={!open}
       >
         {showClose ? (
           <div className="nav-drawer__header">

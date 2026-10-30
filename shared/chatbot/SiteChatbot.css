@@ -1,0 +1,5 @@
+/* The English homepage's legacy h3 hover rule must not recolor live chat. */
+.icue-live__welcome h3:hover {
+  color: var(--live-ink);
+  transform: none;
+}

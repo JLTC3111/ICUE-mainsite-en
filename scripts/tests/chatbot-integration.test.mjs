@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
+import os from 'node:os'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 import { sharedKnowledge } from '../../netlify/functions/chat-knowledge.mjs'
 import { relayChatHistory } from '../../netlify/functions/chat-history.mjs'
@@ -10,16 +14,27 @@ import { knowledgeUrls } from '../../shared/chatbot/lib/knowledgeAssets.js'
 import { React, act, create, silenceRenderer, sourceModule, unmount } from '../../shared/resilience/testHarness.js'
 
 const locales = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
-const request = (locale, method = 'GET') => new Request(`https://en.icue.vn/chatbot/shared/${locale}?lang=${locale}`, { method })
+const request = (locale, method = 'GET') => new Request(`https://en.icue.vn/chatbot/shared/${locale}`, { method })
 
-test('the mirrored chatbot and bird artwork match the VN provenance hashes', async () => {
+test('the mirrored chatbot and bird artwork match the VN provenance hashes after reversing documented patches', async t => {
   const manifest = JSON.parse(await fs.readFile(new URL('../../shared/chatbot/upstream.json', import.meta.url)))
   assert.equal(manifest.source, 'ICUE-mainsite-vn')
   assert.ok(manifest.files['shared/chatbot/mascot/icue-bird.webp'])
   assert.ok(manifest.files['shared/chatbot/mascot/icue-bird-core.webp'])
   assert.ok(manifest.files['shared/chatbot/Chatbot.jsx'])
-  for (const [file, expected] of Object.entries(manifest.files)) {
+  const temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'icue-chatbot-provenance-'))
+  t.after(() => fs.rm(temporary, { recursive: true, force: true }))
+  for (const file of Object.keys(manifest.files)) {
     const bytes = await fs.readFile(new URL(`../../${file}`, import.meta.url))
+    await fs.mkdir(path.dirname(path.join(temporary, file)), { recursive: true })
+    await fs.writeFile(path.join(temporary, file), bytes)
+  }
+  for (const patch of [...(manifest.patches || [])].reverse()) {
+    assert.match(patch, /^scripts\/chatbot-patches\/[a-z-]+\.patch$/)
+    execFileSync('git', ['apply', '--reverse', fileURLToPath(new URL(`../../${patch}`, import.meta.url))], { cwd: temporary })
+  }
+  for (const [file, expected] of Object.entries(manifest.files)) {
+    const bytes = await fs.readFile(path.join(temporary, file))
     assert.equal(createHash('sha256').update(bytes).digest('hex'), expected, file)
   }
 })
@@ -38,6 +53,28 @@ test('knowledge uses the live VN JSON for all six languages, accepts no arbitrar
   }
   const invalid = await sharedKnowledge(request('https://other.example'), () => { throw new Error('Must not fetch') })
   assert.equal(invalid.status, 404)
+})
+
+test('knowledge takes its locale from the public path and retains direct function access', async () => {
+  const cases = [
+    ['/chatbot/shared/en?lang=fr', 'en'],
+    ['/chatbot/shared/ja/?lang=en', 'ja'],
+    ['/.netlify/functions/chat-knowledge?lang=fr', 'fr'],
+  ]
+  for (const [path, locale] of cases) {
+    const response = await sharedKnowledge(new Request(`https://en.icue.vn${path}`), async url => {
+      assert.equal(url, `https://vi.icue.vn/public/chatbot/kb.${locale}.json`)
+      return Response.json({ language: locale, intents: [] })
+    })
+    assert.equal(response.status, 200)
+    assert.equal((await response.json()).language, locale)
+  }
+  for (const path of ['/chatbot/shared/invalid?lang=en', '/chatbot/shared/en/extra?lang=en', '/.netlify/functions/chat-knowledge?lang=invalid']) {
+    let fetched = false
+    const response = await sharedKnowledge(new Request(`https://en.icue.vn${path}`), () => { fetched = true })
+    assert.equal(response.status, 404)
+    assert.equal(fetched, false)
+  }
 })
 
 test('an upstream outage, HTML fallback, or wrong language uses the synced VN snapshot', async () => {

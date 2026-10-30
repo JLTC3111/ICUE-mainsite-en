@@ -12,7 +12,12 @@ export async function supportFileRequest(config, body, { signal, timeoutMs = 90_
   if (!isForm) headers['Content-Type'] = 'application/json'
   const response = await fetch(`${config.url.replace(/\/$/,'')}/functions/v1/support-chat-files`, { method: 'POST', credentials: 'omit', cache: 'no-store', headers, body: isForm ? body : JSON.stringify(body), signal: requestSignal })
   if (!response.ok) throw Object.assign(new Error('FILE_REQUEST_FAILED'), { status: response.status })
-  return response
+  // Fetch resolves at headers. Keep both the deadline and caller cancellation
+  // active until the attachment acknowledgement or file has finished loading.
+  const bytes = await response.arrayBuffer()
+  return new Response([204, 205].includes(response.status) ? null : bytes, {
+   status: response.status, statusText: response.statusText, headers: response.headers,
+  })
  }, { signal, timeoutMs })
 }
 export async function uploadChatFile(config, file, identity, clientId, options) {

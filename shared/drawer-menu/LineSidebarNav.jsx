@@ -102,7 +102,7 @@ function LineSidebarNav({
           <div className="nav-drawer__submenu-row" ref={submenuRowRef}>
             <span className="nav-drawer__submenu-gutter" aria-hidden="true" />
             <div className="nav-drawer__submenu-wrap">
-              <div className={`nav-drawer__submenu ${people.open ? 'is-open' : ''}`}>
+              <div className={`nav-drawer__submenu ${people.open ? 'is-open' : ''}`} inert={!people.open} aria-hidden={!people.open}>
                 <div className="nav-drawer__submenu-inner">
                   {people.items.map((item) => (
                     <a

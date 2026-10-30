@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-async function createApp() {
+async function createApp({ publicOrigin = process.env.PUBLIC_SITE_ORIGIN || (process.env.NODE_ENV === 'production' ? 'https://en.icue.vn' : undefined) } = {}) {
   const { getBootstrapExternalRedirect } = await import('./home-app/src/lib/bootstrapExternalRedirect.js');
   const { createChatMiddleware } = await import('./scripts/lib/chat-routes.mjs');
   const app = express();
@@ -12,7 +12,7 @@ async function createApp() {
   const buildRoot = path.join(root, 'dist-home');
   const hasBuild = fs.existsSync(path.join(buildRoot, 'index.html'));
   app.use(cors());
-  app.use(createChatMiddleware());
+  app.use(createChatMiddleware({ publicOrigin }));
   app.use((req, res, next) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
     const search = req.originalUrl.includes('?') ? req.originalUrl.slice(req.originalUrl.indexOf('?')) : '';

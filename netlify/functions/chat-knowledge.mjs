@@ -12,7 +12,12 @@ const headers = { 'Content-Type': 'application/json', 'X-Content-Type-Options': 
 
 export async function sharedKnowledge(request, fetchUpstream = globalThis.fetch) {
   if (!['GET', 'HEAD'].includes(request.method)) return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } })
-  const locale = new URL(request.url).searchParams.get('lang')
+  const url = new URL(request.url)
+  // Netlify can retain the original URL when applying a function rewrite.
+  // The public path owns its locale; only direct function calls use ?lang=.
+  const publicPath = /^\/chatbot\/shared\/([^/]+)\/?$/.exec(url.pathname)
+  const locale = publicPath?.[1]
+    || (url.pathname === '/.netlify/functions/chat-knowledge' ? url.searchParams.get('lang') : null)
   if (!LOCALES.has(locale)) return new Response(null, { status: 404 })
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 3500)

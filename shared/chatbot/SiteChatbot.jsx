@@ -4,6 +4,7 @@ import { resolveMainSiteLink } from '../site-routes/mainSitePaths.js'
 import Chatbot from './Chatbot.jsx'
 import BackgroundMusicBanner from '../contact-sidebar/BackgroundMusicBanner.jsx'
 import en from './locales/en.json'
+import './SiteChatbot.css'
 
 const CustomerAccountDialog = lazyWithRecovery(() => import('../customer-account/CustomerAccountDialog.jsx'))
 

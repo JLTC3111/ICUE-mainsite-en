@@ -66,5 +66,8 @@
     "public/chatbot/kb.fr.json": "c7cb10761a0061f218aa97790c933ad9396f6e488b714b1670adbca306806fed",
     "public/chatbot/kb.ko.json": "0afa26d4d2f6fbd1159d4443b3663cd525f0f446372c71fe442464894429499c",
     "public/chatbot/kb.ja.json": "51a5d3872d34798c38119199c2325d46270933c6a005182d97bd304af672e5f8"
-  }
+  },
+  "patches": [
+    "scripts/chatbot-patches/live-chat-recovery.patch"
+  ]
 }

@@ -101,7 +101,9 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
       if (record) {
         record.draft = state.draft
         record.files = state.attachments.filter(file => file.status === 'ready').map(({ id,client_id,name,mime,size }) => ({ id,client_id,name,mime,size }))
-        if (record.ownerId) { storage.setItem(ownerKey(record.ownerId), JSON.stringify({ ...record, token: null })); storage.removeItem(STORAGE_KEY) }
+        // Keep the creation capability until the server acknowledges an ID so
+        // an uncertain first send can retry after an authenticated reload.
+        if (record.ownerId) { storage.setItem(ownerKey(record.ownerId), JSON.stringify({ ...record, token: record.id ? null : record.token })); storage.removeItem(STORAGE_KEY) }
         else storage.setItem(STORAGE_KEY, JSON.stringify(record))
       } else storage.removeItem(STORAGE_KEY)
     } catch { update({ sessionOnly: true }) }
@@ -314,7 +316,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     if (!accountId || !uuidPattern.test(id)) return
     stop(); generation++; localFiles.clear()
     record = { id, ownerId: accountId, token: null }
-    update({ conversation: null, messages: [], pending: null, draft: '', attachments: [], status: 'idle', fileError: null }); persist(); await refresh()
+    update({ conversation: null, messages: [], hasMore: false, sending: false, loadingEarlier: false, pending: null, draft: '', attachments: [], status: 'idle', fileError: null }); persist(); await refresh()
   }
   return {
     subscribe: notify => { listeners.add(notify); return () => listeners.delete(notify) },
@@ -322,7 +324,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     refresh, send, loadEarlier, typing, setPresence, syncAccount, selectConversation, attachFiles, removeAttachment, stop,
     retryAttachment(file) { const entry = localFiles.get(file.client_id); if (entry) return runUpload(entry, entry.options) },
     saveDraft() { ensureRecord(); persist() },
-    newConversation() { stop(); generation++; record = null; localFiles.clear(); try { if (accountId) storage?.removeItem(ownerKey(accountId)) } catch { /* Memory-only session. */ } update({ conversation: null, messages: [], pending: null, draft: '', attachments: [], status: 'idle', fileError: null }); persist(); void refresh() },
+    newConversation() { stop(); generation++; record = null; localFiles.clear(); try { if (accountId) storage?.removeItem(ownerKey(accountId)) } catch { /* Memory-only session. */ } update({ conversation: null, messages: [], hasMore: false, sending: false, loadingEarlier: false, pending: null, draft: '', attachments: [], status: 'idle', fileError: null }); persist(); void refresh() },
     async downloadFile(file) { try { await download(await config(), file, { id: record.id, token: record.token }) } catch { update({ fileError: 'download' }) } },
     setDraft: draft => { update({ draft: String(draft).slice(0, 4000) }); if (record) persist() },
     setDetails: details => update({ name: String(details.name ?? state.name).slice(0, 100), email: String(details.email ?? state.email).slice(0, 254) }),
