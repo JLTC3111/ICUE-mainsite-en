@@ -502,8 +502,16 @@ export default function MetallicPaint({
     gl.uniform1f(u.u_distort, distortion);
     gl.uniform1f(u.u_contour, contour);
     gl.uniform3f(u.u_tint, tint[0], tint[1], tint[2]);
+
+    // A paused canvas has no animation frame to display an updated palette.
+    if (paused && textureReady && !document.hidden && !gl.isContextLost()) {
+      gl.uniform1f(u.u_time, animTimeRef.current);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
   }, [
     ready,
+    textureReady,
+    paused,
     contextRevision,
     seed,
     scale,
@@ -526,7 +534,7 @@ export default function MetallicPaint({
   ]);
 
   useEffect(() => {
-    if (!ready || !textureReady || paused) {
+    if (!ready || !textureReady) {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
@@ -569,6 +577,11 @@ export default function MetallicPaint({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       if (document.hidden || gl.isContextLost()) return;
+      if (paused) {
+        gl.uniform1f(u.u_time, animTimeRef.current);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        return;
+      }
       lastTimeRef.current = performance.now();
       rafRef.current = requestAnimationFrame(render);
     };

@@ -555,9 +555,9 @@
   height: 100%;
   max-width: 100%;
   max-height: 100%;
-  color: #80ecff;
-  stroke: #80ecff;
-  filter: drop-shadow(0 0 8px rgba(128, 236, 255, 0.55));
+  color: var(--metallic-menu-fallback-ink, #80ecff);
+  stroke: var(--metallic-menu-fallback-ink, #80ecff);
+  filter: var(--metallic-menu-fallback-shadow, drop-shadow(0 0 8px rgba(128, 236, 255, 0.55)));
   pointer-events: none;
 }
 
@@ -565,7 +565,7 @@
 .main-site-nav .menu-icon-metallic__lucide-close line,
 .main-site-nav .menu-icon-metallic__fallback-close path,
 .main-site-nav .menu-icon-metallic__fallback-close line {
-  stroke: #80ecff;
+  stroke: var(--metallic-menu-fallback-ink, #80ecff);
   fill: none;
 }
 
@@ -577,8 +577,8 @@
 .main-site-nav.drawer-open .menu-icon-metallic__lucide-close path,
 .main-site-nav:has(#drawerMenu.open) .menu-icon-metallic__fallback-close path,
 .main-site-nav.drawer-open .menu-icon-metallic__fallback-close path {
-  color: #80ecff;
-  stroke: #80ecff;
+  color: var(--metallic-menu-fallback-ink, #80ecff);
+  stroke: var(--metallic-menu-fallback-ink, #80ecff);
 }
 
 .main-site-nav .menu-toggle svg:not(.menu-icon-metallic__lucide-close):not(.menu-icon-metallic__fallback-close) rect,

@@ -1,3 +1,4 @@
+import useMetallicMenuPalette from './useMetallicMenuPalette.js';
 import { useEffect, useState } from 'react';
 import MetallicPaint from '@icue/ui/MetallicPaint/MetallicPaint';
 import { shouldAvoidCanvasEffects } from '../browser/visualEffectsPolicy.js';
@@ -8,18 +9,6 @@ function prefersReducedMotion() {
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-const METALLIC_PROPS = {
-  seed: 200,
-  scale: 5,
-  blur: 0.1,
-  mouseAnimation: false,
-  lightColor: '#ffffff',
-  darkColor: '#80ecff',
-  tintColor: '#80ecff',
-  brightness: 1.35,
-  contrast: 0.5,
-  angle: 180,
-};
 
 /** Static SVG fallback when MetallicPaint close texture is not ready. */
 function CloseIconFallback() {
@@ -59,9 +48,18 @@ function MenuIconFallback() {
 }
 
 export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
+  const { surfaceRef, surface, paintProps } = useMetallicMenuPalette();
   const [menuImageSrc, setMenuImageSrc] = useState(null);
   const [closeImageSrc, setCloseImageSrc] = useState(null);
-  const reducedMotion = prefersReducedMotion();
+  const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(query.matches);
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
   const canvasEffectsDisabled = shouldAvoidCanvasEffects();
 
   useEffect(() => {
@@ -81,17 +79,18 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
       ref={menuIconRef}
       id="menuIcon"
       className={['menu-icon-metallic', isOpen ? 'is-open' : ''].filter(Boolean).join(' ')}
+      data-surface={surface}
       aria-hidden="true"
     >
-      <span className="menu-icon-metallic__layer menu-icon-metallic__layer--menu">
+      <span ref={surfaceRef} className="menu-icon-metallic__layer menu-icon-metallic__layer--menu">
         {menuImageSrc ? (
           <MetallicPaint
             className="menu-icon-metallic__paint"
             imageSrc={menuImageSrc}
             fallback={<MenuIconFallback />}
             speed={speed}
-            paused={isOpen}
-            {...METALLIC_PROPS}
+            paused={isOpen || reducedMotion}
+            {...paintProps}
           />
         ) : (
           <MenuIconFallback />
@@ -104,8 +103,8 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
             imageSrc={closeImageSrc}
             fallback={<CloseIconFallback />}
             speed={speed}
-            paused={!isOpen}
-            {...METALLIC_PROPS}
+            paused={!isOpen || reducedMotion}
+            {...paintProps}
           />
         ) : (
           <CloseIconFallback />

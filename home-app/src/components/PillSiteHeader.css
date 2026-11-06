@@ -1,5 +1,6 @@
 .pill-site-header {
   --pill-nav-height: 3.25rem;
+  --metallic-menu-surface: dark;
   --pill-nav-base: rgba(10, 14, 20, 0.97);
   --pill-nav-accent: #c8ff00;
   --pill-nav-text: rgba(255, 255, 255, 0.94);
